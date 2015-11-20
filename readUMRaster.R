@@ -6,11 +6,14 @@ require(rgdal)
 #scratch stuff
 polyOGR <- readOGR("data","poly01_polygons")
 crs(proj4string(polyOGR))
-polygonMAPTOOLS <- readShapeSpatial("data/poly01_polygons.shp",proj4string = crs(proj4string(polyOGR)))
+polygonMAPTOOLS <- readShapeSpatial("data/poly02.erv",proj4string = crs(proj4string(polyOGR)))
 proj4string(polygonMAPTOOLS) != "+proj=utm +zone=50 +south +ellps=GRS80 +units=m +no_defs"
 
 
-mspImage <- readUMraster(polygonMAPTOOLS,"dom","C:/CCI-02_Work/processing_101/UM2007/")
+mspImage <- readUMraster(polygonMAPTOOLS,"dom","C:/CCI-02_Work/processing_102/UM2009/")
+treMask <- readUMraster(polygonMAPTOOLS,"tre","C:/CCI-02_Work/processing_102/UM2009/")
+
+plot(treMask)
 
 "+proj=utm +zone=50 +south +ellps=GRS80 +units=m +no_defs"
 
