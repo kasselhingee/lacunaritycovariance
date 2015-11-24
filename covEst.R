@@ -1,12 +1,12 @@
 #estimate a map of covariance for each vector using Fourier Transforms in the spatstat setcov() function 
 # vectors with little area have been elimated because they cause the covariance to be enormous
-covarianceMapEst <- function(Xi,boundary,setCovBoundaryThresh = 0.1*area.owin(boundary)){
+covarianceRACS <- function(Xi,boundary,setCovBoundaryThresh = 0.1*area.owin(boundary)){
   Xiinside <- intersect.owin(Xi,boundary) #seems like extra work to do this check :(, but safer to
   numerator <- setcov(Xiinside)
   denominator <- setcov(boundary) 
   denominatorThresh <- denominator #extra memory - more than required if not interested in saving denominator
   denominatorThresh[denominator<setCovBoundaryThresh] <- NA
-  covariance <- eval.im(numerator / denominatorThresh,harmonise=TRUE)
+  covariance <- eval.im(numerator / denominatorThresh,harmonize=TRUE)
 
   covarianceMap = list(covariance = covariance, numerator=numerator, denominator = denominator)
   return(covarianceMap)                     
