@@ -31,15 +31,14 @@ plot(add=TRUE,spTransform(polygonMAPTOOLS,CRS("+proj=utm +zone=50 +south +ellps=
 layout(matrix(c(1,2),ncol=2))
 #polygon with same projection as UM data
 polyOGR_MGA50 <- readOGR("data","poly03") 
-polygon_MGA50 <- readShapeSpatial("data/poly03.shp",proj4string = crs(proj4string(polyOGR_MGA50)))
-coords_MGA50 <- polygon_MGA50@polygons[[1]]@Polygons[[1]]@coords  #an array of the coordinates of the polgon
+coords_MGA50 <- polyOGR_MGA50@polygons[[1]]@Polygons[[1]]@coords  #an array of the coordinates of the polgon
 
 
 #same polygon with different projection 
 polyOGR_albers <- readOGR("data","poly03_albers") #in CRS GDA94 / australian albers
-polygon_albers <- readShapeSpatial("data/poly03_albers.shp",proj4string = crs(proj4string(polyOGR_albers)))
-coords_albers <- polygon_albers@polygons[[1]]@Polygons[[1]]@coords  #an array of the coordinates of the polgon
-polygon_albers_trans <- spTransform(polygon_albers,CRS("+proj=utm +zone=50 +south +ellps=GRS80 +units=m +no_defs"))
+#obsolete: readOGR loads polygon too :) polygon_albers <- readShapeSpatial("data/poly03_albers.shp",proj4string = crs(proj4string(polyOGR_albers)))
+coords_albers <- polyOGR_albers@polygons[[1]]@Polygons[[1]]@coords  #an array of the coordinates of the polgon
+polygon_albers_trans <- spTransform(polyOGR_albers,CRS("+proj=utm +zone=50 +south +ellps=GRS80 +units=m +no_defs")) #function from rgdal
 coords_albers_trans <- polygon_albers_trans@polygons[[1]]@Polygons[[1]]@coords #an array of the coordinates of the polgon
 
 #after transformation these should be the same
@@ -48,7 +47,8 @@ abs(coords_albers_trans - coords_MGA50) < 1e-7
   
   
 polygon_albers == polygon_MGA50
-plot(polygon_MGA50,col ="red")
+plot(polyOGR_MGA50,col ="red")
+plot(add=TRUE,polygon_albers_trans,col ="green")
 
 proj4string(polygonMAPTOOLS) == "+proj=utm +zone=50 +south +ellps=GRS80 +units=m +no_defs"
 
