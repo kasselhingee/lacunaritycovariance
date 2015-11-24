@@ -7,13 +7,15 @@ require(rgdal)
 polyOGR <- readOGR("data","poly01_polygons")
 crs(proj4string(polyOGR))
 polygonMAPTOOLS <- readShapeSpatial("data/poly02.erv",proj4string = crs(proj4string(polyOGR)))
+polygonMAPTOOLS <- readShapeSpatial("data/poly02_shp_polygons.shp")
+
 proj4string(polygonMAPTOOLS) != "+proj=utm +zone=50 +south +ellps=GRS80 +units=m +no_defs"
 
 
 mspImage <- readUMraster(polygonMAPTOOLS,"dom","C:/CCI-02_Work/processing_102/UM2009/")
 treMask <- readUMraster(polygonMAPTOOLS,"tre","C:/CCI-02_Work/processing_102/UM2009/")
 
-plot(treMask)
+plot(mspImage)
 
 "+proj=utm +zone=50 +south +ellps=GRS80 +units=m +no_defs"
 
