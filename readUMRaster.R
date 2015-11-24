@@ -4,12 +4,12 @@ require(raster)
 require(maptools)
 require(rgdal)
 #scratch stuff
-polyOGR <- readOGR("data","poly01_polygons")
+polyOGR <- readOGR("data","poly03") #works if GDA94 / MGA 50 are selected as the CRS when creating layer in QGIS
 crs(proj4string(polyOGR))
-polygonMAPTOOLS <- readShapeSpatial("data/poly02.erv",proj4string = crs(proj4string(polyOGR)))
+polygonMAPTOOLS <- readShapeSpatial("data/poly03.shp",proj4string = crs(proj4string(polyOGR)))
 polygonMAPTOOLS <- readShapeSpatial("data/poly02_shp_polygons.shp")
 
-proj4string(polygonMAPTOOLS) != "+proj=utm +zone=50 +south +ellps=GRS80 +units=m +no_defs"
+proj4string(polygonMAPTOOLS) == "+proj=utm +zone=50 +south +ellps=GRS80 +units=m +no_defs"
 
 
 mspImage <- readUMraster(polygonMAPTOOLS,"dom","C:/CCI-02_Work/processing_102/UM2009/")
