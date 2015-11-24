@@ -30,6 +30,7 @@ numerator = area.owin(intersect.owin(Xiinside,shift.owin(Xiinside,vec=shiftVecto
 denominator = area.owin(intersect.owin(boundaryOWIN,shift.owin(boundaryOWIN,vec=shiftVector)))
 numerator/denominator
 
+
 #experiment with plotting a map of covariance.
 covarianceMapEst <- function(vecx,vecy,Xi,w){
   covAtv=covarianceEst(Xi,w,c(vecx[1],vecy[1]))
@@ -73,3 +74,40 @@ plot(boundaryOWIN,add=TRUE)
 plot(rData)
 plot(polyWindowowin,add=TRUE)
 
+#try out setcov: estimator is simply setcov(Xi)/setcov(W) #seem to be very similar
+load("covarianceMapSmallBinaryMapBench.RData")
+layout(matrix(c(1,2,3,4),nrow=2,ncol=2,byrow=TRUE))
+numerator <- setcov(Xiinside)
+plot(numerator)
+image(covarianceMapSmallBinaryMapBench$numerator)
+denominator <- setcov(boundaryOWIN)
+plot(denominator)
+image(covarianceMapSmallBinaryMapBench$denominator)
+#filled.contour(covarianceMapSmallBinaryMapBench$numerator)
+#filled.contour(covarianceMapSmallBinaryMapBench$denominator)
+#trouble is setcov comes back with different resolutions to the setcov of the boundary!? use eval.im and "harmonize=TRUE"! to resample so they are compatible
+covariance <- eval.im(numerator %/% denominator,harmonize=TRUE)#seems error prone - denominator has things like 2^-20 in it!!
+harmonised <- harmonise(numerator,denominator)
+plot(harmonised[[1]])
+plot(harmonised[[2]])
+min(denominator)
+windowarea <- area.owin(boundaryOWIN)
+denominatorThresh <- denominator
+denominatorThresh[denominator<0.1*windowarea] <- NA
+plot(denominatorThresh)
+
+plot(eval.im(numerator / denominatorThresh,harmonize=TRUE))
+image(covarianceMapSmallBinaryMapBench$covariance)
+
+#try out function
+covarianceInfo <- covarianceRACS(XiOWIN,boundaryOWIN,setCovBoundaryThresh<-0.01*area.owin(boundaryOWIN))
+plot(covarianceInfo$covariance)
+#compare to old funct
+covarianceMap2 <- covarianceMapEst_direct(XiOWIN,boundaryOWIN,6.01,6.01)
+image(covarianceMap2$covariance)
+
+#compare to limit (assuming mixing)
+asympLim <- covprobEstimate*covprobEstimate
+plot(eval.im(X - asympLim,list(X=covarianceInfo$covariance)))
+plot(Xiinside)
+plot(add=TRUE,boundaryOWIN)
