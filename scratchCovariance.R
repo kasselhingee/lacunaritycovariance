@@ -1,6 +1,8 @@
 library(maptools) #with rgeos installed (for ubuntu need to install GEOS separately - waiting to see if needed!)
 library(raster)
 library(spatstat)
+#also require rgdal to be installed correctly!
+
 
 #read boundary in and convert to spatstat window
 boundaryMAPTOOLS <- readShapeSpatial("data/poly01_polygons.shp")
@@ -23,7 +25,7 @@ covprobEstimate = area.owin(Xiinside)/area.owin(boundaryOWIN)
 
 
 #estimate covariance of a particular discrete vector v.
-shiftVector = c(5,0.2) #in units of Xiinside
+shiftVector = c(2,0.2) #in units of Xiinside
 numerator = area.owin(intersect.owin(Xiinside,shift.owin(Xiinside,vec=shiftVector)))
 denominator = area.owin(intersect.owin(boundaryOWIN,shift.owin(boundaryOWIN,vec=shiftVector)))
 numerator/denominator
@@ -56,12 +58,18 @@ for (i in 1:length(shiftVectorX)){
     denominatorMap[i,j] <- covarianceEstimation["denominator"]
   }
 }
-image(covarMap)
+filled.contour(shiftVectorX,shiftVectorY,covarMap)
 
-
-
+covarIm <- im(covarMap,xcol=shiftVectorX,yrow=shiftVectorY)
+#trying to get a matrix of lists.
+covarianceMap = list(covariance = covarMap, numerator=numeratorMap, denominator = denominatorMap, xcol = shiftVectorX, ycol = shiftVectorY, xstep=0.2,ystep=0.2)
+#try array(list(NULL), c(3,2))
+#or multidim array array(data = NA, dim = length(data), dimnames = NULL)
+covarianceMap2 <- covarianceMapEst(XiOWIN,boundaryOWIN,6.01,6.01)
+filled.contour(covarianceMap2$covariance) 
 
 plot(shift.owin(Xiinside,vec=shiftVector))
 plot(boundaryOWIN,add=TRUE)
 plot(rData)
 plot(polyWindowowin,add=TRUE)
+
