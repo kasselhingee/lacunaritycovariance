@@ -4,10 +4,16 @@ require(raster)
 require(maptools)
 require(rgdal)
 #scratch stuff
+#polygon with same projection as UM data
 polyOGR <- readOGR("data","poly03") #works if GDA94 / MGA 50 are selected as the CRS when creating layer in QGIS
 crs(proj4string(polyOGR))
 polygonMAPTOOLS <- readShapeSpatial("data/poly03.shp",proj4string = crs(proj4string(polyOGR)))
-polygonMAPTOOLS <- readShapeSpatial("data/poly02_shp_polygons.shp")
+
+#same polygon with different projection to UM data
+polyOGR <- readOGR("data","poly03_albers") #in CRS GDA94 / australian albers
+crs(proj4string(polyOGR))
+polygonMAPTOOLS <- readShapeSpatial("data/poly03_albers.shp",proj4string = crs(proj4string(polyOGR)))
+
 
 proj4string(polygonMAPTOOLS) == "+proj=utm +zone=50 +south +ellps=GRS80 +units=m +no_defs"
 
@@ -19,7 +25,32 @@ plot(mspImage)
 
 "+proj=utm +zone=50 +south +ellps=GRS80 +units=m +no_defs"
 
-spTransform(polygonMAPTOOLS,CRS("+proj=utm +zone=50 +south +ellps=GRS80 +units=m +no_defs"))
+plot(add=TRUE,spTransform(polygonMAPTOOLS,CRS("+proj=utm +zone=50 +south +ellps=GRS80 +units=m +no_defs")))
+
+#####Numerical test of spTransform
+layout(matrix(c(1,2),ncol=2))
+#polygon with same projection as UM data
+polyOGR_MGA50 <- readOGR("data","poly03") 
+polygon_MGA50 <- readShapeSpatial("data/poly03.shp",proj4string = crs(proj4string(polyOGR_MGA50)))
+coords_MGA50 <- polygon_MGA50@polygons[[1]]@Polygons[[1]]@coords  #an array of the coordinates of the polgon
+
+
+#same polygon with different projection 
+polyOGR_albers <- readOGR("data","poly03_albers") #in CRS GDA94 / australian albers
+polygon_albers <- readShapeSpatial("data/poly03_albers.shp",proj4string = crs(proj4string(polyOGR_albers)))
+coords_albers <- polygon_albers@polygons[[1]]@Polygons[[1]]@coords  #an array of the coordinates of the polgon
+polygon_albers_trans <- spTransform(polygon_albers,CRS("+proj=utm +zone=50 +south +ellps=GRS80 +units=m +no_defs"))
+coords_albers_trans <- polygon_albers_trans@polygons[[1]]@Polygons[[1]]@coords #an array of the coordinates of the polgon
+
+#after transformation these should be the same
+abs(coords_albers_trans - coords_MGA50) < 1e-7
+  
+  
+  
+polygon_albers == polygon_MGA50
+plot(polygon_MGA50,col ="red")
+
+proj4string(polygonMAPTOOLS) == "+proj=utm +zone=50 +south +ellps=GRS80 +units=m +no_defs"
 
 
 
