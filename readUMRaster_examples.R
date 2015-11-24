@@ -39,6 +39,16 @@ plot(add=TRUE,polygon_albers_trans,col ="green")
 
 proj4string(polygonMAPTOOLS) == "+proj=utm +zone=50 +south +ellps=GRS80 +units=m +no_defs"
 
+#########################################################################
 #test reprojection:
 test_reprojection()
 
+#example readUMRaster
+poly03 <- readOGR("data","poly03_albers") #no transforming of CRS if GDA94 / MGA 50 are selected as the CRS when creating layer in QGIS
+proj4string(poly03) #UM coordinate system is "+proj=utm +zone=50 +south +ellps=GRS80 +units=m +no_defs"
+poly03trees <- readUMraster(poly03,"tre","C:/CCI-02_Work/processing_102/UM2009/")
+
+#example with a different polygon
+poly01 <- readOGR("data","poly01_polygons") #no transforming of CRS if GDA94 / MGA 50 are selected as the CRS when creating layer in QGIS
+proj4string(poly01) #is NA because ERMapper exporter misses projection information 
+poly01trees <- readUMraster(poly01,"tre","C:/CCI-02_Work/processing_102/UM2009/")

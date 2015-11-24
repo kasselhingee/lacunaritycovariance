@@ -27,7 +27,10 @@ test_reprojection <- function(){
 readUMraster <- function(polygon,prodCode,repository){
   if (is.na(proj4string(polygon))){ warning("Can not read pojection information of polygon - differences between projections of UM data and polygon will lead to importing the incorrect region")}
   else {
-    if (proj4string(polygon) != "+proj=utm +zone=50 +south +ellps=GRS80 +units=m +no_defs") {stop("coordinate reference system of vector does not match UM reference system and no reprojection attempted")}
+    if (proj4string(polygon) != "+proj=utm +zone=50 +south +ellps=GRS80 +units=m +no_defs") { #test if CRS matches UM CRS 
+      warning("coordinate reference system of input vector does not match UM reference system... transorming using rgdal")
+      polygon <- spTransform(polygon,CRS("+proj=utm +zone=50 +south +ellps=GRS80 +units=m +no_defs"))
+      }
   }
   tileDims <- read.table("tileDimensions.txt",header=TRUE,stringsAsFactors=FALSE)
   extents <- extent(polygon)
