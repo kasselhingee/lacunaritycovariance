@@ -30,7 +30,9 @@ eps=NA
   ptm <- proc.time()
   XiinsideSimplified <- simplify.owin(Xiinside, eps) #I think only works on binary masks in dev version of spatstat #simplify.owin for balcattaPark took 3.6!! hours
   proc.time() - ptm
-#}
+  balcattaParkInsideTreeSimplified <- XiinsideSimplified
+  save(balcattaParkInsideTreeSimplified,file="balcattaParkInsideTreeSimplified.RData")
+  #}
 layout(matrix(c(1,2),nrow=1,ncol=2))
 plot(Xiinside)
 plot(XiinsideSimplified,color="green")
