@@ -61,3 +61,35 @@ covarianceMap = list(covariance = covarMap, numerator=numeratorMap, denominator 
 
 exactVariance = varPexactEst(covpest(XiOWIN,boundaryOWIN),covarianceMap,boundaryOWIN)
 
+
+#time balcatta
+XiRASTER <- raster("/home/kassel/LargeData/Balcatta_Park/BalcattaPark_veg_raw.ers")
+XiIMAGE <- as.im(XiRASTER)
+XiOWIN <- as.owin(XiIMAGE)
+ptm <- proc.time()
+numerator <- setcov(XiOWIN) #should be much better than 50% of the naive way
+proc.time() - ptm
+#user  system elapsed 
+#23.296   2.076  25.411
+#~500 times faster than naive way
+
+#try out function
+boundaryOWIN <- owin(xrange=extent(XiRASTER)[c(1,2)],yrange=extent(XiRASTER)[c(3,4)])
+ptm <- proc.time()
+covarianceInfo <- covarianceRACS(XiOWIN,boundaryOWIN,setCovBoundaryThresh<-0.1*area.owin(boundaryOWIN)) #should be much better than 50% of the naive way because using rectangular boundary
+proc.time() - ptm
+#user  system elapsed 
+#20.980   0.656  21.664 
+
+plot(covarianceInfo$covariance)
+plot(covarianceInfo$numerator)
+plot(covarianceInfo$denominator)
+view <- owin(xrange=c(-10,10),yrange=c(-10,10))
+plot(covarianceInfo$covariance[view])
+plot(covarianceInfo$numerator[view])
+plot(covarianceInfo$denominator[view])
+
+#compare to limit (assuming mixing)
+asympLim <- (area.owin(XiOWIN)/area.owin(boundaryOWIN) )^2
+plot(eval.im(X - asympLim,list(X=covarianceInfo$covariance))[view])
+
