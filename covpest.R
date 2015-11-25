@@ -17,7 +17,7 @@
 #exact var = 1/A(Window)*sumOverVectorsVOF[setcovariance(W,v)*(covarianceEst(v) - p^2)]
 #assume that covariance = p^2 outside the covariance map. BUT give an error if covariance Map is too large at edges?
 #assume covarianceMap has different slots
- varPexactEst <- function(pest,covarianceMap,w){
+ exactvarP <- function(pest,covarianceMap,w){
    ##need some checking that covariance=p^2 outside covariance map
    edgeValues = c(covarianceMap$covariance[1,-1],covarianceMap$covariance[-1,ncol(covarianceMap$covariance)],
                   covarianceMap$covariance[nrow(covarianceMap$covariance),-1],covarianceMap$covariance[-1,1])
@@ -27,4 +27,15 @@
    return(1/(area.owin(w)^2)*vectorSteps*sum(covarianceMap$numerator-covarianceMap$denominator*pest^2,na.rm=TRUE))
  }
  
+ 
+ 
+ #from molchanov (and the limit of the above) as A(W)--> infy, var(p)-->0 which makes sense
+ #however if we look psqrt(A(W)) then something different happens?? *ASK GOPAL
+ asympvarP <- function(){}
 
+ #calculates width of symmetric confidence interval given a required confidence level and a sd
+ confidenceIntervalOfGaussian <- function(confidenceLevel,sd){
+   minBound <- qnorm((1-confidenceLevel)/2,sd=sd)
+   maxBound <- -minBound
+   return(c(minBound,maxBound))
+ }
