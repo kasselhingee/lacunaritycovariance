@@ -21,6 +21,7 @@
    ##need some checking that covariance=p^2 outside covariance map
    edgeValues = c(covarianceMap$covariance[1,-1],covarianceMap$covariance[-1,ncol(covarianceMap$covariance)],
                   covarianceMap$covariance[nrow(covarianceMap$covariance),-1],covarianceMap$covariance[-1,1])
+                  covarianceMap$covariance[nrow(covarianceMap$covariance),-ncol(covarianceMap$covariance)],covarianceMap$covariance[-nrow(covarianceMap$covariance),1])
    if (max(abs(edgeValues-pest^2),na.rm=TRUE) > diff(range(covarianceMap$covariance,na.rm=TRUE))*1e-5){
      warning("covariance map doesn't reached p^2 at boundary")
    }
