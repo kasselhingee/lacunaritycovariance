@@ -111,3 +111,10 @@ asympLim <- covprobEstimate*covprobEstimate
 plot(eval.im(X - asympLim,list(X=covarianceInfo$covariance)))
 plot(Xiinside)
 plot(add=TRUE,boundaryOWIN)
+
+
+variance <- exactvarP(XiOWIN,boundaryOWIN) #came out negative for small Poly01! Probably fair!
+
+w <- boundaryOWIN
+
+

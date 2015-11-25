@@ -21,9 +21,7 @@ XiOWIN <- as.owin(XiIMAGE)
 area.owin(XiOWIN)
 sum(XiOWIN$m)*XiOWIN$xstep*XiOWIN$ystep  #also works to use as.matrix(XiOWIN)
 
-covarianceMap <- covarianceMapEst(XiOWIN,boundaryOWIN,6.01,6.01)
- 
- 
+
 #estimate exact variance
 varPexactEst(covprobEstimate,covarianceMap,boundaryOWIN)
 
