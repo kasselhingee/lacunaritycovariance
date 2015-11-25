@@ -18,10 +18,10 @@ polygonMAPTOOLS <- readShapeSpatial("data/poly03_albers.shp",proj4string = crs(p
 proj4string(polygonMAPTOOLS) == "+proj=utm +zone=50 +south +ellps=GRS80 +units=m +no_defs"
 
 
-mspImage <- readUMraster(polygonMAPTOOLS,"dom","C:/CCI-02_Work/processing_102/UM2009/")
-treMask <- readUMraster(polygonMAPTOOLS,"tre","C:/CCI-02_Work/processing_102/UM2009/")
+mspImage <- readUMraster(polyOGR,"dom","C:/CCI-02_Work/processing_102/UM2009/")
+treMask <- readUMraster(polyOGR,"tre","C:/CCI-02_Work/processing_102/UM2009/")
 
-plot(mspImage)
+plot(treMask)
 
 "+proj=utm +zone=50 +south +ellps=GRS80 +units=m +no_defs"
 
