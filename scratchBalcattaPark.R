@@ -93,3 +93,8 @@ plot(covarianceInfo$denominator[view])
 asympLim <- (area.owin(XiOWIN)/area.owin(boundaryOWIN) )^2
 plot(eval.im(X - asympLim,list(X=covarianceInfo$covariance))[view])
 
+
+variance <- exactvarP(XiOWIN,boundaryOWIN) #came out negative for small Poly01! Probably fair!
+
+
+

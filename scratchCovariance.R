@@ -115,6 +115,5 @@ plot(add=TRUE,boundaryOWIN)
 
 variance <- exactvarP(XiOWIN,boundaryOWIN) #came out negative for small Poly01! Probably fair!
 
-w <- boundaryOWIN
 
 

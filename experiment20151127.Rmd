@@ -1,0 +1,38 @@
+---
+title: 'Experiment 20151127: apply coverage probability estimator and confidence interval'
+author: "Kassel Hingee"
+date: "27 November 2015"
+output: html_document
+---
+
+**Aim:** Estimate coverage probability of trees and confidence intervals for a variety of regions. To see if 
+(a) differences between years with little change have estimates with overlapping confidence regions. 
+(b) see if different vegetation combinations (in a stationary looking area) can be discriminated. If this is the case regions with the same vegetation combinations will have overlapping confidence intervals, regions with different ones will have non-overlapping confidence intervals.
+(C) If I notice areas of change then it would be good to see if the coverage probability estimates reflect this.
+
+**Background:** This is a preliminary experiment. In the future stationarity, large enough window (and the extra assumptions for normality) should be tested. Landscape ecology literature suggests that coverage probability is the most differentiating factor between landscapes, thus it is plausible that this first and easiest estimate will work.
+ However Rohan Sadler has pointed out that in region close to Perth that pattern is much more determined by disturbances than by the vegetation itself.
+
+
+**Data:** Vegetation combination maps will be using the "CBC_Feed_areas_requiring_investigation_SCP_IBRA_2007_clipped_SA_2014" shape files provided by Ricky.
+
+Maps of trees will be from the Urban Monitor 2007 and 2009 tree masks.
+
+The different regions for estimation will be drawn by hand using QGIS. 
+
+**Method:** 
+*Step 1:* Drawing 
+
+...I have discovered that my estimation of variance is flawed, and could be a lot better.
+
+```{r}
+summary(cars)
+```
+
+You can also embed plots, for example:
+
+```{r, echo=FALSE}
+plot(cars)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
