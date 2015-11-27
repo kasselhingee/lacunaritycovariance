@@ -2,7 +2,8 @@
 title: 'Experiment 20151127: apply coverage probability estimator and confidence interval'
 author: "Kassel Hingee"
 date: "27 November 2015"
-output: html_document
+output: pdf_document
+bibliography: zotero.bib
 ---
 
 **Aim:** Estimate coverage probability of trees and confidence intervals for a variety of regions. To see if 
@@ -15,6 +16,9 @@ output: html_document
 
 
 **Data:** Vegetation combination maps will be using the "CBC_Feed_areas_requiring_investigation_SCP_IBRA_2007_clipped_SA_2014" shape files provided by Ricky.
+ This data set is based on the Draft Pre-European Swan Coastal Plain vegetation maps, and I beleive very little has changed (it was the most useful in the extents of the UM photography [Fig.~1 @Glossop2011me]).
+ For Carnaby Cockatoo habitat the vegetation description field was searched [@Glossop2011me] so the same field will be used for this experiment.
+  Note that other fields could be more appropriate in the future (vegname, structure or category) but I don't know if there is a 1-1 relationship between veg name and veg description.
 
 Maps of trees will be from the Urban Monitor 2007 and 2009 tree masks.
 
