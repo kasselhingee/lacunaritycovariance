@@ -49,9 +49,20 @@ for (rowIndex in 2:xi$dim[1]){
                   (xi[rowIndex-1,en] == 0))    #and first pixel isn't in set 
     if(tangent){
       cat("tangent found at ",rowIndex,",",en,"\n")
-      xi[rowIndex,en] <- 2 #the -1 is to take into
+      xi[rowIndex,en+1] <- 2 #the -1 is to take into
       } #label as tangent
   }
 }
 
 plot(xi)
+#remove the stuff in xi, keeping the tangent points - because thats the discretisation used in the proof in Cressie's book
+for (rowIndex in 1:xi$dim[1]){
+  rowVal <- xi[rowIndex,]
+  rowValinxi <- (rowVal==1)
+  rowValNew <- c(rowVal[!rowValinxi],rep(NA,sum(rowValinxi)))
+  xi[rowIndex,] <- rowValNew
+}
+
+plot(xi)
+
+
