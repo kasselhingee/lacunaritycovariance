@@ -13,8 +13,8 @@ Examples of Lastlett's Tranform applied to various RACS
 library(spatstat)
 data(heather)
 xi <- heather$coarse
+source("laslettTransform.R")
 ltxi <- laslettTransform(xi)
-
 ```
 
 The result is a list of a `ppp` object and the transformed image before it was converted into ppp. See below plots. In the image plot (right) the tangent points in the image have value of `2`, the background has value of `0` and outside the window is `NA`. For confirmation the points in `ltxi$points` have been plotted as circles on top of the image plot.  
@@ -32,6 +32,11 @@ Rotate input `xi` to have a better chance of interpreting the point pattern.
 ```{r}
 xir <- rotate.owin(xi)
 ltxir <- laslettTransform(xir)
-
+```
+```{r, echo=FALSE}
+plot.new()
+plot(xir)
+plot(ltxir$points,cols="red",chars="+")
+```
 
 
