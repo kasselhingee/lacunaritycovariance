@@ -3,23 +3,6 @@
 library(spatstat)
 data(heather)
 
-xi <- heather$coarse
-head(xi$m)
-row <- xi$m[1,]
-row <- as.numeric(row)
-gradient <- row[-1]-row[1:(length(row)-1)] #difference between pixel at i and pixel at i-1
-
-plot(gradient)
-lines(row)
-
-rowb <-as.numeric(xi$m[2,])
-gradientb <- rowb[-1]-row[1:(xi$dim[2]-1)]
-
-#trying EBImage
-library(EBImage)
-xi <- Image(as.numeric(as.matrix(heather$coarse)),heather$coarse$dim)
-display(xi)
-#but can't see a nice way to do this differencing thing
 
 
 xi <- as.im(heather$coarse)
@@ -52,6 +35,7 @@ laslettTransform <- function(xi){
       } #label as tangent
     }
   }
+  plot(xi)
   
   #remove the stuff in xi, keeping the tangent points - because thats the discretisation used in the proof in Cressie's book
   for (rowIndex in 1:xi$dim[1]){
@@ -60,21 +44,27 @@ laslettTransform <- function(xi){
     rowValNew <- c(rowVal[!rowValinxi],rep(NA,sum(rowValinxi)))
     xi[rowIndex,] <- rowValNew
   }
+  plot(xi)
   #find tangent points in converted image
   tangentPoints <- arrayInd(which(as.matrix(xi)==2),dim(xi))
   #convert tangent points to cartesian coordinates
-  tangentPoints[,2] <- tangentPoints[,2]*xi$xstep+xi$xrange[1]
-  tangentPoints[,1] <- tangentPoints[,1]*xi$ystep+xi$yrange[1]  
+  tangentPoints[,2] <- (tangentPoints[,2]-1)*xi$xstep+xi$xcol[1] #to get the correct coordinates!
+  tangentPoints[,1] <- (tangentPoints[,1]-1)*xi$ystep+xi$yrow[1]  
   
   #get a logical matrix - should be an easier way!
   xiLT <- matrix(data=NA,nrow=dim(xi)[1],ncol=dim(xi)[2])
   xiLT[!is.na(as.matrix(xi))] <- TRUE
+  xiLT[is.na(as.matrix(xi))] <- FALSE
   pointPat <- ppp(tangentPoints[,2],tangentPoints[,1],xrange=xi$xrange,yrange=xi$yrange,mask=xiLT)
   return(pointPat)
 }
+xiLTowin <- owin(xrange=xi$xrange,yrange=xi$yrange,mask=xiLT)
+pointPat[complement.owin(pointPat)]
 
 ltxi <- laslettTransform(xi)
 layout(matrix(c(1,2),ncol=2,nrow=1))
+plot(xiLTowin)
+plot(pointPat,cols ="red",chars="+")
 plot(xi)
 plot(ltxi)
 
