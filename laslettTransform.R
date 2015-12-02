@@ -25,10 +25,10 @@ display(xi)
 xi <- as.im(heather$coarse)
 
 laslettTransform <- function(xi){
+  xi <- as.im(xi)
   xi[is.na(as.matrix(xi))] <- 0 
   #gradient image for whole thing
-  Y <- xi[,-1]
-  grad <- xi[,1:(xi$dim[2]-1)]-Y
+  grad <- xi[,1:(xi$dim[2]-1)]-xi[,-1]
   
   #find lower tangent points. A grad value of 1 means exiting xi, and grad value of -1 means entering xi
   for (rowIndex in 2:xi$dim[1]){
