@@ -25,13 +25,21 @@ display(xi)
 xi <- as.im(heather$fine)
 
 laslettTransform <- function(xi){
-  xi[is.na(as.matrix(xi))] <- 0 
+  xstep <- xi$xstep #saving this info for later
+  ystep <- xi$ystep
+  xrange <- xi$xrange
+  yrange <- xi$yrange
+  dimen <- xi$dim
+  xiunits <- xi$units
+  
+  Y <- as.matrix(xi)
+  Y[is.na(Y)] <- 0 
   #gradient image for whole thing
-  Y <- xi[,-1]
-  grad <- xi[,1:(xi$dim[2]-1)]-Y
+  grad <- Y[,1:(dim(xi)[2]-1)]-Y[,-1]
 
   #find lower tangent points. A grad value of 1 means exiting xi, and grad value of -1 means entering xi
-  for (rowIndex in 2:xi$dim[1]){
+  tangentPoints <- data.frame()
+  for (rowIndex in 2:dim(xi)[1]){
     rowa <- grad[rowIndex,]#rows start at the bottom!!
     rowb <- grad[rowIndex-1,]
     rowaexits <- which(rowa==1)
@@ -48,19 +56,23 @@ laslettTransform <- function(xi){
                     (xi[rowIndex-1,en] == 0))    #and first pixel isn't in set 
       if(tangent){
         cat("tangent found at ",rowIndex,",",en,"\n")
-        xi[rowIndex,en+1] <- 2 #the -1 is to take into
+        xi[rowIndex,en+1] <- 0 #because the proof in Cressie includes lower tangent points in the discretised background
+        tangentPoints <- rbind(tangentPoints,c(rowIndex,en+1))
         } #label as tangent
     }
   }
+  colnames(tangentPoints) <- c("x","y")
   
   #remove the stuff in xi, keeping the tangent points - because thats the discretisation used in the proof in Cressie's book
-  for (rowIndex in 1:xi$dim[1]){
+  for (rowIndex in 1:dim(xi)[1]){
     rowVal <- xi[rowIndex,]
     rowValinxi <- (rowVal==1)
     rowValNew <- c(rowVal[!rowValinxi],rep(NA,sum(rowValinxi)))
     xi[rowIndex,] <- rowValNew
   }
-  return(xi)
+  xiLT <- owin(mask = as.logical(xi+1), unitname=xiunits)
+  
+  return(c(xi)
 }
 
 ltxi <- laslettTransform(xi)
