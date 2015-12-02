@@ -1,12 +1,5 @@
 #calculating Laslett's transform
 
-library(spatstat)
-data(heather)
-
-
-
-xi <- as.im(heather$coarse)
-
 laslettTransform <- function(xi){
   xi <- as.im(xi)
   xi[is.na(as.matrix(xi))] <- 0 
@@ -30,13 +23,11 @@ laslettTransform <- function(xi){
       tangent <- ((min((rowbenter< en) | (rowbenter >= ex))) && #if no enter point along interval (this is 4 nbhd because of strictly less/greater than) (#something better than max??)
                     (xi[rowIndex-1,en] == 0))    #and first pixel isn't in set 
       if(tangent){
-        cat("tangent found at ",rowIndex,",",en,"\n")
         xi[rowIndex,en+1] <- 2 #the -1 is to take into
       } #label as tangent
     }
   }
-  plot(xi)
-  
+
   #remove the stuff in xi, keeping the tangent points - because thats the discretisation used in the proof in Cressie's book
   for (rowIndex in 1:xi$dim[1]){
     rowVal <- xi[rowIndex,]
@@ -44,7 +35,6 @@ laslettTransform <- function(xi){
     rowValNew <- c(rowVal[!rowValinxi],rep(NA,sum(rowValinxi)))
     xi[rowIndex,] <- rowValNew
   }
-  plot(xi)
   #find tangent points in converted image
   tangentPoints <- arrayInd(which(as.matrix(xi)==2),dim(xi))
   #convert tangent points to cartesian coordinates
@@ -56,16 +46,9 @@ laslettTransform <- function(xi){
   xiLT[!is.na(as.matrix(xi))] <- TRUE
   xiLT[is.na(as.matrix(xi))] <- FALSE
   pointPat <- ppp(tangentPoints[,2],tangentPoints[,1],xrange=xi$xrange,yrange=xi$yrange,mask=xiLT)
-  return(pointPat)
+  return(list(points=pointPat,image=xi))
 }
-xiLTowin <- owin(xrange=xi$xrange,yrange=xi$yrange,mask=xiLT)
-pointPat[complement.owin(pointPat)]
 
-ltxi <- laslettTransform(xi)
-layout(matrix(c(1,2),ncol=2,nrow=1))
-plot(xiLTowin)
-plot(pointPat,cols ="red",chars="+")
-plot(xi)
-plot(ltxi)
+
 
 
