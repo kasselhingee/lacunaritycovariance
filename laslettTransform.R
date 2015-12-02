@@ -69,7 +69,6 @@ laslettTransform <- function(xi){
   #get a logical matrix - should be an easier way!
   xiLT <- matrix(data=NA,nrow=dim(xi)[1],ncol=dim(xi)[2])
   xiLT[!is.na(as.matrix(xi))] <- TRUE
-  xiLT <- owin(xrange=xi$xrange,yrange=xi$yrange, mask = xiLT, unitname=xi$units)
   pointPat <- ppp(tangentPoints[,2],tangentPoints[,1],xrange=xi$xrange,yrange=xi$yrange,mask=xiLT)
   return(pointPat)
 }
