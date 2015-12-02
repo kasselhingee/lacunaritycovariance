@@ -22,24 +22,16 @@ display(xi)
 #but can't see a nice way to do this differencing thing
 
 
-xi <- as.im(heather$fine)
+xi <- as.im(heather$coarse)
 
 laslettTransform <- function(xi){
-  xstep <- xi$xstep #saving this info for later
-  ystep <- xi$ystep
-  xrange <- xi$xrange
-  yrange <- xi$yrange
-  dimen <- xi$dim
-  xiunits <- xi$units
-  
-  Y <- as.matrix(xi)
-  Y[is.na(Y)] <- 0 
+  xi[is.na(as.matrix(xi))] <- 0 
   #gradient image for whole thing
-  grad <- Y[,1:(dim(xi)[2]-1)]-Y[,-1]
-
+  Y <- xi[,-1]
+  grad <- xi[,1:(xi$dim[2]-1)]-Y
+  
   #find lower tangent points. A grad value of 1 means exiting xi, and grad value of -1 means entering xi
-  tangentPoints <- data.frame()
-  for (rowIndex in 2:dim(xi)[1]){
+  for (rowIndex in 2:xi$dim[1]){
     rowa <- grad[rowIndex,]#rows start at the bottom!!
     rowb <- grad[rowIndex-1,]
     rowaexits <- which(rowa==1)
@@ -56,23 +48,30 @@ laslettTransform <- function(xi){
                     (xi[rowIndex-1,en] == 0))    #and first pixel isn't in set 
       if(tangent){
         cat("tangent found at ",rowIndex,",",en,"\n")
-        xi[rowIndex,en+1] <- 0 #because the proof in Cressie includes lower tangent points in the discretised background
-        tangentPoints <- rbind(tangentPoints,c(rowIndex,en+1))
-        } #label as tangent
+        xi[rowIndex,en+1] <- 2 #the -1 is to take into
+      } #label as tangent
     }
   }
-  colnames(tangentPoints) <- c("x","y")
   
   #remove the stuff in xi, keeping the tangent points - because thats the discretisation used in the proof in Cressie's book
-  for (rowIndex in 1:dim(xi)[1]){
+  for (rowIndex in 1:xi$dim[1]){
     rowVal <- xi[rowIndex,]
     rowValinxi <- (rowVal==1)
     rowValNew <- c(rowVal[!rowValinxi],rep(NA,sum(rowValinxi)))
     xi[rowIndex,] <- rowValNew
   }
-  xiLT <- owin(mask = as.logical(xi+1), unitname=xiunits)
+  #find tangent points in converted image
+  tangentPoints <- arrayInd(which(as.matrix(xi)==2),dim(xi))
+  #convert tangent points to cartesian coordinates
+  tangentPoints[,2] <- tangentPoints[,2]*xi$xstep+xi$xrange[1]
+  tangentPoints[,1] <- tangentPoints[,1]*xi$ystep+xi$yrange[1]  
   
-  return(c(xi)
+  #get a logical matrix - should be an easier way!
+  xiLT <- matrix(data=NA,nrow=dim(xi)[1],ncol=dim(xi)[2])
+  xiLT[!is.na(as.matrix(xi))] <- TRUE
+  xiLT <- owin(xrange=xi$xrange,yrange=xi$yrange, mask = xiLT, unitname=xi$units)
+  pointPat <- ppp(tangentPoints[,2],tangentPoints[,1],xrange=xi$xrange,yrange=xi$yrange,mask=xiLT)
+  return(pointPat)
 }
 
 ltxi <- laslettTransform(xi)
