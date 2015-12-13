@@ -8,8 +8,9 @@
 %%  ~~ A concise (1-5 lines) description of what the function does. ~~
 }
 \usage{
-HestInPolygonalWindow(X, boundaryIn = owin(X$xrange, X$yrange),\\
-r = NULL, breaks = NULL, ..., correction = c("km", "rs", "han"), conditional = TRUE)
+HestInPolygonalWindow(X, boundaryIn = owin(X$xrange, X$yrange),\
+r = NULL, breaks = NULL, ..., correction = c("km", "rs", "han"),\
+conditional = TRUE)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{

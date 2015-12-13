@@ -40,7 +40,7 @@ covarianceRACS(Xi, boundary, setCovBoundaryThresh = 0.1 * area.owin(boundary))
   \item{setCovBoundaryThresh}{To avoid instabilities of dividing by very small areas, any vector \eqn{v} set covariance of the boundary smaller than this threshold is given a covariance of NA}
 %%     ~~Describe \code{setCovBoundaryThresh} here~~
 }
-}
+
 \details{
 \code{covarianceEstAtPoint} estimates the covariance of a single vector \eqn{v} by ratioing the set covariance of \eqn{\Xi} to the set covariance of of observation window. Set covariance is calculated by intersecting a set with a translated copy of itself.
 
