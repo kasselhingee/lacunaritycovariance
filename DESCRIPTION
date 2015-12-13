@@ -1,9 +1,10 @@
-Package: StationaryRACSInference
+Package: stationaryracsinference
 Type: Package
-Title: What the package does (short line)
-Version: 1.0
-Date: 2015-11-28
-Author: Who wrote it
-Maintainer: Who to complain to <yourfault@somewhere.net>
-Description: More about what it does (maybe more than one line)
-License: What license is it under?
+Title: Some inference tools for random closed sets in the plane
+Version: 0.1
+Date: 2015-12-13
+Author: Kassel Liam Hingee
+Maintainer: <kassel.hingee@research.uwa.edu.au>
+Depends: spatstat
+Description: Functions for non-parametric estimation of 2D RACS from observations of the plane. The aim is to include methods that apply to remote sensing products (such as tree canopy maps). Consequently the methods focus on RACS that are observed only once, but relatively completely. The package is very dependent on SpatStat for many of the functions.
+License: GNU General Public License

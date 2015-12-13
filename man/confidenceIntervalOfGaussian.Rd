@@ -56,20 +56,4 @@ Kassel Hingee
 }
 \examples{
 confidenceIntervalOfGaussian(0.95,1)
-
-##---- Should be DIRECTLY executable !! ----
-##-- ==>  Define data, use random,
-##--	or do  help(data=index)  for the standard data sets.
-
-## The function is currently defined as
-function (confidenceLevel, sd) 
-{
-    minBound <- qnorm((1 - confidenceLevel)/2, sd = sd)
-    maxBound <- -minBound
-    return(c(minBound, maxBound))
-  }
 }
-% Add one or more standard keywords, see file 'KEYWORDS' in the
-% R documentation directory.
-\keyword{ ~kwd1 }
-\keyword{ ~kwd2 }% __ONLY ONE__ keyword per line

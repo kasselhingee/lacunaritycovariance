@@ -1,10 +1,10 @@
 \name{covpest}
 \alias{covpest}
 %- Also NEED an '\alias' for EACH other topic documented here.
-\title{Estimate the coverage probability of a stationary RACS $P(o)\in \Xi$.
+\title{Estimate the coverage probability of a stationary RACS \eqn{P(o)\in \Xi}.
 %%  ~~function to do ... ~~
 }
-\description{Estimate is simply the fraction of $\Xi$ in the observed window
+\description{Estimate is simply the fraction of \eqn{\Xi} in the observed window
 %%  ~~ A concise (1-5 lines) description of what the function does. ~~
 }
 \usage{
@@ -46,18 +46,16 @@ Kassel Hingee
 %% ~~objects to See Also as \code{\link{help}}, ~~~
 }
 \examples{
-library(spatstat)
-data(heather)
 XiOWIN <- heather$coarse
-windowOWIN <- owin(xrange=heather$coarse$xrange,yrange=heather$coarse$yrange)
+windowOWIN <- Frame(heather$coarse)
 
 coverageProb <- covpest(XiOWIN,windowOWIN)
 
 #vegetation map of balcatta park
 data(balcattapark_coarse)
 coverageProb <- covpest(balcattapark_veg_coarse,balcattapark_boundary)
-
+}
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.
-\keyword{ ~kwd1 }
-\keyword{ ~kwd2 }% __ONLY ONE__ keyword per line
+\keyword{ spatial }
+\keyword{ nonparametric }% __ONLY ONE__ keyword per line
