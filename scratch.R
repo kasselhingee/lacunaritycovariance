@@ -62,15 +62,33 @@ plot(add=TRUE,Hest(XiOWIN))#since window is rectangular should be the same
 ###########################
 #simulating a boolean model of discs of random radius with lognormal distribution
 w <- owin(xrange=c(0,10),yrange=c(0,10))
-#have to simulate in a much larger area than the observation window (because grains with centres outside the window should still be observed)
 lambda <- 1
-pp <- rpoispp(lambda,win=w,nsim=1,drop=TRUE)
+meanlog <- -1
+sdlog <- 0.5
+plot(0.01*(1:200),plnorm(0.01*(1:200),meanlog=meanlog,sdlog=sdlog),type="l")
+#probability of getting a radius above 2 is less than 0.0004
+r <- 2 #a dilation distance chosen such that the probablity of a germ with a grain that overlaps w is very small
 
-radius <- rlnorm(pp$n,meanlog=-1,sdlog=0.5) #prepare a random radius for each point
+
+wsim <- dilation(w,r)
+#have to simulate in a much larger area than the observation window (because grains with centres outside the window should still be observed)
+pp <- rpoispp(lambda,win=wsim,nsim=1,drop=TRUE)
+plot(pp)
+#need to make this work on multiple simulations? so I can make many all at once?
+
+radius <- rlnorm(pp$n,meanlog=meanlog,sdlog=sdlog) #prepare a random radius for each point
+
 pointlocations <- cbind(X=pp$x,Y=pp$y)
 pointlocations <- split(cbind(pointlocations),row(pointlocations)) #split matrix into a list of the rows
 grains <- mapply(disc,radius = radius,centre=pointlocations,SIMPLIFY=FALSE) #calculate grains with their locations
 
 #take union of all grains
-xi <- union.owin(as.solist(grains))
+xisim <- union.owin(as.solist(grains))
+plot(wsim)
+plot(add=TRUE,xisim)
+plot(add=TRUE,w)
 
+#intersect back to get the observation window
+xi <- intersect.owin(xisim,w)
+plot(w)
+plot(add=TRUE,xi)
