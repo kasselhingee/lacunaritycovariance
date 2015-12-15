@@ -57,3 +57,20 @@ plot(covarianceFcn$covariance - coverageProb*coverageProb)
 Z <- HestInPolygonalWindow(XiOWIN,windowOWIN)
 plot(Z)
 plot(add=TRUE,Hest(XiOWIN))#since window is rectangular should be the same
+
+
+###########################
+#simulating a boolean model of discs of random radius with lognormal distribution
+w <- owin(xrange=c(0,10),yrange=c(0,10))
+#have to simulate in a much larger area than the observation window (because grains with centres outside the window should still be observed)
+lambda <- 1
+pp <- rpoispp(lambda,win=w,nsim=1,drop=TRUE)
+
+radius <- rlnorm(pp$n,meanlog=-1,sdlog=0.5) #prepare a random radius for each point
+pointlocations <- cbind(X=pp$x,Y=pp$y)
+pointlocations <- split(cbind(pointlocations),row(pointlocations)) #split matrix into a list of the rows
+grains <- mapply(disc,radius = radius,centre=pointlocations,SIMPLIFY=FALSE) #calculate grains with their locations
+
+#take union of all grains
+xi <- union.owin(as.solist(grains))
+
