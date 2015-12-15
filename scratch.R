@@ -35,3 +35,25 @@ plot(shift.owin(Xiinside,vec=shiftVector))
 plot(boundaryOWIN,add=TRUE)
 plot(rData)
 plot(polyWindowowin,add=TRUE)
+
+
+###############heather data
+data(heather)
+XiOWIN <- heather$coarse
+windowOWIN <- owin(xrange=heather$coarse$xrange,yrange=heather$coarse$yrange)
+
+coverageProb <- covpest(XiOWIN,windowOWIN)
+
+covariancePt <- covarianceEstAtPoint(XiOWIN,windowOWIN,c(3,5))
+
+covarianceDirectEst <- covarianceMapEst_direct(XiOWIN,windowOWIN,1,1)
+filled.contour(covarianceDirectEst$covariance)
+
+
+covarianceFcn <- covarianceRACS(XiOWIN,windowOWIN)
+plot(covarianceFcn$covariance)
+plot(covarianceFcn$covariance - coverageProb*coverageProb)
+
+Z <- HestInPolygonalWindow(XiOWIN,windowOWIN)
+plot(Z)
+plot(add=TRUE,Hest(XiOWIN))#since window is rectangular should be the same
