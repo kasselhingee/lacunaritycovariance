@@ -35,8 +35,10 @@ Kassel Hingee
 
 \examples{
 w <- owin(xrange=c(0,10),yrange=c(0,10))
-xi<- rboollognormdiscs(w,2,1,-1,0.5)
-plot(xi)
+xi <- rboollognormdiscs(w,2,1,-1,0.5)
+
+plot(w)
+plot(xi,add=TRUE)
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.
