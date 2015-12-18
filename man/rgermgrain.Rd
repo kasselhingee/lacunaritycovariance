@@ -11,7 +11,7 @@ placegrainsfromlib(pp,grainlib,replace=TRUE,prob=NULL)
   \item{pp}{A point pattern (in \code{ppp} format).}
   \item{grainlib}{A list (aka. library/population) of grains (in \code{solist} format) that grains will be selected from}
   \item{replace}{passed directly to \code{sample}. When TRUE grains are chosen from library with replacement.}
-  \item(prob){A list of probability weights for each grain in the library. If NULL I'm pretty sure grains all have equal probability.}
+  \item{prob}{A list of probability weights for each grain in the library. If NULL I'm pretty sure grains all have equal probability.}
 }
 \details{
 \code{placegrainsfromlib} randomly samples from a library of grains (\code{grainlib}) and places these on the points in \code{pp}.

@@ -53,7 +53,7 @@ coverageProb <- covpest(XiOWIN,windowOWIN)
 
 #vegetation map of balcatta park
 data(balcattapark_coarse)
-coverageProb <- covpest(balcattapark_veg_coarse,balcattapark_boundary)
+coverageProb <- covpest(balcattapark_coarse$vegmask,balcattapark_coarse$boundary)
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.
