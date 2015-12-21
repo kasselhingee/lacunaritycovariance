@@ -92,3 +92,79 @@ plot(add=TRUE,w)
 xi <- intersect.owin(xisim,w)
 plot(w)
 plot(add=TRUE,xi)
+
+xilist <- solist(xi,
+                 rboollognormdiscs(w,2,1,-1,0.5),
+                 rboollognormdiscs(w,2,1,-1,0.5),
+                 rboollognormdiscs(w,2,1,-1,0.5),
+                 rboollognormdiscs(w,2,1,-1,0.5),
+                 rboollognormdiscs(w,2,1,-1,0.5)
+                 )
+plot(xilist,nrow=2)
+
+
+#function for attaching grains from a library of grains!
+grainlib <- as.solist(mapply(disc,radius = rlnorm(5,meanlog=-1,sdlog=0.5),SIMPLIFY=FALSE) )
+
+#dummy pp
+pp <- rpoispp(0.05,win=wsim,nsim=1,drop=TRUE)
+
+#shift and attach grains randomly
+grains <- sample(grainlib,size=pp$n,replace=TRUE) 
+pointlocations <- cbind(X=pp$x,Y=pp$y)
+pointlocations <- split(cbind(pointlocations),row(pointlocations)) #split matrix into a list of the rows
+shiftedgrains <- mapply(shift.owin,grains,vec=pointlocations,SIMPLIFY=FALSE)
+uniongrains <- union.owin(as.solist(shiftedgrains))
+
+plot(wsim)
+plot(uniongrains,add=TRUE)
+plot(pp,add=TRUE,pch="+")
+
+xi <- placegrainsfromlib(pp,grainlib)
+plot(wsim)
+plot(xi,add=TRUE)
+
+plot(grainlib,nrow=2,equalscales=TRUE)
+
+
+
+#spectral density example, use boolean model of discs
+#Generating a germ-grain models where germs are a Poisson Point process, and grains are 2 or 3 different disc sizes.
+grainlib <- solist(disc(radius=10))
+bufferdist <- 12 #chosen to be larger than the largest radius in library
+w <- owin(xrange=c(0,500),yrange=c(0,500)) #large numbers of points makes attaching grains take forever!?
+pp <- rpoispp(lambda=2.2064E-3,win=dilation(w,bufferdist),nsim=1,drop=TRUE)
+xibuffer <- placegrainsfromlib(pp,grainlib)
+xi <- intersect.owin(xibuffer,w)
+plot(xi)
+
+
+p <- covpest(xi,Frame(xi))
+X <- as.im(xi)
+stopifnot(is.im(X))
+Xbox <- as.rectangle(X)
+M <- X$v
+M[is.na(M)] <- 0 #since the function that we wish to transform is an indicator of both inside window, and inside xi. Its ok to set all NAs to 0
+M <- M-p
+fM <- fft(M)
+areaM <- nrow(M) * ncol(M) #because theory uses rectangular windows, I'm going to assume a rectangular window to - maybe improve on this later
+specdens <- (Re(fM)^2+Im(fM)^2)/areaM
+
+filled.contour(as.matrix(heather$coarse))
+filled.contour(Re(fM)/areaM)
+filled.contour(Im(fM)/areaM)
+filled.contour(specdens)
+head(fxi)
+
+# pad with zeroes (indicator is 0 outside window) but why bother doing it??**
+nr <- nrow(M)
+nc <- ncol(M)
+Mpad <- matrix(0, ncol=2*nc, nrow=2*nr)
+Mpad[1:nr, 1:nc] <- M
+lengthMpad <- 4 * nc * nr
+fMpad <- fft(Mpad)
+specdensPad <- (Re(fMpad)^2+Im(fMpad)^2)/lengthMpad
+filled.contour(specdensPad)
+
+
+#for isotropic RACS can take average over angles
