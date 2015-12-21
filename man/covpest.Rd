@@ -1,7 +1,7 @@
 \name{covpest}
 \alias{covpest}
 %- Also NEED an '\alias' for EACH other topic documented here.
-\title{Estimate the coverage probability of a stationary RACS \eqn{P(o)\in \Xi}.
+\title{Estimate the coverage probability of a stationary RACS \eqn{P(o)\elementof \Xi}.
 %%  ~~function to do ... ~~
 }
 \description{Estimate is simply the fraction of \eqn{\Xi} in the observed window
