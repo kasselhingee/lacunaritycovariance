@@ -140,85 +140,40 @@ plot(xi)
 
 
 p <- covpest(xi,Frame(xi))
-X <- as.im(xi,dimyx=c(512,512))
-stopifnot(is.im(X))
-Xbox <- as.rectangle(X)
+X <- as.im(xi,dimyx=c(511,511))
 
+specdens <- spectraldensity(X)
+plot(specdens,clipwin=owin(xrange=c(-50,50),yrange=c(-50,50)))
+plot(specdensim,clipwin=owin(xrange=c(-50,50),yrange=c(-50,50)))
 
-#without padding relying on dimension being 511
-M <- X$v
-M[is.na(M)] <- 0 #since the function that we wish to transform is an indicator of both inside window, and inside xi. Its ok to set all NAs to 0
-M <- M-p
-nr <- nrow(M)
-nc <- ncol(M)
-fM <- fft(M)
-areaM <- nrow(M) * ncol(M) #because theory uses rectangular windows, I'm going to assume a rectangular window to - maybe improve on this later
-hhat <- (Re(fM)^2+Im(fM)^2)/(areaM^2)
-#currently specdens[i,j] corresponds to a spectral location of 
-#     y = ((i-1) mod nr)/ystep, x = ((j-1) mod nc)/xstep
-# Rearrange this periodic function so that 
-# the origin of translations (0,0) is at matrix position (nr,nc)
-# NB this introduces an extra row and column
-hhat <- hhat[ ((-nr/2):(nr/2)) %% (nr) + 1, ((-nc/2):(nc/2)) %% (nc) + 1]
-image(hhat,zlim=c(0,9E-4),col=gray(1:10/10))
-image(hhat[1:51 + 256-25,1:51 + 256-25],zlim=c(0,9E-4),col=gray(1:10/10))
-image(hhat[1:51 + 256-25,1:51 + 256-25]/areaM,zlim=c(0,9E-4/areaM),col=gray(1:10/10))
-filled.contour(hhat[1:51 + 256-25,1:51 + 256-25],zlim=c(0,9E-4),col=gray(1:10/10))
+#compare to covariance function (keep this as a test later)
+covar <- covarianceRACS(xi,Frame(xi))
+plot(covar$covariance-p*p)#this is kinda what I'd expect fairly uniform. Although its got some rectangular effect happening
+plot(covar$covariance-p*p,clipwin=owin(xrange=c(-20,20),yrange=c(-20,20))) #a spike kinda like a radius of 10 as discs are all size 10
+M <- covar$covariance$v
+M[is.na(M)] <- 0 
+specdensB <- fft(M)/length(M)
 
-hhatim <- im(hhat,xcol = (-nc/2):(nc/2) * 1/X$xstep,
-                             yrow = (-nr/2):(nc/2) * 1/X$ystep)
+image(Re(specdensB[110:140,110:140]))
+#doesn't fit!!
 
-#with padding!
-M <- X$v
-M[is.na(M)] <- 0 #since the function that we wish to transform is an indicator of both inside window, and inside xi. Its ok to set all NAs to 0
-M <- M-p
-# pad with zeroes (indicator is 0 outside window anyway) - will improve spectral domain resolution by interpolation (spatstats convolve.im does it because it is calculating convolution which is longer than each input vector)
-nr <- nrow(M)
-nc <- ncol(M)
-Mpad <- matrix(0, ncol=2*nc, nrow=2*nr)
-Mpad[1:nr, 1:nc] <- M
-lengthMpad <- 4 * nc * nr
-fMpad <- fft(Mpad) #to approximate an integral need to multiply by size of each little piece of area (aka divide by number of pixels)
-hhatPad <- (Re(fMpad)^2+Im(fMpad)^2)/(lengthMpad^2)  #hhat in eqn 4.6 of Bohm 2002 paper - not quite an estimate of spectral density
-#currently specdens[i,j] corresponds to a spectral location of 
-#     y = ((i-1) mod nr)/ystep, x = ((j-1) mod nc)/xstep
-# Rearrange this periodic function so that 
-# the origin of translations (0,0) is at matrix position (nr,nc)
-# NB this introduces an extra row and column
-hhatPad <- hhatPad[ ((-nr):nr) %% (2 * nr) + 1, (-nc):nc %% (2*nc) + 1]
-image(hhatPad[1:100 + 512-50,1:100 + 512-50],col=gray(1:10/10),zlim=c(0,6E-5))
-filled.contour(hhatPad[1:100 + 512-50,1:100 + 512-50],col=gray(1:10/10),zlim=c(0,6E-5))
+#test on a known function. (A cosine wave)
+xcol <- 0:15/16
+arow <- cos(3*xcol*2*pi)
+plot(arow)
+Mim <- as.im(matrix(arow,nrow=16,ncol=16,byrow=TRUE),xcol=xcol,yrow=xcol)
+plot(Re(fft(arow)/16))
+#has value 0.5 at 4 and 14. Is this correct?
+#fourier transform evaluated at 3 Hz should be the only spike. 
+#the value at location 4 corresponds to a frequency of 3/16 (periodic boundary effect?)
+#the value at location 14 corresponds to a frequency of 13/16
+specdenT <- (Re(fft(arow))^2+Im(fft(arow))^2)/((16*16)^3)
+specdenT <- specdenT[ ((-16/2):(16/2)) %% (16) + 1]
+specdens <- spectraldensity(Mim)
+plot(specdens)
+specdens
+##I still not sure if is correct. What are the two spikes for!??
 
-#with even more padding!
-M <- X$v
-M[is.na(M)] <- 0 #since the function that we wish to transform is an indicator of both inside window, and inside xi. Its ok to set all NAs to 0
-M <- M-p
-# pad with zeroes (indicator is 0 outside window anyway) because spat stats convolve.im does it. BUT why bother doing it??**
-nr <- nrow(M)
-nc <- ncol(M)
-MpadL <- matrix(0, ncol=4*nc, nrow=4*nr)
-MpadL[1:nr, 1:nc] <- M
-lengthMpadL <- 4* 4 * nc * nr
-fMpadL <- fft(MpadL) #to approximate an integral need to multiply by size of each little piece of area (aka divide by number of pixels)
-hhatPadL <- (Re(fMpadL)^2+Im(fMpadL)^2)/(lengthMpadL^2)  #hhat in eqn 4.6 of Bohm 2002 paper - not quite an estimate of spectral density
-#currently hhatPad[i,j] corresponds to a spectral location of 
-#     y = ((i-1) mod 4nr)/ystep, x = ((j-1) mod 4nc)/xstep
-# Rearrange this periodic function so that 
-# the origin of translations (0,0) is at matrix position (nr,nc)
-# NB this introduces an extra row and column
-hhatPadL <- hhatPadL[ ((-2*nr):(2*nr)) %% (4 * nr) + 1, (-2*nc):(2*nc) %% (4*nc) + 1]
-image(hhatPadL[1:200 + 2*nr-100,1:200 + 2*nc-100],col=gray(1:10/10),zlim=c(0,4E-6))
-filled.contour(hhatPadL[1:100 + 512-50,1:100 + 512-50],col=gray(1:10/10),zlim=c(0,6E-5))
-
-
-
-image(abs(fM)[1:50,1:50],gray)
-
-filled.contour(as.matrix(heather$coarse))
-filled.contour(Re(fM)/areaM)
-filled.contour(Im(fM)/areaM)
-filled.contour(specdens)
-head(fxi)
 
 
 #for isotropic RACS can take average over angles
