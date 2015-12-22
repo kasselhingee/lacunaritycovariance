@@ -11,11 +11,20 @@
 #' @references Böhm, S., Heinrich, L., Schmidt, V., 2004. Kernel Estimation of the Spectral Density of Stationary Random Closed Sets. Australian & New Zealand Journal of Statistics 46, 41–51. doi:10.1111/j.1467-842X.2004.00310.x
 #' 
 #' 
-#' @param X A rectangular observation window. NA's are assumed to mean outside \eqn{\Xi} rather than missing data or anything (**I haven't assesed the theory/computations for non-rectangular windows but its probably the same)
+#' @param X A rectangular observation of \eqn{Xi}. NA's are assumed to mean outside \eqn{\Xi} rather than missing data or anything (**I haven't assesed the theory/computations for non-rectangular windows but its probably the same)
+#' @param w Observation window (must be rectangular for now)
+#' @param ... Arguments passed to \code{as.mask} to convert observation into a pixel image
 #steal ideas from spatstat's convolve.im
-spectraldensity <- function(X){
-  stopifnot(is.im(X))
-  M <- X$v
+
+spectraldensity <- function(Xi,w,...){
+  stopifnot(is.owin(Xi))
+  stopifnot(is.rectangle(w))
+  Xi <- intersect.owin(Xi,w)
+  p <- covpest(Xi,w)
+  M <- as.im(Xi,...)
+  xstep=M$xstep
+  ystep=M$ystep
+  M <- as.matrix(Xi,...)
   M[is.na(M)] <- 0 #since the function that we wish to transform is an indicator of both inside window, and inside xi. Its ok to set all NAs to 0
   M <- M-p
   fM <- fft(M)
@@ -30,17 +39,17 @@ spectraldensity <- function(X){
   # NB this could introduce an extra row and column
   if (nr %% 2 == 0){
     specdens <- specdens[ ((-nr/2):(nr/2)) %% (nr) + 1,]
-    yrow <- ((-nr/2):(nr/2)) * 1/X$ystep
+    yrow <- ((-nr/2):(nr/2)) * 1/ystep
   } else {
     specdens <- specdens[ ((-(nr-1)/2):((nr-1)/2)) %% (nr) + 1,]
-    yrow <- ((-(nr-1)/2):((nr-1)/2)) * 1/X$ystep
+    yrow <- ((-(nr-1)/2):((nr-1)/2)) * 1/ystep
   } 
   if (nc %% 2 == 0){
     specdens <- specdens[, ((-nc/2):(nc/2)) %% (nc) + 1]
-    xcol <- ((-nc/2):(nc/2)) * 1/X$xstep
+    xcol <- ((-nc/2):(nc/2)) * 1/xstep
   } else {
     specdens <- specdens[, ((-(nc-1)/2):(nc/2)) %% (nc) + 1]  
-    xcol <- ((-(nc-1)/2):(nc/2)) * 1/X$xstep
+    xcol <- ((-(nc-1)/2):(nc/2)) * 1/xstep
   }
 
   specdens <- im(specdens,xcol = xcol, yrow = yrow)
