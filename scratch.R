@@ -206,6 +206,11 @@ kernelfcn <- im(mat,xcol=c(-X[length(X):2],X),yrow=c(-Y[length(Y):2],Y))
 #apply convolve.im
 smspecdens <- convolve.im(specdens,kernelfcn)
 plot(smspecdens,clipwin=owin(xrange=c(-50,50),yrange=c(-50,50)))
+plot(smspecdens,clipwin=owin(xrange=c(-100,100),yrange=c(-100,100)))
+
+plot(spectraldensity(xi,Frame(xi),6))
+
+plot(specdens,clipwin=owin(xrange=c(-50,50),yrange=c(-50,50)))
 
 smspecdensFields <- image.smooth(as.matrix(specdens),
                            kernel.function=EpanechnikovFcnFields,
@@ -234,6 +239,15 @@ plot(specdens)
 specdens
 ##I still not sure if is correct. What are the two spikes for!??
 
+#apply to heather
+xi <- heather$coarse
+unsmspecdens <- unsmoothedspectraldensity(xi,Frame(xi))
+plot(unsmspecdens)
+specdens <- spectraldensity(xi,Frame(xi),20)
+plot(specdens)
 
+plot(solist(smoothed = specdens,unsmoothed = unsmspecdens),
+     main = "Spectral Density Estimates",
+     equal.scales=TRUE)
 
 #for isotropic RACS can take average over angles
