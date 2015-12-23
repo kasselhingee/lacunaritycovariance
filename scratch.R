@@ -178,13 +178,12 @@ plot(specden,clipwin=owin(xrange=c(-50,50),yrange=c(-50,50)))
 #continuing onto kernel smoothing anyway. package fields does exactly what I want using the image() function!
 #it probably isn't too hard to write my own using FFT
 library(fields)
-EpanechnikovFcn <- function(x){#WARNING: operates on a vector
-  sz <- sqrt(sum(x*x))
+EpanechnikovFcnFields <- function(sz){#WARNING: operates on a vector
   if (sz>1) {return(0)}
-  if (sz <= 1) {return(2/pi*(1-sz^2))}
+  if (sz <= 1) {return(2/pi*(1-sz))}
   return(NA)
 }
-EpanechnikovFcn <- function(X,Y){#WARNING: operates on a vector
+EpanechnikovFcn <- function(X,Y){#WARNING: operates in 2D only on a vector of things 
   stopifnot(length(X)==length(Y))
   result <- vector(length=length(X),mode="numeric")
   sz <- sqrt((X*X)+(Y*Y))
@@ -193,7 +192,7 @@ EpanechnikovFcn <- function(X,Y){#WARNING: operates on a vector
   return(result)
 }
 bandwidth = 6
-xstep = specdens$xstep/2
+xstep = specdens$xstep
 ystep = specdens$ystep
 supportwidth = bandwidth
 X <- seq(0,supportwidth*1.5+xstep,by=xstep) #much larger than support width to avoid boundary issues?
@@ -203,9 +202,13 @@ mat <- t(mat) #columns correspond to changes in X, rows correspond to changes in
 #reflect out to all corners
 mat <- mat[,c((ncol(mat)):2,1:ncol(mat))]
 mat <- mat[c((nrow(mat)):2,1:nrow(mat)),]
+kernelfcn <- im(mat,xcol=c(-X[length(X):2],X),yrow=c(-Y[length(Y):2],Y))
+#apply convolve.im
+smspecdens <- convolve.im(specdens,kernelfcn)
+plot(smspecdens,clipwin=owin(xrange=c(-50,50),yrange=c(-50,50)))
 
-smspecdens <- image.smooth(as.matrix(specdens),
-                           kernel.function=EpanechnikovFcn,
+smspecdensFields <- image.smooth(as.matrix(specdens),
+                           kernel.function=EpanechnikovFcnFields,
                            dx=specdens$xstep, #passing dimensions
                            dy=specdens$ystep, #passing dimensions
                            xwidth = 6, #zero padding around outside
