@@ -142,7 +142,8 @@ plot(xi)
 p <- covpest(xi,Frame(xi))
 X <- as.im(xi,dimyx=c(511,511))
 
-specdens <- spectraldensity(X)
+
+specdens <- spectraldensity(xi,w,dimyx=c(512,512))
 plot(specdens,clipwin=owin(xrange=c(-50,50),yrange=c(-50,50)))
 plot(specdensim,clipwin=owin(xrange=c(-50,50),yrange=c(-50,50)))
 
@@ -156,6 +157,62 @@ specdensB <- fft(M)/length(M)
 
 image(Re(specdensB[110:140,110:140]))
 #doesn't fit!!
+
+#test on a boolean model of rectangles
+areaGrainRect = 314.16
+sideRatio = 2   #area is sideRatio*sideAlength*sideAlength
+sideAlength = sqrt(areaGrainRect/sideRatio)
+grainlib <- solist(owin(xrange = c(0,sideAlength),yrange=c(0,sideAlength*sideRatio)))
+bufferdist <- 2*sideAlength*sideRatio #chosen to be larger than the largest radius in library
+w <- owin(xrange=c(0,500),yrange=c(0,500)) #large numbers of points makes attaching grains take forever!?
+pp <- rpoispp(lambda=2.2064E-3,win=dilation(w,bufferdist),nsim=1,drop=TRUE)
+xibuffer <- placegrainsfromlib(pp,grainlib)
+xi <- intersect.owin(xibuffer,w)
+plot(w)
+plot(xi,add=TRUE)
+X <- as.im(xi,dimyx=c(512,512))
+covpest(xi,w)
+specden <- spectraldensity(xi,w,dimyx=c(512,512))
+plot(specden,clipwin=owin(xrange=c(-50,50),yrange=c(-50,50)))
+
+#continuing onto kernel smoothing anyway. package fields does exactly what I want using the image() function!
+#it probably isn't too hard to write my own using FFT
+library(fields)
+EpanechnikovFcn <- function(x){#WARNING: operates on a vector
+  sz <- sqrt(sum(x*x))
+  if (sz>1) {return(0)}
+  if (sz <= 1) {return(2/pi*(1-sz^2))}
+  return(NA)
+}
+EpanechnikovFcn <- function(X,Y){#WARNING: operates on a vector
+  stopifnot(length(X)==length(Y))
+  result <- vector(length=length(X),mode="numeric")
+  sz <- sqrt((X*X)+(Y*Y))
+  result[sz>1] <- 0
+  result[sz<=1] <- 2/pi*(1-sz[sz<=1]^2)
+  return(result)
+}
+bandwidth = 6
+xstep = specdens$xstep/2
+ystep = specdens$ystep
+supportwidth = bandwidth
+X <- seq(0,supportwidth*1.5+xstep,by=xstep) #much larger than support width to avoid boundary issues?
+Y <- seq(0,supportwidth*1.5+ystep,by=ystep)
+mat <- outer(X/bandwidth,Y/bandwidth,FUN="EpanechnikovFcn") #rows correspond to xstep - just a quirk of outer!
+mat <- t(mat) #columns correspond to changes in X, rows correspond to changes in Y!
+#reflect out to all corners
+mat <- mat[,c((ncol(mat)):2,1:ncol(mat))]
+mat <- mat[c((nrow(mat)):2,1:nrow(mat)),]
+
+smspecdens <- image.smooth(as.matrix(specdens),
+                           kernel.function=EpanechnikovFcn,
+                           dx=specdens$xstep, #passing dimensions
+                           dy=specdens$ystep, #passing dimensions
+                           xwidth = 6, #zero padding around outside
+                           theta=6)  #this is the bandwidth
+image.plot(smspecdens)
+plot(as.im(smspecdens,W=specdens))
+
 
 #test on a known function. (A cosine wave)
 xcol <- 0:15/16
