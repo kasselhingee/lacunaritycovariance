@@ -10,14 +10,14 @@
 
 
 #' @param Xi An observation (in spatstat owin format) of the RACS of interest.
-#' @param boundary The boundary of the observation in OWIN format. This is needed for the cases where the observation is not a rectangular region.
+#' @param w The boundary of the observation in OWIN format. This is needed for the cases where the observation is not a rectangular region.
 #' @param v A 2D vector in c(x,y) format.
 #' @param maxxshiftdistance the maximum size of x-component of vectors \eqn{v} to estimate
 #' @param maxyshiftdistance the maximum size of y-component of vectors \eqn{v} to estimate
 #' @param setcovboundarythresh to avoid instabilities of dividing by very small areas, any vector \eqn{v} set covariance of the boundary smaller than this threshold is given a covariance of NA 
 #' @return 
 #' \item{comp1 }{An estimate (assuming stationarity of \eqn{\Xi}) that two points separated by \eqn{v} will be in \eqn{\Xi}.}
-#' \item{comp2 }{Denominator - The set covariance of the boundary}
+#' \item{comp2 }{Denominator - The set covariance of the boundary \code{w}}
 #' \item{comp3 }{Numerator - The set covariance of \eqn{\Xi_{obs}}}
 #' 
 #' For \code{covarianceEstAtPoint} these are single numerical values; for \code{covarianceMapEst_direct} they are matrices; for \code{covarianceRACS} they are objects of SpatStat's \code{im} class.
@@ -31,10 +31,10 @@
 #' @details 
 #' \code{covarianceMapEst_direct} estimates covariance on a regular grid using the resolution of \code{Xi}. The regular grid extends to \code{maxXshiftdistance} and \code{maxYshiftdistance} in the x and y components respectively. It uses \code{covarianceEstAtPoint} to estimate the covariance at each grid point.
 #' Ignores point estimates that use an area smaller than 10% of the window.
-covarianceRACS <- function(Xi,boundary,setCovBoundaryThresh = 0.1*area.owin(boundary)){
-  Xiinside <- intersect.owin(Xi,boundary) #seems like extra work to do this check :(, but safer to
+covarianceRACS <- function(Xi,w,setCovBoundaryThresh = 0.1*area.owin(boundary)){
+  Xiinside <- intersect.owin(Xi,w) #seems like extra work to do this check :(, but safer to
   numerator <- setcov(Xiinside)
-  denominator <- setcov(boundary) 
+  denominator <- setcov(w) 
   denominatorThresh <- denominator #extra memory - more than required if not interested in saving denominator
   denominatorThresh[denominator<setCovBoundaryThresh] <- NA
   covariance <- eval.im(numerator / denominatorThresh,harmonize=TRUE)
@@ -44,14 +44,14 @@ covarianceRACS <- function(Xi,boundary,setCovBoundaryThresh = 0.1*area.owin(boun
 }
 
 
-covarianceEstAtPoint <- function(Xi,boundary,v){
-  denominator <- area.owin(intersect.owin(boundary,shift.owin(boundary,vec=v)))#need to handle denominator of 0
+covarianceEstAtPoint <- function(Xi,w,v){
+  denominator <- area.owin(intersect.owin(w,shift.owin(w,vec=v)))#need to handle denominator of 0
   if (denominator == 0){
     covarianceEst <- NA
     return(list(numerator = NA, denominator = NA, covarianceEst = NA))
     }
   else {  
-    Xiinside <- intersect.owin(Xi,boundary) 
+    Xiinside <- intersect.owin(Xi,w) 
     numerator <- area.owin(intersect.owin(Xiinside,shift.owin(Xiinside,vec=v)))
     covarianceEst <- numerator/denominator
     }
@@ -60,8 +60,8 @@ covarianceEstAtPoint <- function(Xi,boundary,v){
 }
 
 
-covarianceMapEst_direct <- function(Xi,boundary,maxXshiftdistance,maxYshiftdistance){
-  windowArea <- area.owin(boundary)
+covarianceMapEst_direct <- function(Xi,w,maxXshiftdistance,maxYshiftdistance){
+  windowArea <- area.owin(w)
   #create the vectors for testing
   shiftVectorX <- c(-rev(seq(0,maxXshiftdistance,by=Xi$xstep)),seq(Xi$xstep,maxXshiftdistance,by=Xi$xstep))
   shiftVectorY <- c(-rev(seq(0,maxYshiftdistance,by=Xi$ystep)),seq(Xi$ystep,maxYshiftdistance,by=Xi$ystep))
@@ -70,7 +70,7 @@ covarianceMapEst_direct <- function(Xi,boundary,maxXshiftdistance,maxYshiftdista
   denominatorMap = matrix(nrow=length(shiftVectorY),ncol=length(shiftVectorX))
   for (i in 1:length(shiftVectorX)){
     for (j in 1:length(shiftVectorY)){
-      covarianceEstimation <- covarianceEstAtPoint(Xi,boundary,c(shiftVectorX[i],shiftVectorY[j]))
+      covarianceEstimation <- covarianceEstAtPoint(Xi,w,c(shiftVectorX[i],shiftVectorY[j]))
       if (is.na(covarianceEstimation$denominator) || (covarianceEstimation$denominator < 0.1*windowArea)){
         covarMap[i,j] <- NA
       }
@@ -90,7 +90,6 @@ covarianceMapEst_direct <- function(Xi,boundary,maxXshiftdistance,maxYshiftdista
 #' 
 #' Double check that I'm calculating set covariance directly properly (I don't think there is a need to reflect the set, but maybe I got things wrong)
 #' 
-#' I should use "window" instead of "boundary"
 
 #' @examples
 #' XiOWIN <- heather$coarse
