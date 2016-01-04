@@ -1,5 +1,4 @@
 #' @title Covariance estimates, also known as `two-point probabilities' for stationary RACS
-#' @aliases covarianceRACS covarianceEstAtPoint covarianceMapEst_direct
 #' @export covarianceRACS covarianceEstAtPoint covarianceMapEst_direct
 #' @description 
 #' These functions estimate the covariance of a stationary random closed set. 
@@ -11,10 +10,7 @@
 
 #' @param Xi An observation (in spatstat owin format) of the RACS of interest.
 #' @param w The boundary of the observation in OWIN format. This is needed for the cases where the observation is not a rectangular region.
-#' @param v A 2D vector in c(x,y) format.
-#' @param maxxshiftdistance the maximum size of x-component of vectors \eqn{v} to estimate
-#' @param maxyshiftdistance the maximum size of y-component of vectors \eqn{v} to estimate
-#' @param setcovboundarythresh to avoid instabilities of dividing by very small areas, any vector \eqn{v} set covariance of the boundary smaller than this threshold is given a covariance of NA 
+#' @param setCovBoundaryThresh to avoid instabilities of dividing by very small areas, any vector \eqn{v} set covariance of the boundary smaller than this threshold is given a covariance of NA 
 #' @return 
 #' \item{comp1 }{An estimate (assuming stationarity of \eqn{\Xi}) that two points separated by \eqn{v} will be in \eqn{\Xi}.}
 #' \item{comp2 }{Denominator - The set covariance of the boundary \code{w}}
@@ -25,13 +21,7 @@
 
 #' @details \code{covarianceRACS} estimates uses Fourier transforms to calculate set covariances (using \code{\link[spatstat]{setcov}} function). It is much faster (500 times faster in one comparison) than \code{covarianceMapEst_direct}.
 #' Vectors with small set covariance of the window are eliminated (using \code{setCovBoundaryThresh} because they cause the covariance to be enormous)
-########################################
-#' @details \code{covarianceEstAtPoint} estimates the covariance of a single vector \eqn{v} by ratioing the set covariance of \code{Xi} to the set covariance of of observation window \code{w}. Set covariance is calculated by intersecting a set with a translated copy of itself.
-#######################################
-#' @details 
-#' \code{covarianceMapEst_direct} estimates covariance on a regular grid using the resolution of \code{Xi}. The regular grid extends to \code{maxXshiftdistance} and \code{maxYshiftdistance} in the x and y components respectively. It uses \code{covarianceEstAtPoint} to estimate the covariance at each grid point.
-#' Ignores point estimates that use an area smaller than 10% of the window.
-covarianceRACS <- function(Xi,w,setCovBoundaryThresh = 0.1*area.owin(boundary)){
+covarianceRACS <- function(Xi,w,setCovBoundaryThresh = 0.1*area.owin(w)){
   Xiinside <- intersect.owin(Xi,w) #seems like extra work to do this check :(, but safer to
   numerator <- setcov(Xiinside)
   denominator <- setcov(w) 
@@ -43,6 +33,10 @@ covarianceRACS <- function(Xi,w,setCovBoundaryThresh = 0.1*area.owin(boundary)){
   return(covarianceMap)                     
 }
 
+########################################
+#' @rdname covarianceRACS
+#' @details \code{covarianceEstAtPoint} estimates the covariance of a single vector \eqn{v} by ratioing the set covariance of \code{Xi} to the set covariance of of observation window \code{w}. Set covariance is calculated by intersecting a set with a translated copy of itself.
+#' @param v A 2D vector in c(x,y) format.
 
 covarianceEstAtPoint <- function(Xi,w,v){
   denominator <- area.owin(intersect.owin(w,shift.owin(w,vec=v)))#need to handle denominator of 0
@@ -60,6 +54,14 @@ covarianceEstAtPoint <- function(Xi,w,v){
 }
 
 
+#######################################
+#' @rdname covarianceRACS
+#' @details 
+#' \code{covarianceMapEst_direct} estimates covariance on a regular grid using the resolution of \code{Xi}. The regular grid extends to \code{maxXshiftdistance} and \code{maxYshiftdistance} in the x and y components respectively. It uses \code{covarianceEstAtPoint} to estimate the covariance at each grid point.
+#' Ignores point estimates that use an area smaller than 10% of the window.
+#' 
+#' @param maxXshiftdistance the maximum size of x-component of vectors \eqn{v} to estimate
+#' @param maxYshiftdistance the maximum size of y-component of vectors \eqn{v} to estimate
 covarianceMapEst_direct <- function(Xi,w,maxXshiftdistance,maxYshiftdistance){
   windowArea <- area.owin(w)
   #create the vectors for testing

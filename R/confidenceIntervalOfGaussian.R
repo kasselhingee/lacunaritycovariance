@@ -2,7 +2,7 @@
  
 #' @description A simple function for getting symmetric confidence intervals for a given confidence level and standard deviation of a Gaussian distribution
 
-#' @param confidencelevel The desired confidence level (between 0 and 1)
+#' @param confidenceLevel The desired confidence level (between 0 and 1)
 #' @param sd The standard deviation of the Guassian distribution.
 #' @return A list of length two: (lower bound, upper bound)
 #' @examples

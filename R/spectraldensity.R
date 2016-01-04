@@ -1,5 +1,5 @@
 #'Spectral Density of a RACS
-#' @aliases unsmoothedspectraldensity
+#' @export unsmoothedspectraldensity spectraldensity
 #' 
 #' @description 
 #' \code{unsmoothedspectraldensity} estimates the spectral density of a RACS without any kernal smoothing.
@@ -14,7 +14,7 @@
 #' This is what \code{unsmoothedspectraldensity} returns.
 #'  \code{spectraldensity} then kernel smooths \eqn{\hat{h}} before returning a spectral density estimate.
 #' 
-#' @references Böhm, S., Heinrich, L., Schmidt, V., 2004. Kernel Estimation of the Spectral Density of Stationary Random Closed Sets. Australian & New Zealand Journal of Statistics 46, 41–51. doi:10.1111/j.1467-842X.2004.00310.x
+#' @references Böhm, S., Heinrich, L., Schmidt, V., 2004. Kernel Estimation of the Spectral Density of Stationary Random Closed Sets. Australian & New Zealand Journal of Statistics 46, 41--51. doi:10.1111/j.1467-842X.2004.00310.x
 #' 
 #' 
 #' @param Xi A rectangular observation of \eqn{Xi}. NA's are assumed to mean outside \eqn{\Xi} rather than missing data or anything (**I haven't assesed the theory/computations for non-rectangular windows but its probably the same)
@@ -76,6 +76,7 @@ spectraldensity <- function(Xi,w,bandwidth,kernel="Epanechnikov",...){
 
 
 #steal ideas from spatstat's convolve.im
+#' @rdname spectraldensity
 unsmoothedspectraldensity <- function(Xi,w,...){
   stopifnot(is.owin(Xi))
   stopifnot(is.rectangle(w))

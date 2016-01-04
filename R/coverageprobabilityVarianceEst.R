@@ -1,10 +1,10 @@
-#' @title Variances and Confidence Intervals for Coverage\\ Fraction Estimates 
+#' @title Variances and Confidence Intervals for Coverage Fraction Estimates 
 #' @aliases asympvarP
 #' @export varCovProb
 #' 
 #' @description Functions for estimating variance (and confidence intervals)  of the coverage fraction estimates
  
-#' @details Molchanov (1997 Ch3.1) notes that the variance of the estimator \code{\link[stationaryracsinference;coverageprobablityEst]{covpest()}} is 
+#' @details Molchanov (1997 Ch3.1) notes that the variance of the estimator \code{\link[stationaryracsinference]{covpest()}} is 
 #' \deqn{var = \frac{1}{A(w)^2}\int_W \gamma_W(v)C(v) - p^2 dv}
  #estimate exact variance of pest
  #from set covariance of W is the erosion of W by {o,v}
@@ -20,7 +20,7 @@
 #' @param w is the corresponding observation window.
 
 #' @examples 
-#' **To come later** 
+#' #**To come later** 
  varCovProb <- function(Xi,w){
    Xiinside <- intersect.owin(Xi,w)
    p <- area.owin(Xiinside)/area.owin(w)

@@ -7,9 +7,9 @@
 confidenceIntervalOfGaussian(confidenceLevel, sd)
 }
 \arguments{
-\item{sd}{The standard deviation of the Guassian distribution.}
+\item{confidenceLevel}{The desired confidence level (between 0 and 1)}
 
-\item{confidencelevel}{The desired confidence level (between 0 and 1)}
+\item{sd}{The standard deviation of the Guassian distribution.}
 }
 \value{
 A list of length two: (lower bound, upper bound)

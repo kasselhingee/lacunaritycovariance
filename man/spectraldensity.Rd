@@ -6,6 +6,8 @@
 \title{Spectral Density of a RACS}
 \usage{
 spectraldensity(Xi, w, bandwidth, kernel = "Epanechnikov", ...)
+
+unsmoothedspectraldensity(Xi, w, ...)
 }
 \arguments{
 \item{Xi}{A rectangular observation of \eqn{Xi}. NA's are assumed to mean outside \eqn{\Xi} rather than missing data or anything (**I haven't assesed the theory/computations for non-rectangular windows but its probably the same)}
@@ -51,6 +53,6 @@ plot(solist(smoothed = specdens,unsmoothed = unsmspecdens),
 
 }
 \references{
-Böhm, S., Heinrich, L., Schmidt, V., 2004. Kernel Estimation of the Spectral Density of Stationary Random Closed Sets. Australian & New Zealand Journal of Statistics 46, 41–51. doi:10.1111/j.1467-842X.2004.00310.x
+Böhm, S., Heinrich, L., Schmidt, V., 2004. Kernel Estimation of the Spectral Density of Stationary Random Closed Sets. Australian & New Zealand Journal of Statistics 46, 41--51. doi:10.1111/j.1467-842X.2004.00310.x
 }
 

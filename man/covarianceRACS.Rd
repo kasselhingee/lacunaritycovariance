@@ -6,24 +6,28 @@
 \alias{covarianceRACS}
 \title{Covariance estimates, also known as `two-point probabilities' for stationary RACS}
 \usage{
-covarianceRACS(Xi, boundary, setCovBoundaryThresh = 0.1 * area.owin(boundary))
+covarianceRACS(Xi, w, setCovBoundaryThresh = 0.1 * area.owin(w))
+
+covarianceEstAtPoint(Xi, w, v)
+
+covarianceMapEst_direct(Xi, w, maxXshiftdistance, maxYshiftdistance)
 }
 \arguments{
 \item{Xi}{An observation (in spatstat owin format) of the RACS of interest.}
 
-\item{boundary}{The boundary of the observation in OWIN format. This is needed for the cases where the observation is not a rectangular region.}
+\item{w}{The boundary of the observation in OWIN format. This is needed for the cases where the observation is not a rectangular region.}
+
+\item{setCovBoundaryThresh}{to avoid instabilities of dividing by very small areas, any vector \eqn{v} set covariance of the boundary smaller than this threshold is given a covariance of NA}
 
 \item{v}{A 2D vector in c(x,y) format.}
 
-\item{maxxshiftdistance}{the maximum size of x-component of vectors \eqn{v} to estimate}
+\item{maxXshiftdistance}{the maximum size of x-component of vectors \eqn{v} to estimate}
 
-\item{maxyshiftdistance}{the maximum size of y-component of vectors \eqn{v} to estimate}
-
-\item{setcovboundarythresh}{to avoid instabilities of dividing by very small areas, any vector \eqn{v} set covariance of the boundary smaller than this threshold is given a covariance of NA}
+\item{maxYshiftdistance}{the maximum size of y-component of vectors \eqn{v} to estimate}
 }
 \value{
 \item{comp1 }{An estimate (assuming stationarity of \eqn{\Xi}) that two points separated by \eqn{v} will be in \eqn{\Xi}.}
-\item{comp2 }{Denominator - The set covariance of the boundary}
+\item{comp2 }{Denominator - The set covariance of the boundary \code{w}}
 \item{comp3 }{Numerator - The set covariance of \eqn{\Xi_{obs}}}
 
 For \code{covarianceEstAtPoint} these are single numerical values; for \code{covarianceMapEst_direct} they are matrices; for \code{covarianceRACS} they are objects of SpatStat's \code{im} class.
