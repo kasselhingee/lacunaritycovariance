@@ -48,7 +48,7 @@ covarianceMapEst_direct <- function(Xi,boundary,maxXshiftdistance,maxYshiftdista
   denominatorMap = matrix(nrow=length(shiftVectorY),ncol=length(shiftVectorX))
   for (i in 1:length(shiftVectorX)){
     for (j in 1:length(shiftVectorY)){
-      covarianceEstimation <- covarianceEstAtPoint(XiOWIN,boundary,c(shiftVectorX[i],shiftVectorY[j]))
+      covarianceEstimation <- covarianceEstAtPoint(Xi,boundary,c(shiftVectorX[i],shiftVectorY[j]))
       if (is.na(covarianceEstimation$denominator) || (covarianceEstimation$denominator < 0.1*windowArea)){
         covarMap[i,j] <- NA
       }

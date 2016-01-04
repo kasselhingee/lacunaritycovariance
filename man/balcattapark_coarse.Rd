@@ -15,7 +15,7 @@ This data has been aggregated to a lower resolution of 0.8m per pixel from the o
 The first entry is the boundary polygon, the second is the binary veg mask.}
 \source{CSIRO Urban Monitor Project}
 \references{
-[1] P. Caccetta, S. Collings, A. Devereux, K. Hingee, D. McFarlane, A. Traylen, X. Wu, and Z.-S. Zhou, "Monitoring land surface and cover in urban and peri-urban environments using digital aerial photography," International Journal of Digital Earth, vol. 0, no. 0, pp. 1–19, Jul. 2015.
+[1] P. Caccetta, S. Collings, A. Devereux, K. Hingee, D. McFarlane, A. Traylen, X. Wu, and Z. Zhou, "Monitoring land surface and cover in urban and peri-urban environments using digital aerial photography," International Journal of Digital Earth, vol. 0, no. 0, pp. 1-19, Jul. 2015.
 
 [2] Caccetta, P., Collings, S., Devereux, A., Hingee, K., McFarlane, D., Traylen, A., Wu, X., and Zhou, Z., Urban Monitor: Enabling effective monitoring and management of urban and coastal environments using digital aerial photography; Final Report - Transformation of aerial photography into digital raster information product. CSIRO. 2012. https://www.environment.gov.au/resource/urban-monitor-enabling-effective-monitoring-and-management-urban-and-coastal-environments
 }

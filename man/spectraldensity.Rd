@@ -50,6 +50,6 @@ plot(solist(smoothed = specdens,unsmoothed = unsmspecdens),
 
 }
 \references{
-Böhm, S., Heinrich, L., Schmidt, V., 2004. Kernel Estimation of the Spectral Density of Stationary Random Closed Sets. Australian & New Zealand Journal of Statistics 46, 41–51. doi:10.1111/j.1467-842X.2004.00310.x
+B\"{o}hm, S., Heinrich, L., Schmidt, V., 2004. Kernel Estimation of the Spectral Density of Stationary Random Closed Sets. Australian & New Zealand Journal of Statistics 46, 41-51. doi:10.1111/j.1467-842X.2004.00310.x
 }
 
