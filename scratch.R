@@ -137,7 +137,8 @@ pp <- rpoispp(lambda=2.2064E-3,win=dilation(w,bufferdist),nsim=1,drop=TRUE)
 xibuffer <- placegrainsfromlib(pp,grainlib)
 xi <- intersect.owin(xibuffer,w)
 plot(xi)
-
+#40seconds with w <- owin(xrange=c(0,500),yrange=c(0,500)) and lambda=2.2064E-3, 
+#using mask values seems 2+ times slower - would need to write a whole lot of code to discretise the whole process to make it faster"
 
 p <- covpest(xi,Frame(xi))
 X <- as.im(xi,dimyx=c(511,511))
@@ -208,7 +209,53 @@ smspecdens <- convolve.im(specdens,kernelfcn)
 plot(smspecdens,clipwin=owin(xrange=c(-50,50),yrange=c(-50,50)))
 plot(smspecdens,clipwin=owin(xrange=c(-100,100),yrange=c(-100,100)))
 
-plot(spectraldensity(xi,Frame(xi),6))
+smspecdens <- spectraldensity(xi,Frame(xi),6,dimyx=c(512,512))
+plot(smspecdens)
+dim(smspecdens)
+plot(smspecdens$xcol, smspecdens[257,])
+#covariance estimate
+ifspecdens <- fft(as.matrix(smspecdens),inverse = TRUE)/((2*pi)^2)
+image(Im(ifspecdens))
+image(Re(ifspecdens)[0:50,0:50])
+image(Re(ifspecdens)[0:50,0:50])
+plot(Re(ifspecdens)[1,1:20])
+
+#theoretical covariance of a Boolean model is given (with proof) in Eqn 3.18 of Chiu 2014. Examples for particular grains can be found in B"ohm 2002
+thcovDeterministicDiscs <- function(r,lambda,discr){
+  if (r>=2*discr){expectedsetcovariance <- 0}
+  else {
+    expectedsetcovariance <- 2*discr^2*acos(r/(2*discr)) - (r/2)*sqrt(4*discr^2-r^2)
+  }
+  p <- 1-exp(-pi*discr^2*lambda)
+  covariance <- 2*p-1+(1-p)^2*exp(lambda*expectedsetcovariance)
+}
+plot(1:100/5,lapply(1:100/5,thcovDeterministicDiscs,lambda = lambda, discr=discr))
+
+thcovDeterministicDiscs_vec <- function(X,Y,lambda,discr){
+  rlist <- sqrt(X^2+Y^2)
+  covar <- vector(length(rlist),mode="numeric")
+  for (i in 1:length(rlist)){
+    covar[i] <- thcovDeterministicDiscs(rlist[i],lambda=lambda,discr=discr)
+  }
+  return(covar)
+}
+plot(1:100,thcovDeterministicDiscs_vec(1:100,1:100,lambda=lambda,discr=discr))
+mat <- outer(0:250/10,0:250/10,FUN="thcovDeterministicDiscs_vec",lambda=lambda,discr=discr) #rows correspond to xstep - just a quirk of outer!
+image(mat)
+mat <- t(mat) #columns correspond to changes in X, rows correspond to changes in Y!
+#reflect out to all corners
+mat <- mat[,c((ncol(mat)):2,1:ncol(mat))]
+mat <- mat[c((nrow(mat)):2,1:nrow(mat)),]
+image(mat)
+
+thspecdens <- fft(mat)/length(mat)
+dim(thspecdens)
+plot(1:100,Re(thspecdens[1,1:100]))
+plot(1:100,Im(thspecdens[1,1:100]))
+nr = nrow(thspecdens)
+nc = ncol(thspecdens)
+thspecdens <- thspecdens[ ((-(nr-1)/2):((nr-1)/2)) %% (nr) + 1,((-nc/2):(nc/2)) %% (nc) + 1]
+filled.contour(Re(thspecdens))
 
 plot(specdens,clipwin=owin(xrange=c(-50,50),yrange=c(-50,50)))
 
@@ -251,3 +298,9 @@ plot(solist(smoothed = specdens,unsmoothed = unsmspecdens),
      equal.scales=TRUE)
 
 #for isotropic RACS can take average over angles
+
+
+
+#testing out varblock on Hest
+varblock(heather$coarse,fun=Hest)
+#only works on ppp data currently! but there are lots of tools that (eg quadrats() ) that varblock uses and will be useful to me too
