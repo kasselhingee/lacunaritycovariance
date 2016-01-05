@@ -32,7 +32,7 @@ discr = 10
 #plot to see what it looks like
 plot(1:150/5,lapply(1:150/5,setcovdisc,discr=discr))
 #is this right?
-plot(1:150/5,2*discr^2*acos(-1:150/5/(2*discr)))
+plot(1:150/5,2*discr^2*acos(1:150/5/(2*discr)))
 #this function looks right (at least if I've written it down correctly)
 lines(1:150/5,((1:150/5)/2)*sqrt(4*discr^2-(1:150/5)^2))
 #could plausibly cancel out the curviness of acos to make things straight close to 20
@@ -130,7 +130,7 @@ image(Re(thspecdensPad)[1:20,1:20])
 image(Im(thspecdensPad))
 image(Im(thspecdensPad)[1:30,1:30])
 image(abs(thspecdensPad)[1:30,1:30])
-#looks very low res though. More padding == higher resolution cheat!
+#looks very low res though. More padding == higher resolution cheat! **Broke my computer and is super slow!
 M <- as.matrix(thcov)
 nr <- nrow(M)
 nc <- ncol(M)
