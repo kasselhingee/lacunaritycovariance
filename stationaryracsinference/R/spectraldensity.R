@@ -59,6 +59,7 @@ spectraldensity <- function(Xi,w,bandwidth,kernel="Epanechnikov",...){
   Y <- seq(0,supportwidth*1.5+ystep,by=ystep)
   if (kernel == "Epanechnikov"){
     mat <- outer(X/bandwidth,Y/bandwidth,FUN="EpanechnikovFcn") #rows correspond to xstep - just a quirk of outer!
+    mat <- mat/(bandwidth^2) #to account for the scaling of the kernel - so that it all adds to 1
     mat <- t(mat) #columns correspond to changes in X, rows correspond to changes in Y!
     #reflect out to all corners
     mat <- mat[,c((ncol(mat)):2,1:ncol(mat))]
@@ -119,11 +120,12 @@ unsmoothedspectraldensity <- function(Xi,w,...){
   
 }
 
+#EpanechnikovFcn 
 EpanechnikovFcn <- function(X,Y){#WARNING: operates in 2D only on a vector of things 
   stopifnot(length(X)==length(Y))
   result <- vector(length=length(X),mode="numeric")
   sz <- sqrt((X*X)+(Y*Y))
   result[sz>1] <- 0
-  result[sz<=1] <- 2/pi*(1-sz[sz<=1]^2)
+  result[sz<=1] <- (2/pi)*(1-sz[sz<=1]^2)
   return(result)
 }
