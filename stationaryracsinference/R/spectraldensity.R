@@ -88,29 +88,29 @@ unsmoothedspectraldensity <- function(Xi,w,...){
   M <- as.matrix(Xi,...)
   M[is.na(M)] <- 0 #since the function that we wish to transform is an indicator of both inside window, and inside xi. Its ok to set all NAs to 0
   M <- M-p
-  fM <- fft(M)
+  fM <- xstep*ystep*fft(M) #xstep*ystep = scale to approximate Fourier transform
   nr <- nrow(M)
   nc <- ncol(M)
   areaM <- nr * nc #because theory uses rectangular windows, I'm going to assume a rectangular window to - maybe improve on this later
-  specdens <- (Re(fM)^2+Im(fM)^2)/(areaM^3) #divide by areaM^2 to put integrals on correct scale. Divide by areaM again to get to spectral density
+  specdens <- (Re(fM)^2+Im(fM)^2)/(areaM) #divide by areaM to get spectral density (formula in Böhm)
   #currently specdens[i,j] corresponds to a spectral location of 
-  #     y = ((i-1) mod numrow)/ystep, x = ((j-1) mod numcol)/xstep
+  #     y = 2pi*((i-1) mod numrow)/(length*ystep), x = 2pi*((j-1) mod numcol)/(length*xstep)
   # Rearrange this periodic function so that 
   # the origin of translations (0,0) is at matrix position (nr/2,nc/2) or close depending on whether nr is even or not
   # NB this could introduce an extra row and column
   if (nr %% 2 == 0){
     specdens <- specdens[ ((-nr/2):(nr/2)) %% (nr) + 1,]
-    yrow <- ((-nr/2):(nr/2)) * 1/ystep
+    yrow <- ((-nr/2):(nr/2)) * 1/(ystep*nr)
   } else {
     specdens <- specdens[ ((-(nr-1)/2):((nr-1)/2)) %% (nr) + 1,]
-    yrow <- ((-(nr-1)/2):((nr-1)/2)) * 1/ystep
+    yrow <- ((-(nr-1)/2):((nr-1)/2)) * 1/(ystep*nr)
   } 
   if (nc %% 2 == 0){
     specdens <- specdens[, ((-nc/2):(nc/2)) %% (nc) + 1]
-    xcol <- ((-nc/2):(nc/2)) * 1/xstep
+    xcol <- ((-nc/2):(nc/2)) * 1/(xstep*nr)
   } else {
     specdens <- specdens[, ((-(nc-1)/2):(nc/2)) %% (nc) + 1]  
-    xcol <- ((-(nc-1)/2):(nc/2)) * 1/xstep
+    xcol <- ((-(nc-1)/2):(nc/2)) * 1/(xstep*nr)
   }
 
   specdens <- im(specdens,xcol = xcol, yrow = yrow)
