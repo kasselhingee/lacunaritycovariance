@@ -1,6 +1,6 @@
 #' @title Two Point Probability Contagion
 #' @export contagTwoPtProb
-#' @description Calculates the two point probability version of Contagion at a single vector. 
+#' @description Calculates the two point probability version of Contagion. 
 #' @details Contagion is **. 
 #' In this case the Pij are the probability that two points separated by a vector \code{v}
 #' are in class \eqn{i} and class \eqn{j} respectively.
@@ -13,7 +13,7 @@
 #' @section Warning: there might still be some instability for covariance very close, but less than p
 #
 #' @param covariance is a map of covariance in spatstat \code{im} format
-#' @param p is an estimated coverage fraction. An estimate could also use \eqn{C(o)}.
+#' @param p is an estimated coverage fraction. If none is provided an estimate is made using covariance (see details).
 #' @param v is an optional input. It is a vector in format c(x,y)
 #' @return If \code{v} is included then returns a single number, otherwise a map of the two point contagion
 contagTwoPtProb <- function(covariance,p=NULL,v=NULL){
