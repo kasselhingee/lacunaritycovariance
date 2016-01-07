@@ -1,31 +1,64 @@
 #' @title Two Point Probability Contagion
-#' @export contagTwoPrProb
-#' @description Calculated the two point probability version of Contagion at a single vector. 
+#' @export contagTwoPtProb
+#' @description Calculates the two point probability version of Contagion at a single vector. 
 #' @details Contagion is **. 
 #' In this case the Pij are the probability that two points separated by a vector \code{v}
 #' are in class \eqn{i} and class \eqn{j} respectively.
 #' For an observation of a single phase \eqn{\Xi} this is easy to calculate.
 #'  Class 1 corresponds to being in \eqn{\Xi}, class 0 to being outside \eqn{\Xi} 
-#' 
+#'  
+#'  If \code{p} is unspecified then the estimate covariance at the origin, \eqn{C(o)}, is used.
+#'  
+#'  If \code{v} is unspecified then a map of contagion for many possible vectors is provided.
+#' @section Warning: there might still be some instability for covariance very close, but less than p
 #
-#' @param v is a vector in format c(x,y)
 #' @param covariance is a map of covariance in spatstat \code{im} format
 #' @param p is an estimated coverage fraction. An estimate could also use \eqn{C(o)}.
-#' @return a single number
-contagTwoPtProb <- function(v,covariance,p){
-  bothInXiProb <- covariance[
-    ppp(v[1],v[2],window=owin(xrange=c(v[1]-1,v[1]+1),yrange=c(v[2]-1,v[2]+1)))]
-  originOnlyInXi <- p-bothInXiProb
-  vOnlyInXi <- p-bothInXiProb
-  neitherInXi <- 1-2*p + bothInXiProb
-  #these are all probabilities so should all be positive (or 0)
-  
-  unnormalisedContag <- bothInXiProb*log(bothInXiProb)+
-                                originOnlyInXi*log(originOnlyInXi)+ 
-                                vOnlyInXi*log(vOnlyInXi)+
-                                neitherInXi*log(neitherInXi)
-  
-  return(1/(-log(1/4)) *unnormalisedContag)
+#' @param v is an optional input. It is a vector in format c(x,y)
+#' @return If \code{v} is included then returns a single number, otherwise a map of the two point contagion
+contagTwoPtProb <- function(covariance,p=NULL,v=NULL){
+  if (is.null(p)){p <- covariance[ppp(0,0)]}
+  if (is.null(v)){
+    #use a dummy calculation for the things close to p
+    covariance[ppp(0,0)] <- p/2  
+    covTooHigh <- NULL
+    if (p < max(covariance)){
+      warning("Coverage fracton estimate is smaller than the largest covariance. Avoiding negatives...")
+      covTooHigh <- which(p < as.matrix(covariance))
+      covaraince[covTooHigh] <- p/2
+    }
+    #use a short cut simplification to the ptwise function above
+    unnormalisedContag <- eval.im(
+      (1+covariance-2*p)*log(1+covariance-2*p)
+      + 2*(p-covariance)*log(p-covariance)
+      + covariance*log(covariance)
+    )
+    
+    #at the spots where p ~ covariance. I'm going to say contagion is p*ln(p)+(1-p)*ln(1-p) because lim (x*ln(x)) = 0 cuts out the mixed parts
+    unnormalisedContag[ppp(0,0)] <- p*log(p)+(1-p)*log(1-p)
+    if (!(is.null(covTooHigh))){
+      unnormalisedContag[covTooHigh] <- p*log(p)+(1-p)*log(1-p)
+    }
+    return(1/(-log(1/4)) *unnormalisedContag)
+  }
+  else {
+    bothInXiProb <- covariance[
+      ppp(v[1],v[2],window=owin(xrange=c(v[1]-1,v[1]+1),yrange=c(v[2]-1,v[2]+1)))]
+    if (p < bothInXiProb){#this is hopefully just a machine calculation error
+      warning("coverage fraction estimate is smaller than the covariance")
+      return(p*log(p)+(1-p)*log(1-p))
+    }
+    originOnlyInXi <- p-bothInXiProb
+    vOnlyInXi <- p-bothInXiProb
+    neitherInXi <- 1-2*p + bothInXiProb
+    
+    unnormalisedContag <- bothInXiProb*log(bothInXiProb)+
+      originOnlyInXi*log(originOnlyInXi)+ 
+      vOnlyInXi*log(vOnlyInXi)+
+      neitherInXi*log(neitherInXi)
+    
+    return(1/(-log(1/4)) *unnormalisedContag)
+  }    
 }
 
 # my arithmetic tells me it should simplify to
@@ -36,12 +69,20 @@ contagTwoPtProb <- function(v,covariance,p){
 # )
 #and it matches :)
 
+
+
+
 #' @examples 
 #' xi <- heather$coarse
-#' p <- covpest(xi,Frame(xi))
 #' covariance <- covarianceRACS(xi,Frame(xi))$covariance
-#' contagTwoPtProb(c(0,0),covariance,p)
-#' #result was -0.4999996
-#' contagTwoPtProb(c(5,15),covariance,p)
-#' #result was -0.9985666
+#' twoptcontagion <- contagTwoPtProb(covariance)
+#' p <- covpest(xi,Frame(xi))
+#' twoptcontagion <- contagTwoPtProb(covariance,p)
+#' plot(twoptcontagion)
+#' plot(twoptcontagion,clipwin=owin(xrange=c(-0.5,0.5),yrange=c(-0.5,0.5)),main="zoom")
+#' v <- c(5,15)
+#' twoptcontagion[ppp(v[1],v[2],window=owin(xrange=c(v[1]-1,v[1]+1),yrange=c(v[2]-1,v[2]+1)))]
+#' 
+#' contagTwoPtProb(covariance,p,c(5,15))
+#' #result for both should be -0.9985666
 #' 
