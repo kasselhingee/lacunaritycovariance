@@ -18,6 +18,7 @@ contagTwoPtProb <- function(v,covariance,p){
   originOnlyInXi <- p-bothInXiProb
   vOnlyInXi <- p-bothInXiProb
   neitherInXi <- 1-2*p + bothInXiProb
+  #these are all probabilities so should all be positive (or 0)
   
   unnormalisedContag <- bothInXiProb*log(bothInXiProb)+
                                 originOnlyInXi*log(originOnlyInXi)+ 
@@ -34,3 +35,13 @@ contagTwoPtProb <- function(v,covariance,p){
 #   + bothInXiProb*log(bothInXiProb)
 # )
 #and it matches :)
+
+#' @examples 
+#' xi <- heather$coarse
+#' p <- covpest(xi,Frame(xi))
+#' covariance <- covarianceRACS(xi,Frame(xi))$covariance
+#' contagTwoPtProb(c(0,0),covariance,p)
+#' #result was -0.4999996
+#' contagTwoPtProb(c(5,15),covariance,p)
+#' #result was -0.9985666
+#' 
