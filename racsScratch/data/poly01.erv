@@ -1,0 +1,29 @@
+DatasetHeader Begin
+	Version		= "7.2"
+	Name		= "poly01.erv"
+	LastUpdated	= Fri Oct 30 07:14:30 GMT 2015
+	DataSetType	= None
+	DataType	= Vector
+	ByteOrder	= LSBFirst
+	CoordinateSpace Begin
+		Datum		= "GDA94"
+		Projection	= "MGA50"
+		CoordinateType	= EN
+		Units		= "METERS"
+		Rotation	= 0:0:0.0
+	CoordinateSpace End
+	VectorInfo Begin
+		Type		= ERVEC
+		FileFormat	= ASCII
+		Extents Begin
+			TopLeftCorner Begin
+				Eastings	= 387521.74934725848
+				Northings	= 6474853.9984334204
+			TopLeftCorner End
+			BottomRightCorner Begin
+				Eastings	= 387528.51174934726
+				Northings	= 6474847.3926892951
+			BottomRightCorner End
+		Extents End
+	VectorInfo End
+DatasetHeader End
