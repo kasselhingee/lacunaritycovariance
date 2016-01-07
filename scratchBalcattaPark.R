@@ -3,13 +3,26 @@ library(raster)
 library(spatstat)
 
 #read boundary in and convert to spatstat window
-boundaryMAPTOOLS <- readShapeSpatial("C:/Users/hin117/Documents/Balcatta_Park/park_polygons.shp")
+boundaryMAPTOOLS <- readShapeSpatial("/home/tearcor/PhDLargeDataFies/Balcatta_Park/BalcattaParkBoundary.shp")
 boundaryOWIN <- as.owin(boundaryMAPTOOLS)  #
+balcattapark_boundary <- boundaryOWIN
 
 ##read in class map convert to spatstat window
-XiRASTER <- raster("C:/Users/hin117/Documents/Balcatta_Park/BalcattaPark_veg_raw.ers")
+XiRASTER <- raster("/home/tearcor/PhDLargeDataFies/Balcatta_Park/BalcattaPark_veg_raw.ers")
 XiIMAGE <- as.im(XiRASTER)
 XiOWIN <- as.owin(XiIMAGE)
+
+XiRASTER <- crop(XiRASTER,balcattapark_boundary)
+balcattapark_veg_coarse <- aggregate(XiRASTER,fact=4,fun=max)
+balcattapark_veg_coarseIM <- as.im(balcattapark_veg_coarse)
+balcattapark_veg_coarseOWIN <- as.owin(balcattapark_veg_coarseIM)
+balcattapark_veg_coarse <- balcattapark_veg_coarseOWIN
+save(balcattapark_veg_coarse,balcattapark_boundary,file="data/balcattapark_coarse.RData",compress=TRUE)
+
+layout(matrix(c(1,2),nrow=1,ncol=2))
+plot(XiRASTER)
+plot(balcattavegcoarse)
+head(balcattavegcoarse)
 
 #check that area of a mask owin is number of pixels in class
 area.owin(XiOWIN)
