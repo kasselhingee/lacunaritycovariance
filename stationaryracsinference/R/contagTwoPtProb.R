@@ -15,8 +15,9 @@
 #' @param covariance is a map of covariance in spatstat \code{im} format
 #' @param p is an estimated coverage fraction. If none is provided an estimate is made using covariance (see details).
 #' @param v is an optional input. It is a vector in format c(x,y)
+#' @param normalise If true normalises the results so that all RACS return a value between 
 #' @return If \code{v} is included then returns a single number, otherwise a map of the two point contagion
-contagTwoPtProb <- function(covariance,p=NULL,v=NULL){
+contagTwoPtProb <- function(covariance,p=NULL,v=NULL,normalise=FALSE){
   if (is.null(p)){p <- covariance[ppp(0,0)]}
   if (is.null(v)){
     #use a dummy calculation for the things close to p
@@ -56,8 +57,8 @@ contagTwoPtProb <- function(covariance,p=NULL,v=NULL){
       originOnlyInXi*log(originOnlyInXi)+ 
       vOnlyInXi*log(vOnlyInXi)+
       neitherInXi*log(neitherInXi)
-    
-    return(1/(-log(1/4)) *unnormalisedContag)
+    if (normalise) {return 1+1/(-log(1/4)) *unnormalisedContag}
+    else{return(unnormalisedContag)}
   }    
 }
 
