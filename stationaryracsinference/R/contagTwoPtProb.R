@@ -10,6 +10,10 @@
 #'  If \code{p} is unspecified then the estimate covariance at the origin, \eqn{C(o)}, is used.
 #'  
 #'  If \code{v} is unspecified then a map of contagion for many possible vectors is provided.
+#'  
+#'  If \code{normalise} is \code{TRUE} then result is divided by \eqn{-log(1/4)} and translated by 1 to force contagion 
+#'  between 0 and 1.
+#'  
 #' @section Warning: there might still be some instability for covariance very close, but less than p
 #
 #' @param covariance is a map of covariance in spatstat \code{im} format
@@ -57,7 +61,7 @@ contagTwoPtProb <- function(covariance,p=NULL,v=NULL,normalise=FALSE){
       originOnlyInXi*log(originOnlyInXi)+ 
       vOnlyInXi*log(vOnlyInXi)+
       neitherInXi*log(neitherInXi)
-    if (normalise) {return 1+1/(-log(1/4)) *unnormalisedContag}
+    if (normalise) {return(1+1/(-log(1/4)) *unnormalisedContag)}
     else{return(unnormalisedContag)}
   }    
 }

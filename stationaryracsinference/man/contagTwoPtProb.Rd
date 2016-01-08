@@ -4,20 +4,22 @@
 \alias{contagTwoPtProb}
 \title{Two Point Probability Contagion}
 \usage{
-contagTwoPtProb(covariance, p = NULL, v = NULL)
+contagTwoPtProb(covariance, p = NULL, v = NULL, normalise = FALSE)
 }
 \arguments{
 \item{covariance}{is a map of covariance in spatstat \code{im} format}
 
-\item{p}{is an estimated coverage fraction. An estimate could also use \eqn{C(o)}.}
+\item{p}{is an estimated coverage fraction. If none is provided an estimate is made using covariance (see details).}
 
 \item{v}{is an optional input. It is a vector in format c(x,y)}
+
+\item{normalise}{If true normalises the results so that all RACS return a value between}
 }
 \value{
 If \code{v} is included then returns a single number, otherwise a map of the two point contagion
 }
 \description{
-Calculates the two point probability version of Contagion at a single vector.
+Calculates the two point probability version of Contagion.
 }
 \details{
 Contagion is **. 
@@ -29,6 +31,9 @@ For an observation of a single phase \eqn{\Xi} this is easy to calculate.
  If \code{p} is unspecified then the estimate covariance at the origin, \eqn{C(o)}, is used.
  
  If \code{v} is unspecified then a map of contagion for many possible vectors is provided.
+ 
+ If \code{normalise} is \code{TRUE} then result is divided by \eqn{-log(1/4)} and translated by 1 to force contagion 
+ between 0 and 1.
 }
 \section{Warning}{
  there might still be some instability for covariance very close, but less than p
