@@ -14,7 +14,7 @@
 #' This is what \code{unsmoothedspectraldensity} returns.
 #'  \code{spectraldensity} then kernel smooths \eqn{\hat{h}} before returning a spectral density estimate.
 #' 
-#' @references Böhm, S., Heinrich, L., Schmidt, V., 2004. Kernel Estimation of the Spectral Density of Stationary Random Closed Sets. Australian & New Zealand Journal of Statistics 46, 41--51. doi:10.1111/j.1467-842X.2004.00310.x
+#' @references B\"{o}hm, S., Heinrich, L., Schmidt, V., 2004. Kernel Estimation of the Spectral Density of Stationary Random Closed Sets. Australian & New Zealand Journal of Statistics 46, 41--51. doi:10.1111/j.1467-842X.2004.00310.x
 #' 
 #' 
 #' @param Xi A rectangular observation of \eqn{Xi}. NA's are assumed to mean outside \eqn{\Xi} rather than missing data or anything (**I haven't assesed the theory/computations for non-rectangular windows but its probably the same)
@@ -93,7 +93,7 @@ unsmoothedspectraldensity <- function(Xi,w,...){
   nr <- nrow(M)
   nc <- ncol(M)
   areaM <- nr * nc #because theory uses rectangular windows, I'm going to assume a rectangular window to - maybe improve on this later
-  specdens <- (Re(fM)^2+Im(fM)^2)/(areaM) #divide by areaM to get spectral density (formula in Böhm)
+  specdens <- (Re(fM)^2+Im(fM)^2)/(areaM) #divide by areaM to get spectral density (formula in Bohm)
   #currently specdens[i,j] corresponds to a spectral location of 
   #     y = 2pi*((i-1) mod numrow)/(length*ystep), x = 2pi*((j-1) mod numcol)/(length*xstep)
   # Rearrange this periodic function so that 

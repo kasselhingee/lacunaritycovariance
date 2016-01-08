@@ -22,12 +22,12 @@ This version of contagion gauges closeness/mixing between \eqn{\Xi} and \eqn{\Xi
  using the spherical contact distribution. 
  Given a distance \eqn{r} and an arbitrary point \eqn{x}
  in \eqn{\Xi} then \eqn{\Xi} close means everything with \eqn{r} of \eqn{x} is in \eqn{\Xi}.
- \eqn{\Xi^c} close to \eqn{x} means there is at least some part of $\Xi^c$ within \eqn{r} of \eqn{x}.
+ \eqn{\Xi^c} close to \eqn{x} means there is at least some part of \eqn{\Xi^c} within \eqn{r} of \eqn{x}.
 }
 \details{
 xiH should be a function of radius that estimates the probability 
 \deqn{xiH(r)\approx P(B_r(x) \subseteq \Xi^c)}
- of a disc around an arbitrary point $x$ is contained in \eqn{\Xi^c.}
+ of a disc around an arbitrary point \eqn{x} is contained in \eqn{\Xi^c.}
 Similary xiHc should be the probability of disc being fully contained in \eqn{\Xi}
 \deqn{xiHc(r)\approx P(B_r(o) \subseteq \Xi).}
 
