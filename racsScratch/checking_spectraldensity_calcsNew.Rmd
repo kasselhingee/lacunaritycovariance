@@ -146,6 +146,9 @@ mat <- outer(xptsLR,yptsLR,FUN="thcovDeterministicDiscs_vec",lambda=lambda,discr
 #reflect out to all corners
 mat <- mat[,c((ncol(mat)):2,1:ncol(mat))]
 mat <- mat[c((nrow(mat)):2,1:nrow(mat)),]
+#theoretical p value 
+p <- 1-exp(-pi*discr^2*lambda)
+
 M <- mat-p^2
 nr <- nrow(M)
 nc <- ncol(M)
@@ -219,17 +222,60 @@ None of these match satisfactorily. What is happening? What if I use a higher re
 
 The separation between spectral values is $2\pi/\delta n = 2\pi/(total spatial width)$ where $\delta$ is the spatial separation, and $n$ is the number of (the equally spaced) sample points.
 
-The low resolution theoretical covariance was estimated at 0...30 at 0.25 spacing which corresponds to a window of [-0.125,30.125], it was the reflected out to [-30.125,30.125] and padded by 8 times its size which would be a width of $\approx 482$.
+The low resolution theoretical covariance was estimated at 0...30 using 121 points (at 0.25 spacing). It was then reflected out to 241 points at 0.25 spacing. Finally it was made 8x larger (1928 points, spacing is still 0.25) by padding with zeros.
+
+ This means the separation between the theoretically derived spectral values is $\frac{2\pi}{0.25 \times 1928} = \frac{2\pi}{482}$.
+ 
+ The emprical spectral densities start with a sample of $\Xi$ that is 512 points long, across a window of width 500 units.  No padding occurs, so the spectral separation of the empirical spectral density is $\frac{2\pi}{500}$.
+ 
+ That means the following are plots with correct units on the x-axis (I think the y-axis is correct too)
+ 
+```{r}
+plot(0:(300-257)*2*pi/500,unsmsd[258,257:300],main="Correct Units",xlab="Spectral Value (dimension = 1/m )",ylab="Spectral Density (dimension = m^2)")
+lines(0:59*2*pi/482,abs(thspecdensPadLR)[1,1:60])
+lines(0:(300-257)*2*pi/500,smoothedsd01[258,257:300],type="l",col="red") 
+lines(0:(300-257)*2*pi/500,smoothedsd012[258,257:300],col="yellow")
+lines(0:(300-257)*2*pi/500,smoothedsd015[258,257:300],type="l",col="blue") 
+lines(0:(300-257)*2*pi/500,smoothedsd02[258,257:300],col="green") 
+legend("topright",
+       c("Unsmoothed","Theoretical","bw=0.01","bw=0.012","bw=0.015","bw=0.02"),
+       col=c("black","black","red","yellow","green","green")
+       ,lty=c(0,1,1,1,1,1),pch=c("o",".",".",".",".","."))
+```
+
+Things are looking good in the x-axis, but the empirical versions are consistently low (at least in one realisation). Let us try a higher resolution.
 
 ```{r}
 unsmsd <- unsmoothedspectraldensity(xi,Frame(xi),dimyx=c(1024,1024))
 smoothedsd01 <-spectraldensity(xi,Frame(xi),0.01,dimyx=c(1024,1024))
 smoothedsd012 <-spectraldensity(xi,Frame(xi),0.012,dimyx=c(1024,1024))
 smoothedsd015 <-spectraldensity(xi,Frame(xi),0.015,dimyx=c(1024,1024))
-plot((0:49)*unsmsd$xstep,unsmsd[513,513:562],main="Spectral Density - Higher Res Observation")
-lines(0:59*(1/482),abs(thspecdensPadLR)[1,1:60])
+
+plot((0:49)*2*pi/500,unsmsd[513,513:562],main="Spectral Density - Higher Res Observation",plot.window(c(0,0.6),c(0,90)))
+lines(0:59*(2*pi/482),abs(thspecdensPadLR)[1,1:60])
+lines(0:(562-513)*2*pi/500,smoothedsd01[513,513:562],type="l",col="red") 
+lines(0:(562-513)*2*pi/500,smoothedsd012[513,513:562],col="yellow")
+lines(0:(562-513)*2*pi/500,smoothedsd015[513,513:562],type="l",col="blue") 
 ```
 
+This is even worse, the y-values are extremely low. But these y-values should be about the same size regardless of resolution so something seems to be wrong with my scaling of the fourier transform?
+
+# Testing Scaling on a Deterministic Function
+Trying a sine function (window from 0 to $2\pi$ should result in a scale factor of 1)
+
+```{r}
+z <- sin(0:100 *2*pi/101)
+y <- fft(z)
+plot(abs(y))
+
+
+
+z2<- sin(0:200 *2*pi/201)
+y2 <- fft(z2)
+plot(abs(y2))
+```
+
+and they are changing --> I'm doing something wrong. The spectral value of a sine wave should be 1 at 1/2pi, how are 50's even possible?
 
 # REFERENCES
 Böhm, S., Heinrich, L. and Schmidt, V. (2002) Kernel Estimation of the Spectral Density of Stationary Random Closed Sets. Germany.
