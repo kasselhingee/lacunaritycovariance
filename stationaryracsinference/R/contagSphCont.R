@@ -45,13 +45,15 @@ contagSphCont <- function(xiH,xiHc,p=NULL,normalise=FALSE){
 #' xi <- heather$coarse
 #' p <- covpest(xi,Frame(xi))
 #' xiH <- Hest(xi)
-#' r <- xiH$r
-#' xiH <- xiH$km
 #' #it typically not advisable to choose set r ourselves, **is it a good idea here? Interpolation later might be better?
-#' xiHc <- Hest(complement.owin(xi,frame=Frame(xi)),r=r)$km
+#' xiHc <- Hest(complement.owin(xi,frame=Frame(xi)))
 #' plot(r,xiH,type="l",col="red") 
 #' lines(r,xiHc,type="l",col="black") 
 #' 
-#' contagion <- contagSphCont(xiH,xiHc,p)
+#' harmonised <- harmonise(xiH,xiHc)
+#' xiH <- harmonised[[1]]
+#' xiHc <- harmonised[[2]]
+#' 
+#' contagion <- contagSphCont(xiH$km,xiHc$km,p)
 #' plot(r,contagion,type="l")
 #' 
