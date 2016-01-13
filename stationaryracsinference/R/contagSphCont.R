@@ -41,6 +41,8 @@ contagSphCont <- function(xiH,xiHc,p=NULL,normalise=FALSE){
   else {return(unnormalisedContag)}
 }
 
+#' @seealso \code{\link{contagTwoPtProb}} 
+
 #' @examples 
 #' xi <- heather$coarse
 #' p <- covpest(xi,Frame(xi))

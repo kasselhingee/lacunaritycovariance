@@ -75,7 +75,7 @@ contagTwoPtProb <- function(covariance,p=NULL,v=NULL,normalise=FALSE){
 #and it matches :)
 
 
-
+#' @seealso \code{\link{contagSphCont}} 
 
 #' @examples 
 #' xi <- heather$coarse
