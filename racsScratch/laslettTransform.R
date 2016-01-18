@@ -1,33 +1,13 @@
 #calculating Laslett's transform
 
 laslettTransform <- function(xi){
+  tangentpointslist <- findlowlefttangentpts(xi)
+  
   xi <- as.im(xi)
   xi[is.na(as.matrix(xi))] <- 0 
-  #gradient image for whole thing
-  grad <- xi[,1:(xi$dim[2]-1)]-xi[,-1]
+  #use the pixels containing these points as the tangent points (will it actually matter if this is slightly off - it all approximates the same thing as resolution gets infintely fine)
+  xi[ppp(tangentpointslist$X,tangentpointslist$Y,window=Frame(xi))] <- 2
   
-  #find lower tangent points. A grad value of 1 means exiting xi, and grad value of -1 means entering xi
-  for (rowIndex in 2:xi$dim[1]){
-    rowa <- grad[rowIndex,]#rows start at the bottom!!
-    rowb <- grad[rowIndex-1,]
-    rowaexits <- which(rowa==1)
-    rowaenter <- which(rowa==-1)
-    
-    rowbexits <- which(rowb==1)
-    rowbenter <- which(rowb==-1)
-    rowbchanges <- which((rowb==1) | (rowb==-1))
-    #search for an entrance,exit in rowa that has no entrance or exit in rowb over the same length
-    for (en in rowaenter){
-      ex <- rowaexits[rowaexits>en][1]
-      if (length(rowaexits[rowaexits>en])==0){next}
-      tangent <- ((min((rowbenter< en) | (rowbenter >= ex))) && #if no enter point along interval (this is 4 nbhd because of strictly less/greater than) (#something better than max??)
-                    (xi[rowIndex-1,en] == 0))    #and first pixel isn't in set 
-      if(tangent){
-        xi[rowIndex,en+1] <- 2 #the -1 is to take into
-      } #label as tangent
-    }
-  }
-
   #remove the stuff in xi, keeping the tangent points - because thats the discretisation used in the proof in Cressie's book
   for (rowIndex in 1:xi$dim[1]){
     rowVal <- xi[rowIndex,]
@@ -49,6 +29,37 @@ laslettTransform <- function(xi){
   return(list(points=pointPat,image=xi))
 }
 
-
-
+findlowlefttangentpts <- function(xi){
+    xi <- as.im(xi)
+    xi[is.na(as.matrix(xi))] <- 0 
+    #gradient image for whole thing
+    grad <- xi[,1:(xi$dim[2]-1)]-xi[,-1]
+    
+    #find lower tangent points. A grad value of 1 means exiting xi, and grad value of -1 means entering xi
+    tangentpoints=list(x = vector(),y = vector())
+    for (rowIndex in 2:xi$dim[1]){
+      rowa <- grad[rowIndex,]#rows start at the bottom!!
+      rowb <- grad[rowIndex-1,]
+      rowaexits <- which(rowa==1)
+      rowaenter <- which(rowa==-1)
+      
+      rowbexits <- which(rowb==1)
+      rowbenter <- which(rowb==-1)
+      rowbchanges <- which((rowb==1) | (rowb==-1))
+      #search for an entrance,exit in rowa that has no entrance or exit in rowb over the same length
+      for (en in rowaenter){
+        ex <- rowaexits[rowaexits>en][1]
+        if (length(rowaexits[rowaexits>en])==0){next}
+        tangent <- ((min((rowbenter< en) | (rowbenter >= ex))) && #if no enter point along interval (this is 4 nbhd because of strictly less/greater than) (#something better than max??)
+                      (xi[rowIndex-1,en] == 0))    #and first pixel isn't in set 
+        if(tangent){
+          tangentpoints$x = append(tangentpoints$x,en+1)
+          tangentpoints$y = append(tangentpoints$y,rowIndex)
+        } 
+      }
+    }
+    #convert list of tangent points to spatial locations
+    return(list(X = ((tangentpoints$x-1) * xi$xstep)+xi$xcol[1],
+                Y = (xi$ystep * (tangentpoints$y-1))+xi$yrow[1]))
+}
 
