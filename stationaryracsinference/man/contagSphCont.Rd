@@ -4,7 +4,7 @@
 \alias{contagSphCont}
 \title{Spherical Contact version of Contagion}
 \usage{
-contagSphCont(xiH, xiHc, p = NULL, normalise = FALSE)
+contagSphCont(xiH, xiHc, p, normalise = FALSE)
 }
 \arguments{
 \item{xiH}{Spherical contact function for xi.}

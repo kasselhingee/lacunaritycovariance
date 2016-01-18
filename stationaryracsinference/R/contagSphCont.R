@@ -26,7 +26,7 @@
 #' }
 #' This makes contagion vary between 0 and 1 for all 2 phase processes.
 #' 
-contagSphCont <- function(xiH,xiHc,p=NULL,normalise=FALSE){
+contagSphCont <- function(xiH,xiHc,p,normalise=FALSE){
   Pstates <- matrix(NA,nrow=4,ncol=length(xiH))
   rownames(Pstates)=c("P11","P10","P01","P00")
   Pstates["P11",] <- p* (1-xiHc)
