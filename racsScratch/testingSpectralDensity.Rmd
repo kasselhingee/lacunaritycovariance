@@ -2,7 +2,11 @@
 title: "Testing Spectral Density Fcn"
 author: "Kassel Hingee"
 date: "25 January 2016"
-output: html_document
+output: 
+  html_document: 
+    number_sections: yes
+    toc: yes
+bibliography: zotero.bib
 ---
 
 A number of diagnostics to test the spectral density functions.
@@ -70,7 +74,8 @@ unsmoothedspectraldensity <- function(Xi,w,suffspecres=NULL,...){
   
 }
 ```
-#corrections made during this testing: nr --> nc, force to be pixel mask owin (because as.im(pixel mask) was still doing stuff)
+
+corrections made during this testing: nr --> nc, force to be pixel mask owin (because as.im(pixel mask) was still doing stuff)
 
 
 
@@ -101,8 +106,8 @@ specdensssr$ystep
 
 These should be related the natural fft resolutions (`r 2*pi/(xi$xstep*xi$dim[2])`,`r 2*pi/(xi$ystep*xi$dim[1])`) by integers: 
 ```{r}
-2*pi/(xi$xstep*xi$dim[2])/specdens01$xstep
-2*pi/(xi$ystep*xi$dim[1])/specdens01$ystep
+2*pi/(xi$xstep*xi$dim[2])/specdensssr$xstep
+2*pi/(xi$ystep*xi$dim[1])/specdensssr$ystep
 ```
 
 Test with each dimension restriction being different
@@ -226,10 +231,371 @@ pp <- rpoispp(lambda=lambda,win=dilation(w,bufferdist),nsim=1,drop=TRUE)#lambda 
 set.seed(6549876)
 xibuffer <- placegrainsfromlib(pp,grainlib)
 xi <- intersect.owin(xibuffer,w)
+```
 
+NOT RUN:
+```{r,eval=FALSE}
 specdens <- unsmoothedspectraldensity(as.mask(xi,eps=c(1,1)),Frame(xi),suffspecres = 0.0005)
-plot(specdens)
+save(specdens,xi,file="specdens_1000x1000eps11_0005res.RData")
+plot(specdens,axes=TRUE)
+title(main="Unsmoothed Spectral Density: Bool of 10m discs, 1000x1000 window", sub="0.0004833219")
+plot(specdens,clipwin=owin(xrange = c(-0.2,0.2),yrange=c(-0.2,0.2)),axes=TRUE)
+title(main="Unsmoothed Spectral Density: Bool of 10m discs, 1000x1000 window", sub="0.0004833219")
+```
+
+The higher resolution didn't made the function any less speckldy, the speckles are simply better defined, in hindsight this makes sense - the \code{suffspecres} parameter is just padding the simulation with zeros which is a computationally efficient equivalent to interpolating the output. This code isn't being run because it hogs computer for 30mins or more. If spectral resolution doesn't help the only thing that will is greater simulation windows. Unfortunately at windows of 1000x1000 the process already takes a very long time.
+
+Technically zero padding *doesn't* increase resolution because it doesn't increase the ability to resolve anything. It just increases the *interpolation-density*.
+
+In B\"{o}hm 2002 the unsmoothed spectral density resolutions (or interpolation density) was much higher than I have here. How did they get to it? One way would be to use a much lower spatial resolution than I am, allowing the computations to be much faster.
+ 
+## Testing Smoother
+The kernel smoothing function:
+```{r}
+kernelsmooth <- function(im,bandwidth,kernel="Epanechnikov"){
+  stopifnot(is.im(im))
+  xstep = im$xstep
+  ystep = im$ystep
+  if (kernel == "Epanechnikov") {supportwidth = bandwidth}
+  else {
+    warning("In spectral density smoothing support width of kernel is unknown, defaulting to 3x bandwidth")
+    supportwidth = 3*bandwidth
+    }
+  X <- seq(0,supportwidth*1.5+xstep,by=xstep) #much larger than support width to avoid boundary issues?
+  Y <- seq(0,supportwidth*1.5+ystep,by=ystep)
+  if (kernel == "Epanechnikov"){
+    mat <- outer(X/bandwidth,Y/bandwidth,FUN="EpanechnikovFcn") #rows correspond to xstep - just a quirk of outer!
+    mat <- mat/(bandwidth^2) #to account for the scaling of the kernel - so that it all adds to 1
+    mat <- t(mat) #columns correspond to changes in X, rows correspond to changes in Y!
+    #reflect out to all corners
+    mat <- mat[,c((ncol(mat)):2,1:ncol(mat))]
+    mat <- mat[c((nrow(mat)):2,1:nrow(mat)),]
+    kernelfcn <- im(mat,xcol=c(-X[length(X):2],X),yrow=c(-Y[length(Y):2],Y))
+  }
+  else {
+    stop("Given kernel is not supported for spectral density smoothing")
+  }
+  #apply kernel using convolve.im
+  smim <- convolve.im(im,kernelfcn)
+  smim <- smim[Frame(im)]
+  return(smim)
+}
+
+#EpanechnikovFcn 
+EpanechnikovFcn <- function(X,Y){#WARNING: operates in 2D only on a vector of things 
+  stopifnot(length(X)==length(Y))
+  result <- vector(length=length(X),mode="numeric")
+  sz <- sqrt((X*X)+(Y*Y))
+  result[sz>1] <- 0
+  result[sz<=1] <- (2/pi)*(1-sz[sz<=1]^2)
+  return(result)
+}
+```
+
+Test on a step image.
+```{r}
+stepim <- im(matrix(0,nrow=100,ncol=100),xrange=c(-1,1),yrange=c(-1,1))
+stepim[owin(xrange=c(-0.5,0.5),yrange=c(-0.5,0.5))] <- 1
+plot(stepim,axes=TRUE)
+
+smstepim <- kernelsmooth(stepim,0.5)
+plot(smstepim,axes=TRUE)
+```
+
+This function should be smoothed out the boundaries. Only the origin should be 1 because the origin is the only location a disc of radius 0.5 can be fitted such that no zeros are included. At midpoints of the edges of thes step, (-0.5,0), (0.5,0), (0,-0.5) and (0,0.5), the smoothed version should be 0.5 because half the disc is 0, the other half is 1.
+
+A slices along the \code{y=0} and \code{x=0} lines confirm this:
+```{r}
+plot(smstepim$xcol,as.matrix(smstepim[owin(xrange=c(-1,1),yrange=c(-0.01,0.01))]),main="y=0 line",ylab="Smoothed values")
+plot(smstepim$yrow,as.matrix(smstepim[owin(yrange=c(-1,1),xrange=c(-0.01,0.01))]),main="x=0 line",ylab="Smoothed values")
+max(smstepim)
+```
+
+So smoothing using the Epachinikov kernel seems to work properly :).
+
+Lets test on a very small bandwidth. Hopefully it will still give 0.5 on the edge of the square.
+```{r}
+smstepim2 <- kernelsmooth(stepim,stepim$xstep)
+plot(smstepim2,axes=TRUE)
+plot(smstepim2$xcol,as.matrix(smstepim2[owin(xrange=c(-1,1),yrange=c(0,0.011))]),main="y=0 line",ylab="Smoothed values")
+plot(smstepim2$yrow,as.matrix(smstepim2[owin(yrange=c(-1,1),xrange=c(0,0.011))]),main="x=0 line",ylab="Smoothed values")
+max(smstepim)
+```
+
+Hmm it gave no intermediate points. How about a slightly larger bandwidth
+```{r}
+smstepim2 <- kernelsmooth(stepim,stepim$xstep*1.1)
+plot(smstepim2,axes=TRUE)
+plot(smstepim2$xcol,as.matrix(smstepim2[owin(xrange=c(-1,1),yrange=c(0,0.011))]),main="y=0 line",ylab="Smoothed values")
+plot(smstepim2$yrow,as.matrix(smstepim2[owin(yrange=c(-1,1),xrange=c(0,0.011))]),main="x=0 line",ylab="Smoothed values")
+max(smstepim)
+```
+
+This now working a lot better :).
+  
+## Testing Smoothed Spectral Density
+
+Estimate unsmoothed spectral density at low spectral interpolation density (but for the 1000 x 1000 window)
+```{r}
+specdens <- unsmoothedspectraldensity(as.mask(xi,eps=c(1,1)),Frame(xi))
 plot(specdens,clipwin=owin(xrange = c(-0.2,0.2),yrange=c(-0.2,0.2)),axes=TRUE)
 ```
+
+For large enough windows (with appropriate spatial sampling of discs), and a small enough bandwidth the variance of the smoothed spectral density is *pointwise* close 0, (each point tends to 0 at different thresholds) at the same speed (or faster) as $bw^2 |W|$ goes to infinity (theorem 2 in @bohm2004ke ).
+ Bias also goes to 0.
+
+For a closed compact window of spectral values it would then be possible, to make the variance arbitrarily close to 0 by making the observation window large, and bandwidth small.
+
+Currently close to computationally imposed simulation limit. So hopefully the simulation window is large enough!
+
+Lets compare smoothed spectral density at a number of bandwidths, from 1.1 pixels =`r specdens$xstep*1.1` to 16 pixels = =`r specdens$xstep*8`.
+```{r}
+bandwidthl = c(1.1,5.1,7.1,9.1,12.1,16)*specdens$xstep
+smspecdens = mapply(kernelsmooth, bandwidthl, MoreArgs=list(im=specdens, kernel="Epanechnikov"), SIMPLIFY = FALSE)
+names(smspecdens) <- as.character(round(bandwidthl,digits=4))
+specdensl <- c(list(
+  "theoretical" = thspecdens,
+  "unsmsd specdens" = specdens),
+  smspecdens)
+plot(as.solist(specdensl),clipwin=Frame(specdens),axes=TRUE)
+plot(as.solist(specdensl),clipwin=owin(xrange = c(-0.2,0.2),yrange=c(-0.2,0.2)),axes=TRUE)
+```
+
+There is a noticeable diagonal (North-West) skew to values. Why? It looks to uniform to be a random occurence.
+
+None of these are particularly good for approximating the theortical spectral density. This is a plot of the differences
+```{r}
+imdiff <- function(A,B){
+  A <- A[Frame(B)]
+  return(eval.im(A-B))
+}
+diffspecdensl <- mapply(imdiff,specdensl,MoreArgs=list(A=thspecdens),SIMPLIFY=FALSE)
+plot(as.solist(diffspecdensl),clipwin=Frame(specdens), axes=TRUE, main="Difference to Theoretical")
+plot(as.solist(diffspecdensl),clipwin=owin(xrange = c(-0.199,0.199),yrange=c(-0.199,0.199)),axes=TRUE, main="Difference to Theoretical Zoom")
+```
+
+A really weird square has popped up, it seems to the be the same location regardless of bandwidth.
+
+Also there is a cool pattern the comes from the differences between resolutions, but maybe it has other meaning too?
+```{r}
+plot(diffspecdensl[[8]],clipwin=owin(xrange = c(-0.499,0.499),yrange=c(-0.499,0.499)),axes=TRUE,main=NULL)
+title(main="Difference to Theoretical Zoom",sub=names(diffspecdensl)[[8]])
+```
+
+How good are these for approximating spectral density at the origin?
+```{r}
+plot(as.solist(diffspecdensl), clipwin=owin(xrange = c(-0.02,0.02), yrange=c(-0.02,0.02)),
+     show.all=FALSE, axes=TRUE, col = interp.colourmap(colourmap(c("green","black","red"),range=c(-10,10))),      plotcommand=image.im, main="Difference to Theoretical Near Origin")
+
+plot(interp.colourmap(colourmap(c("green","black","red"),range=c(-10,10))),main="Colour meaning of above plot")
+```
+
+Its pretty bad to compare shades next to each other (us humans interpret colours based on nearby colours)
+It seems like the smoothing is making the number of rows and columns even. That means averaging the smoothed images:
+```{r}
+crop <- function(im,clipwin){
+  return(im[clipwin])
+}
+clippedims <- mapply(crop,diffspecdensl[3:length(diffspecdensl)], MoreArgs=list(
+         clipwin= owin(xrange = c(-diffspecdensl[[3]]$xstep,+diffspecdensl[[3]]$xstep), yrange=c(-diffspecdensl[[3]]$ystep,diffspecdensl[[3]]$ystep))),
+       SIMPLIFY=FALSE)
+lapply(clippedims,mean)
+#the follow just checked that mean was operating nicely
+#mean(as.matrix(diffspecdensl[[3]][owin(xrange = c(-diffspecdensl[[3]]$xstep,+diffspecdensl[[3]]$xstep), yrange=c(-diffspecdensl[[3]]$ystep,diffspecdensl[[3]]$ystep))]))
+```
+
+So the closes is actually the one with bandwidth of $0.1005$! I wonder what would happen with larger bandwidths then?
+
+### Larger Bandwidths
+```{r}
+bandwidthl = c(16,20,24,30)*specdens$xstep
+smspecdens = mapply(kernelsmooth, bandwidthl, MoreArgs=list(im=specdens, kernel="Epanechnikov"), SIMPLIFY = FALSE)
+names(smspecdens) <- as.character(round(bandwidthl,digits=4))
+specdensl <- c(list(
+  "theoretical" = thspecdens,
+  "unsmsd specdens" = specdens),
+  smspecdens)
+plot(as.solist(specdensl),clipwin=Frame(specdens),axes=TRUE)
+plot(as.solist(specdensl),clipwin=owin(xrange = c(-0.3,0.3),yrange=c(-0.3,0.3)),axes=TRUE)
+```
+
+Difference plots
+```{r}
+imdiff <- function(A,B){return(eval.im(A-B))}
+diffspecdensl <- mapply(imdiff,specdensl,MoreArgs=list(A=thspecdens),SIMPLIFY=FALSE)
+plot(as.solist(diffspecdensl),clipwin=owin(xrange = c(-0.5,0.5),yrange=c(-0.5,0.5)),axes=TRUE, main="Difference to Theoretical Zoom")
+```
+
+Which does better at estimate spectral density at 0?
+```{r}
+crop <- function(im,clipwin){
+  return(im[clipwin])
+}
+clippedims <- mapply(crop,diffspecdensl[3:length(diffspecdensl)], MoreArgs=list(
+         clipwin= owin(xrange = c(-diffspecdensl[[3]]$xstep,+diffspecdensl[[3]]$xstep), yrange=c(-diffspecdensl[[3]]$ystep,diffspecdensl[[3]]$ystep))),
+       SIMPLIFY=FALSE)
+lapply(clippedims,mean)
+```
+
+Bandwidth of 0.1005 still wins!, but the others look like a lot better shape.
+
+_ _ _ _
+
+#### Double Check - Density of Spatial Sampling:
+
+A new spectral density estimate
+```{r}
+specdens <- unsmoothedspectraldensity(as.mask(xi,eps=c(0.5,0.5)),Frame(xi))
+```
+
+```{r}
+bandwidthl = c(6,12,16,20,24,30)*specdens$xstep
+smspecdens = mapply(kernelsmooth, bandwidthl, MoreArgs=list(im=specdens, kernel="Epanechnikov"), SIMPLIFY = FALSE)
+names(smspecdens) <- as.character(round(bandwidthl,digits=4))
+specdensl <- c(list(
+  "theoretical" = thspecdens,
+  "unsmsd specdens" = specdens),
+  smspecdens)
+plot(as.solist(specdensl),clipwin=Frame(specdens),axes=TRUE)
+plot(as.solist(specdensl),clipwin=owin(xrange = c(-0.3,0.3),yrange=c(-0.3,0.3)),axes=TRUE)
+```
+
+Difference plots
+```{r}
+imdiff <- function(A,B){
+  A <- A[Frame(B)]
+  return(eval.im(A-B))
+}
+diffspecdensl <- mapply(imdiff,specdensl,MoreArgs=list(A=thspecdens),SIMPLIFY=FALSE)
+plot(as.solist(diffspecdensl),clipwin=owin(xrange = c(-0.5,0.5),yrange=c(-0.5,0.5)),axes=TRUE, main="Difference to Theoretical Zoom")
+```
+
+Which does better at estimate spectral density at 0?
+```{r}
+crop <- function(im,clipwin){
+  return(im[clipwin])
+}
+clippedims <- mapply(crop,diffspecdensl[3:length(diffspecdensl)], MoreArgs=list(
+         clipwin= owin(xrange = c(-diffspecdensl[[3]]$xstep,+diffspecdensl[[3]]$xstep), yrange=c(-diffspecdensl[[3]]$ystep,diffspecdensl[[3]]$ystep))),
+       SIMPLIFY=FALSE)
+lapply(clippedims,mean)
+```
+
+Bandwidth of 0.1005 still wins!, but the others look like a lot better shape. There doesn't seem to be much difference. The size of the difference is even the same!
+
+_ _ _ _ _ _ _
+
+#### Double Check - Density of Spectral Sampling:
+A new spectral density estimate with finer spectral mapping
+```{r}
+specdens <- unsmoothedspectraldensity(as.mask(xi,eps=c(1,1)),Frame(xi),suffspecres = 0.0032)
+```
+
+```{r}
+bandwidthl = bandwidthl #use same bandwidths as last section 
+smspecdens = mapply(kernelsmooth, bandwidthl, MoreArgs=list(im=specdens, kernel="Epanechnikov"), SIMPLIFY = FALSE)
+names(smspecdens) <- as.character(round(bandwidthl,digits=4))
+specdensl <- c(list(
+  "theoretical" = thspecdens,
+  "unsmsd specdens" = specdens),
+  smspecdens)
+plot(as.solist(specdensl),clipwin=Frame(specdens),axes=TRUE)
+plot(as.solist(specdensl),clipwin=owin(xrange = c(-0.3,0.3),yrange=c(-0.3,0.3)),axes=TRUE)
+```
+
+Difference plots
+```{r}
+thspecdens <- thspecdens[Frame(specdens)]
+imdiff <- function(A,B){
+  return(eval.im(A-B))
+}
+diffspecdensl <- mapply(imdiff,specdensl,MoreArgs=list(A=thspecdens),SIMPLIFY=FALSE)
+plot(as.solist(diffspecdensl),clipwin=owin(xrange = c(-0.5,0.5),yrange=c(-0.5,0.5)),axes=TRUE, main="Difference to Theoretical Zoom")
+```
+
+Which does better at estimate spectral density at 0?
+```{r}
+crop <- function(im,clipwin){
+  return(im[clipwin])
+}
+clippedims <- mapply(crop,diffspecdensl[3:length(diffspecdensl)], MoreArgs=list(
+         clipwin= owin(xrange = c(-diffspecdensl[[3]]$xstep,+diffspecdensl[[3]]$xstep), yrange=c(-diffspecdensl[[3]]$ystep,diffspecdensl[[3]]$ystep))),
+       SIMPLIFY=FALSE)
+lapply(clippedims,mean)
+```
+
+bandwidth of 0.1005 still does best!
+
+_ _ _ _
+
+#### Smaller Simulation Window
+A window of 1000x1000 takes way too long to simulate for repeated tests. So lets check to see if the above results hold on a 500x500 window.
+
+```{r}
+discr <- 10
+lambda <- 2.2064E-3
+grainlib <- solist(disc(radius=discr))
+bufferdist <- 12 #chosen to be larger than the largest radius in library
+w <- owin(xrange=c(0,500),yrange=c(0,500)) #large numbers of points makes attaching grains take forever!?
+set.seed(16431684)
+pp <- rpoispp(lambda=lambda,win=dilation(w,bufferdist),nsim=1,drop=TRUE)#lambda from B\"{o}m (2002) - chosen to make coverage probability very close to 0.5
+set.seed(6549876)
+xibuffer <- placegrainsfromlib(pp,grainlib)
+xi <- intersect.owin(xibuffer,w)
+
+specdens <- unsmoothedspectraldensity(as.mask(xi,eps=c(1,1)),Frame(xi))
+
+bandwidthl = bandwidthl #use same bandwidths as last section 
+smspecdens = mapply(kernelsmooth, bandwidthl, MoreArgs=list(im=specdens, kernel="Epanechnikov"), SIMPLIFY = FALSE)
+names(smspecdens) <- as.character(round(bandwidthl,digits=4))
+specdensl <- c(list(
+  "theoretical" = thspecdens,
+  "unsmsd specdens" = specdens),
+  smspecdens)
+plot(as.solist(specdensl),clipwin=Frame(specdens),axes=TRUE)
+plot(as.solist(specdensl),clipwin=owin(xrange = c(-0.3,0.3),yrange=c(-0.3,0.3)),axes=TRUE)
+
+thspecdens <- thspecdens[Frame(specdens)]
+imdiff <- function(A,B){
+  return(eval.im(A-B))
+}
+diffspecdensl <- mapply(imdiff,specdensl,MoreArgs=list(A=thspecdens),SIMPLIFY=FALSE)
+plot(as.solist(diffspecdensl),clipwin=owin(xrange = c(-0.5,0.5),yrange=c(-0.5,0.5)),axes=TRUE, main="Difference to Theoretical Zoom")
+```
+
+Which does better at estimate spectral density at 0?
+```{r}
+crop <- function(im,clipwin){
+  return(im[clipwin])
+}
+clippedims <- mapply(crop,diffspecdensl[3:length(diffspecdensl)], MoreArgs=list(
+         clipwin= owin(xrange = c(-diffspecdensl[[3]]$xstep,+diffspecdensl[[3]]$xstep), yrange=c(-diffspecdensl[[3]]$ystep,diffspecdensl[[3]]$ystep))),
+       SIMPLIFY=FALSE)
+lapply(clippedims,mean)
+```
+
+0.0754 does heaps better than the others!? How? Why?
+
+________________________________________________________________________________________
+
+### Repeated simulations
+ This is to test the distribution of the estimators. Hopefully it will be approximately Gaussian.
+Use bandwidth of 0.1. Spatial sampling of size 1, and natural spectral resolution (of 0.0062).
+
+a window 1000x1000 is going to be way 
+
+```{r}
+numsims = 3
+specdens <- list()
+smspecdens <- list()
+```
+
+## Appendix
+```{r}
+sessionInfo()
+```
+
+# References
+
 
 
