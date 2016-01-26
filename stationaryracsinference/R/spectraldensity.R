@@ -46,15 +46,22 @@
 
 
 
-spectraldensity <- function(Xi,w,bandwidth,kernel="Epanechnikov",...){
-  specdens <- unsmoothedspectraldensity(Xi,w,...)
-  xstep = specdens$xstep
-  ystep = specdens$ystep
+spectraldensity <- function(Xi, w, bandwidth, suffspecres=NULL, kernel="Epanechnikov"){
+  specdens <- unsmoothedspectraldensity(Xi,w,suffspecres=suffspecres)
+  smspecdens <- kernelsmooth(specdens,bandwidth,kernel=kernel)
+  return(smspecdens)
+}
+
+#' @rdname spectraldensity
+kernelsmooth <- function(im,bandwidth,kernel="Epanechnikov"){
+  stopifnot(is.im(im))
+  xstep = im$xstep
+  ystep = im$ystep
   if (kernel == "Epanechnikov") {supportwidth = bandwidth}
   else {
     warning("In spectral density smoothing support width of kernel is unknown, defaulting to 3x bandwidth")
     supportwidth = 3*bandwidth
-    }
+  }
   X <- seq(0,supportwidth*1.5+xstep,by=xstep) #much larger than support width to avoid boundary issues?
   Y <- seq(0,supportwidth*1.5+ystep,by=ystep)
   if (kernel == "Epanechnikov"){
@@ -70,10 +77,11 @@ spectraldensity <- function(Xi,w,bandwidth,kernel="Epanechnikov",...){
     stop("Given kernel is not supported for spectral density smoothing")
   }
   #apply kernel using convolve.im
-  smspecdens <- convolve.im(specdens,kernelfcn)
-  smspecdens <- smspecdens[Frame(specdens)]
-  return(smspecdens)
+  smim <- convolve.im(im,kernelfcn)
+  smim <- smim[Frame(im)]
+  return(smim)
 }
+
 
 
 #steal ideas from spatstat's convolve.im
@@ -81,7 +89,7 @@ spectraldensity <- function(Xi,w,bandwidth,kernel="Epanechnikov",...){
 #' @param suffspecres Optional. A desired spectral resolution, the output resolution will be smaller than \code{suffspecres}
 #'  If it is not provided then resolution will be 2*pi/(size of spatial extent of window), for example a window 500m x 500m will result in spectral resolution of 2*pi/500 in both X and Y directions.
 #'  Can be of length 1 (applies to all dimensions), or length 2 (a differen desired resolution for each dimension).
-unsmoothedspectraldensity <- function(Xi,w,suffspecres=NULL,...){
+unsmoothedspectraldensity <- function(Xi,w,suffspecres=NULL){
   stopifnot(is.owin(Xi))
   stopifnot(is.mask(Xi))
   stopifnot(is.rectangle(w)) #because theory uses rectangular windows, I'm going to assume a rectangular window to - maybe improve on this later
@@ -94,17 +102,17 @@ unsmoothedspectraldensity <- function(Xi,w,suffspecres=NULL,...){
   M <- M-p
   #pad if necessary #DFT approximation makes the assumption that function is 0 outside window anyway
   if ((!is.null(suffspecres))
-    &&
-    ( any(suffspecres < 2*pi/(c(xstep*ncol(M),ystep*nrow(M)))) ))
-    {
-      #calculate padding required in each direction: kX such that suffspecresX > 2*pi/(xstep*nrow(M)*kX) (so output BETTER than suffspecres)
-      padfactor <- ceiling(2*pi/(c(xstep*ncol(M),ystep*nrow(M))*suffspecres))
-      Mpad <- matrix(0,nrow=nrow(M)*padfactor[2],ncol=ncol(M)*padfactor[1])
-      Mpad[1:nrow(M),1:ncol(M)] <- M
-      fM <- xstep*ystep*fft(Mpad) #xstep*ystep = scale to approximate Fourier transform
+      &&
+      ( any(suffspecres < 2*pi/(c(xstep*ncol(M),ystep*nrow(M)))) ))
+  {
+    #calculate padding required in each direction: kX such that suffspecresX > 2*pi/(xstep*nrow(M)*kX) (so output BETTER than suffspecres)
+    padfactor <- ceiling(2*pi/(c(xstep*ncol(M),ystep*nrow(M))*suffspecres)) #it might be faster to make this powers of 2 but that sounds scary memory wise
+    Mpad <- matrix(0,nrow=nrow(M)*padfactor[2],ncol=ncol(M)*padfactor[1])
+    Mpad[1:nrow(M),1:ncol(M)] <- M
+    fM <- xstep*ystep*fft(Mpad) #xstep*ystep = scale to approximate Fourier transform
   }
   else {
-      fM <- xstep*ystep*fft(M) #xstep*ystep = scale to approximate Fourier transform
+    fM <- xstep*ystep*fft(M) #xstep*ystep = scale to approximate Fourier transform
   }
   areaM <- xstep*ncol(M) * ystep*nrow(M)
   specdens <- (Re(fM)^2+Im(fM)^2)/(areaM) #divide by areaM to get spectral density (formula in Bohm)
@@ -113,7 +121,7 @@ unsmoothedspectraldensity <- function(Xi,w,suffspecres=NULL,...){
   # Rearrange this periodic function so that 
   # the origin of translations (0,0) is at matrix position (nr/2,nc/2) or close depending on whether nr is even or not
   # NB this could introduce an extra row and column
-  nr <- nrow(fM)
+  nr <- nrow(fM) #can use these because fM has same dimensions as M or Mpad
   nc <- ncol(fM)
   if (nr %% 2 == 0){
     specdens <- specdens[ ((-nr/2):(nr/2)) %% (nr) + 1,]
@@ -124,12 +132,12 @@ unsmoothedspectraldensity <- function(Xi,w,suffspecres=NULL,...){
   } 
   if (nc %% 2 == 0){
     specdens <- specdens[, ((-nc/2):(nc/2)) %% (nc) + 1]
-    xcol <- ((-nc/2):(nc/2)) * 2*pi/(xstep*nr)
+    xcol <- ((-nc/2):(nc/2)) * 2*pi/(xstep*nc)
   } else {
     specdens <- specdens[, ((-(nc-1)/2):(nc/2)) %% (nc) + 1]  
-    xcol <- ((-(nc-1)/2):(nc/2)) * 2*pi/(xstep*nr)
+    xcol <- ((-(nc-1)/2):(nc/2)) * 2*pi/(xstep*nc)
   }
-
+  
   specdens <- im(specdens,xcol = xcol, yrow = yrow)
   
   return(specdens)
