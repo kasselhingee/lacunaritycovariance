@@ -1,0 +1,235 @@
+---
+title: "Testing Spectral Density Fcn"
+author: "Kassel Hingee"
+date: "25 January 2016"
+output: html_document
+---
+
+A number of diagnostics to test the spectral density functions.
+
+First check that unsmsd is creating the correct resolution objects:
+
+```{r}
+library(stationaryracsinference)
+```
+
+For this set of tests define a new version of unsmoothed spectral density function.
+```{r}
+unsmoothedspectraldensity <- function(Xi,w,suffspecres=NULL,...){
+  stopifnot(is.owin(Xi))
+  stopifnot(is.mask(Xi))
+  stopifnot(is.rectangle(w)) #because theory uses rectangular windows, I'm going to assume a rectangular window to - maybe improve on this later
+  Xi <- intersect.owin(Xi,w)
+  p <- covpest(Xi,w)
+  xstep=Xi$xstep
+  ystep=Xi$ystep
+  M <- as.matrix(Xi)
+  M[is.na(M)] <- 0 #since the function that we wish to transform is an indicator of inside window AND inside xi. Its ok to set all NAs to 0
+  M <- M-p
+  #pad if necessary #DFT approximation makes the assumption that function is 0 outside window anyway
+  if ((!is.null(suffspecres))
+    &&
+    ( any(suffspecres < 2*pi/(c(xstep*ncol(M),ystep*nrow(M)))) ))
+    {
+      #calculate padding required in each direction: kX such that suffspecresX > 2*pi/(xstep*nrow(M)*kX) (so output BETTER than suffspecres)
+      padfactor <- ceiling(2*pi/(c(xstep*ncol(M),ystep*nrow(M))*suffspecres)) #it might be faster to make this powers of 2 but that sounds scary memory wise
+      Mpad <- matrix(0,nrow=nrow(M)*padfactor[2],ncol=ncol(M)*padfactor[1])
+      Mpad[1:nrow(M),1:ncol(M)] <- M
+      fM <- xstep*ystep*fft(Mpad) #xstep*ystep = scale to approximate Fourier transform
+  }
+  else {
+      fM <- xstep*ystep*fft(M) #xstep*ystep = scale to approximate Fourier transform
+  }
+  areaM <- xstep*ncol(M) * ystep*nrow(M)
+  specdens <- (Re(fM)^2+Im(fM)^2)/(areaM) #divide by areaM to get spectral density (formula in Bohm)
+  #currently specdens[i,j] corresponds to a spectral location of 
+  #     y = 2pi*((i-1) mod numrow)/(length*ystep), x = 2pi*((j-1) mod numcol)/(length*xstep)
+  # Rearrange this periodic function so that 
+  # the origin of translations (0,0) is at matrix position (nr/2,nc/2) or close depending on whether nr is even or not
+  # NB this could introduce an extra row and column
+  nr <- nrow(fM) #can use these because fM has same dimensions as M or Mpad
+  nc <- ncol(fM)
+  if (nr %% 2 == 0){
+    specdens <- specdens[ ((-nr/2):(nr/2)) %% (nr) + 1,]
+    yrow <- ((-nr/2):(nr/2)) * 2*pi/(ystep*nr)
+  } else {
+    specdens <- specdens[ ((-(nr-1)/2):((nr-1)/2)) %% (nr) + 1,]
+    yrow <- ((-(nr-1)/2):((nr-1)/2)) * 2*pi/(ystep*nr)
+  } 
+  if (nc %% 2 == 0){
+    specdens <- specdens[, ((-nc/2):(nc/2)) %% (nc) + 1]
+    xcol <- ((-nc/2):(nc/2)) * 2*pi/(xstep*nc)
+  } else {
+    specdens <- specdens[, ((-(nc-1)/2):(nc/2)) %% (nc) + 1]  
+    xcol <- ((-(nc-1)/2):(nc/2)) * 2*pi/(xstep*nc)
+  }
+
+  specdens <- im(specdens,xcol = xcol, yrow = yrow)
+  
+  return(specdens)
+  
+}
+```
+#corrections made during this testing: nr --> nc, force to be pixel mask owin (because as.im(pixel mask) was still doing stuff)
+
+
+
+## The spectral resolutions:
+```{r}
+xi <- heather$coarse
+specdens <- unsmoothedspectraldensity(xi,Frame(xi))
+specdens$xstep
+specdens$ystep
+```
+
+The spectral xstep should be `r 2*pi/(xi$xstep*xi$dim[2])`. The spectral ystep should be `r 2*pi/(xi$ystep*xi$dim[1])`. It had a bug (\code{nr} being used instead of \code{nc}) but eventually worked :).
+
+Also check that the dimensions are correct (eg. for heather data it should have twice as many rows and columns almost). Its enclosing rectange (ie. spectral range) should be almost equal at \code{+2*pi/0.1} because \code{0.1=xstep=ystep}. 
+
+```{r}
+specdens
+```
+
+### Test the version that uses suffspecres.
+Equal dimension parameter:
+```{r}
+xi <- heather$coarse
+specdensssr <- unsmoothedspectraldensity(xi,Frame(xi),suffspecres = 0.1)
+specdensssr$xstep
+specdensssr$ystep
+```
+
+These should be related the natural fft resolutions (`r 2*pi/(xi$xstep*xi$dim[2])`,`r 2*pi/(xi$ystep*xi$dim[1])`) by integers: 
+```{r}
+2*pi/(xi$xstep*xi$dim[2])/specdens01$xstep
+2*pi/(xi$ystep*xi$dim[1])/specdens01$ystep
+```
+
+Test with each dimension restriction being different
+```{r}
+xi <- heather$coarse
+specdensssr <- unsmoothedspectraldensity(xi,Frame(xi),suffspecres = c(0.1,0.05))
+specdensssr$xstep
+specdensssr$ystep
+```
+
+
+## Test Values of Spectral Density:
+Compare to known Boolean model of discs:
+```{r}
+discr <- 10
+lambda <- 2.2064E-3
+grainlib <- solist(disc(radius=discr))
+bufferdist <- 12 #chosen to be larger than the largest radius in library
+w <- owin(xrange=c(0,500),yrange=c(0,500)) #large numbers of points makes attaching grains take forever!?
+set.seed(16431684)
+pp <- rpoispp(lambda=lambda,win=dilation(w,bufferdist),nsim=1,drop=TRUE)#lambda from B\"{o}m (2002) - chosen to make coverage probability very close to 0.5
+set.seed(6549876)
+xibuffer <- placegrainsfromlib(pp,grainlib)
+xi <- intersect.owin(xibuffer,w)
+```
+
+Calculate Theoretical Covariance and FFT into Spectral Density:
+```{r}
+#theoretical covariance
+setcovdisc <- function(r,discr){
+  if (r>=2*discr){setcovariance <- 0}
+  else {
+    setcovariance <- 2*discr^2*acos(r/(2*discr)) - (r/2)*sqrt(4*discr^2-r^2)
+  }
+  return(setcovariance)
+}
+
+thcovDeterministicDiscs <- function(r,lambda,discr){
+  expectedsetcovariance <- setcovdisc(r,discr)
+  p <- 1-exp(-pi*discr^2*lambda)
+  covariance <- 2*p-1+(1-p)^2*exp(lambda*expectedsetcovariance)
+  return(covariance)
+}
+
+thcovDeterministicDiscs_vec <- function(X,Y,lambda,discr){
+  rlist <- sqrt(X^2+Y^2)
+  covar <- vector(length(rlist),mode="numeric")
+  for (i in 1:length(rlist)){
+    covar[i] <- thcovDeterministicDiscs(rlist[i],lambda=lambda,discr=discr)
+  }
+  return(covar)
+}
+
+p <- 1-exp(-pi*discr^2*lambda)
+
+
+#Now to calculate covariance (low resolution so get large sample length)
+xptsLR <- 0:120/4
+yptsLR <- 0:120/4
+mat <- outer(xptsLR,yptsLR,FUN="thcovDeterministicDiscs_vec",lambda=lambda,discr=discr) #rows correspond to xstep - just a quirk of outer!
+#reflect out to all corners
+mat <- mat[,c((ncol(mat)):2,1:ncol(mat))]
+mat <- mat[c((nrow(mat)):2,1:nrow(mat)),]
+#theoretical p value 
+p <- 1-exp(-pi*discr^2*lambda)
+
+M <- mat-p^2
+nr <- nrow(M)
+nc <- ncol(M)
+#pad with lots of 0!
+thcovpad <- matrix(0, ncol=8*nc, nrow=8*nr)
+thcovpad[1:nr, 1:nc] <- M
+scalefactorX <- (xptsLR[2]-xptsLR[1])
+scalefactorY <- (yptsLR[2]-yptsLR[1]) 
+thspecdensPadLR <- scalefactorX*scalefactorY*fft(thcovpad)
+nr <- nrow(thspecdensPadLR)
+nc <- ncol(thspecdensPadLR)
+if (nr %% 2 == 0){
+  thspecdensPadLR <- thspecdensPadLR[ ((-nr/2):(nr/2)) %% (nr) + 1,]
+  yrow <- ((-nr/2):(nr/2)) * 2*pi/(scalefactorY*nr)
+} else {
+  thspecdensPadLR <- thspecdensPadLR[ ((-(nr-1)/2):((nr-1)/2)) %% (nr) + 1,]
+  yrow <- ((-(nr-1)/2):((nr-1)/2)) * 2*pi/(scalefactorY*nr)
+} 
+if (nc %% 2 == 0){
+  thspecdensPadLR <- thspecdensPadLR[, ((-nc/2):(nc/2)) %% (nc) + 1]
+  xcol <- ((-nc/2):(nc/2)) * 2*pi/(scalefactorX*nr)
+} else {
+  thspecdensPadLR <- thspecdensPadLR[, ((-(nc-1)/2):(nc/2)) %% (nc) + 1]  
+  xcol <- ((-(nc-1)/2):(nc/2)) * 2*pi/(scalefactorX*nr)
+}
+thspecdens <- im(abs(thspecdensPadLR),xcol=xcol, yrow=yrow)
+plot(thspecdens,clipwin=owin(xrange = c(-0.5,0.5),yrange=c(-0.5,0.5)))
+``` 
+
+For a good choice of simulation size, spatial resolution and spectral resolution the unsmoothed spectral density should get pretty close. It should do even better for the smoothed version (tests of that later). Let try with very high spatial resolution 
+```{r}
+specdens <- unsmoothedspectraldensity(as.mask(xi,dimyx=c(2052,2052)),Frame(xi))
+plot(specdens)
+plot(specdens,clipwin=owin(xrange = c(-0.5,0.5),yrange=c(-0.5,0.5)))
+```
+
+Still quite pixelated, try forcing at least 2x higher spectral resolution as well:
+```{r}
+specdens <- unsmoothedspectraldensity(as.mask(xi,dimyx=c(2052,2052)),Frame(xi),suffspecres = 0.005)
+plot(specdens)
+plot(specdens,clipwin=owin(xrange = c(-0.2,0.2),yrange=c(-0.2,0.2)),axes=TRUE)
+```
+
+This looks smoother, but still messier than the theoretical spectral density. It's got two spurious high points at about (0,+/-0.03). What could they be caused by?
+
+Larger windows should get us closer (though no theorem for the unsmoothed version). Spatial resolution didn't seem to change things so going back to a lower spacing. 1000 was the largest window I could simulate:
+```{r}
+discr <- 10
+lambda <- 2.2064E-3
+grainlib <- solist(disc(radius=discr))
+bufferdist <- 12 #chosen to be larger than the largest radius in library
+w <- owin(xrange=c(0,1000),yrange=c(0,1000)) #large numbers of points makes attaching grains take forever!?
+set.seed(16431684)
+pp <- rpoispp(lambda=lambda,win=dilation(w,bufferdist),nsim=1,drop=TRUE)#lambda from B\"{o}m (2002) - chosen to make coverage probability very close to 0.5
+set.seed(6549876)
+xibuffer <- placegrainsfromlib(pp,grainlib)
+xi <- intersect.owin(xibuffer,w)
+
+specdens <- unsmoothedspectraldensity(as.mask(xi,eps=c(1,1)),Frame(xi),suffspecres = 0.0005)
+plot(specdens)
+plot(specdens,clipwin=owin(xrange = c(-0.2,0.2),yrange=c(-0.2,0.2)),axes=TRUE)
+```
+
+
