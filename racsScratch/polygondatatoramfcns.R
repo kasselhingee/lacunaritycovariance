@@ -19,7 +19,7 @@ getrastervaluesofpolygons <- function(polygons,inrasterfilename){
 #' @param polygons is a SpatialPolygonDataFrame.
 #' @param filename is the location of a raster file that contains *all* of the polygons
 putencompassingrastervaluesinram <- function(polygons,filename){
-  stopifnot(class(spdf)[1]=="SpatialPolygonsDataFrame")
+  stopifnot(class(polygons)[1]=="SpatialPolygonsDataFrame")
   rasterobject <- raster(inrasterfilename)
   if (!(extent(rasterobject) >= extent(polygons))){
     stop("Raster file doesn't cover all polygons. Exiting")
