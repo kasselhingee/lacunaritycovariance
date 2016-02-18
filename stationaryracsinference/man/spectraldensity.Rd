@@ -25,6 +25,8 @@ If it is not provided then resolution will be 2*pi/(size of spatial extent of wi
 Can be of length 1 (applies to all dimensions), or length 2 (a differen desired resolution for each dimension).}
 
 \item{kernel}{Specifies the kernel to use. Currently only Epanechnikov is supported (and is the default).}
+
+\item{im}{an image for \code{kernelsmooth} to smooth.}
 }
 \description{
 \code{unsmoothedspectraldensity} estimates the spectral density of a RACS without any kernal smoothing.

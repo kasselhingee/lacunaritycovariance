@@ -22,7 +22,7 @@
 #' If \code{normalise} is \code{TRUE} then divides by 
 #' \eqn{\frac{-4}{e}ln(\frac{1}{e})} and adds 1 so normalised spherical contact contagion is
 #' \deqn{
-#' 1+(\frac{-4}{e}ln(\frac{1}{e}))^{-1} \text{unnormalised contagion}
+#' 1+(\frac{-4}{e}ln(\frac{1}{e}))^{-1} \mbox{unnormalised contagion}
 #' }
 #' This makes contagion vary between 0 and 1 for all 2 phase processes.
 #' 
