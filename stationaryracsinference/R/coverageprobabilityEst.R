@@ -12,8 +12,8 @@
 #' @return an estimate of the coverage probability
 #' @author Kassel Hingee 
 #' @import spatstat
-#' @export covpest
-covpest <- function(Xi,w){
+#' @export coveragefrac
+coveragefrac <- function(Xi,w){
   stopifnot(is.owin(Xi))
   stopifnot(is.owin(w))   
   XiInsideW <- intersect.owin(Xi,w)
@@ -27,11 +27,11 @@ covpest <- function(Xi,w){
 #' @examples
 #' XiOWIN <- heather$coarse
 #' windowOWIN <- Frame(heather$coarse)
-#' coverageProb <- covpest(XiOWIN,windowOWIN)
+#' coverageProb <- coveragefrac(XiOWIN,windowOWIN)
 #' #
 #' #vegetation map of Balcatta park
 #' data(balcattapark_coarse)
-#' coverageProb <- covpest(balcattapark_coarse$vegmask,balcattapark_coarse$boundary)
+#' coverageProb <- coveragefrac(balcattapark_coarse$vegmask,balcattapark_coarse$boundary)
 
 #' @keywords spatial nonparametric
 #' @seealso \code{\link{exactvarP}} to estimate variance 

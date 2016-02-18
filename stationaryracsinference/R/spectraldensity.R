@@ -96,7 +96,7 @@ unsmoothedspectraldensity <- function(Xi,w,suffspecres=NULL){
   stopifnot(is.mask(Xi))
   stopifnot(is.rectangle(w)) #because theory uses rectangular windows, I'm going to assume a rectangular window to - maybe improve on this later
   Xi <- intersect.owin(Xi,w)
-  p <- covpest(Xi,w)
+  p <- coveragefrac(Xi,w)
   xstep=Xi$xstep
   ystep=Xi$ystep
   M <- as.matrix(Xi)

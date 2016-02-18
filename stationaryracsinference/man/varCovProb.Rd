@@ -20,7 +20,7 @@ asympvarP() isn't constructed yet but will estimate a variance assuming that thi
 Functions for estimating variance (and confidence intervals)  of the coverage fraction estimates
 }
 \details{
-Molchanov (1997 Ch3.1) notes that the variance of the estimator \code{\link[stationaryracsinference]{covpest}} is 
+Molchanov (1997 Ch3.1) notes that the variance of the estimator \code{\link[stationaryracsinference]{coveragefrac}} is 
 \deqn{var = \frac{1}{A(w)^2}\int_W \gamma_W(v)C(v) - p^2 dv}
 
 This function assumes that the probability of two points being in \eqn{\Xi} is independent \deqn{C(v) = p^2} outside the calculated window of covariance which is...

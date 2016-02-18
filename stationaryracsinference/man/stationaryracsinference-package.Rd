@@ -16,9 +16,9 @@ The aim is to develop methods for estimating various parameters for RACS models 
 
 The main functions are:
 
-covpest() for coverage fraction
+coveragefrac() for coverage fraction
 
-covariance() for the covariance (also known as the two-point probability function)
+covarianceRACS() for the covariance (also known as the two-point probability function)
 
 }
 \author{
@@ -36,7 +36,7 @@ refer to Chiu et al 2013, and Molchanov**
 XiOWIN <- heather$coarse
 windowOWIN <- Frame(heather$coarse)
  
-coverageProb <- covpest(XiOWIN,windowOWIN)
+coverageProb <- coveragefrac(XiOWIN,windowOWIN)
  
 covarianceFcn <- covarianceRACS(XiOWIN,windowOWIN)
 plot(covarianceFcn$covariance)

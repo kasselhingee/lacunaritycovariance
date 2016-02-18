@@ -81,7 +81,7 @@ contagTwoPtProb <- function(covariance,p=NULL,v=NULL,normalise=FALSE){
 #' xi <- heather$coarse
 #' covariance <- covarianceRACS(xi,Frame(xi))$covariance
 #' twoptcontagion <- contagTwoPtProb(covariance)
-#' p <- covpest(xi,Frame(xi))
+#' p <- coveragefrac(xi,Frame(xi))
 #' twoptcontagion <- contagTwoPtProb(covariance,p)
 #' plot(twoptcontagion)
 #' plot(twoptcontagion,clipwin=owin(xrange=c(-0.5,0.5),yrange=c(-0.5,0.5)),main="zoom")

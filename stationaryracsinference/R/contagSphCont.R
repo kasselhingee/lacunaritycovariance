@@ -45,7 +45,7 @@ contagSphCont <- function(xiH,xiHc,p,normalise=FALSE){
 
 #' @examples 
 #' xi <- heather$coarse
-#' p <- covpest(xi,Frame(xi))
+#' p <- coveragefrac(xi,Frame(xi))
 #' xiH <- Hest(xi)
 #' #it typically not advisable to choose set r ourselves, **is it a good idea here? Interpolation later might be better?
 #' xiHc <- Hest(complement.owin(xi,frame=Frame(xi)))

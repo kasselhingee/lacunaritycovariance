@@ -97,7 +97,7 @@ covarianceMapEst_direct <- function(Xi,w,maxXshiftdistance,maxYshiftdistance){
 #' XiOWIN <- heather$coarse
 #' windowOWIN <- Frame(heather$coarse)
 #' 
-#' coverageProb <- covpest(XiOWIN,windowOWIN)
+#' coverageProb <- coveragefrac(XiOWIN,windowOWIN)
 #' 
 #' covariancePt <- covarianceEstAtPoint(XiOWIN,windowOWIN,c(3,5))
 #' 

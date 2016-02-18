@@ -4,7 +4,7 @@
 #' 
 #' @description Functions for estimating variance (and confidence intervals)  of the coverage fraction estimates
  
-#' @details Molchanov (1997 Ch3.1) notes that the variance of the estimator \code{\link[stationaryracsinference]{covpest}} is 
+#' @details Molchanov (1997 Ch3.1) notes that the variance of the estimator \code{\link[stationaryracsinference]{coveragefrac}} is 
 #' \deqn{var = \frac{1}{A(w)^2}\int_W \gamma_W(v)C(v) - p^2 dv}
  #estimate exact variance of pest
  #from set covariance of W is the erosion of W by {o,v}
