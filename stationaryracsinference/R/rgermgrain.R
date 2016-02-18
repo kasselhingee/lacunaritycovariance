@@ -32,6 +32,9 @@ placegrainsfromlib <- function(pp,grainlib,replace=TRUE,prob=NULL){
   return(placedgrains)
 }
 
+# Note on union.owin: for pixel masks it uses inside.owin(xcol, yrow, A) | inside.owin(xcol,yrow,B) to determine union mask. It does this recursively.
+# Inside owin uses a lot of checking about polygons etc.
+
 
 #' @examples
 #' #Generating a germ-grain models where germs are a Poisson Point process, and grains are 2 or 3 different disc sizes.

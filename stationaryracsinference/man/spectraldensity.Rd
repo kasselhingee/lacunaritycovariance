@@ -25,8 +25,6 @@ If it is not provided then resolution will be 2*pi/(size of spatial extent of wi
 Can be of length 1 (applies to all dimensions), or length 2 (a differen desired resolution for each dimension).}
 
 \item{kernel}{Specifies the kernel to use. Currently only Epanechnikov is supported (and is the default).}
-
-\item{...}{Arguments passed to \code{as.mask} to convert observation into a pixel image. This is useful for specifying the resolution of the raster derived from \code{Xi} (otherwise the raster will always have 128x128 pixels).}
 }
 \description{
 \code{unsmoothedspectraldensity} estimates the spectral density of a RACS without any kernal smoothing.
@@ -40,6 +38,8 @@ as described in [B\"{o}hm 2004] (the very first equation or equivalently \eqn{\h
 
 This is what \code{unsmoothedspectraldensity} returns.
  \code{spectraldensity} then kernel smooths \eqn{\hat{h}} before returning a spectral density estimate.
+
+\code{kernelsmooth} smooths an image using a kernel. Currently the only kernel availabe is Epanechnikov.
 }
 \section{WARNING}{
  WARNING RESULTS OF THIS FUNCTION HAVENT BEEN TESTED - THEY COULD BE WILDLY WRONG

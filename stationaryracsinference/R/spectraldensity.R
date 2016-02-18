@@ -1,5 +1,5 @@
 #'Spectral Density of a RACS
-#' @export unsmoothedspectraldensity spectraldensity
+#' @export unsmoothedspectraldensity spectraldensity kernelsmooth
 #' 
 #' @description 
 #' \code{unsmoothedspectraldensity} estimates the spectral density of a RACS without any kernal smoothing.
@@ -14,6 +14,8 @@
 #' This is what \code{unsmoothedspectraldensity} returns.
 #'  \code{spectraldensity} then kernel smooths \eqn{\hat{h}} before returning a spectral density estimate.
 #' 
+#' \code{kernelsmooth} smooths an image using a kernel. Currently the only kernel availabe is Epanechnikov. 
+#' 
 #' @references B\"{o}hm, S., Heinrich, L., Schmidt, V., 2004. Kernel Estimation of the Spectral Density of Stationary Random Closed Sets. Australian & New Zealand Journal of Statistics 46, 41--51. doi:10.1111/j.1467-842X.2004.00310.x
 #' 
 #' 
@@ -21,7 +23,7 @@
 #' @param w Observation window (must be rectangular for now)
 #' @param bandwidth Bandwidth for the chosen kernel (in reciprocal of the units of \code{Xi})
 #' @param kernel Specifies the kernel to use. Currently only Epanechnikov is supported (and is the default).
-#' @param ... Arguments passed to \code{as.mask} to convert observation into a pixel image. This is useful for specifying the resolution of the raster derived from \code{Xi} (otherwise the raster will always have 128x128 pixels).
+#' @param im an image for \code{kernelsmooth} to smooth.
 #' 
 #' 
 #' 
