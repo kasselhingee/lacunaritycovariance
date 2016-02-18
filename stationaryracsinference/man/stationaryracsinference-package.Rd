@@ -32,5 +32,13 @@ refer to Chiu et al 2013, and Molchanov**
 \keyword{ package }
 \keyword{ spatial }
 \examples{
-%simple examples of the most important functions 
+%coverage and covariance estimation
+XiOWIN <- heather$coarse
+windowOWIN <- Frame(heather$coarse)
+ 
+coverageProb <- covpest(XiOWIN,windowOWIN)
+ 
+covarianceFcn <- covarianceRACS(XiOWIN,windowOWIN)
+plot(covarianceFcn$covariance)
+plot(covarianceFcn$covariance - coverageProb*coverageProb)
 }
