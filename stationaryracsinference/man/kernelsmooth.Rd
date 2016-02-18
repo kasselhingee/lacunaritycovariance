@@ -17,7 +17,7 @@ kernelsmooth(im, bandwidth, kernel = "Epanechnikov")
 A smoothed image in spatstat \code{im} format
 }
 \description{
-Functions for kernel smoothing spatstat images. This is mostly for smoothing spectral density estimates.
+Function for kernel smoothing spatstat images. This is mostly for smoothing spectral density estimates.
 Only kernel currently supported is Epanechnikov.
 }
 \details{
