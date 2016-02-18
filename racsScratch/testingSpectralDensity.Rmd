@@ -244,6 +244,9 @@ title(main="Unsmoothed Spectral Density: Bool of 10m discs, 1000x1000 window", s
 ```
 
 The higher resolution didn't made the function any less speckldy, the speckles are simply better defined, in hindsight this makes sense - the \code{suffspecres} parameter is just padding the simulation with zeros which is a computationally efficient equivalent to interpolating the output. This code isn't being run because it hogs computer for 30mins or more. If spectral resolution doesn't help the only thing that will is greater simulation windows. Unfortunately at windows of 1000x1000 the process already takes a very long time.
+ 
+ Fan and Kreutzberger [@fan1998au] note that the unsmoothed estimate of spectral density for a process on $R^1$ (called a *periodogram*) is unbiased, but it is well known that it isn't consistent! It doesn't get arbitrarily close to the true spectral density as the numbers of samples (and window length) increase! 
+ Smoothing is not the only way to get around this issue, smoothing the log of periodogram also works, as does smoothing using a Whittle likelihood. [@fan1998au] argue that the latter two options are better!
 
 Technically zero padding *doesn't* increase resolution because it doesn't increase the ability to resolve anything. It just increases the *interpolation-density*.
 

@@ -3,12 +3,14 @@
 #' @depends raster
 #' @export putencompassingrastervaluesinram
 
+#' @param polygons is a SpatailPolygonsDataFrame
+#' @param inrasterfilenam The file to extract raster values from. May only work for single band files
 getrastervaluesofpolygons <- function(polygons,inrasterfilename){
   encompassingraster <- putencompassingrastervaluesinram( polygons,inrasterfilename)
   
   polylist <- unlistSpatialPolygonsDataframe(polygons)
   #extract raster values for each polygon:
-  polygonrasters= mapply(crop,polylist,MoreArgs=list(x=rasterinram),simplify=FALSE)
+  polygonrasters= mapply(crop,polylist,MoreArgs=list(x=encompassingraster),simplify=FALSE)
   
   return(polygonrasters)
 }
@@ -25,7 +27,7 @@ putencompassingrastervaluesinram <- function(polygons,filename){
     stop("Raster file doesn't cover all polygons. Exiting")
   }
 
-  rasterinram <- transfertoram(encompassingraster,extent(polygons),2)
+  rasterinram <- transfertoram(rasterobject,extent(polygons),2)
   return(rasterinram)
 }
 
@@ -54,4 +56,39 @@ unlistSpatialPolygonsDataframe <- function(spdf){
     polylist <- c(polylist,spdf[i,])
   }
   return(polylist)
+}
+
+
+######################################
+#' @description Functions for taking a list of owin polygons/rectangles and converting to a SpatialPolygonsDataFrame
+
+#' @param x A spatstat owin object of type polygonal or rectangular
+#only works for polygonal and rectangular owin
+#this particular heirarchy of classes from sp make no sense to me!
+as.Polygon.owin <- function(x){
+  if (is.polygonal(x)){
+    coords <- matrix(c(x$bdry[[1]]$x,x$bdry[[1]]$y),byrow=FALSE,nrow=length(x$bdry[[1]]$x),ncol=2)
+    coords <- rbind(coords,coords[1,]) #finish loop as per requirements of Polygon function
+  }
+  else if (is.rectangle(x)){
+    coords <- matrix(c(
+      x$xrange[1],x$yrange[1],
+      x$xrange[1],x$yrange[2],
+      x$xrange[2],x$yrange[2],
+      x$xrange[2],x$yrange[1],
+      x$xrange[1],x$yrange[1]
+    ),byrow=TRUE,ncol=2,nrow=5)
+  }
+  else {
+    stop(paste("Error: can only convert polygon or rectangle type owin's to spatial Polygons."))
+  }
+  sppolygon <- Polygon(coords,hole=FALSE)
+  return(sppolygon)
+}
+
+#' @param x is a "Polygon" object for sp.
+#' @param id an id to be assigned to the polygon. Default is NA
+#' @param returns a "Polygons" object
+as.Polygons.Polygon <- function(x, id="NA"){
+  sppolygons <- Polygons(list(x),id)
 }
