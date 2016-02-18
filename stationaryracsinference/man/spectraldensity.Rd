@@ -28,20 +28,18 @@ Can be of length 1 (applies to all dimensions), or length 2 (a differen desired 
 \code{spectraldensity} smoothes the estimate and is my recommended function due to known asymptotoic properties [1].
 }
 \details{
-Applies FFT to the input image and takes the square of the magnitude to estimate the (non-kernel smoothed) spectral density
+Applies FFT to the input image and takes the square of the magnitude to estimate the non-smoothed spectral density (sometimes known as the periodogram)
 as described in [B\"{o}hm 2004] (the very first equation or equivalently \eqn{\hat{h}(x)} of equation 4.6 in the 2002 report).  
 
 \eqn{\hat{h}(z) := \frac{1}{|w|}\left|\int_{R^2}1_w(x) (1_\Xi(x)-p) dx\right|}
 
 This is what \code{unsmoothedspectraldensity} returns.
- \code{spectraldensity} then kernel smooths \eqn{\hat{h}} before returning a spectral density estimate.
-
-\code{kernelsmooth} smooths an image using a kernel. Currently the only kernel availabe is Epanechnikov.
+ \code{spectraldensity} then kernel smooths \eqn{\hat{h}} returning a spectral density estimate.
+ The smoothed version has much better statistical properties.
+ In fact in 1D the unsmoothed spectral density is not even a consistent estimator [Fan and Kreutzberger 1998]
 }
 \section{WARNING}{
  WARNING RESULTS OF THIS FUNCTION HAVENT BEEN TESTED - THEY COULD BE WILDLY WRONG
-
-Also final result should have odd pixel dimensions (so that the spectral density at origin is easy to pull out), but convolve.im returns even dimensions, I don't know why yet.
 }
 \examples{
 #apply to heather
@@ -59,5 +57,7 @@ plot(solist(smoothed = specdens,unsmoothed = unsmspecdens),
 }
 \references{
 B\"{o}hm, S., Heinrich, L., Schmidt, V., 2004. Kernel Estimation of the Spectral Density of Stationary Random Closed Sets. Australian & New Zealand Journal of Statistics 46, 41--51. doi:10.1111/j.1467-842X.2004.00310.x
+
+Fan, J., Kreutzberger, E., 1998. Automatic Local Smoothing for Spectral Density Estimation. Scandinavian Journal of Statistics 25 (2): 359-69. doi:10.1111/1467-9469.00109.
 }
 
