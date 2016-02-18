@@ -1,5 +1,5 @@
 #' @title Covariance estimates, also known as `two-point probabilities' for stationary RACS
-#' @export covarianceRACS covarianceEstAtPoint covarianceMapEst_direct
+#' @export covariance covarianceEstAtPoint covarianceMapEst_direct
 #' @description 
 #' These functions estimate the covariance of a stationary random closed set. 
 #' The covariance is also known as the two-point coverage probability, and very closely related to the semivariogram.
@@ -16,12 +16,12 @@
 #' \item{comp2 }{Denominator - The set covariance of the boundary \code{w}}
 #' \item{comp3 }{Numerator - The set covariance of \eqn{\Xi_{obs}}}
 #' 
-#' For \code{covarianceEstAtPoint} these are single numerical values; for \code{covarianceMapEst_direct} they are matrices; for \code{covarianceRACS} they are objects of SpatStat's \code{im} class.
+#' For \code{covarianceEstAtPoint} these are single numerical values; for \code{covarianceMapEst_direct} they are matrices; for \code{covariance} they are objects of SpatStat's \code{im} class.
 
 
-#' @details \code{covarianceRACS} estimates uses Fourier transforms to calculate set covariances (using \code{\link[spatstat]{setcov}} function). It is much faster (500 times faster in one comparison) than \code{covarianceMapEst_direct}.
+#' @details \code{covariance} estimates uses Fourier transforms to calculate set covariances (using \code{\link[spatstat]{setcov}} function). It is much faster (500 times faster in one comparison) than \code{covarianceMapEst_direct}.
 #' Vectors with small set covariance of the window are eliminated (using \code{setCovBoundaryThresh} because they cause the covariance to be enormous)
-covarianceRACS <- function(Xi,w,setCovBoundaryThresh = 0.1*area.owin(w)){
+covariance <- function(Xi,w,setCovBoundaryThresh = 0.1*area.owin(w)){
   Xiinside <- intersect.owin(Xi,w) #seems like extra work to do this check :(, but safer to
   numerator <- setcov(Xiinside)
   denominator <- setcov(w) 
@@ -34,7 +34,7 @@ covarianceRACS <- function(Xi,w,setCovBoundaryThresh = 0.1*area.owin(w)){
 }
 
 ########################################
-#' @rdname covarianceRACS
+#' @rdname covariance
 #' @details \code{covarianceEstAtPoint} estimates the covariance of a single vector \eqn{v} by ratioing the set covariance of \code{Xi} to the set covariance of of observation window \code{w}. Set covariance is calculated by intersecting a set with a translated copy of itself.
 #' @param v A 2D vector in c(x,y) format.
 
@@ -55,7 +55,7 @@ covarianceEstAtPoint <- function(Xi,w,v){
 
 
 #######################################
-#' @rdname covarianceRACS
+#' @rdname covariance
 #' @details 
 #' \code{covarianceMapEst_direct} estimates covariance on a regular grid using the resolution of \code{Xi}. The regular grid extends to \code{maxXshiftdistance} and \code{maxYshiftdistance} in the x and y components respectively. It uses \code{covarianceEstAtPoint} to estimate the covariance at each grid point.
 #' Ignores point estimates that use an area smaller than 10% of the window.
@@ -105,7 +105,7 @@ covarianceMapEst_direct <- function(Xi,w,maxXshiftdistance,maxYshiftdistance){
 #' filled.contour(covarianceDirectEst$covariance)
 #' 
 #' 
-#' covarianceFcn <- covarianceRACS(XiOWIN,windowOWIN)
+#' covarianceFcn <- covariance(XiOWIN,windowOWIN)
 #' plot(covarianceFcn$covariance)
 #' plot(covarianceFcn$covariance - coverageProb*coverageProb)
 

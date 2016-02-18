@@ -79,7 +79,7 @@ contagTwoPtProb <- function(covariance,p=NULL,v=NULL,normalise=FALSE){
 
 #' @examples 
 #' xi <- heather$coarse
-#' covariance <- covarianceRACS(xi,Frame(xi))$covariance
+#' covariance <- covariance(xi,Frame(xi))$covariance
 #' twoptcontagion <- contagTwoPtProb(covariance)
 #' p <- coveragefrac(xi,Frame(xi))
 #' twoptcontagion <- contagTwoPtProb(covariance,p)

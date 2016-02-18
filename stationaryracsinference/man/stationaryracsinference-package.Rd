@@ -18,7 +18,7 @@ The main functions are:
 
 coveragefrac() for coverage fraction
 
-covarianceRACS() for the covariance (also known as the two-point probability function)
+covariance() for the covariance (also known as the two-point probability function)
 
 }
 \author{
@@ -38,7 +38,7 @@ windowOWIN <- Frame(heather$coarse)
  
 coverageProb <- coveragefrac(XiOWIN,windowOWIN)
  
-covarianceFcn <- covarianceRACS(XiOWIN,windowOWIN)
+covarianceFcn <- covariance(XiOWIN,windowOWIN)
 plot(covarianceFcn$covariance)
 plot(covarianceFcn$covariance - coverageProb*coverageProb)
 }
