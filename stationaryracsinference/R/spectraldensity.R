@@ -1,5 +1,5 @@
 #'Spectral Density of a RACS
-#' @export unsmoothedspectraldensity spectraldensity kernelsmooth
+#' @export unsmoothedspectraldensity spectraldensity 
 #' 
 #' @description 
 #' \code{unsmoothedspectraldensity} estimates the spectral density of a RACS without any kernal smoothing.
@@ -21,15 +21,12 @@
 #' 
 #' @param Xi A rectangular observation of \eqn{Xi}. NA's are assumed to mean outside \eqn{\Xi} rather than missing data. Xi must be pixel mask owin object. (**I haven't assesed the theory/computations for non-rectangular windows but its probably the same)
 #' @param w Observation window (must be rectangular for now)
-#' @param bandwidth Bandwidth for the chosen kernel (in reciprocal of the units of \code{Xi})
+#' @param bandwidth Bandwidth for the kernel smoothing (in the units of spectral units of \code{Xi} which are \eqn{2\pi/width(\code{Xi})}**)
 #' @param kernel Specifies the kernel to use. Currently only Epanechnikov is supported (and is the default).
-#' @param im an image for \code{kernelsmooth} to smooth.
 #' 
 #' 
 #' 
 #' @section WARNING: WARNING RESULTS OF THIS FUNCTION HAVENT BEEN TESTED - THEY COULD BE WILDLY WRONG
-#' 
-#' Also final result should have odd pixel dimensions (so that the spectral density at origin is easy to pull out), but convolve.im returns even dimensions, I don't know why yet.
 #' 
 
 #' @examples 
@@ -54,39 +51,6 @@ spectraldensity <- function(Xi, w, bandwidth, suffspecres=NULL, kernel="Epanechn
   return(smspecdens)
 }
 
-#' @rdname spectraldensity
-kernelsmooth <- function(im,bandwidth,kernel="Epanechnikov"){
-  stopifnot(is.im(im))
-  xstep = im$xstep
-  ystep = im$ystep
-  if (kernel == "Epanechnikov") {supportwidth = bandwidth}
-  else {
-    warning("In spectral density smoothing support width of kernel is unknown, defaulting to 3x bandwidth")
-    supportwidth = 3*bandwidth
-  }
-  X <- seq(0,supportwidth*1.5+xstep,by=xstep) #much larger than support width to avoid boundary issues?
-  Y <- seq(0,supportwidth*1.5+ystep,by=ystep)
-  if (kernel == "Epanechnikov"){
-    mat <- outer(X/bandwidth,Y/bandwidth,FUN="EpanechnikovFcn") #rows correspond to xstep - just a quirk of outer!
-    mat <- mat/(bandwidth^2) #to account for the scaling of the kernel - so that it all adds to 1
-    mat <- t(mat) #columns correspond to changes in X, rows correspond to changes in Y!
-    #reflect out to all corners
-    mat <- mat[,c((ncol(mat)):2,1:ncol(mat))]
-    mat <- mat[c((nrow(mat)):2,1:nrow(mat)),]
-    kernelfcn <- im(mat,xcol=c(-X[length(X):2],X),yrow=c(-Y[length(Y):2],Y))
-  }
-  else {
-    stop("Given kernel is not supported for spectral density smoothing")
-  }
-  #apply kernel using convolve.im
-  smim <- convolve.im(im,kernelfcn)
-  smim <- smim[Frame(im)]
-  return(smim)
-}
-
-
-
-#steal ideas from spatstat's convolve.im
 #' @rdname spectraldensity
 #' @param suffspecres Optional. A desired spectral resolution, the output resolution will be smaller than \code{suffspecres}
 #'  If it is not provided then resolution will be 2*pi/(size of spatial extent of window), for example a window 500m x 500m will result in spectral resolution of 2*pi/500 in both X and Y directions.
@@ -146,12 +110,3 @@ unsmoothedspectraldensity <- function(Xi,w,suffspecres=NULL){
   
 }
 
-#EpanechnikovFcn 
-EpanechnikovFcn <- function(X,Y){#WARNING: operates in 2D only on a vector of things 
-  stopifnot(length(X)==length(Y))
-  result <- vector(length=length(X),mode="numeric")
-  sz <- sqrt((X*X)+(Y*Y))
-  result[sz>1] <- 0
-  result[sz<=1] <- (2/pi)*(1-sz[sz<=1]^2)
-  return(result)
-}
