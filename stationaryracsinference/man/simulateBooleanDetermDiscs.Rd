@@ -2,12 +2,21 @@
 % Please edit documentation in R/rbooldeterministicdiscs.R
 \name{simulateBooleanDetermDiscs}
 \alias{booldetermdiscs_truecoveragefrac}
+\alias{quasithspecdens}
 \alias{simulateBooleanDetermDiscs}
+\alias{thcovarDeterministicDiscs}
+\alias{thspecdensAtOrigin}
 \title{Simulation of Boolean Model of Deterministic Discs}
 \usage{
 simulateBooleanDetermDiscs(lambda, discr, window)
 
 booldetermdiscs_truecoveragefrac(lambda, discr)
+
+thcovarDeterministicDiscs(xrange, yrange, eps, lambda, discr)
+
+quasithspecdens(lambda, discr)
+
+thspecdensAtOrigin(lambda, discr)
 }
 \arguments{
 \item{lambda}{Intensity of the germ process (which is a Poisson point process)}
@@ -15,13 +24,28 @@ booldetermdiscs_truecoveragefrac(lambda, discr)
 \item{discr}{Radius of the discs}
 
 \item{window}{The window to simulate in (an owin object)}
+
+\item{xrange}{range of x values for \code{thcovarDeterministicDiscs}}
+
+\item{yrange}{range of y values for \code{thcovarDeterministicDiscs}}
+
+\item{eps}{list of distances between samples points in x and y respectively for \code{thcovarDeterministicDiscs}.}
 }
 \value{
 \code{simulateBooleanDetermDiscs} returns an owin object containing the locations covered by the Boolean model. The window information is not contained.
 
 \code{booldetermdiscs_truecoveragefrac} returns the true coverage fraction given the intensity and the radius.
+
+\code{thcovarDeterministicDiscs} returns an image of the covariance (which will be isotropic)
 }
 \description{
 Function for simulating a Boolean model with deterministic discs, and also functions for calculating theoretical properties such as coverage function, covariance, and spectral density.
 }
+\section{Functions}{
+\itemize{
+\item \code{quasithspecdens}: Gives an estimate of the spectral density using the theoretical covariance and FFT
+
+\item \code{thspecdensAtOrigin}: Calculates spectral density at \eqn{o} using the theoretical covariance.
+It is the integral of the covariance - (coverage fraction)^2 over all space.
+}}
 

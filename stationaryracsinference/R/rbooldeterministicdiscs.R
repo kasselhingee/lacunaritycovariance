@@ -1,5 +1,5 @@
 #' @title Simulation of Boolean Model of Deterministic Discs
-#' @export simulateBooleanDetermDiscs  booldetermdiscs_truecoveragefrac
+#' @export simulateBooleanDetermDiscs  booldetermdiscs_truecoveragefrac thcovarDeterministicDiscs thspecdensAtOrigin quasithspecdens
 #' 
 #' @description Function for simulating a Boolean model with deterministic discs, and also functions for calculating theoretical properties such as coverage function, covariance, and spectral density.
 #' 
@@ -11,7 +11,7 @@
 #' 
 #' \code{booldetermdiscs_truecoveragefrac} returns the true coverage fraction given the intensity and the radius.
 #' 
-#' 
+#' \code{thcovarDeterministicDiscs} returns an image of the covariance (which will be isotropic)
 
 
 simulateBooleanDetermDiscs <- function(lambda,discr,window){
@@ -29,7 +29,7 @@ simulateBooleanDetermDiscs <- function(lambda,discr,window){
 #' 
 #' 
 booldetermdiscs_truecoveragefrac <- function(lambda, discr){
-  return (1-exp(-2*pi*discr^2*lambda))
+  return (1-exp(-pi*discr^2*lambda))
 }
 
 #theoretical set covariance of a disc
@@ -63,16 +63,79 @@ thcovDeterministicDiscs_vec <- function(X,Y,lambda,discr){
   return(covar)
 }
 
-# get an image of the theoretical covariance
-# xrange range of x values
-# yrange range of y values
-# eps list of distances between samples points in x and y respectively.
-thcovDeterministicDiscs <- function(xrange,yrange,eps,lambda,discr){
+#' @rdname simulateBooleanDetermDiscs
+#' @param xrange range of x values for \code{thcovarDeterministicDiscs}
+#' @param yrange range of y values for \code{thcovarDeterministicDiscs}
+#' @param eps list of distances between samples points in x and y respectively for \code{thcovarDeterministicDiscs}.
+thcovarDeterministicDiscs <- function(xrange,yrange,eps,lambda,discr){
   xpts <- seq(from = xrange[1], to = xrange[2], by = eps[1])
   ypts <- seq(from = yrange[1], to = yrange[2], by = eps[2])
   mat <- outer(xpts,ypts,FUN="thcovDeterministicDiscs_vec",lambda=lambda,discr=discr) #rows correspond to xstep - just a quirk of outer!
   #reflect out to all corners
   return(im(mat,xcol = xpts,ycol=ypts))
+}
+
+#' @describeIn simulateBooleanDetermDiscs  Gives an estimate of the spectral density using the theoretical covariance and FFT
+quasithspecdens <- function(lambda,discr){
+  xptsLR <- 0:(20*discr)/4
+  yptsLR <- 0:(20*discr)/4
+  mat <- outer(xptsLR,yptsLR,FUN="thcovDeterministicDiscs_vec",lambda=lambda,discr=discr) #rows correspond to xstep - just a quirk of outer!
+  #reflect out to all corners
+  mat <- mat[,c((ncol(mat)):2,1:ncol(mat))]
+  mat <- mat[c((nrow(mat)):2,1:nrow(mat)),]
+  #theoretical p value 
+  p <- 1-exp(-pi*discr^2*lambda)
+  
+  M <- mat-p^2
+  nr <- nrow(M)
+  nc <- ncol(M)
+  #pad with lots of 0!
+  thcovpad <- matrix(0, ncol=8*nc, nrow=8*nr)
+  thcovpad[1:nr, 1:nc] <- M
+  scalefactorX <- (xptsLR[2]-xptsLR[1])
+  scalefactorY <- (yptsLR[2]-yptsLR[1]) 
+  specdens <- scalefactorX*scalefactorY*fft(thcovpad)
+  specdens <- abs(specdens)
+  nr <- nrow(specdens) #can use these because specdens has same dimensions as start
+  nc <- ncol(specdens)
+  if (nr %% 2 == 0){
+    specdens <- specdens[ ((-nr/2):(nr/2)) %% (nr) + 1,]
+    yrow <- ((-nr/2):(nr/2)) * 2*pi/(scalefactorY*nr)
+  } else {
+    specdens <- specdens[ ((-(nr-1)/2):((nr-1)/2)) %% (nr) + 1,]
+    yrow <- ((-(nr-1)/2):((nr-1)/2)) * 2*pi/(scalefactorY*nr)
+  } 
+  if (nc %% 2 == 0){
+    specdens <- specdens[, ((-nc/2):(nc/2)) %% (nc) + 1]
+    xcol <- ((-nc/2):(nc/2)) * 2*pi/(scalefactorX*nc)
+  } else {
+    specdens <- specdens[, ((-(nc-1)/2):(nc/2)) %% (nc) + 1]  
+    xcol <- ((-(nc-1)/2):(nc/2)) * 2*pi/(scalefactorX*nc)
+  }
+  
+  specdens <- im(specdens,xcol = xcol, yrow = yrow)
+  return(specdens)
+}
+
+#' @describeIn simulateBooleanDetermDiscs Calculates spectral density at \eqn{o} using the theoretical covariance.
+#'  It is the integral of the covariance - (coverage fraction)^2 over all space.
+#now calculate spectral density at origin using integral of covariance -p^2
+thspecdensAtOrigin <- function(lambda,discr){
+  xptsLR <- 0:(80*discr)/20
+  yptsLR <- 0:(80*discr)/20
+  mat <- outer(xptsLR,yptsLR,FUN="thcovDeterministicDiscs_vec",lambda=lambda,discr=discr) #rows correspond to xstep - just a quirk of outer!
+  #reflect out to all corners
+  mat <- mat[,c((ncol(mat)):2,1:ncol(mat))]
+  mat <- mat[c((nrow(mat)):2,1:nrow(mat)),]
+  #theoretical p value 
+  p <- 1-exp(-pi*discr^2*lambda)
+  
+  M <- mat-p^2
+  nr <- nrow(M)
+  nc <- ncol(M)
+  scalefactorX <- (xptsLR[2]-xptsLR[1])
+  scalefactorY <- (yptsLR[2]-yptsLR[1]) 
+  return(sum(M)*scalefactorY*scalefactorX)
 }
 
 
@@ -86,6 +149,12 @@ thcovDeterministicDiscs <- function(xrange,yrange,eps,lambda,discr){
 #' discr <- 10
 #' w <- owin(xrange=c(0,100),c(0,100))
 #' lambda <- 2.2064E-3
-#' xi <- simulateBoolean(lambda,discr,w)
+#' xi <- simulateBooleanDetermDiscs(lambda,discr,w)
 #' plot(xi)
 #' plot(w,add=TRUE)
+#' 
+#' truecoveragefrac <- booldetermdiscs_truecoveragefrac(lambda,discr)
+#' thspecdens_origin <- thspecdensAtOrigin(lambda,discr)
+#' thspecdens <- quasithspecdens(lambda,discr)
+#' thspecdens[round(dim(thspecdens)[2]/2),round(dim(thspecdens)[1]/2)]
+ 
