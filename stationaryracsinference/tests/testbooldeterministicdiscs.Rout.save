@@ -18,14 +18,10 @@ Type 'q()' to quit R.
 > ## tests for Boolean simulations of deterministic disc code
 > 
 > 
-> library(stationaryracsinference)
-Loading required package: spatstat
-Loading required package: nlme
+> library(stationaryracsinference, quietly = TRUE)
 
-spatstat 1.43-0       (nickname: 'Mixed Effects') 
+spatstat 1.44-1.027       (nickname: 'Levity Waves') 
 For an introduction to spatstat, type 'beginner'
-
-Note: spatstat version 1.43-0 is out of date by more than 4 months; we recommend upgrading to the latest version.
 > 
 > ## thcovarDeterministicDiscs check
 > thcovarDeterministicDiscs(xrange=c(-10,10),yrange=c(-3,3),eps=c(1,1),0.0022064,10)
@@ -47,4 +43,4 @@ enclosing rectangle: [-10.5, 10.5] x [-3.5, 3.5] units
 > 
 > proc.time()
    user  system elapsed 
-  8.968   0.200   9.172 
+  9.664   0.196   9.863 
