@@ -71,8 +71,8 @@ thcovarDeterministicDiscs <- function(xrange,yrange,eps,lambda,discr){
   xpts <- seq(from = xrange[1], to = xrange[2], by = eps[1])
   ypts <- seq(from = yrange[1], to = yrange[2], by = eps[2])
   mat <- outer(xpts,ypts,FUN="thcovDeterministicDiscs_vec",lambda=lambda,discr=discr) #rows correspond to xstep - just a quirk of outer!
-  #reflect out to all corners
-  return(im(mat,xcol = xpts,ycol=ypts))
+  mat <- t(mat) #now columns correspond to x vals.
+  return(im(mat,xcol = xpts, yrow=ypts))
 }
 
 #' @describeIn simulateBooleanDetermDiscs  Gives an estimate of the spectral density using the theoretical covariance and FFT
