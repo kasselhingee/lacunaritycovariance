@@ -4,20 +4,20 @@
 \alias{fft.im}
 \title{Fast Fourier Transform of Images}
 \usage{
-fft.im(image, padfactor = c(1, 1))
+fft.im(img, padfactor = c(1, 1))
 }
 \arguments{
-\item{image}{input image. Can't contain any NA values}
+\item{img}{input image. Can't contain any NA values}
 
 \item{padfactor}{Optional argument to pad image with zeros and thus increase the spectral resolution (technically interpolation because no extra information is included) of the result.}
 }
 \value{
-an image with correct spectral units.
+an image with correct spectral units and height of the spectral function for approximating a continuous Fourier transform.
 }
 \description{
 Uses R's inbuilt FFT function it has addition machinery for returning corrects scales for approximating the continuous fourier transform
 \deqn{
- f(z) = \int g(x) e^{i<x,z>} \dx
+ f(z) = \int g(x) e^{i<x,z>} dx
 }
 where \eqn{<x,z>} is the standard spatial dot product: \eqn{<x,z> = \sum_{i=1}^d x_i z_i}.
 }
