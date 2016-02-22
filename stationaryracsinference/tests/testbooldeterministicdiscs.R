@@ -1,7 +1,7 @@
 ## tests for Boolean simulations of deterministic disc code
 
 
-library(stationaryracsinference)
+library(stationaryracsinference, quietly = TRUE)
 
 ## thcovarDeterministicDiscs check
 thcovarDeterministicDiscs(xrange=c(-10,10),yrange=c(-3,3),eps=c(1,1),0.0022064,10)
