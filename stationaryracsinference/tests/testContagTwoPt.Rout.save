@@ -37,8 +37,8 @@ Warning message:
 > 
 > contagTwoPtProb(covariance,p=p, v=c(5,15))
 [1] -1.384307
-> #result for both used to be -0.9985666, but it isn't? Why?
+> #result for both should be -1.384307
 > 
 > proc.time()
    user  system elapsed 
-  1.892   0.036   1.928 
+  1.936   0.024   1.961 
