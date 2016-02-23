@@ -33,16 +33,16 @@
 #' p <- coveragefrac(xi,Frame(xi))
 #' xiH <- Hest(xi)
 #' #it typically not advisable to choose set r ourselves, **is it a good idea here? Interpolation later might be better?
-#' xiHc <- Hest(complement.owin(xi,frame=Frame(xi)))
-#' plot(r,xiH,type="l",col="red") 
-#' lines(r,xiHc,type="l",col="black") 
+#' xiHc <- Hest(complement.owin(xi)) #works because frame of xi complement is also the window
+#' plot(xiH,type="l",col="red") 
+#' lines(xiHc,type="l",col="black") 
 #' 
 #' harmonised <- harmonise(xiH,xiHc)
 #' xiH <- harmonised[[1]]
 #' xiHc <- harmonised[[2]]
 #' 
 #' contagion <- contagSphCont(xiH$km,xiHc$km,p)
-#' plot(r,contagion,type="l")
+#' plot(xiH$r,contagion,type="l")
 #' 
 #' @seealso \code{\link{contagTwoPtProb}} 
 

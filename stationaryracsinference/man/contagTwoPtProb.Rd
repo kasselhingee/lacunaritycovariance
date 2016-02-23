@@ -13,7 +13,7 @@ contagTwoPtProb(covariance, p = NULL, v = NULL, normalise = FALSE)
 
 \item{v}{is an optional input. It is a vector in format c(x,y)}
 
-\item{normalise}{If true normalises the results so that all RACS return a value between}
+\item{normalise}{If true normalises the results so that all RACS return a value between 0 and 1}
 }
 \value{
 If \code{v} is included then returns a single number, otherwise a map of the two point contagion
@@ -37,5 +37,23 @@ For an observation of a single phase \eqn{\Xi} this is easy to calculate.
 }
 \section{Warning}{
  there might still be some instability for covariance very close, but less than p
+}
+\examples{
+xi <- heather$coarse
+covariance <- covariance(xi,Frame(xi))$covariance
+twoptcontagion <- contagTwoPtProb(covariance)
+p <- coveragefrac(xi,Frame(xi))
+twoptcontagion <- contagTwoPtProb(covariance,p)
+plot(twoptcontagion)
+plot(twoptcontagion,clipwin=owin(xrange=c(-0.5,0.5),yrange=c(-0.5,0.5)),main="zoom")
+v <- c(5,15)
+twoptcontagion[ppp(v[1],v[2],window=owin(xrange=c(v[1]-1,v[1]+1),yrange=c(v[2]-1,v[2]+1)))]
+
+contagTwoPtProb(covariance,p,c(5,15))
+#result for both should be -0.9985666
+
+}
+\seealso{
+\code{\link{contagSphCont}}
 }
 

@@ -19,8 +19,25 @@
 #' @param covariance is a map of covariance in spatstat \code{im} format
 #' @param p is an estimated coverage fraction. If none is provided an estimate is made using covariance (see details).
 #' @param v is an optional input. It is a vector in format c(x,y)
-#' @param normalise If true normalises the results so that all RACS return a value between 
+#' @param normalise If true normalises the results so that all RACS return a value between 0 and 1
 #' @return If \code{v} is included then returns a single number, otherwise a map of the two point contagion
+#' 
+#' @seealso \code{\link{contagSphCont}} 
+
+#' @examples 
+#' xi <- heather$coarse
+#' covariance <- covariance(xi,Frame(xi))$covariance
+#' twoptcontagion <- contagTwoPtProb(covariance)
+#' p <- coveragefrac(xi,Frame(xi))
+#' twoptcontagion <- contagTwoPtProb(covariance,p)
+#' plot(twoptcontagion)
+#' plot(twoptcontagion,clipwin=owin(xrange=c(-0.5,0.5),yrange=c(-0.5,0.5)),main="zoom")
+#' v <- c(5,15)
+#' twoptcontagion[ppp(v[1],v[2],window=owin(xrange=c(v[1]-1,v[1]+1),yrange=c(v[2]-1,v[2]+1)))]
+#' 
+#' contagTwoPtProb(covariance,p,c(5,15))
+#' #result for both should be -0.9985666
+#' 
 contagTwoPtProb <- function(covariance,p=NULL,v=NULL,normalise=FALSE){
   if (is.null(p)){p <- covariance[ppp(0,0)]}
   if (is.null(v)){
@@ -75,19 +92,3 @@ contagTwoPtProb <- function(covariance,p=NULL,v=NULL,normalise=FALSE){
 #and it matches :)
 
 
-#' @seealso \code{\link{contagSphCont}} 
-
-#' @examples 
-#' xi <- heather$coarse
-#' covariance <- covariance(xi,Frame(xi))$covariance
-#' twoptcontagion <- contagTwoPtProb(covariance)
-#' p <- coveragefrac(xi,Frame(xi))
-#' twoptcontagion <- contagTwoPtProb(covariance,p)
-#' plot(twoptcontagion)
-#' plot(twoptcontagion,clipwin=owin(xrange=c(-0.5,0.5),yrange=c(-0.5,0.5)),main="zoom")
-#' v <- c(5,15)
-#' twoptcontagion[ppp(v[1],v[2],window=owin(xrange=c(v[1]-1,v[1]+1),yrange=c(v[2]-1,v[2]+1)))]
-#' 
-#' contagTwoPtProb(covariance,p,c(5,15))
-#' #result for both should be -0.9985666
-#' 
