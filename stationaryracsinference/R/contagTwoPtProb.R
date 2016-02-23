@@ -35,33 +35,27 @@
 #' v <- c(5,15)
 #' twoptcontagion[ppp(v[1],v[2],window=owin(xrange=c(v[1]-1,v[1]+1),yrange=c(v[2]-1,v[2]+1)))]
 #' 
-#' contagTwoPtProb(covariance,p,c(5,15))
+#' contagTwoPtProb(covariance,p=p, v=c(5,15))
 #' #result for both should be -0.9985666
 #' 
 contagTwoPtProb <- function(covariance,p=NULL,v=NULL,normalise=FALSE){
   if (is.null(p)){p <- covariance[ppp(0,0)]}
   if (is.null(v)){
-    #use a dummy calculation for the things close to p
-    covariance[ppp(0,0)] <- p/2  
-    covTooHigh <- NULL
-    if (p < max(covariance)){
-      warning("Coverage fracton estimate is smaller than the largest covariance. Avoiding negatives...")
-      covTooHigh <- which(p < as.matrix(covariance))
-      covariance[covTooHigh] <- p/2
-    }
-    #use a short cut simplification to the ptwise function above
-    unnormalisedContag <- eval.im(
-      (1+covariance-2*p)*log(1+covariance-2*p)
-      + 2*(p-covariance)*log(p-covariance)
-      + covariance*log(covariance)
-    )
+    originOnlyInXi <- covariance
+    originOnlyInXi[p-covariance>0] <- (p-covariance[p-covariance>0])*log(p-covariance[p-covariance>0])
+    originOnlyInXi[p-covariance <= 0] <- 0
+    #vOnlyInXi equals originOnlyInXi
+    neitherInXi <- 1-2*p + covariance
+    neitherInXi <- covariance
+    neitherInXi[1-2*p + covariance>0] <- (1-2*p + covariance[1-2*p + covariance>0])*log(1-2*p + covariance[1-2*p + covariance>0])
+    neitherInXi[1-2*p + covariance <= 0] <- 0
     
-    #at the spots where p ~ covariance. I'm going to say contagion is p*ln(p)+(1-p)*ln(1-p) because lim (x*ln(x)) = 0 cuts out the mixed parts
-    unnormalisedContag[ppp(0,0)] <- p*log(p)+(1-p)*log(1-p)
-    if (!(is.null(covTooHigh))){
-      unnormalisedContag[covTooHigh] <- p*log(p)+(1-p)*log(1-p)
-    }
-    return(1/(-log(1/4)) *unnormalisedContag)
+    unnormalisedContag <- eval.im(covariance*log(covariance)+
+      2*originOnlyInXi +
+        neitherInXi)
+    
+    if (normalise){return(1+1/(log(1/4)) *unnormalisedContag)}
+    return(unnormalisedContag)
   }
   else {
     bothInXiProb <- covariance[
@@ -78,7 +72,7 @@ contagTwoPtProb <- function(covariance,p=NULL,v=NULL,normalise=FALSE){
       originOnlyInXi*log(originOnlyInXi)+ 
       vOnlyInXi*log(vOnlyInXi)+
       neitherInXi*log(neitherInXi)
-    if (normalise) {return(1+1/(-log(1/4)) *unnormalisedContag)}
+    if (normalise) {return(1+1/(log(1/4)) *unnormalisedContag)}
     else{return(unnormalisedContag)}
   }    
 }
