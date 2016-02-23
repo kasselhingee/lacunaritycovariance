@@ -17,7 +17,7 @@
 #' \deqn{xiH(r)\approx P(B_r(x) \subseteq \Xi^c)}
 #'  of a disc around an arbitrary point \eqn{x} is contained in \eqn{\Xi^c.}
 #' Similary xiHc should be the probability of disc being fully contained in \eqn{\Xi}
-#' \deqn{xiHc(r)\approx P(B_r(o) \subseteq \Xi).}
+#' \deqn{xiHc(r)\sim P(B_r(o) \subseteq \Xi).}
 #' 
 #' If \code{normalise} is \code{TRUE} then divides by 
 #' \eqn{\frac{-4}{e}ln(\frac{1}{e})} and adds 1 so normalised spherical contact contagion is
@@ -25,25 +25,10 @@
 #' 1+(\frac{-4}{e}ln(\frac{1}{e}))^{-1} \mbox{unnormalised contagion}
 #' }
 #' This makes contagion vary between 0 and 1 for all 2 phase processes.
-#' 
-contagSphCont <- function(xiH,xiHc,p,normalise=FALSE){
-  Pstates <- matrix(NA,nrow=4,ncol=length(xiH))
-  rownames(Pstates)=c("P11","P10","P01","P00")
-  Pstates["P11",] <- p* (1-xiHc)
-  Pstates["P10",] <- p*xiHc
-  Pstates["P00",] <- (1-p)*(1-xiH)
-  Pstates["P01",] <- (1-p)*(xiH)
-  
-  tempstates <- Pstates
-  tempstates[Pstates<1E-8] <- 1
-  unnormalisedContag <- colSums(Pstates*log(tempstates))
-  if (normalise) {return(1+ unnormalisedContag/(-4/exp(1)*log(1/exp(1))))}
-  else {return(unnormalisedContag)}
-}
+#' @return a vector the same length as xiH corresponding to the contagion at each r value of xiH
 
-#' @seealso \code{\link{contagTwoPtProb}} 
 
-#' @examples 
+#' @examples
 #' xi <- heather$coarse
 #' p <- coveragefrac(xi,Frame(xi))
 #' xiH <- Hest(xi)
@@ -59,3 +44,20 @@ contagSphCont <- function(xiH,xiHc,p,normalise=FALSE){
 #' contagion <- contagSphCont(xiH$km,xiHc$km,p)
 #' plot(r,contagion,type="l")
 #' 
+#' @seealso \code{\link{contagTwoPtProb}} 
+
+contagSphCont <- function(xiH,xiHc,p,normalise=FALSE){
+  Pstates <- matrix(NA,nrow=4,ncol=length(xiH))
+  rownames(Pstates)=c("P11","P10","P01","P00")
+  Pstates["P11",] <- p* (1-xiHc)
+  Pstates["P10",] <- p*xiHc
+  Pstates["P00",] <- (1-p)*(1-xiH)
+  Pstates["P01",] <- (1-p)*(xiH)
+  
+  tempstates <- Pstates
+  tempstates[Pstates<1E-8] <- 1
+  unnormalisedContag <- colSums(Pstates*log(tempstates))
+  if (normalise) {return(1+ unnormalisedContag/(-4/exp(1)*log(1/exp(1))))}
+  else {return(unnormalisedContag)}
+}
+

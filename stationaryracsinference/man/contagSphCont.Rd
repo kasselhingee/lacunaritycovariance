@@ -16,6 +16,9 @@ The sample points should be same as xiH for now.}
 
 \item{normalise}{Optional. If true normalises the results so that all RACS return a value between}
 }
+\value{
+a vector the same length as xiH corresponding to the contagion at each r value of xiH
+}
 \description{
 Calculates a spherical contact version of contagion. 
 This version of contagion gauges closeness/mixing between \eqn{\Xi} and \eqn{\Xi^c}
@@ -29,7 +32,7 @@ xiH should be a function of radius that estimates the probability
 \deqn{xiH(r)\approx P(B_r(x) \subseteq \Xi^c)}
  of a disc around an arbitrary point \eqn{x} is contained in \eqn{\Xi^c.}
 Similary xiHc should be the probability of disc being fully contained in \eqn{\Xi}
-\deqn{xiHc(r)\approx P(B_r(o) \subseteq \Xi).}
+\deqn{xiHc(r)\sim P(B_r(o) \subseteq \Xi).}
 
 If \code{normalise} is \code{TRUE} then divides by 
 \eqn{\frac{-4}{e}ln(\frac{1}{e})} and adds 1 so normalised spherical contact contagion is
@@ -37,5 +40,25 @@ If \code{normalise} is \code{TRUE} then divides by
 1+(\frac{-4}{e}ln(\frac{1}{e}))^{-1} \mbox{unnormalised contagion}
 }
 This makes contagion vary between 0 and 1 for all 2 phase processes.
+}
+\examples{
+xi <- heather$coarse
+p <- coveragefrac(xi,Frame(xi))
+xiH <- Hest(xi)
+#it typically not advisable to choose set r ourselves, **is it a good idea here? Interpolation later might be better?
+xiHc <- Hest(complement.owin(xi,frame=Frame(xi)))
+plot(r,xiH,type="l",col="red") 
+lines(r,xiHc,type="l",col="black") 
+
+harmonised <- harmonise(xiH,xiHc)
+xiH <- harmonised[[1]]
+xiHc <- harmonised[[2]]
+
+contagion <- contagSphCont(xiH$km,xiHc$km,p)
+plot(r,contagion,type="l")
+
+}
+\seealso{
+\code{\link{contagTwoPtProb}}
 }
 
