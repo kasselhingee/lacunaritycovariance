@@ -47,7 +47,7 @@ contagTwoPtProb <- function(covariance,p=NULL,v=NULL,normalise=FALSE){
     if (p < max(covariance)){
       warning("Coverage fracton estimate is smaller than the largest covariance. Avoiding negatives...")
       covTooHigh <- which(p < as.matrix(covariance))
-      covaraince[covTooHigh] <- p/2
+      covariance[covTooHigh] <- p/2
     }
     #use a short cut simplification to the ptwise function above
     unnormalisedContag <- eval.im(

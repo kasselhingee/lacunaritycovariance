@@ -5,7 +5,7 @@
 \alias{contagpixelgrid}
 \title{Pixel Contagion}
 \usage{
-contagpixelgrid(xi, w)
+contagpixelgrid(xi, w, normalise = FALSE)
 
 adjacency(xi, w)
 }
@@ -13,6 +13,8 @@ adjacency(xi, w)
 \item{xi}{an owin mask representing a realisation of RACS}
 
 \item{w}{the window of observation}
+
+\item{normalise}{If \code{TRUE} will divide result by 2*log(2) and add 1 to make contagion between 0 and 1 for any binary map}
 }
 \description{
 Function for calculating the standard LPI contagion from a pixel grid.
@@ -28,5 +30,18 @@ Considering not xi as another phase and using a 4-neighbourhood.
 }}
 \section{Warning}{
  Will fail if there are no adjacencies
+}
+\examples{
+xi <- heather$coarse
+w <- owin(xrange = c(0,7),yrange=c(0,16))
+adjmat <- adjacency(xi,w)
+adjmat
+contagion <- contagpixelgrid(xi,w)
+contagion
+#Finer resolution
+xi <- heather$medium
+w <- owin(xrange = c(0,7),yrange=c(0,16))
+contagion <- contagpixelgrid(xi,w)
+contagion
 }
 

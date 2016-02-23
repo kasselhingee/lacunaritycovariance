@@ -6,10 +6,26 @@
 #' 
 #' @param xi an owin mask representing a realisation of RACS
 #' @param w the window of observation
+#' @param normalise If \code{TRUE} will divide result by 2*log(2) and add 1 to make contagion between 0 and 1 for any binary map
 
 #' @details The `double count' method as described in the FRAGSTATS manual on adjacency matrix.
 #' Considering not xi as another phase and using a 4-neighbourhood.
-contagpixelgrid <- function(xi,w){
+#' @examples
+#' xi <- heather$coarse
+#' w <- owin(xrange = c(0,7),yrange=c(0,16))
+#' adjmat <- adjacency(xi,w)
+#' adjmat
+#' contagion <- contagpixelgrid(xi,w)
+#' contagion
+
+#' #Finer resolution
+#' xi <- heather$medium
+#' w <- owin(xrange = c(0,7),yrange=c(0,16))
+#' contagion <- contagpixelgrid(xi,w)
+#' contagion
+
+#' @section Warning: Will fail if there are no adjacencies
+contagpixelgrid <- function(xi, w, normalise=FALSE){
   stopifnot(is.mask(xi))
   out <- harmonise(xi,w)
   xi <- out[[1]]
@@ -23,11 +39,10 @@ contagpixelgrid <- function(xi,w){
   #xi with xi part of contagion
   contag <- contag + sum(propOfXi*adjmat[1,]/rowSums(adjmat)[1]*log(propOfXi*adjmat[1,]/rowSums(adjmat)[1]))
   contag <- contag + sum(propOfNotXi*adjmat[2,]/rowSums(adjmat)[2]*log(propOfNotXi*adjmat[2,]/rowSums(adjmat)[2]))
-  contag <- 1+contag/(2*log(2))
+  if (normalise) {contag <- 1+contag/(2*log(2))}
   return(contag)
 }
 
-#' @section Warning: Will fail if there are no adjacencies
 
 #' @describeIn contagpixelgrid Calculates the adjacency matrix used in the pixel contagion
 adjacency <- function(xi,w){
@@ -71,16 +86,3 @@ adjacency <- function(xi,w){
   return(adjacencymat)
 }
 
-#' @examples
-#' xi <- heather$coarse
-#' w <- owin(xrange = c(0,7),yrange=c(0,16))
-#' adjmat <- adjacency(xi,w)
-#' adjmat
-#' contagion <- contagpixelgrid(xi,w)
-#' contagion
-
-#' #Finer resolution
-#' xi <- heather$medium
-#' w <- owin(xrange = c(0,7),yrange=c(0,16))
-#' contagion <- contagpixelgrid(xi,w)
-#' contagion
