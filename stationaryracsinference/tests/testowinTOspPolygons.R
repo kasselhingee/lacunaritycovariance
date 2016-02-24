@@ -1,6 +1,7 @@
 #testing spatial polygon conversion
 
-library(spatstat, stationaryracsinference, quietly = TRUE)
+library(spatstat, quietly = TRUE)
+library(stationaryracsinference, quietly = TRUE)
 
 #polygons that are all have simple boundary
 data(polygontest, package="stationaryracsinference")
@@ -14,12 +15,12 @@ tileauxdata$TileRow <- factor(tileauxdata$TileRow,ordered=TRUE)
 tileauxdata$TileCol <- factor(tileauxdata$TileCol,ordered=TRUE)
 auxdata <- cbind(id,tileauxdata)
 
-spdf1 <- as.spdf.owin(tilelist, tileauxdata, 
-                     proj4string = sp::CRS(proj4string(polygontest)), match.ID=FALSE)
+spdf1 <- as.spdf.owin(tilelist, tileauxdata, idcolumn = NULL, 
+                     proj4string = sp::CRS(sp::proj4string(polygontest)), match.ID=FALSE)
 spdf1
                      
 spdf2 <- sp::SpatialPolygonsDataFrame(as.SpatialPolygons.tess(tess), auxdata, match.ID = FALSE)
-sp::proj4string(spdf2) <- sp::CRS(proj4string(polygontest))
+sp::proj4string(spdf2) <- sp::CRS(sp::proj4string(polygontest))
 spdf2
 
 #######################################################################
@@ -37,11 +38,11 @@ tileauxdata$TileCol <- factor(tileauxdata$TileCol,ordered=TRUE)
 auxdata <- cbind(id,tileauxdata)
 
 spdf1 <- as.spdf.owin(tilelist, tileauxdata, 
-                      proj4string = sp::CRS(proj4string(polygontest)), match.ID=FALSE)
+                      proj4string = sp::CRS(sp::proj4string(polygontest)), match.ID=FALSE)
 spdf1
 
 spdf2 <- sp::SpatialPolygonsDataFrame(as.SpatialPolygons.tess(tess), auxdata, match.ID = FALSE)
-proj4string(spdf2) <- sp::CRS(proj4string(polygontest))
+sp::proj4string(spdf2) <- sp::CRS(sp::proj4string(polygontest))
 spdf2
 
 
