@@ -38,7 +38,7 @@ vectmp[(1:length(vectmp) %%2)==0] <- TRUE
 vectmp[(1:length(vectmp) %%2)!=0] <- FALSE
 testmat <- matrix(vectmp,nrow=10,ncol=10)
 xi <- owin(mask = testmat)
-contagpixelgrid(xi,Frame(xi)) #result shoud be zero
+contagpixelgrid(xi,Frame(xi),normalise=TRUE) #result shoud be zero
 
 #maximum contagion
 vectmp <- vector(mode="logical",length=100)
@@ -46,4 +46,4 @@ vectmp[3:length(vectmp)] <- TRUE
 vectmp[1:2] <- FALSE #two points to avoid zero adjacency
 testmat <- matrix(vectmp,nrow=10,ncol=10)
 xi <- owin(mask = testmat)
-contagpixelgrid(xi,Frame(xi)) #result should be close to 1
+contagpixelgrid(xi,Frame(xi),normalise=TRUE) #result should be close to 1
