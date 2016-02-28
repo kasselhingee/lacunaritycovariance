@@ -1,14 +1,12 @@
 Package: stationaryracsinference
 Type: Package
 Title: Some inference tools for random closed sets in the plane
-Version: 0.2-3
-Date: 2016-02-10
+Version: 0.2
+Date: 2016-01-21
 Author: Kassel Liam Hingee
 Maintainer: <kassel.hingee@research.uwa.edu.au>
 Depends:
     spatstat
-Imports:
-    sp, maptools, raster
 Description: Functions for non-parametric estimation of 2D RACS from
     observations of the plane. The aim is to include methods that apply to remote
     sensing products (such as tree canopy maps). Consequently the methods focus on

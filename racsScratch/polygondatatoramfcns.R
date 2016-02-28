@@ -4,7 +4,7 @@
 #' @export putencompassingrastervaluesinram
 
 #' @param polygons is a SpatailPolygonsDataFrame
-#' @param inrasterfilenam The file to extract raster values from. May only work for single band files
+#' @param inrasterfilename The file to extract raster values from. May only work for single band files
 getrastervaluesofpolygons <- function(polygons,inrasterfilename){
   encompassingraster <- putencompassingrastervaluesinram( polygons,inrasterfilename)
   
