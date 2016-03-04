@@ -1,5 +1,5 @@
 #' @title Functions for reading loading remote sensing data into RAM for quick extraction later
-#' @export putencompassingrastervaluesinram
+#' @export getrastervaluesofpolygons putencompassingrastervaluesinram transfertoram
 #' 
 #' @description When extracting multiple polygons of data it is much faster to read in a large chunk of data to ram and then extract the polygons from this chunk then to extract each polygon separately from the data on HDD. 
 #' These functions are designed to help with this. Currently using raster functions, I think the best thing will be to shift to rgdal read functions in the future.
