@@ -48,4 +48,24 @@ Function for simulating a Boolean model with deterministic discs, and also funct
 \item \code{thspecdensAtOrigin}: Calculates spectral density at \eqn{o} using the theoretical covariance.
 It is the integral of the covariance - (coverage fraction)^2 over all space.
 }}
+\section{WARNING}{
+
+ \code{simulateBooleanDetermDiscs} does not handle the case of an empty realisation very well.
+This is because the frame of returned value \code{Xi} can be smaller than the simulation window.
+}
+\examples{
+#Boolean model with discs of radius 10.
+#The intensity has been chosen such that the true coverage fraction is very close to 0.5.
+discr <- 10
+w <- owin(xrange=c(0,100),c(0,100))
+lambda <- 2.2064E-3
+xi <- simulateBooleanDetermDiscs(lambda,discr,w)
+plot(xi)
+plot(w,add=TRUE)
+
+truecoveragefrac <- booldetermdiscs_truecoveragefrac(lambda,discr)
+thspecdens_origin <- thspecdensAtOrigin(lambda,discr)
+thspecdens <- quasithspecdens(lambda,discr)
+thspecdens[round(dim(thspecdens)[2]/2),round(dim(thspecdens)[1]/2)]
+}
 

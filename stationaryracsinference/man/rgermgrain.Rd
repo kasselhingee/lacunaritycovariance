@@ -25,7 +25,25 @@ Use point process simulations from spatstat to generate a point process in desir
 \details{
 \code{placegrainsfromlib} randomly samples from a library of grains (\code{grainlib}) and places these on the points in \code{pp}.
 }
+\examples{
+#Generating a germ-grain models where germs are a Poisson Point process, and grains are 2 or 3 different disc sizes.
+grainlib <- solist(disc(radius=1),disc(radius=1.9),disc(radius=0.2))
+bufferdist <- 2 #chosen to be larger than the largest radius in library
+
+w <- owin(xrange=c(0,10),yrange=c(0,10))
+
+pp <- rpoispp(lambda=0.1,win=dilation(w,bufferdist),nsim=1,drop=TRUE)
+xibuffer <- placegrainsfromlib(pp,grainlib)
+xi <- intersect.owin(xibuffer,w)
+
+plot(w)
+plot(xibuffer,add=TRUE)
+plot(xi,hatch=TRUE,add=TRUE)
+plot(pp,pch="+",add=TRUE)
+}
 \author{
 Kassel Hingee
 }
+\keyword{nonparametric}
+\keyword{spatial}
 

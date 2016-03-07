@@ -13,17 +13,6 @@
 #' @author Kassel Hingee 
 #' @import spatstat
 #' @export coveragefrac
-coveragefrac <- function(Xi,w){
-  stopifnot(is.owin(Xi))
-  stopifnot(is.owin(w))   
-  XiInsideW <- intersect.owin(Xi,w)
-  areaXiInside <- area.owin(XiInsideW)
-  areaWindow <- area.owin(w)
-  
-  covProbEstimate <- areaXiInside/areaWindow
-  return(covProbEstimate)
-}
-
 #' @examples
 #' XiOWIN <- heather$coarse
 #' windowOWIN <- Frame(heather$coarse)
@@ -35,3 +24,14 @@ coveragefrac <- function(Xi,w){
 
 #' @keywords spatial nonparametric
 #' @seealso \code{\link{exactvarP}} to estimate variance 
+coveragefrac <- function(Xi,w){
+  stopifnot(is.owin(Xi))
+  stopifnot(is.owin(w))   
+  XiInsideW <- intersect.owin(Xi,w)
+  areaXiInside <- area.owin(XiInsideW)
+  areaWindow <- area.owin(w)
+  
+  covProbEstimate <- areaXiInside/areaWindow
+  return(covProbEstimate)
+}
+

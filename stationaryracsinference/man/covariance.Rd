@@ -46,7 +46,30 @@ Vectors with small set covariance of the window are eliminated (using \code{setC
 \code{covarianceMapEst_direct} estimates covariance on a regular grid using the resolution of \code{Xi}. The regular grid extends to \code{maxXshiftdistance} and \code{maxYshiftdistance} in the x and y components respectively. It uses \code{covarianceEstAtPoint} to estimate the covariance at each grid point.
 Ignores point estimates that use an area smaller than 10% of the window.
 }
+\note{
+The name of this function is probably a bit confusing. Perhaps call it two-point coverage probability, and the other functions `two-point coverage probability' functions.
+
+Double check that I'm calculating set covariance directly properly (I don't think there is a need to reflect the set, but maybe I got things wrong)
+}
+\examples{
+XiOWIN <- heather$coarse
+windowOWIN <- Frame(heather$coarse)
+
+coverageProb <- coveragefrac(XiOWIN,windowOWIN)
+
+covariancePt <- covarianceEstAtPoint(XiOWIN,windowOWIN,c(3,5))
+
+covarianceDirectEst <- covarianceMapEst_direct(XiOWIN,windowOWIN,1,1)
+filled.contour(covarianceDirectEst$covariance)
+
+
+covarianceFcn <- covariance(XiOWIN,windowOWIN)
+plot(covarianceFcn$covariance)
+plot(covarianceFcn$covariance - coverageProb*coverageProb)
+}
 \author{
 {Kassel Hingee}
 }
+\keyword{nonparametric}
+\keyword{spatial}
 

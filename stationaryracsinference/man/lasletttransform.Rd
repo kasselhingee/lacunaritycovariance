@@ -24,4 +24,19 @@ See ** reference.
 \itemize{
 \item \code{findlowlefttangentpts}: Returns a list of X and Y coordinates of tangent points
 }}
+\examples{
+
+xi <- rotate.owin(heather$coarse)
+ltxi <- lasletttransform(xi)
+plot(ltxi)
+
+
+#test on a true boolean model
+xi <- simulateBooleanDetermDiscs(2.2064E-3,10,owin(xrange=c(0,500),yrange=c(0,500)))
+xim <- as.mask(xi,eps=c(1,1))
+ltxi <- lasletttransform(xi)
+Ks <- Kest(ltxi)
+plot(Ks)
+
+}
 

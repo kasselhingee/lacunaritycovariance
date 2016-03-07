@@ -31,4 +31,18 @@ The point process is generated using spatstat's \code{\link[spatstat]{rpoispp}}.
 \section{Warning}{
  A good choice of bufferdist is required and it probably depends on the distribution of radii.
 }
+\examples{
+w <- owin(xrange=c(0,10),yrange=c(0,10))
+xi <- rboollognormdiscs(w,2,1,-1,0.5)
+
+plot(w)
+plot(xi,add=TRUE)
+}
+\references{
+[1] Molchanov, I. (1997) Statistics of the Boolean Model for Practitioners and Mathematicians. Wiley. (Chapter 8)
+
+[2] **seminal paper - haven't read** Bindrich U. and Stoyan D. (1991) Stereology for pores in white bread: statistical analyses for the Boolean model by serial sections. J. Microscopy 162:231-239
+}
+\keyword{nonparametric}
+\keyword{spatial}
 

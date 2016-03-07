@@ -19,23 +19,7 @@ NULL
 
 #' @return Returns an \code{owin} object.
 #' @rdname rgermgrain
-placegrainsfromlib <- function(pp,grainlib,replace=TRUE,prob=NULL){
-  if (pp$n == 0){
-    warning("there were no points in the point process - returning empty window")
-    return(NULL)
-  }
-  grains <- sample(grainlib,size=pp$n,replace=replace,prob=prob) 
-  pointlocations <- cbind(X=pp$x,Y=pp$y)
-  pointlocations <- split(cbind(pointlocations),row(pointlocations)) #split matrix into a list of the rows
-  shiftedgrains <- as.solist(mapply(shift.owin,grains,vec=pointlocations,SIMPLIFY=FALSE))
-  placedgrains<- union.owin(shiftedgrains)  
-  return(placedgrains)
-}
-
-# Note on union.owin: for pixel masks it uses inside.owin(xcol, yrow, A) | inside.owin(xcol,yrow,B) to determine union mask. It does this recursively.
-# Inside owin uses a lot of checking about polygons etc.
-
-
+#' 
 #' @examples
 #' #Generating a germ-grain models where germs are a Poisson Point process, and grains are 2 or 3 different disc sizes.
 #' grainlib <- solist(disc(radius=1),disc(radius=1.9),disc(radius=0.2))
@@ -53,3 +37,20 @@ placegrainsfromlib <- function(pp,grainlib,replace=TRUE,prob=NULL){
 #' plot(pp,pch="+",add=TRUE)
 
 #' @keywords spatial nonparametric 
+placegrainsfromlib <- function(pp,grainlib,replace=TRUE,prob=NULL){
+  if (pp$n == 0){
+    warning("there were no points in the point process - returning empty window")
+    return(NULL)
+  }
+  grains <- sample(grainlib,size=pp$n,replace=replace,prob=prob) 
+  pointlocations <- cbind(X=pp$x,Y=pp$y)
+  pointlocations <- split(cbind(pointlocations),row(pointlocations)) #split matrix into a list of the rows
+  shiftedgrains <- as.solist(mapply(shift.owin,grains,vec=pointlocations,SIMPLIFY=FALSE))
+  placedgrains<- union.owin(shiftedgrains)  
+  return(placedgrains)
+}
+
+# Note on union.owin: for pixel masks it uses inside.owin(xcol, yrow, A) | inside.owin(xcol,yrow,B) to determine union mask. It does this recursively.
+# Inside owin uses a lot of checking about polygons etc.
+
+

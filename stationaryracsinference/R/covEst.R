@@ -19,6 +19,32 @@
 #' For \code{covarianceEstAtPoint} these are single numerical values; for \code{covarianceMapEst_direct} they are matrices; for \code{covariance} they are objects of SpatStat's \code{im} class.
 
 
+#' @examples
+#' XiOWIN <- heather$coarse
+#' windowOWIN <- Frame(heather$coarse)
+#' 
+#' coverageProb <- coveragefrac(XiOWIN,windowOWIN)
+#' 
+#' covariancePt <- covarianceEstAtPoint(XiOWIN,windowOWIN,c(3,5))
+#' 
+#' covarianceDirectEst <- covarianceMapEst_direct(XiOWIN,windowOWIN,1,1)
+#' filled.contour(covarianceDirectEst$covariance)
+#' 
+#' 
+#' covarianceFcn <- covariance(XiOWIN,windowOWIN)
+#' plot(covarianceFcn$covariance)
+#' plot(covarianceFcn$covariance - coverageProb*coverageProb)
+
+#' @note 
+#' The name of this function is probably a bit confusing. Perhaps call it two-point coverage probability, and the other functions `two-point coverage probability' functions.
+#' 
+#' Double check that I'm calculating set covariance directly properly (I don't think there is a need to reflect the set, but maybe I got things wrong)
+#' 
+
+
+
+#' @keywords spatial nonparametric
+
 #' @details \code{covariance} estimates uses Fourier transforms to calculate set covariances (using \code{\link[spatstat]{setcov}} function). It is much faster (500 times faster in one comparison) than \code{covarianceMapEst_direct}.
 #' Vectors with small set covariance of the window are eliminated (using \code{setCovBoundaryThresh} because they cause the covariance to be enormous)
 covariance <- function(Xi,w,setCovBoundaryThresh = 0.1*area.owin(w)){
@@ -87,27 +113,3 @@ covarianceMapEst_direct <- function(Xi,w,maxXshiftdistance,maxYshiftdistance){
 }
 
 
-#' @note 
-#' The name of this function is probably a bit confusing. Perhaps call it two-point coverage probability, and the other functions `two-point coverage probability' functions.
-#' 
-#' Double check that I'm calculating set covariance directly properly (I don't think there is a need to reflect the set, but maybe I got things wrong)
-#' 
-
-#' @examples
-#' XiOWIN <- heather$coarse
-#' windowOWIN <- Frame(heather$coarse)
-#' 
-#' coverageProb <- coveragefrac(XiOWIN,windowOWIN)
-#' 
-#' covariancePt <- covarianceEstAtPoint(XiOWIN,windowOWIN,c(3,5))
-#' 
-#' covarianceDirectEst <- covarianceMapEst_direct(XiOWIN,windowOWIN,1,1)
-#' filled.contour(covarianceDirectEst$covariance)
-#' 
-#' 
-#' covarianceFcn <- covariance(XiOWIN,windowOWIN)
-#' plot(covarianceFcn$covariance)
-#' plot(covarianceFcn$covariance - coverageProb*coverageProb)
-
-
-#' @keywords spatial nonparametric

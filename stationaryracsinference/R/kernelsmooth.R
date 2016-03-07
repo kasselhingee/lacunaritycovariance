@@ -9,6 +9,15 @@
 #' @param kernel Specifies the kernel to use. Currently only Epanechnikov is supported (and is the default).
 #' @param im an image for smoothing.
 #' @return A smoothed image in spatstat \code{im} format
+
+#' @examples 
+#' #smooth a step image
+#' stepim <- im(matrix(0,nrow=100,ncol=100),xrange=c(-1,1),yrange=c(-1,1))
+#' stepim[owin(xrange=c(-0.5,0.5),yrange=c(-0.5,0.5))] <- 1
+#' plot(stepim,axes=TRUE)
+#' 
+#' smstepim <- kernelsmooth(stepim,0.5)
+#' plot(smstepim,axes=TRUE)
 kernelsmooth <- function(im,bandwidth,kernel="Epanechnikov"){
   stopifnot(is.im(im))
   xstep = im$xstep
@@ -48,11 +57,3 @@ EpanechnikovFcn <- function(X,Y){#WARNING: operates in 2D only on a vector of th
   return(result)
 }
 
-#' @examples 
-#' #smooth a step image
-#' stepim <- im(matrix(0,nrow=100,ncol=100),xrange=c(-1,1),yrange=c(-1,1))
-#' stepim[owin(xrange=c(-0.5,0.5),yrange=c(-0.5,0.5))] <- 1
-#' plot(stepim,axes=TRUE)
-#' 
-#' smstepim <- kernelsmooth(stepim,0.5)
-#' plot(smstepim,axes=TRUE)

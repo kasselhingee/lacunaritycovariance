@@ -22,7 +22,21 @@ The estimate is simply the fraction of \eqn{\Xi} in the observed window.
 \details{
 in reality the area of Xi is probably slightly different - depends on the sensing method of Xi. Can assume really close though.
 }
+\examples{
+XiOWIN <- heather$coarse
+windowOWIN <- Frame(heather$coarse)
+coverageProb <- coveragefrac(XiOWIN,windowOWIN)
+#
+#vegetation map of Balcatta park
+data(balcattapark_coarse)
+coverageProb <- coveragefrac(balcattapark_coarse$vegmask,balcattapark_coarse$boundary)
+}
 \author{
 Kassel Hingee
 }
+\seealso{
+\code{\link{exactvarP}} to estimate variance
+}
+\keyword{nonparametric}
+\keyword{spatial}
 

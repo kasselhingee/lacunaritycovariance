@@ -21,6 +21,8 @@
 
 #' @examples 
 #' #**To come later** 
+#' @references 
+#' Molchanov, I. (1997) Statistics of the Boolean Model for Practitioners and Mathematicians. Wiley.
  varCovProb <- function(Xi,w){
    Xiinside <- intersect.owin(Xi,w)
    p <- area.owin(Xiinside)/area.owin(w)
@@ -46,6 +48,4 @@
  asympvarP <- function(){}
 
 
-#' @references 
-#' Molchanov, I. (1997) Statistics of the Boolean Model for Practitioners and Mathematicians. Wiley.
 

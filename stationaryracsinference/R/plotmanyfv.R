@@ -10,6 +10,20 @@
 #' @param yname the name of the value to associate with the y-axis
 #' @param add If true will add lines to current plot, otherwise will start new plot and will require xlim and ylim.
 #' @return List of return values from lines (typically a list of NULL values) 
+
+
+#' @examples 
+#' hestf <- Hest(heather$fine, W =Frame(heather$fine))
+#' hestm <- Hest(heather$medium, W =Frame(heather$medium))
+#' hestc <- Hest(heather$coarse, W =Frame(heather$coarse))
+#' fvlist <- list(hestf,hestm,hestc)
+#' names(fvlist) <- c("fine", "medium", "coarse")
+#' manylines.fv(fvlist, xname="r", yname="km", xlim=c(0,0.35), ylim=c(0,1))
+#'
+#' ## Fancier plot
+#' out <- manylines.fv(fvlist, xname="r", yname="km", xlim=c(0,0.35), ylim=c(0,1), 
+#' lwd=c(1,2,3), main="Spherical Contact Distribution\n from different resolutions", col=rainbow(length(fvlist)))
+
 manylines.fv <- function(fvlist, xname, yname, ..., add=FALSE, xlim=NULL, ylim=NULL){
     if ((!add) & (is.null(xlim) | is.null(ylim))){stop("To create a new plot need xlim and ylim")}
     
@@ -39,15 +53,3 @@ manylines.fv <- function(fvlist, xname, yname, ..., add=FALSE, xlim=NULL, ylim=N
     return(out)
 }
 
-
-#' @examples 
-#' hestf <- Hest(heather$fine, W =Frame(heather$fine))
-#' hestm <- Hest(heather$medium, W =Frame(heather$medium))
-#' hestc <- Hest(heather$coarse, W =Frame(heather$coarse))
-#' fvlist <- list(hestf,hestm,hestc)
-#' names(fvlist) <- c("fine", "medium", "coarse")
-#' manylines.fv(fvlist, xname="r", yname="km", xlim=c(0,0.35), ylim=c(0,1))
-#'
-#' ## Fancier plot
-#' out <- manylines.fv(fvlist, xname="r", yname="km", xlim=c(0,0.35), ylim=c(0,1), 
-#' lwd=c(1,2,3), main="Spherical Contact Distribution\n from different resolutions", col=rainbow(length(fvlist)))

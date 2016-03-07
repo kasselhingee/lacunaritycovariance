@@ -1,4 +1,6 @@
 #' @title Simulate a Boolean model of discs with log normal disc radii and Poisson germs
+#' @export rboollognormdiscs
+
 #' @description Simulates a Poisson point process and places discs of random radii around each point.  The radii are generated using a log normal distribution.
 #' @param  window An \code{owin} object specifying the desired simulation region
 #' @param  bufferdist A distance to expand \code{window} so that discs with centres near \code{window} are also simulated.
@@ -13,7 +15,20 @@
 #' The point process is generated using spatstat's \code{\link[spatstat]{rpoispp}}.
 #' @return Returns an \code{owin} object cropped to \code{window}.
 
-#' @export rboollognormdiscs
+#' 
+#' @references [1] Molchanov, I. (1997) Statistics of the Boolean Model for Practitioners and Mathematicians. Wiley. (Chapter 8)
+#' 
+#' [2] **seminal paper - haven't read** Bindrich U. and Stoyan D. (1991) Stereology for pores in white bread: statistical analyses for the Boolean model by serial sections. J. Microscopy 162:231-239
+
+#' @examples
+#' w <- owin(xrange=c(0,10),yrange=c(0,10))
+#' xi <- rboollognormdiscs(w,2,1,-1,0.5)
+#' 
+#' plot(w)
+#' plot(xi,add=TRUE)
+
+
+#' @keywords  spatial nonparametric 
 rboollognormdiscs <- function(window,bufferdist,lambda,meanlog,sdlog){
   #have to simulate in a much larger area than the observation window (because grains with centres outside the window should still be observed)
   wsim <- Frame(dilation(window,bufferdist)) #i reckon faster to use rectangular region (the non-rectangular probably simulates in a rectangular region and then rejects anyway)
@@ -34,16 +49,4 @@ rboollognormdiscs <- function(window,bufferdist,lambda,meanlog,sdlog){
 }
 
 
-#' @references [1] Molchanov, I. (1997) Statistics of the Boolean Model for Practitioners and Mathematicians. Wiley. (Chapter 8)
-#' 
-#' [2] **seminal paper - haven't read** Bindrich U. and Stoyan D. (1991) Stereology for pores in white bread: statistical analyses for the Boolean model by serial sections. J. Microscopy 162:231-239
 
-#' @examples
-#' w <- owin(xrange=c(0,10),yrange=c(0,10))
-#' xi <- rboollognormdiscs(w,2,1,-1,0.5)
-#' 
-#' plot(w)
-#' plot(xi,add=TRUE)
-
-
-#' @keywords  spatial nonparametric 

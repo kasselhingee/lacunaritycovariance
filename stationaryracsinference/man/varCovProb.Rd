@@ -28,4 +28,7 @@ This function assumes that the probability of two points being in \eqn{\Xi} is i
 \examples{
 #**To come later** 
 }
+\references{
+Molchanov, I. (1997) Statistics of the Boolean Model for Practitioners and Mathematicians. Wiley.
+}
 
