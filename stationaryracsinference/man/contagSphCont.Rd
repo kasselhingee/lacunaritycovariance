@@ -9,7 +9,8 @@ contagSphCont(xiH, xiHc, p, normalise = FALSE)
 \arguments{
 \item{xiH}{Spherical contact function for xi.}
 
-\item{xiHc}{Spherical contact distribution for the complement of xi.}
+\item{xiHc}{Spherical contact distribution for the complement of xi.
+If xiH and xiHc are both fv objects then harmonises them and function returns an fv object}
 
 \item{p}{An estimate of the coverage fraction of a RACS \eqn{\Xi}.
 The sample points should be same as xiH for now.}
@@ -45,8 +46,8 @@ This makes contagion vary between 0 and 1 for all 2 phase processes.
 xi <- heather$coarse
 p <- coveragefrac(xi,Frame(xi))
 xiH <- Hest(xi)
+xiHc <- Hest(complement.owin(xi))
 #it typically not advisable to choose set r ourselves, **is it a good idea here? Interpolation later might be better?
-xiHc <- Hest(complement.owin(xi)) #works because frame of xi complement is also the window
 plot(xiH,type="l",col="red") 
 lines(xiHc,type="l",col="black") 
 
@@ -56,6 +57,9 @@ xiHc <- harmonised[[2]]
 
 contagion <- contagSphCont(xiH$km,xiHc$km,p)
 plot(xiH$r,contagion,type="l")
+
+contagion <- contagSphCont(xiH,xiHc,p)
+plot(contagion)
 
 }
 \seealso{

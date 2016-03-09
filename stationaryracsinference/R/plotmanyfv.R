@@ -11,7 +11,6 @@
 #' @param add If true will add lines to current plot, otherwise will start new plot and will require xlim and ylim.
 #' @return List of return values from lines (typically a list of NULL values) 
 
-
 #' @examples 
 #' hestf <- Hest(heather$fine, W =Frame(heather$fine))
 #' hestm <- Hest(heather$medium, W =Frame(heather$medium))
