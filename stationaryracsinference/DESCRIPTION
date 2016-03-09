@@ -8,7 +8,7 @@ Maintainer: <kassel.hingee@research.uwa.edu.au>
 Depends:
     spatstat
 Imports:
-    sp, raster, datadr
+    sp, raster, datadr, maptools
 Description: Functions for non-parametric estimation of 2D RACS from
     observations of the plane. The aim is to include methods that apply to remote
     sensing products (such as tree canopy maps). Consequently the methods focus on

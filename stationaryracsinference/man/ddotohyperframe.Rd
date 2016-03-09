@@ -9,7 +9,8 @@ ddotohyperframe(inddo, slots = "all")
 \arguments{
 \item{inddo}{Input ddo object}
 
-\item{slots}{A list of names of slots to extract into a hyperframe. If not supplied then function will try to extract all slots a}
+\item{slots}{A list of names of slots to extract into a hyperframe - each slot becomes a column in the hyperframe. 
+If not supplied then function will try to extract all slots using the first key-value pair as an example.}
 }
 \value{
 A hyperframe, each column corresponding to a slot.
@@ -46,7 +47,6 @@ return(list(
 }
 
 estimates <- datadr::kvPairs(
-     datadr::kvPair("fine",applyestimators(heather$fine,Frame(heather$fine))),
      datadr::kvPair("medium",applyestimators(heather$medium,Frame(heather$medium))),
      datadr::kvPair("coarse",applyestimators(heather$coarse,Frame(heather$coarse)))
      )
@@ -54,7 +54,7 @@ estimatesddo <- datadr::ddo(estimates)
 
 hframe <- ddotohyperframe(estimatesddo,slots = c("coveragefrac","sphcontactxi"))
 hframe <- ddotohyperframe(estimatesddo)
-plot(hframe[,"sphcontactxi",drop=TRUE])
+plot(hframe[,"sphcontactxi",drop=TRUE], main = "Spherical Contact Distribution:\\n Diggle's Heather Data")
 
 }
 
