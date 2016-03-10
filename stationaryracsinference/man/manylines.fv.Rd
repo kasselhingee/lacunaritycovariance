@@ -4,17 +4,17 @@
 \alias{manylines.fv}
 \title{Plot multiple fv objects of similar ilk}
 \usage{
-manylines.fv(fvlist, xname, yname, ..., add = FALSE, xlim = NULL,
+manylines.fv(fvlist, fmla = NULL, ..., add = FALSE, xlim = NULL,
   ylim = NULL)
 }
 \arguments{
 \item{fvlist}{A list of fv objects}
 
-\item{xname}{the name of the value to associate with the x-axis}
+\item{fmla}{an R language formula determining which variables or expressions are plotted.
+Either a formula object, or a string that can be parsed as a formula.
+It is passed to \code{plot.fv} - see \code{\link{plot.fv}} for details.}
 
-\item{yname}{the name of the value to associate with the y-axis}
-
-\item{...}{Plotting parameters to be passed to \code{title} and \code{lines}}
+\item{...}{Plotting parameters to be passed to \code{plot.window}, \code{title} and \code{\link{plot.fv}}}
 
 \item{add}{If true will add lines to current plot, otherwise will start new plot and will require xlim and ylim.}
 
@@ -23,7 +23,7 @@ manylines.fv(fvlist, xname, yname, ..., add = FALSE, xlim = NULL,
 \item{ylim}{Plotting limits of the vertical direction}
 }
 \value{
-List of return values from lines (typically a list of NULL values)
+List of return values from plot.fv
 }
 \description{
 Plots multiple fv objects on the same window.
@@ -34,10 +34,10 @@ hestm <- Hest(heather$medium, W =Frame(heather$medium))
 hestc <- Hest(heather$coarse, W =Frame(heather$coarse))
 fvlist <- list(hestf,hestm,hestc)
 names(fvlist) <- c("fine", "medium", "coarse")
-manylines.fv(fvlist, xname="r", yname="km", xlim=c(0,0.35), ylim=c(0,1))
+manylines.fv(fvlist, km~r)
 
 ## Fancier plot
-out <- manylines.fv(fvlist, xname="r", yname="km", xlim=c(0,0.35), ylim=c(0,1), 
-lwd=c(1,2,3), main="Spherical Contact Distribution\\n from different resolutions", col=rainbow(length(fvlist)))
+out <- manylines.fv(fvlist,  
+main="Spherical Contact Distribution\\n from different resolutions", col=rainbow(length(fvlist)))
 }
 
