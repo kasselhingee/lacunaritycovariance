@@ -24,19 +24,23 @@
 #' out <- manylines.fv(fvlist,  
 #' main="Spherical Contact Distribution\n from different resolutions", col=rainbow(length(fvlist)))
 manylines.fv <- function(fvlist, fmla=NULL, ..., add=FALSE, xlim=NULL, ylim=NULL){
-  if (!add && is.null(xlim) && is.null(ylim)){#if not add and xlim ylim are null then
+  if (!add && (is.null(xlim) || is.null(ylim))){#if not add and xlim ylim are null then
       limits <- mapply(plot.fv,fvlist,MoreArgs=list(fmla = fmla, limitsonly=TRUE), SIMPLIFY=FALSE)
       #get largest x limits
-      xlims <- lapply(limits,"[[","xlim")
-      xmin <- min(unlist(lapply(xlims,"[[",1)))
-      xmax <- max(unlist(lapply(xlims,"[[",2)))
-      xlim <- c(xmin,xmax)
-      
+      if (is.null(xlim)){
+        xlims <- lapply(limits,"[[","xlim")
+        xmin <- min(unlist(lapply(xlims,"[[",1)))
+        xmax <- max(unlist(lapply(xlims,"[[",2)))
+        xlim <- c(xmin,xmax)       
+      }
+
       #get largest y limits
-      ylims <- lapply(limits,"[[","ylim")
-      ymin <- min(unlist(lapply(ylims,"[[",1)))
-      ymax <- max(unlist(lapply(ylims,"[[",2)))
-      ylim <- c(ymin,ymax)
+      if (is.null(ylim)){
+        ylims <- lapply(limits,"[[","ylim")
+        ymin <- min(unlist(lapply(ylims,"[[",1)))
+        ymax <- max(unlist(lapply(ylims,"[[",2)))
+        ylim <- c(ymin,ymax)
+      }
   }
   if (!add){ #if not adding then create new plot window
       plot.new()
