@@ -69,7 +69,7 @@ contagSphCont <- function(xiH, xiHc, p, normalise=FALSE){
   tempstates <- Pstates
   tempstates[Pstates<1E-8] <- 1
   contag <- colSums(Pstates*log(tempstates))
-  if (normalise) {contag <- 1+ unnormalisedContag/(-4/exp(1)*log(1/exp(1)))}
+  if (normalise) {contag <- 1+ contag/(-4/exp(1)*log(1/exp(1)))}
   if (returnfv){
     if (normalise) {
       return(fv(data.frame(r= r,
