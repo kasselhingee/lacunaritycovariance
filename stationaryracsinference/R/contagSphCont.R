@@ -56,8 +56,21 @@ contagSphCont <- function(xiH, xiHc, p, normalise=FALSE){
     returnfv <- TRUE
     harmonisedSCDs <- harmonise(xiH,xiHc)
     r <- harmonisedSCDs[[1]]$r
-    xiH <- harmonisedSCDs[[1]]$rs
-    xiHc <- harmonisedSCDs[[2]]$rs
+    rharmleng <- length(r)
+    if (max(xiH$r)>r[rharmleng] & (harmonisedSCDs[[2]]$rs[rharmleng]>0.99)){
+      r <- c(r,xiH$r[xiH$r>r[rharmleng]])
+      xiH <- c(harmonisedSCDs[[1]]$rs,xiH$rs[xiH$r>r[rharmleng]])
+      xiHc <- c(harmonisedSCDs[[2]]$rs,rep(1,length(r)-rharmleng))
+    }
+    else if (max(xiHc$r)>r[rharmleng] & (harmonisedSCDs[[1]]$rs[rharmleng]>0.99)){
+      r <- c(r,xiHc$r[xiHc$r>r[rharmleng]])
+      xiHc <- c(harmonisedSCDs[[1]]$rs,xiHc$rs[xiHc$r>r[rharmleng]])
+      xiH <- c(harmonisedSCDs[[2]]$rs,rep(1,length(r)-rharmleng))
+    }
+    else {
+      xiH <- harmonisedSCDs[[1]]$rs
+      xiHc <- harmonisedSCDs[[2]]$rs
+    }
   }
   Pstates <- matrix(NA,nrow=4,ncol=length(xiH))
   rownames(Pstates)=c("P11","P10","P01","P00")
