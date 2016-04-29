@@ -1,5 +1,5 @@
 #' @title Evaluate a list of fv objects at a particular argument
-#' @export manyfvevalat.R
+#' @export manyfvevalat
 
 #' @description Given a list of fv objects evaluates each at the given argument, and returns a list of the same length.
 #' @param fvlist A list of fv objects
@@ -10,15 +10,13 @@
 #' @return A list of values of each fv object at \code{argval}.
 #' 
 
-#' @example 
+#' @examples 
 #' fv1 <- Hest(heather$coarse)
 #' fv2 <- Hest(complement.owin(heather$coarse))
-#' fvlist <- list(fv1,fv2) 
-
-#' fvfunc01 <- as.function.fv(fv1)
-#' fvfunc01(0.19)
-#' 
+#' fvlist <- list(scdxi = fv1, scdnotxi = fv2) 
 #' manyfvevalat(fvlist,0.19)
+#' out <- manylines.fv(fvlist, fmla="km~r")
+#' abline(v=0.19)
 
 manyfvevalat <- function(fvlist, argval, value=".y", extrapolate=TRUE){
   stopifnot(length(value)==1)
