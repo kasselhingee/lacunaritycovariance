@@ -1,4 +1,5 @@
 #' @title convert owin polygons to an sp SpatialPolygonsDataFrame
+#' @importFrom maptools as.owin.SpatialPolygons
 #' @export owin2Polygons as.SpatialPolygons.tess as.SpatialPolygons.owin    as.Polygon.owin  as.Polygons.Polygon  as.spdf.owin 
 #' 
 #' @description functions for converting an owin polygon or rectangle to the sp polygon formats. This is useful for interfacing with rgdal and raster
