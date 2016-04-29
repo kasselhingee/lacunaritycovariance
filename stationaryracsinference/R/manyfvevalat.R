@@ -5,9 +5,9 @@
 #' @param fvlist A list of fv objects
 #' @param argval The value of argument that each function is evaluated at.
 #' @param value  The function value to use, ".y" uses the default provided by the fv objects.
-#'  Like \texttt{value} in \texttt{as.function.fv()} but in this case can only only be a single string.
-#' @param extrapolate From \texttt{as.function.fv()}, whether to extrapolate the fv objects when the provided argval is outside their range.
-#' @return A list of values of each fv object at the given argument.
+#'  Like \code{value} in \code{\link[spatstat]{as.function.fv}} but in this case can only only be a single string.
+#' @param extrapolate From \code{\link[spatstat]{as.function.fv}}, whether to extrapolate the fv objects when the provided argval is outside their range.
+#' @return A list of values of each fv object at \code{argval}.
 #' 
 
 #' @example 
