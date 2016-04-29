@@ -15,12 +15,10 @@
 #' fv2 <- Hest(complement.owin(heather$coarse))
 #' fvlist <- list(fv1,fv2) 
 
-#' fvfunc01 <- as.function.fv(fv1,value=c("km","rs","han"))
+#' fvfunc01 <- as.function.fv(fv1)
 #' fvfunc01(0.19)
 #' 
 #' manyfvevalat(fvlist,0.19)
-#' 
-#' manyfvevalat(fvlist,0.19,value=c("rs","han"))
 
 manyfvevalat <- function(fvlist, argval, value=".y", extrapolate=TRUE){
   stopifnot(length(value)==1)
