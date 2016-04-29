@@ -1,15 +1,7 @@
 .Rproj.user
 .Rhistory
 .RData
-# exclude everything except stationaryracsinference and racsScratch
+# exclude everything except stationaryracsinference
 /*
 !/stationaryracsinference
-!/racsScratch/
 
-#except also exclude data and manuals in racsScratch
-/racsScratch/data
-/racsScratch/manuals
-
-#racsScratch/data/*
-#racsScratch/manuals/*
-#!stationaryracsinference/**
