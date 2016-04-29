@@ -4,7 +4,7 @@
 #' @description Estimates the integral of image values within a radius r from the centre.
 #' @return  An fv object
 #' @param centre The centre location
-#' @param im A pixel image
+#' @param values A pixel image to be integrated
 
 #' @examples 
 #' twptprob <- covariance(heather$coarse,Frame(heather$coarse))[[1]]

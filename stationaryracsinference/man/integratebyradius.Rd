@@ -9,7 +9,7 @@ integratebyradius(centre, values)
 \arguments{
 \item{centre}{The centre location}
 
-\item{im}{A pixel image}
+\item{values}{A pixel image to be integrated}
 }
 \value{
 An fv object
