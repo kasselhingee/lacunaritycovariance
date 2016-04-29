@@ -34,9 +34,6 @@ coverageProb <- coveragefrac(balcattapark_coarse$vegmask,balcattapark_coarse$bou
 \author{
 Kassel Hingee
 }
-\seealso{
-\code{\link{exactvarP}} to estimate variance
-}
 \keyword{nonparametric}
 \keyword{spatial}
 

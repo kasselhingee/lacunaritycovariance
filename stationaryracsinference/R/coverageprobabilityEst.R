@@ -23,7 +23,6 @@
 #' coverageProb <- coveragefrac(balcattapark_coarse$vegmask,balcattapark_coarse$boundary)
 
 #' @keywords spatial nonparametric
-#' @seealso \code{\link{exactvarP}} to estimate variance 
 coveragefrac <- function(Xi,w){
   stopifnot(is.owin(Xi))
   stopifnot(is.owin(w))   
