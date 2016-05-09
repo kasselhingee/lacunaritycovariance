@@ -4,7 +4,7 @@
 \alias{rboollognormdiscs}
 \title{Simulate a Boolean model of discs with log normal disc radii and Poisson germs}
 \usage{
-rboollognormdiscs(window, bufferdist, lambda, meanlog, sdlog)
+rboollognormdiscs(window, bufferdist, lambda, meanlog, sdlog, seed = NULL)
 }
 \arguments{
 \item{window}{An \code{owin} object specifying the desired simulation region}
@@ -16,6 +16,9 @@ rboollognormdiscs(window, bufferdist, lambda, meanlog, sdlog)
 \item{meanlog}{For the distribution of radii. The logarithm of the distribution has mean equal to \code{meanlog}.}
 
 \item{sdlog}{For the distribution of radii. The logarithm of the distribution has standard deviation equal to \code{sdlog}}
+
+\item{seed}{Optional input (default in NULL). Is an integer passed to \code{\link{base}{set.seed}}. Used to reproduce patterns exactly.
+@section Warning: A good choice of bufferdist is required and it probably depends on the distribution of radii.}
 }
 \value{
 Returns an \code{owin} object cropped to \code{window}.
@@ -28,12 +31,16 @@ The point process needs to be simulated in a larger region than the desired wind
 
 The point process is generated using spatstat's \code{\link[spatstat]{rpoispp}}.
 }
-\section{Warning}{
- A good choice of bufferdist is required and it probably depends on the distribution of radii.
-}
 \examples{
 w <- owin(xrange=c(0,10),yrange=c(0,10))
 xi <- rboollognormdiscs(w,2,1,-1,0.5)
+
+plot(w)
+plot(xi,add=TRUE)
+
+#For repeating experiments
+w <- owin(xrange=c(0,10),yrange=c(0,10))
+xi <- rboollognormdiscs(w,2,1,-1,0.5,seed=36)
 
 plot(w)
 plot(xi,add=TRUE)

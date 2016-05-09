@@ -7,7 +7,8 @@
 #' @param lambda Intensity of the Poisson point process, passed to \code{\link{spatstat}{rpoispp}}.  It could be either a single positive number, a function (x,y,...) or a pixel image (they must be defined for the dilated window)
 #' @param  meanlog For the distribution of radii. The logarithm of the distribution has mean equal to \code{meanlog}.
 #' @param  sdlog For the distribution of radii. The logarithm of the distribution has standard deviation equal to \code{sdlog}
-#' @section Warning: A good choice of bufferdist is required and it probably depends on the distribution of radii. 
+#' @param seed Optional input (default in NULL). Is an integer passed to \code{\link{base}{set.seed}}. Used to reproduce patterns exactly.
+#'  @section Warning: A good choice of bufferdist is required and it probably depends on the distribution of radii. 
 
 
 #' @details The point process needs to be simulated in a larger region than the desired window to account for the possibility of discs that intersect the window, but have germs outside the window.
@@ -26,14 +27,23 @@
 #' 
 #' plot(w)
 #' plot(xi,add=TRUE)
+#' 
+#' #For repeating experiments
+#' w <- owin(xrange=c(0,10),yrange=c(0,10))
+#' xi <- rboollognormdiscs(w,2,1,-1,0.5,seed=36)
+#' 
+#' plot(w)
+#' plot(xi,add=TRUE)
 
 
 #' @keywords  spatial 
-rboollognormdiscs <- function(window,bufferdist,lambda,meanlog,sdlog){
+rboollognormdiscs <- function(window,bufferdist,lambda,meanlog,sdlog,seed=NULL){
   #have to simulate in a much larger area than the observation window (because grains with centres outside the window should still be observed)
   wsim <- Frame(dilation(window,bufferdist)) #i reckon faster to use rectangular region (the non-rectangular probably simulates in a rectangular region and then rejects anyway)
+  if (!missing(seed)){set.seed(seed)}
   pp <- rpoispp(lambda,win=wsim,nsim=1,drop=TRUE) #prepare a random radius for each point
  
+  if (!missing(seed)){set.seed(seed)}
   radius <- rlnorm(pp$n,meanlog=meanlog,sdlog=sdlog) #prepare a random radius for each point
    
   #calculating grains
