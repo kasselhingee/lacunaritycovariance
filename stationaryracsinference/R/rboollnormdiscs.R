@@ -58,5 +58,7 @@ rboollognormdiscs <- function(window,bufferdist,lambda,meanlog,sdlog,seed=NULL){
   return(xi) 
 }
 
+##**feature request: a test that simulations correspond to theoretical values for the model.
+
 
 
