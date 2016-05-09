@@ -28,7 +28,7 @@
 #' plot(xi,add=TRUE)
 
 
-#' @keywords  spatial nonparametric 
+#' @keywords  spatial 
 rboollognormdiscs <- function(window,bufferdist,lambda,meanlog,sdlog){
   #have to simulate in a much larger area than the observation window (because grains with centres outside the window should still be observed)
   wsim <- Frame(dilation(window,bufferdist)) #i reckon faster to use rectangular region (the non-rectangular probably simulates in a rectangular region and then rejects anyway)

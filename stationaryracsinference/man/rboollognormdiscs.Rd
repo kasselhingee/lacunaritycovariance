@@ -43,6 +43,5 @@ plot(xi,add=TRUE)
 
 [2] **seminal paper - haven't read** Bindrich U. and Stoyan D. (1991) Stereology for pores in white bread: statistical analyses for the Boolean model by serial sections. J. Microscopy 162:231-239
 }
-\keyword{nonparametric}
 \keyword{spatial}
 
