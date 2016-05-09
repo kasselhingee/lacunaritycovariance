@@ -1,5 +1,5 @@
 #' @title Simulation of Boolean Model of Deterministic Discs
-#' @export simulateBooleanDetermDiscs  booldetermdiscs_truecoveragefrac thcovarDeterministicDiscs thspecdensAtOrigin quasithspecdens
+#' @export rBooleanDetermDiscs  booldetermdiscs_truecoveragefrac thcovarDeterministicDiscs thspecdensAtOrigin quasithspecdens
 #' 
 #' @description Function for simulating a Boolean model with deterministic discs, and also functions for calculating theoretical properties such as coverage function, covariance, and spectral density.
 #' 
@@ -9,14 +9,14 @@
 #' @param seed Optional input (default in NULL). Is an integer passed to \code{\link{base}{set.seed}}. Used to reproduce patterns exactly.
 
 #' @return 
-#' \code{simulateBooleanDetermDiscs} returns an owin object containing the locations covered by the Boolean model. The window information is not contained.
+#' \code{rBooleanDetermDiscs} returns an owin object containing the locations covered by the Boolean model. The window information is not contained.
 #' 
 #' \code{booldetermdiscs_truecoveragefrac} returns the true coverage fraction given the intensity and the radius.
 #' 
 #' \code{thcovarDeterministicDiscs} returns an image of the covariance (which will be isotropic)
 
 #' @section WARNING:
-#'  \code{simulateBooleanDetermDiscs} does not handle the case of an empty realisation very well.
+#'  \code{rBooleanDetermDiscs} does not handle the case of an empty realisation very well.
 #' This is because the frame of returned value \code{Xi} can be smaller than the simulation window.
 #' 
 #' 
@@ -26,7 +26,7 @@
 #' discr <- 10
 #' w <- owin(xrange=c(0,100),c(0,100))
 #' lambda <- 2.2064E-3
-#' xi <- simulateBooleanDetermDiscs(lambda,discr,w)
+#' xi <- rBooleanDetermDiscs(lambda,discr,w)
 #' plot(xi)
 #' plot(w,add=TRUE)
 #' 
@@ -38,7 +38,7 @@
 #' thspecdens_origin <- thspecdensAtOrigin(lambda,discr)
 #' thspecdens[round(dim(thspecdens)[2]/2),round(dim(thspecdens)[1]/2)]
 
-simulateBooleanDetermDiscs <- function(lambda,discr,window,seed=NULL){
+rBooleanDetermDiscs <- function(lambda,discr,window,seed=NULL){
   grainlib <- solist(disc(radius=discr))
   bufferdist <- 1.1*discr
   
@@ -51,7 +51,7 @@ simulateBooleanDetermDiscs <- function(lambda,discr,window,seed=NULL){
   return(xi)
 }
 
-#' @rdname simulateBooleanDetermDiscs
+#' @rdname rBooleanDetermDiscs
 #' 
 #' 
 booldetermdiscs_truecoveragefrac <- function(lambda, discr){
@@ -89,7 +89,7 @@ thcovDeterministicDiscs_vec <- function(X,Y,lambda,discr){
   return(covar)
 }
 
-#' @rdname simulateBooleanDetermDiscs
+#' @rdname rBooleanDetermDiscs
 #' @param xrange range of x values for \code{thcovarDeterministicDiscs}
 #' @param yrange range of y values for \code{thcovarDeterministicDiscs}
 #' @param eps list of length 2 of the steps between samples points in x and y respectively for \code{thcovarDeterministicDiscs}.
@@ -101,7 +101,7 @@ thcovarDeterministicDiscs <- function(xrange,yrange,eps,lambda,discr){
   return(im(mat,xcol = xpts, yrow=ypts))
 }
 
-#' @describeIn simulateBooleanDetermDiscs  Gives an estimate of the spectral density using the theoretical covariance and FFT
+#' @describeIn rBooleanDetermDiscs  Gives an estimate of the spectral density using the theoretical covariance and FFT
 quasithspecdens <- function(lambda,discr){
   xptsLR <- 0:(20*discr)/4
   yptsLR <- 0:(20*discr)/4
@@ -143,7 +143,7 @@ quasithspecdens <- function(lambda,discr){
   return(specdens)
 }
 
-#' @describeIn simulateBooleanDetermDiscs Calculates spectral density at \eqn{o} using the theoretical covariance.
+#' @describeIn rBooleanDetermDiscs Calculates spectral density at \eqn{o} using the theoretical covariance.
 #'  It is the integral of the covariance - (coverage fraction)^2 over all space.
 #now calculate spectral density at origin using integral of covariance -p^2
 thspecdensAtOrigin <- function(lambda,discr){
