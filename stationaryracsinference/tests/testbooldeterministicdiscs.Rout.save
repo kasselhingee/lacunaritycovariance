@@ -1,7 +1,7 @@
 
 R version 3.2.2 (2015-08-14) -- "Fire Safety"
 Copyright (C) 2015 The R Foundation for Statistical Computing
-Platform: x86_64-pc-linux-gnu (64-bit)
+Platform: i386-w64-mingw32/i386 (32-bit)
 
 R is free software and comes with ABSOLUTELY NO WARRANTY.
 You are welcome to redistribute it under certain conditions.
@@ -20,27 +20,49 @@ Type 'q()' to quit R.
 > 
 > library(stationaryracsinference, quietly = TRUE)
 
-spatstat 1.44-1.027       (nickname: 'Levity Waves') 
+spatstat 1.45-0       (nickname: 'One Lakh') 
 For an introduction to spatstat, type 'beginner'
+Warning message:
+package 'spatstat' was built under R version 3.2.4 
+> 
+> #check that its producing the same pattern
+> #Boolean model with discs of radius 10.
+> #The intensity has been chosen such that the true coverage fraction is very close to 0.5.
+> discr <- 10
+> w <- owin(xrange=c(0,100),c(0,100))
+> lambda <- 2.2064E-3
+> xi <- rBooleanDetermDiscs(lambda,discr,w,seed=6549)
+> coveragefrac(xi,w)
+[1] 0.4644903
+> 
+> #theoretical coveragefrac
+> truecoveragefrac <- booldetermdiscs_truecoveragefrac(lambda,discr)
 > 
 > ## thcovarDeterministicDiscs check
-> thcovarDeterministicDiscs(xrange=c(-10,10),yrange=c(-3,3),eps=c(1,1),0.0022064,10)
-real-valued pixel image
-7 x 21 pixel array (ny, nx)
-enclosing rectangle: [-10.5, 10.5] x [-3.5, 3.5] units
+> thcovariance <- thcovarDeterministicDiscs(xrange=c(-100,100),yrange=c(-100,100),eps=c(1,1),0.0022064,10)
 > 
 > ## thspecdensAtOrigin check
-> thspecdens_origin <- thspecdensAtOrigin(0.0022064,10)
+> thspecdens_origin <- thspecdensAtOrigin(lambda,discr)
 > thspecdens_origin
 [1] 64.41312
 > 
-> ## quasithspecdens - check at origin
-> specdens <- quasithspecdens(0.0022064,10)
-> specdens[round(dim(specdens)[2]/2),round(dim(specdens)[1]/2)]
-         [,1]
-[1,] 64.22858
+> ## use covariance to form an (approximate) confidence interval
+> setcovB <- setcov(w)
+> integrand <- eval.im((thcovariance-truecoveragefrac^2)*setcovB,harmonize = TRUE)
+Warning message:
+ the images 'thcovariance' and 'setcovB' were not compatible 
+> exactvariance <- (1/(area.owin(w))^2)*sum(integrand)*integrand$xstep*integrand$ystep
+> ##assume that window large enough that distribution of estimator is Gaussian
+> ##the exact variance is as calculated. Below is a 0.05 conf interval
+> confint0.05 <- c(qnorm(0.025, mean = truecoveragefrac, sd=sqrt(exactvariance)),
++                  qnorm(1-0.025, mean = truecoveragefrac, sd=sqrt(exactvariance)))
+> 
+> ##check that a randomly simulated value is in this range
+> xi <- rBooleanDetermDiscs(lambda,discr,w)
+> (coveragefrac(xi,w) < confint0.05[2]) & (coveragefrac(xi,w) > confint0.05[1])
+[1] TRUE
 > 
 > 
 > proc.time()
    user  system elapsed 
-  9.664   0.196   9.863 
+   6.87    0.29    7.14 
