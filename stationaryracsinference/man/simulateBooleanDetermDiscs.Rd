@@ -8,7 +8,7 @@
 \alias{thspecdensAtOrigin}
 \title{Simulation of Boolean Model of Deterministic Discs}
 \usage{
-simulateBooleanDetermDiscs(lambda, discr, window)
+simulateBooleanDetermDiscs(lambda, discr, window, seed = NULL)
 
 booldetermdiscs_truecoveragefrac(lambda, discr)
 
@@ -25,11 +25,13 @@ thspecdensAtOrigin(lambda, discr)
 
 \item{window}{The window to simulate in (an owin object)}
 
+\item{seed}{Optional input (default in NULL). Is an integer passed to \code{\link{base}{set.seed}}. Used to reproduce patterns exactly.}
+
 \item{xrange}{range of x values for \code{thcovarDeterministicDiscs}}
 
 \item{yrange}{range of y values for \code{thcovarDeterministicDiscs}}
 
-\item{eps}{list of distances between samples points in x and y respectively for \code{thcovarDeterministicDiscs}.}
+\item{eps}{list of length 2 of the steps between samples points in x and y respectively for \code{thcovarDeterministicDiscs}.}
 }
 \value{
 \code{simulateBooleanDetermDiscs} returns an owin object containing the locations covered by the Boolean model. The window information is not contained.
@@ -63,9 +65,12 @@ xi <- simulateBooleanDetermDiscs(lambda,discr,w)
 plot(xi)
 plot(w,add=TRUE)
 
+#calculate theoretical values of the model
 truecoveragefrac <- booldetermdiscs_truecoveragefrac(lambda,discr)
-thspecdens_origin <- thspecdensAtOrigin(lambda,discr)
+truecovariance <- thcovarDeterministicDiscs(
+                   c(-10,10),c(-10,10),c(0.2,0.2),lambda,discr)
 thspecdens <- quasithspecdens(lambda,discr)
+thspecdens_origin <- thspecdensAtOrigin(lambda,discr)
 thspecdens[round(dim(thspecdens)[2]/2),round(dim(thspecdens)[1]/2)]
 }
 

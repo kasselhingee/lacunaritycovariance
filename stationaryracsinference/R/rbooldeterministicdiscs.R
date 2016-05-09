@@ -6,6 +6,8 @@
 #' @param lambda Intensity of the germ process (which is a Poisson point process)
 #' @param discr Radius of the discs
 #' @param window The window to simulate in (an owin object)
+#' @param seed Optional input (default in NULL). Is an integer passed to \code{\link{base}{set.seed}}. Used to reproduce patterns exactly.
+
 #' @return 
 #' \code{simulateBooleanDetermDiscs} returns an owin object containing the locations covered by the Boolean model. The window information is not contained.
 #' 
@@ -28,14 +30,19 @@
 #' plot(xi)
 #' plot(w,add=TRUE)
 #' 
+#' #calculate theoretical values of the model
 #' truecoveragefrac <- booldetermdiscs_truecoveragefrac(lambda,discr)
-#' thspecdens_origin <- thspecdensAtOrigin(lambda,discr)
+#' truecovariance <- thcovarDeterministicDiscs(
+#'                    c(-10,10),c(-10,10),c(0.2,0.2),lambda,discr)
 #' thspecdens <- quasithspecdens(lambda,discr)
+#' thspecdens_origin <- thspecdensAtOrigin(lambda,discr)
 #' thspecdens[round(dim(thspecdens)[2]/2),round(dim(thspecdens)[1]/2)]
 
-simulateBooleanDetermDiscs <- function(lambda,discr,window){
+simulateBooleanDetermDiscs <- function(lambda,discr,window,seed=NULL){
   grainlib <- solist(disc(radius=discr))
   bufferdist <- 1.1*discr
+  
+  if (!missing(seed)){set.seed(seed)}
   pp <- rpoispp(lambda=lambda,win=dilation(window,bufferdist),nsim=1,drop=TRUE)#lambda from B\"{o}m (2002) - chosen to make coverage probability very close to 0.5
   if (pp$n ==0 ){warning("No points simulated.")
        return(NULL)}
@@ -85,7 +92,7 @@ thcovDeterministicDiscs_vec <- function(X,Y,lambda,discr){
 #' @rdname simulateBooleanDetermDiscs
 #' @param xrange range of x values for \code{thcovarDeterministicDiscs}
 #' @param yrange range of y values for \code{thcovarDeterministicDiscs}
-#' @param eps list of distances between samples points in x and y respectively for \code{thcovarDeterministicDiscs}.
+#' @param eps list of length 2 of the steps between samples points in x and y respectively for \code{thcovarDeterministicDiscs}.
 thcovarDeterministicDiscs <- function(xrange,yrange,eps,lambda,discr){
   xpts <- seq(from = xrange[1], to = xrange[2], by = eps[1])
   ypts <- seq(from = yrange[1], to = yrange[2], by = eps[2])
