@@ -47,7 +47,8 @@ Usually it is not desired (nor computationally feasible) to analyse the entire d
 <<readpolygon>>=
 library("rgdal") #Reading shapefiles requires rgdal.
 obspoly <- readOGR("../data","aregionofinterest")
-crs(proj4string(obspoly)) #print the coordinate projection of the polygon data for sanity
+#print the coordinate projection of the polygon data for sanity
+crs(proj4string(obspoly)) 
 @
 
 Note the package \code{maptools} can also read shapefiles however it does not attach projection information to the object.
@@ -56,39 +57,39 @@ Since this region is non-rectangular a spatstat owin version will later be requi
 
 <<convertowinpoly,fig=TRUE>>=
 library(maptools)
-obsbdry <- as.owin(obspoly) #this step is the only one that requires maptools
+obsbdry <- as.owin(obspoly) #this is the only step that requires maptools
 plot(obsbdry,main="A Region of Interest",axes=TRUE)
 @
 
 \section{Open raster data set and crop to region of interest}
 The \code{raster} package is able to open and perform virtual operations on raster data.
-The data is not actually loaded into memory (RAM) until...
+The data is not actually loaded into memory (RAM) until it is converted into a \code{spatstat im} object.
 
 <<openrasterdata,fig=TRUE>>=
-unzip("../data/demorsraster.zip") #raster data was compressed in a zip to save space
+#First unzip raster data (raster data was compressed in a zip to save space)
+unzip("../data/demorsraster.zip")
 xidataset <- raster("demorsraster.ers")
 xidataset <- crop(xidataset,extent(obspoly))
-plot(xidataset,main="Tree Canopy Map and Region of Interest") #just for fun
+plot(xidataset,main="Tree Canopy Map and Region of Interest")
 plot(add=TRUE,obsbdry)
 @
 \code{xidataset} is currently a rectangular region containing obspoly, the data is still not in memory (RAM).
 
-This is a binary image that is either 0 or 1 (or NULL) where 1 is our class of interest (tree canopy).
-If your data is not in this same binary form then additional transformations will be needed at this point.
-To use \code{stationaryracsinference} functions the observation must converted into a spatstat owin object.
+This is a binary image that is either NA or 1 where 1 is our class of interest (tree canopy).
+If your data is not in this same form then additional transformations will be needed at this point.
 
-This is a two step process that requires first conversion into \code{spatstat} image object and then conversion into an owin object.
+To use \code{stationaryracsinference} functions the observation must be converted into a spatstat owin object.
+This is a two step process that first requires conversion into \code{spatstat} image object and then conversion into an owin object.
 <<conversiontoowin>>=
 xiimage <- as.im(xidataset)
 xiowin <- as.owin(xiimage)
 @
 Note that \code{as.owin()} assumes all NA values are outside the set, and everything else is inside the set.
- **Is the system set up for NULL data?
- 
-xiowin currently has observations outside the observation polygon.
+
+\code{xiowin} currently has observations outside the polygon of interest.
 Intersecting the two rectifies this.
 
-<<intersectbdrywxiowin>>=
+<<intersectbdrywxiowin,fig=TRUE>>=
 xiowin <- intersect.owin(xiowin,obsbdry)
 plot(xiowin,main="Class cover in the region of interest",axes=TRUE)
 @
