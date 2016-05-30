@@ -1,5 +1,7 @@
 \documentclass{article}
 
+\newcommand{\code}[1]{{\tt #1}}
+
 \begin{document}
 \title{Estimating RACS Summary Functions from Remote Sensing Data}
 \author{Kassel Hingee}
@@ -7,7 +9,7 @@
 \maketitle
 
 This document demonstrates how to estimate various RACS Summary Functions from data stored in a remote sensing raster data format.
-The specific format used here is ERMapper raster format (extension .ers), other formats supported by gdal should work in a very similar fashion. 
+The specific format used here is ERMapper raster format (extension .ers); other formats supported by gdal should work in a very similar fashion. 
 
 \section{Installation of Support Packages}
 It is necessary to install the following additional packages to read remote sensing data and convert it into the spatial formats used in \code{stationaryracsinference}:
@@ -17,8 +19,8 @@ It is necessary to install the following additional packages to read remote sens
 \item maptools
 \item raster
 \end{itemize}
- These can be installed using \code{install.packages()}, the exception is rgdal. 
-  rgdal requires first installation of gdal (\verb!http://www.gdal.org/!) which is available for Windows, Mac and Linux. 
+ These can be installed by simply using \code{install.packages()} with the exception is rgdal. 
+  rgdal requires first installation of GDAL (\verb!http://www.gdal.org/!) which is available for Windows, Mac and Linux. 
    On Windows I installed GDAL as part of the OSGeo4W package.
   Once GDAL is installed it is ok to run \code{install.packages("rgdal")}.
 
@@ -28,7 +30,6 @@ library("stationaryracsinference")
 library("rgdal")
 library("maptools")
 library("raster")
-
 @
 
 
@@ -42,26 +43,33 @@ Usually it is not desired (nor computationally feasible) to analyse the entire d
  Here we specify the region of interest using a polygon in a saved shapefile.
  It is also possible to specify extents using coordinates (see help for \code{extent()} from the raster package).
 
+
 <<readpolygon>>=
-obspoly <- readOGR("data","poly03")
+library("rgdal") #Reading shapefiles requires rgdal.
+obspoly <- readOGR("../data","aregionofinterest")
 crs(proj4string(obspoly)) #print the coordinate projection of the polygon data for sanity
 @
 
-Since this region is non-rectangular a spatstat owin version will be required later for the estimations (most estimators will assume a rectangular boundary if another one isn't supplied)
+Note the package \code{maptools} can also read shapefiles however it does not attach projection information to the object.
 
-<<convertowinpoly>>=
+Since this region is non-rectangular a spatstat owin version will later be required for the estimations (most estimators will assume a rectangular boundary if one isn't supplied)
+
+<<convertowinpoly,fig=TRUE>>=
+library(maptools)
 obsbdry <- as.owin(obspoly) #this step is the only one that requires maptools
+plot(obsbdry,main="A Region of Interest",axes=TRUE)
 @
 
 \section{Open raster data set and crop to region of interest}
 The \code{raster} package is able to open and perform virtual operations on raster data.
 The data is not actually loaded into memory (RAM) until...
 
-<<openrasterdata>>=
-unzip("demorsraster.zip") #raster data was compressed in a zip to save space
-xidataset <- raster(**data...)
+<<openrasterdata,fig=TRUE>>=
+unzip("../data/demorsraster.zip") #raster data was compressed in a zip to save space
+xidataset <- raster("demorsraster.ers")
 xidataset <- crop(xidataset,extent(obspoly))
-plot(xidataset) #just for fun
+plot(xidataset,main="Tree Canopy Map and Region of Interest") #just for fun
+plot(add=TRUE,obsbdry)
 @
 \code{xidataset} is currently a rectangular region containing obspoly, the data is still not in memory (RAM).
 
@@ -71,18 +79,18 @@ To use \code{stationaryracsinference} functions the observation must converted i
 
 This is a two step process that requires first conversion into \code{spatstat} image object and then conversion into an owin object.
 <<conversiontoowin>>=
-ximage <- as.im(xidataset)
-xiowin <- as.owin(ximage)
+xiimage <- as.im(xidataset)
+xiowin <- as.owin(xiimage)
 @
-
-\code{as.owin()} assumes all values ... are inside the class of interest, and everything else is not.
+Note that \code{as.owin()} assumes all NA values are outside the set, and everything else is inside the set.
  **Is the system set up for NULL data?
  
 xiowin currently has observations outside the observation polygon.
 Intersecting the two rectifies this.
 
 <<intersectbdrywxiowin>>=
-xiowin <- intersect.owin(xiowin,xibdry)
+xiowin <- intersect.owin(xiowin,obsbdry)
+plot(xiowin,main="Class cover in the region of interest",axes=TRUE)
 @
 
 \section{Estimation of RACS Summary Functions}
