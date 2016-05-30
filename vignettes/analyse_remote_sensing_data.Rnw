@@ -34,13 +34,20 @@ library("raster")
 
 
 \section{Demonstration Data}
-The data demonstrating on is ...
-
-Class of interested is 1.
+The data used in the demonstration is a small subset of a tree canopy map derived from aerial stereophotography. 
+\begin{itemize}
+  \item GSD is 0.2m
+  \item Year of capture was 2009
+  \item Location is a sparsely forested region just North of Perth, Australia
+  \item Data is approximately 300m x 300m in extent.
+  \item Values are either 1 if in tree canopy, or NULL (0) if not in tree canopy.
+  \item Data format: ERMapper raster (.ers)
+\end{itemize}
+  See Caccetta 2015 for more details on capture and processing of this data.
 
 \section{Set up the Observation Window}
 Usually it is not desired (nor computationally feasible) to analyse the entire dataset.
- Here we specify the region of interest using a polygon in a saved shapefile.
+ Here we specify the region of interest (which will become our observation window) using a polygon in a saved shapefile.
  It is also possible to specify extents using coordinates (see help for \code{extent()} from the raster package).
 
 
@@ -51,14 +58,14 @@ obspoly <- readOGR("../data","aregionofinterest")
 crs(proj4string(obspoly)) 
 @
 
-Note the package \code{maptools} can also read shapefiles however it does not attach projection information to the object.
+Note that the package \code{maptools} can also read shapefiles however it does not attach projection information to the object.
 
-Since this region is non-rectangular a spatstat owin version will later be required for the estimations (most estimators will assume a rectangular boundary if one isn't supplied)
+Since this region is non-rectangular a spatstat owin version of \code{obspoly} will be required for the summary function estimations (most estimators will assume a rectangular boundary if one isn't supplied)
 
 <<convertowinpoly,fig=TRUE>>=
 library(maptools)
 obsbdry <- as.owin(obspoly) #this is the only step that requires maptools
-plot(obsbdry,main="A Region of Interest",axes=TRUE)
+plot(obsbdry,main="A Region of Interest / Observation Window",axes=TRUE)
 @
 
 \section{Open raster data set and crop to region of interest}
@@ -76,10 +83,10 @@ plot(add=TRUE,obsbdry)
 \code{xidataset} is currently a rectangular region containing obspoly, the data is still not in memory (RAM).
 
 This is a binary image that is either NA or 1 where 1 is our class of interest (tree canopy).
-If your data is not in this same form then additional transformations will be needed at this point.
+If your data is not in this form then additional transformations will be needed at this point.
 
-To use \code{stationaryracsinference} functions the observation must be converted into a spatstat owin object.
-This is a two step process that first requires conversion into \code{spatstat} image object and then conversion into an owin object.
+To use functions in \code{stationaryracsinference} the observation must be converted into a spatstat owin object.
+This is a two step process that requires conversion into \code{spatstat} image object and then conversion into an owin object.
 <<conversiontoowin>>=
 xiimage <- as.im(xidataset)
 xiowin <- as.owin(xiimage)
@@ -95,5 +102,9 @@ plot(xiowin,main="Class cover in the region of interest",axes=TRUE)
 @
 
 \section{Estimation of RACS Summary Functions}
+
+\section{Bibliography}
+Caccetta, Peter, Simon Collings, Andrew Devereux, Kassel Hingee, Don McFarlane, Anthony Traylen, Xiaoliang Wu, and Zheng-Shu Zhou. "Monitoring Land Surface and Cover in Urban and Peri-Urban Environments Using Digital Aerial Photography." International Journal of Digital Earth, July 24, 2015, 1-19. doi:10.1080/17538947.2015.1046510.
+
 
 \end{document}
