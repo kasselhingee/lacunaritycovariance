@@ -26,11 +26,14 @@ by first converting any images to \code{spatstat}'s \code{im} format (using \cod
 
 The aim is to develop methods for estimating various parameters for RACS models of tree canopy and other remotely sensed thematic maps.
 
-The main functions are:
+The main functions in this (currently very small) package are:
 
-coveragefrac() for coverage fraction
+\code{coveragefrac()} for coverage probability 
 
-covariance() for the covariance (also known as the two-point probability function)
+\code{contagSphCont()} for disc-state contagion
+
+Another function \code{Hest()} from \code{spatstat} is used heavily in Hingee (2016).
+
 
 }
 \author{
@@ -46,13 +49,17 @@ refer to Chiu et al 2013, and Molchanov**
 \keyword{ package }
 \keyword{ spatial }
 \examples{
-%coverage and covariance estimation
+%coverage probability, core probability, SCD, and disc-state contagion estimation
 XiOWIN <- heather$coarse
 windowOWIN <- Frame(heather$coarse)
  
-coverageProb <- coveragefrac(XiOWIN,windowOWIN)
- 
-covarianceFcn <- covariance(XiOWIN,windowOWIN)
-plot(covarianceFcn$covariance)
-plot(covarianceFcn$covariance - coverageProb*coverageProb)
+coverageprob <- coveragefrac(XiOWIN,windowOWIN)
+
+scdest <- Hest(XiOWIN,W=windowOWIN)
+coreprob <- Hest(complement.owin(XiOWIN),W=windowOWIN)
+discstatecontag <- contagSphCont(scdest,coreprob,coverageprob)
+par(mfrow=c(1,3))
+plot(scdest)
+plot(coreprob)
+plot(discstatcontag)
 }
