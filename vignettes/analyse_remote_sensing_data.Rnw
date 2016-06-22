@@ -56,7 +56,8 @@ Usually it is not desired (nor computationally feasible) to analyse the entire d
 
 <<readpolygon>>=
 library("rgdal") #Reading shapefiles requires rgdal.
-obspoly <- readOGR("../data","aregionofinterest")
+regionfilepath <- system.file("extdata", package="stationaryracsinference")
+obspoly <- readOGR(regionfilepath,"aregionofinterest")
 #print the coordinate projection of the polygon data for sanity
 crs(proj4string(obspoly)) 
 @
@@ -77,7 +78,8 @@ The data is not actually loaded into memory (RAM) until it is converted into a \
 
 <<openrasterdata,fig=TRUE>>=
 #First unzip raster data (raster data was compressed in a zip to save space)
-unzip("../data/demorsraster.zip")
+rsdatafilepath <- system.file("extdata/demorsraster.zip", package="stationaryracsinference")
+unzip(rsdatafilepath)
 xidataset <- raster("demorsraster.ers")
 xidataset <- crop(xidataset,extent(obspoly))
 plot(xidataset,main="Tree Canopy Map and Region of Interest")
