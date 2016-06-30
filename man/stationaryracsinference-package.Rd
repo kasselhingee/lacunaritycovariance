@@ -31,8 +31,8 @@ The main functions in this (very small) package are:
 
 Another function \code{Hest()} from \code{spatstat} is used heavily in Hingee (2016).
 
-\textbf{Notation for manual:}
-Though out this manual the RACS process is referred to as `Xi' or $\Xi$, with the observation (the image) called `xi' or $\xi$.
+NOTATION FOR MANUAL:
+Though out this manual the RACS process is referred to as `Xi' or \eqn{\Xi}, with the observation (the image) called `xi' or \eqn{\xi}.
 
 
 }
