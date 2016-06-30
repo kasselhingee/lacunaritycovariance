@@ -21,14 +21,18 @@ Conversion of binary raster images in other formats to \code{owin} is quite easy
 
  Typically the functions require passing both an \code{owin} object containing the random set observation (an image) and an \code{owin} object specifying the boundary of the observation.
 
+ An example application to data in shapefile and ERMapper format is contained in an attached vignette.
 
-The main functions in this (currently very small) package are:
+The main functions in this (very small) package are:
 
 \code{coveragefrac()} for estimating coverage probability 
 
 \code{contagSphCont()} for estimating disc-state contagion
 
 Another function \code{Hest()} from \code{spatstat} is used heavily in Hingee (2016).
+
+\textbf{Notation for manual:}
+Though out this manual the RACS process is referred to as `Xi' or $\Xi$, with the observation (the image) called `xi' or $\xi$.
 
 
 }
