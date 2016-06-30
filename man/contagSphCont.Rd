@@ -62,7 +62,4 @@ contagion <- contagSphCont(xiH,xiHc,p)
 plot(contagion)
 
 }
-\seealso{
-\code{\link{contagTwoPtProb}}
-}
 

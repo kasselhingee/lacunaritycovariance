@@ -48,7 +48,6 @@
 #' contagion <- contagSphCont(xiH,xiHc,p)
 #' plot(contagion)
 #' 
-#' @seealso \code{\link{contagTwoPtProb}} 
 
 contagSphCont <- function(xiH, xiHc, p, normalise=FALSE){
   returnfv <- FALSE
