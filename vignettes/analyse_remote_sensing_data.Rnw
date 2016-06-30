@@ -57,7 +57,7 @@ Usually it is not desired (nor computationally feasible) to analyse the entire d
 
 
 <<readpolygon>>=
-library("rgdal") #Reading shapefiles requires rgdal.
+#library("rgdal") #Reading shapefiles requires rgdal.
 regionfilepath <- system.file("extdata", package="stationaryracsinference")
 obspoly <- readOGR(regionfilepath,"aregionofinterest")
 #print the coordinate projection of the polygon data for sanity
