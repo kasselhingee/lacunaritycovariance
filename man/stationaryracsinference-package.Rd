@@ -61,5 +61,5 @@ discstatecontag <- contagSphCont(scdest,coreprob,coverageprob)
 par(mfrow=c(1,3))
 plot(scdest)
 plot(coreprob)
-plot(discstatcontag)
+plot(discstatecontag)
 }
