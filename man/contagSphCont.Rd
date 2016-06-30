@@ -2,38 +2,42 @@
 % Please edit documentation in R/contagSphCont.R
 \name{contagSphCont}
 \alias{contagSphCont}
-\title{Spherical Contact version of Contagion}
+\title{Disc State Contagion}
 \usage{
 contagSphCont(xiH, xiHc, p, normalise = FALSE)
 }
 \arguments{
-\item{xiH}{Spherical contact function for xi.}
+\item{xiH}{Estimated conditional spherical contact distribution function for \eqn{\Xi}. 
+Typically as a \code{fv} object but could also be a vector of values.}
 
-\item{xiHc}{Spherical contact distribution for the complement of xi.
-If xiH and xiHc are both fv objects then harmonises them and function returns an fv object}
+\item{xiHc}{Estimate conditional spherical contact distribution for the complement of \eqn{\Xi}. 
+This is called the Conditional Core Probability in Hingee 2016.
+Typically is a \code{fv} object.}
 
 \item{p}{An estimate of the coverage fraction of a RACS \eqn{\Xi}.
-The sample points should be same as xiH for now.}
+Typically obtained using \code{coveragefrac}.}
 
-\item{normalise}{Optional. If true normalises the results so that all RACS return a value between}
+\item{normalise}{Optional. If TRUE \code{contagSphCont} normalises the results so that all RACS return a value between 0 and 1. Default is FALSE.}
 }
 \value{
 a vector the same length as xiH corresponding to the contagion at each r value of xiH
 }
 \description{
-Calculates a spherical contact version of contagion. 
-This version of contagion gauges closeness/mixing between \eqn{\Xi} and \eqn{\Xi^c}
- using the spherical contact distribution. 
- Given a distance \eqn{r} and an arbitrary point \eqn{x}
- in \eqn{\Xi} then \eqn{\Xi} close means everything with \eqn{r} of \eqn{x} is in \eqn{\Xi}.
- \eqn{\Xi^c} close to \eqn{x} means there is at least some part of \eqn{\Xi^c} within \eqn{r} of \eqn{x}.
+Calculates the disc-state contagion as described in Hingee 2016. It is like the contagion LPI but is based on the spherical contact version of contagion. 
+It describes the entropy (mixing) between four possible states of disc
+(see Hingee 2016 for more details).
+It requires a mixing distance of interest to be chosen by the user
+(compared to classical contagion for which this distance is set by the image resolution).
 }
 \details{
 xiH should be a function of radius that estimates the probability 
-\deqn{xiH(r)\approx P(B_r(x) \subseteq \Xi^c)}
+\deqn{xiH(r)\approx P(B_r(x) \subseteq \Xi^c | x \in \Xi^c)}
  of a disc around an arbitrary point \eqn{x} is contained in \eqn{\Xi^c.}
-Similary xiHc should be the probability of disc being fully contained in \eqn{\Xi}
-\deqn{xiHc(r)\sim P(B_r(o) \subseteq \Xi).}
+Similary xiHc should be an estimate of the probability of a disc being fully contained in \eqn{\Xi}
+\deqn{xiHc(r)\sim P(B_r(x) \subseteq \Xi | x \in \Xi).}
+These can both be obtained using \code{Hest} in \code{spatstat}.
+
+If xiH and xiHc are both fv objects then harmonises them and the return value is an fv object.
 
 If \code{normalise} is \code{TRUE} then divides by 
 \eqn{\frac{-4}{e}ln(\frac{1}{e})} and adds 1 so normalised spherical contact contagion is
@@ -61,5 +65,8 @@ plot(xiH$r,contagion,type="l")
 contagion <- contagSphCont(xiH,xiHc,p)
 plot(contagion)
 
+}
+\references{
+Hingee, K.L. (2016) Statistics for Patch Observations. ISPRS Congress Proceedings p. IPSRS.
 }
 
