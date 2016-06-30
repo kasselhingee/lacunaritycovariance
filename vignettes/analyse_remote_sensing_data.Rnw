@@ -1,10 +1,12 @@
+%\VignetteIndexEntry{Estimating RACS Summary Functions from data saved in Remote Sensing Formats}
+
 \documentclass{article}
 \usepackage{hyperref}
 
 \newcommand{\code}[1]{{\tt #1}}
 
 \begin{document}
-\title{Estimating RACS Summary Functions from Remote Sensing Data}
+\title{Estimating RACS Summary Functions from data saved in Remote Sensing Formats}
 \author{Kassel Hingee}
 
 \maketitle
