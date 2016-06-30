@@ -26,10 +26,6 @@ in reality the area of Xi is probably slightly different - depends on the sensin
 XiOWIN <- heather$coarse
 windowOWIN <- Frame(heather$coarse)
 coverageProb <- coveragefrac(XiOWIN,windowOWIN)
-#
-#vegetation map of Balcatta park
-data(balcattapark_coarse)
-coverageProb <- coveragefrac(balcattapark_coarse$vegmask,balcattapark_coarse$boundary)
 }
 \author{
 Kassel Hingee
