@@ -16,11 +16,7 @@ an estimate of the coverage probability
 }
 \description{
 Estimates the probability of an aribitray point being inside a stationary RACS.
-Because the RACS is stationary this is equivalent to estimating \eqn{P(o\in\Xi)}. 
-The estimate is simply the fraction of \eqn{\Xi} in the observed window.
-}
-\details{
-in reality the area of xi is probably slightly different - depends on the sensing method of xi. Can assume really close though.
+The estimate is simply the fraction of \code{xi} in the observed window.
 }
 \examples{
 xi <- heather$coarse
