@@ -22,7 +22,8 @@
 #' \deqn{xiHc(r)\sim P(B_r(x) \subseteq \Xi | x \in \Xi).}
 #' These can both be obtained using \code{Hest} in \code{spatstat}.
 #' 
-#' If xiH and xiHc are both fv objects then harmonises them and the return value is an fv object.
+#' If xiH and xiHc are both fv objects then they must be generated using Hest because the function automatically uses the reduce-sample border correction estimates.
+#' In this case the return value is an fv object.
 #'
 #' If \code{normalise} is \code{TRUE} then divides by 
 #' \eqn{\frac{-4}{e}ln(\frac{1}{e})} and adds 1 so normalised spherical contact contagion is
