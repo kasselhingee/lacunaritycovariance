@@ -89,6 +89,7 @@ rsfiles <- unzip(rsdatafilepath,exdir=tempdir())
 xidataset<-raster(rsfiles[[2]])
 # if this doesn't load you may need to try opening rsfiles[[1]]
 # (it may just be due to a filename extention convention)
+
 xidataset <- crop(xidataset,extent(obspoly))
 plot(xidataset,main="Tree Canopy Map and Region of Interest")
 plot(add=TRUE,obsbdry)
