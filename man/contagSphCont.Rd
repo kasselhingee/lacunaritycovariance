@@ -20,7 +20,7 @@ Typically obtained using \code{coveragefrac}.}
 \item{normalise}{Optional. If TRUE \code{contagSphCont} normalises the results so that all RACS return a value between 0 and 1. Default is FALSE.}
 }
 \value{
-a vector the same length as xiH corresponding to the contagion at each r value of xiH
+An \code{fv} object or a vector the same length as xiH corresponding to the contagion at each r value of xiH
 }
 \description{
 Calculates the disc-state contagion as described in Hingee 2016. It is like the contagion LPI but is based on the spherical contact version of contagion. 
@@ -40,28 +40,17 @@ These can both be obtained using \code{Hest} in \code{spatstat}.
 If xiH and xiHc are both fv objects then they must be generated using Hest because the function automatically uses the reduce-sample border correction estimates.
 In this case the return value is an fv object.
 
-If \code{normalise} is \code{TRUE} then divides by 
-\eqn{\frac{-4}{e}ln(\frac{1}{e})} and adds 1 so normalised spherical contact contagion is
-\deqn{
-1+(\frac{-4}{e}ln(\frac{1}{e}))^{-1} \mbox{unnormalised contagion}
-}
-This makes contagion vary between 0 and 1 for all 2 phase processes.
+If \code{normalise} is \code{TRUE} then the result is divided by 
+\eqn{\frac{-4}{e}ln(\frac{1}{e})} and added to 1 so that the normalised disc state contagion is between 0 and 1.
 }
 \examples{
 xi <- heather$coarse
+obswindow <- Frame(heather$coarse)
 p <- coveragefrac(xi,Frame(xi))
-xiH <- Hest(xi)
-xiHc <- Hest(complement.owin(xi))
-#it typically not advisable to choose set r ourselves, **is it a good idea here? Interpolation later might be better?
+xiH <- Hest(xi) #Sph. Contact Distrution Estimate
+xiHc <- Hest(complement.owin(xi),obswindow) #Conditional Core Prob. Estimate
 plot(xiH,type="l",col="red") 
 lines(xiHc,type="l",col="black") 
-
-harmonised <- harmonise(xiH,xiHc)
-xiH <- harmonised[[1]]
-xiHc <- harmonised[[2]]
-
-contagion <- contagSphCont(xiH$km,xiHc$km,p)
-plot(xiH$r,contagion,type="l")
 
 contagion <- contagSphCont(xiH,xiHc,p)
 plot(contagion)
