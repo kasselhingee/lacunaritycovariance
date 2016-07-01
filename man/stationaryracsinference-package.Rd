@@ -55,13 +55,13 @@ Hingee, K.L. (2016) Statistics for Patch Observations. ISPRS Congress Proceeding
 \keyword{ spatial }
 \examples{
 %coverage probability, core probability, SCD, and disc-state contagion estimation
-XiOWIN <- heather$coarse
+xiOWIN <- heather$coarse
 windowOWIN <- Frame(heather$coarse)
  
-coverageprob <- coveragefrac(XiOWIN,windowOWIN)
+coverageprob <- coveragefrac(xiOWIN,windowOWIN)
 
-scdest <- Hest(XiOWIN,W=windowOWIN)
-coreprob <- Hest(complement.owin(XiOWIN),W=windowOWIN)
+scdest <- Hest(xiOWIN,W=windowOWIN)
+coreprob <- Hest(complement.owin(xiOWIN),W=windowOWIN)
 discstatecontag <- contagSphCont(scdest,coreprob,coverageprob)
 
 plot(scdest, main="Conditional Spherical Contact Distribution Estimates\n Showing Estimates Using Various Border Corrections")
