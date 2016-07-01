@@ -9,21 +9,28 @@
 \packageDescription{stationaryracsinference}
 }
 \details{
-The aim of this package is to include functions for estimating various parameters/properties of RACS from single 2D binary digital images. 
- The functions assume that the image is a digitisation of a stationary and mixing RACS.
+The aim of this package is to include functions for estimating various parameters/properties of random closed set (RACS) from single 2D binary digital images. 
+ This is particularly relevant to remotely sensed thematic maps and landscape pattern indices.
+ More background and details can be found in Hingee (2016).
 
- This is particularly relevant to remotely sensed thematic maps and landscape pattern indices (see Hingee 2016 for a discussion).
+ The estimators represent the image as a digitisation of a stationary and mixing RACS.
+ A RACS is any process that generates closed sets (intuitively one may think of them as generating sets that include their boundary).
+ A stationary and mixing RACS is a RACS for which
+ the statistical properties are invariant to translation (stationarity) and observations at locations far away from each other approach independence (mixing). 
 
-The package expects RACS observations to be in binary raster \code{owin} format.
- \code{owin} objects are used because \code{spatstat} has many relevant functions for manipulating such objects. 
+Thus this package provides a way to describe a statistical representation of a landscape. 
+These are more abstract and synoptic descriptions (and thus hopefully less sensitive to measurement artefacts) than Landscape Pattern Indices.
+
+
+The package expects observations to be in binary raster \code{owin} format (this format is provided by the \code{spatstat} package).
+ \code{owin} objects are used because \code{spatstat} has many relevant tools for statistical analysis of spatial data. 
 Conversion of binary raster images in other formats to \code{owin} is quite easy by first converting any images to \code{spatstat}'s \code{im} format (using \code{as.im()}).
  \code{as.owin()} can then be applied to get an owin object.
-
  Typically the functions require passing both an \code{owin} object containing the random set observation (an image) and an \code{owin} object specifying the boundary of the observation.
 
  An example application to data in shapefile and ERMapper format is contained in an attached vignette.
 
-The main functions in this (very small) package are:
+The only functions in this (very small) package are:
 
 \code{coveragefrac()} for estimating coverage probability 
 
@@ -32,7 +39,7 @@ The main functions in this (very small) package are:
 Another function \code{Hest()} from \code{spatstat} is used heavily in Hingee (2016).
 
 NOTATION FOR MANUAL:
-Though out this manual the RACS process is referred to as `Xi' or \eqn{\Xi}, with the observation (the image) called `xi' or \eqn{\xi}.
+Through out this manual the RACS process is referred to as `Xi' or \eqn{\Xi}, with the observation (the image) called `xi' or \eqn{\xi}.
 
 
 }
