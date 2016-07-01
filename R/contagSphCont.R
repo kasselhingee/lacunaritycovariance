@@ -49,8 +49,10 @@
 
 contagSphCont <- function(xiH, xiHc, p, normalise=FALSE){
   returnfv <- FALSE
+  unitnames <- NULL
   if (is.fv(xiH) && is.fv(xiHc)) {#then new version of contagion
     returnfv <- TRUE
+    unitnames <- unitname(xiH)
     harmonisedSCDs <- harmonise(xiH,xiHc)
     r <- harmonisedSCDs[[1]]$r
     rharmleng <- length(r)
@@ -87,7 +89,8 @@ contagSphCont <- function(xiH, xiHc, p, normalise=FALSE){
                            contag = contag),
                 valu = "contag",
                 desc=c("radius",
-                       "normalised SCD contagion estimate")
+                       "normalised SCD contagion estimate"),
+                unitname=unitnames
       ))
     }
     else {
@@ -95,7 +98,8 @@ contagSphCont <- function(xiH, xiHc, p, normalise=FALSE){
                            contag = contag),
                 valu = "contag",
                 desc=c("radius",
-                       "unnormalised SCD contagion estimate")
+                       "unnormalised SCD contagion estimate"),
+                unitname=unitnames
       ))
     }
   }
