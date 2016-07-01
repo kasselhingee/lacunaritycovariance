@@ -36,7 +36,7 @@ The only functions in this (very small) package are:
 
 \code{contagSphCont()} for estimating disc-state contagion
 
-Another function \code{Hest()} from \code{spatstat} is used heavily in Hingee (2016).
+Another function \code{Hest()} from \code{spatstat} is used heavily in Hingee (2016) to estimate the spherical contact distributions and conditional core probability.
 
 NOTATION FOR MANUAL:
 Through out this manual the RACS process is referred to as `Xi' or \eqn{\Xi}, with the observation (the image) called `xi' or \eqn{\xi}.
@@ -55,13 +55,13 @@ Hingee, K.L. (2016) Statistics for Patch Observations. ISPRS Congress Proceeding
 \keyword{ spatial }
 \examples{
 %coverage probability, core probability, SCD, and disc-state contagion estimation
-xiOWIN <- heather$coarse
-windowOWIN <- Frame(heather$coarse)
+xi <- heather$coarse
+obswindow <- Frame(heather$coarse)
  
-coverageprob <- coveragefrac(xiOWIN,windowOWIN)
+coverageprob <- coveragefrac(xi,obswindow)
 
-scdest <- Hest(xiOWIN,W=windowOWIN)
-coreprob <- Hest(complement.owin(xiOWIN),W=windowOWIN)
+scdest <- Hest(xi,W=obswindow)
+coreprob <- Hest(complement.owin(xi),W=obswindow)
 discstatecontag <- contagSphCont(scdest,coreprob,coverageprob)
 
 plot(scdest, main="Conditional Spherical Contact Distribution Estimates\n Showing Estimates Using Various Border Corrections")
