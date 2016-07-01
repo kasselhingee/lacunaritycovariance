@@ -38,8 +38,8 @@
 #' xi <- heather$coarse
 #' obswindow <- Frame(heather$coarse)
 #' p <- coveragefrac(xi,Frame(xi))
-#' xiH <- Hest(xi) #Sph. Contact Distrution Estimate
-#' xiHc <- Hest(complement.owin(xi),obswindow) #Conditional Core Prob. Estimate
+#' xiH <- Hest(xi,W=obswindow) #Sph. Contact Distrution Estimate
+#' xiHc <- Hest(complement.owin(xi),W=obswindow) #Conditional Core Prob. Estimate
 #' plot(xiH,type="l",col="red") 
 #' lines(xiHc,type="l",col="black") 
 #' 
