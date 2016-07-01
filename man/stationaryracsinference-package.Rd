@@ -28,21 +28,22 @@ Conversion of binary raster images in other formats to \code{owin} is quite easy
  \code{as.owin()} can then be applied to get an owin object.
  Typically the functions require passing both an \code{owin} object containing the random set observation (an image) and an \code{owin} object specifying the boundary of the observation.
 
- An example application to data in shapefile and ERMapper format is contained in an attached vignette.
+ An example application to data in shapefile and ERMapper format is contained in an attached vignette \emph{remotesensedatademo}. 
+ This can be accessed by starting \R and typing \code{library(stationaryracsinference)} and \code{vignette('remotesensedatademo')}.
 
 The only functions in this (very small) package are:
-
-\code{coveragefrac()} for estimating coverage probability 
-
-\code{contagSphCont()} for estimating disc-state contagion
+\itemize{
+\item \code{coveragefrac()} for estimating coverage probability 
+\item \code{contagSphCont()} for estimating disc-state contagion
+}
 
 Another function \code{Hest()} from \code{spatstat} is used heavily in Hingee (2016) to estimate the spherical contact distributions and conditional core probability.
 
-NOTATION FOR MANUAL:
-Through out this manual the RACS process is referred to as `Xi' or \eqn{\Xi}, with the observation (the image) called `xi' or \eqn{\xi}.
-
-
 }
+\section{Notation}{
+Through out this manual the RACS process is referred to as `Xi' or \eqn{\Xi}, with the observation (the image) called `xi' or \eqn{\xi}.
+}
+
 \author{
 \packageAuthor{stationaryracsinference}
 
