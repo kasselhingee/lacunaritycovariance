@@ -65,7 +65,10 @@ scdest <- Hest(xi,W=obswindow)
 coreprob <- Hest(complement.owin(xi),W=obswindow)
 discstatecontag <- contagSphCont(scdest,coreprob,coverageprob)
 
-plot(scdest, main="Conditional Spherical Contact Distribution Estimates\n Showing Estimates Using Various Border Corrections")
-plot(coreprob, main = "Conditional Core Probability Estimates\n Showing Estimates using various Border Corrections")
-plot(discstatecontag, main = "A Disc-State Contagion Estimate\n (Using the Reduced-Sample Border Correction)")
+plot(scdest, main="Conditional Spherical Contact Distribution Estimates\n
+ Showing Estimates Using Various Border Corrections")
+plot(coreprob, main = "Conditional Core Probability Estimates\n
+ Showing Estimates using various Border Corrections")
+plot(discstatecontag, main = "A Disc-State Contagion Estimate\n
+ (Using the Reduced-Sample Border Correction)")
 }
