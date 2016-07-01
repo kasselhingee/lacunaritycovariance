@@ -34,7 +34,7 @@ xiH should be a function of radius that estimates the probability
 \deqn{xiH(r)\approx P(B_r(x) \subseteq \Xi^c | x \in \Xi^c)}
  of a disc around an arbitrary point \eqn{x} is contained in \eqn{\Xi^c.}
 Similary xiHc should be an estimate of the probability of a disc being fully contained in \eqn{\Xi}
-\deqn{xiHc(r)\sim P(B_r(x) \subseteq \Xi | x \in \Xi).}
+\deqn{xiHc(r)\approx P(B_r(x) \subseteq \Xi | x \in \Xi).}
 These can both be obtained using \code{Hest} in \code{spatstat}.
 
 If xiH and xiHc are both fv objects then they must be generated using Hest because the function automatically uses the reduce-sample border correction estimates.
