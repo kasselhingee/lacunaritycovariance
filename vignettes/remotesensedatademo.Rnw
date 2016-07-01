@@ -85,8 +85,10 @@ The data is not actually loaded into memory (RAM) until it is converted into a \
 #(raster data was compressed in a zip to save space)
 rsdatafilepath <- system.file("extdata/demorsraster.zip",
                               package="stationaryracsinference")
-unzip(rsdatafilepath)
-xidataset <- raster("demorsraster.ers")
+rsfiles <- unzip(rsdatafilepath,exdir=tempdir())
+xidataset<-raster(rsfiles[[2]])
+# if this doesn't load you may need to try opening rsfiles[[1]]
+# (it may just be due to a filename extention convention)
 xidataset <- crop(xidataset,extent(obspoly))
 plot(xidataset,main="Tree Canopy Map and Region of Interest")
 plot(add=TRUE,obsbdry)
