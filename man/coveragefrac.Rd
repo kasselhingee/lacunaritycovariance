@@ -4,10 +4,10 @@
 \alias{coveragefrac}
 \title{Estimate the coverage fraction of a stationary RACS}
 \usage{
-coveragefrac(Xi, w)
+coveragefrac(xi, w)
 }
 \arguments{
-\item{Xi}{An observation of a RACS.}
+\item{xi}{An observation of a RACS.}
 
 \item{w}{The window of observation (not necessarily rectangular)}
 }
@@ -16,20 +16,12 @@ an estimate of the coverage probability
 }
 \description{
 Estimates the probability of an aribitray point being inside a stationary RACS.
-Because the RACS is stationary this is equivalent to estimating \eqn{P(o\in\Xi)}. 
-The estimate is simply the fraction of \eqn{\Xi} in the observed window.
-}
-\details{
-in reality the area of Xi is probably slightly different - depends on the sensing method of Xi. Can assume really close though.
+The estimate is simply the fraction of \code{xi} in the observed window.
 }
 \examples{
-XiOWIN <- heather$coarse
-windowOWIN <- Frame(heather$coarse)
-coverageProb <- coveragefrac(XiOWIN,windowOWIN)
-#
-#vegetation map of Balcatta park
-data(balcattapark_coarse)
-coverageProb <- coveragefrac(balcattapark_coarse$vegmask,balcattapark_coarse$boundary)
+xi <- heather$coarse
+obswindow <- Frame(heather$coarse)
+coverageProb <- coveragefrac(xi,obswindow)
 }
 \author{
 Kassel Hingee
