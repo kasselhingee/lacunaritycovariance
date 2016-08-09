@@ -1,0 +1,157 @@
+%\VignetteIndexEntry{Estimating RACS Summary Functions from data saved in Remote Sensing Formats}
+
+\documentclass{article}
+\usepackage{hyperref}
+
+\newcommand{\code}[1]{{\tt #1}}
+
+\begin{document}
+\title{Estimating RACS Summary Functions from data saved in Remote Sensing Formats}
+\author{Kassel Hingee}
+
+\maketitle
+
+This document demonstrates how to estimate various RACS summary functions from data stored in a remote sensing raster data format.
+The format used as an example here is ERMapper raster format (extension .ers) with observation window given in a shape file. 
+ Any other formats supported by GDAL should work in a very similar fashion.
+
+\tableofcontents
+
+\section{Installation of Packages}
+It is necessary to install the following packages to read remote sensing data and convert it into the formats used by \code{stationaryracsinference}:
+\begin{itemize}
+\item sp
+\item rgdal
+\item maptools
+\item raster
+\end{itemize}
+ Except for \code{rgdal} these can be installed by simply using \code{install.packages()}. 
+ Before installing \code{rgdal} it is needed to first install of GDAL (\verb!http://www.gdal.org/!) which is available for Windows, Mac and Linux.
+ Note an easy installation of GDAL on Windows is by installing OSGeo4W (\verb!http://trac.osgeo.org/osgeo4w/!).
+  Once GDAL is installed then run \code{install.packages("rgdal")}.
+
+After installation load packages for use
+<<loadpackages,echo=TRUE>>=
+library("stationaryracsinference")
+library("rgdal")
+library("maptools")
+library("raster")
+@
+
+
+\section{The data used for this demonstration}
+The data used in this demonstration is a small subset of a tree canopy map derived from aerial stereophotography. 
+\begin{itemize}
+  \item GSD is 0.2m
+  \item Year of capture was 2009
+  \item Location is a sparsely forested region just North of Perth, Australia
+  \item Data is approximately 300m x 300m in extent.
+  \item Values are either 1 if in tree canopy, or NULL (0) if not in tree canopy.
+  \item Data format: ERMapper raster (.ers)
+\end{itemize}
+  See Caccetta 2015 for more details on capture and processing of this data.
+
+\section{Set up the Observation Window}
+Usually it is not desired (nor computationally feasible) to analyse an entire remote sensing dataset.
+ Here we specify the region of interest (which will become our observation window) using a polygon in a saved shapefile.
+ It is also possible to specify extents using coordinates (see help for \code{extent()} from the raster package).
+
+
+<<readpolygon>>=
+regionfilepath <- system.file("extdata", package="stationaryracsinference")
+obspoly <- readOGR(regionfilepath,"aregionofinterest")
+#print the coordinate projection of the polygon data for sanity
+crs(proj4string(obspoly)) 
+@
+
+Note that the above uses \code{rgdal} to read the shape file, \code{maptools} can also includes functions to read shapefiles however they do not automatically attach projection information to the object.
+
+A \code{spatstat owin} version of \code{obspoly} is needed for the summary function estimations.
+ The following uses a conversion tool provided by \code{maptools}
+
+<<convertowinpoly,fig=TRUE>>=
+obsbdry <- as.owin(obspoly) #only step that requires maptools
+unitname(obsbdry) <- c("metre","metres")
+plot(obsbdry,
+     main="A Region of Interest / Observation Window",axes=TRUE)
+@
+
+\section{Open raster data set and crop to region of interest}
+The \code{raster} package is able to open and perform virtual operations on raster data.
+The data is not actually loaded into memory (RAM) until it is converted into a \code{spatstat im} object.
+
+<<openrasterdata,fig=TRUE>>=
+#First unzip raster data
+#(raster data was compressed in a zip to save space)
+rsdatafilepath <- system.file("extdata/demorsraster.zip",
+                              package="stationaryracsinference")
+rsfiles <- unzip(rsdatafilepath,exdir=tempdir())
+xidataset<-raster(rsfiles[[2]])
+# if this doesn't load you may need to try opening rsfiles[[1]]
+# (it may just be due to a filename extention convention)
+
+xidataset <- crop(xidataset,extent(obspoly))
+plot(xidataset,main="Tree Canopy Map and Region of Interest")
+plot(add=TRUE,obsbdry)
+@
+
+\code{xidataset} is a virtual data set (the data is still not in memory) covering the smallest rectangular region containing \code{obspoly}.
+ The pixels in this data either \code{NA} or \code{1} where 1 is our class of interest (tree canopy).
+If your data is not in this form then additional transformations will be needed at this point because later \code{as.owin()} assumes \code{NA} values are outside the set and everything else is inside the class.
+
+To use functions in \code{stationaryracsinference} the observation must be converted into an \code{owin} object.
+This is a two step process that requires conversion into \code{spatstat} image object and then conversion into an \code{owin} object.
+<<conversiontoowin>>=
+xiimage <- as.im(xidataset)
+unitname(xiimage) <- c("metre","metres")
+xiowin <- as.owin(xiimage)
+@
+Note that \code{as.owin()} assumes all NA values are outside the set, and everything else is inside the set.
+
+\code{xiowin} currently has observations outside the polygon of interest.
+Intersecting the two rectifies this.
+
+<<intersectbdrywxiowin,fig=TRUE>>=
+xiowin <- intersect.owin(xiowin,obsbdry)
+plot(xiowin,main="Class cover in the region of interest",axes=TRUE)
+@
+
+\section{Estimation of RACS Summary Functions}
+For now \code{stationaryracsinference} only has functions for estimating coverage probability and disc-state contagion, with spherical contact distribution and conditional core probability estimated using \code{Hest} from \code{spatstat}.
+ These are the only estimators described in Hingee (2016).
+
+<<estimationsummfcn,fig=TRUE,include=FALSE,width=12,height=6>>=
+#convert boundary to a raster
+rasterbdry=as.mask(obsbdry,xy=xiowin)
+# Note that safest to convert boundary into a raster
+# of the same resolution as the image now so that no 
+# issues in differing discretisations arise later
+
+coverageprob <- coveragefrac(xiowin,rasterbdry)
+coverageprob
+
+scdest <- Hest(xiowin,W=rasterbdry)
+coreprob <- Hest(complement.owin(xiowin),W=rasterbdry)
+discstatecontag <- contagSphCont(scdest,coreprob,coverageprob)
+
+par(mfrow=c(1,3))
+plot(scdest, main="Conditional Spherical Contact Distribution Estimates\n
+ Showing Estimates Using Various Border Corrections")
+plot(coreprob, main = "Conditional Core Probability Estimates\n
+ Showing Estimates using various Border Corrections")
+plot(discstatecontag, main = "A Disc-State Contagion Estimate\n
+ (Using the Reduced-Sample Border Correction)")
+@
+\includegraphics[width=\textwidth]{remotesensedatademo-estimationsummfcn}
+
+
+\section{References}
+Caccetta, P., Collings, S., Devereux, A., Hingee, K., McFarlane, D., Traylen, A., et al. (2015) \emph{Monitoring land surface and cover in urban and peri-urban environments using digital aerial photography.} International Journal of Digital Earth, 1-19.
+
+\
+
+\noindent
+Hingee, K.L. (2016) \emph{Statistics for Patch Observations.} ISPRS Congress Proceedings. ISPRS.
+
+
+\end{document}
