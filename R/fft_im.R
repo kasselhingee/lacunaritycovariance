@@ -10,12 +10,15 @@
 #' @param img input image. Can't contain any NA values
 #' @param padfactor Optional argument to pad image with zeros and thus increase the spectral resolution (technically interpolation because no extra information is included) of the result.
 #' @return an image with correct spectral units and height of the spectral function for approximating a continuous Fourier transform.
+#'
 fft.im <- function(img, padfactor = c(1,1)) {
   xstep=img$xstep
   ystep=img$ystep
+  unitname <- unitname(img)
   M <- as.matrix(img)
   if (any(is.na(M))) {stop("input image, img, contains NA values, cannot fourier transform")}
-  stopifnot(is.integer(padfactor[1]) && is.integer(padfactor[2]))
+  stopifnot(is.wholenumber(padfactor[1]) && is.wholenumber(padfactor[2]))
+  padfactor=as.integer(padfactor)
   if (any(padfactor > 1)){
     Mpad <- matrix(0,nrow=nrow(M)*padfactor[2],ncol=ncol(M)*padfactor[1])
     Mpad[1:nrow(M),1:ncol(M)] <- M
@@ -43,5 +46,15 @@ fft.im <- function(img, padfactor = c(1,1)) {
     xcol <- ((-(nc-1)/2):(nc/2)) * 2*pi/(xstep*nc)
   }
   
-  return(im(fM,xcol = xcol, yrow = yrow))
+  newunitname <- NULL
+  if (!is.null(unitname$singular)){newunitname$singular <- paste0("1/",unitname$singular)}
+  if (!is.null(unitname$plural)){newunitname$plural <- paste0("1/",unitname$plural)}
+  return(im(fM,
+         xcol = xcol,
+		 yrow = yrow,
+		 unitname= newunitname))
 }
+
+#taken from is.integer example page:
+is.wholenumber <-
+    function(x, tol = .Machine$double.eps^0.5)  abs(x - round(x)) < tol
