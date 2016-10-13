@@ -5,8 +5,15 @@
 #'
 #' @examples
 data(balcattapark_coarse)
-balcattapark_coarse$vegmask
+img <- balcattapark_coarse$vegmask
+bandwidth <- 5 #5 pixel radius?
+#create window kernel
+  xstep = img$xstep
+  ystep = img$ystep
+  mat <- matrix(1,ncol=1+2*bandwidth,nrow=1+2*bandwidth)
+  kernelfcn <- im(mat,xcol=(-bandwidth:bandwidth)*xstep,yrow=(-bandwidth:bandwidth)*ystep)
 
+  
 Algorithm Plan:
 + do FFT (convolve.im) with a uniform kernel.
 + sum over the result in an eroded window
