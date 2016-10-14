@@ -1,5 +1,5 @@
 #' @title Gliding Box lacunarity from a black and white image
-#' @export lacunarityGB
+#' @export lacgb 
 #'
 #' @description Calculates the gliding box lacunarity
 #' @details Calculates the gliding box lacunarity for a given range of box sizes (`radius').
@@ -8,32 +8,39 @@
 #'
 #' @return An fv object with items for no edge correction and reduced sample border correction
 #' @param img An image of 0's and 1's.
-#' @param b Bandwidth in the dimensions of \code{img}
+#' @param bandwidths A list of bandwidths (half the box sidelengths) in the dimensions of \code{img}
 #' @examples
-#' 
-library(stationaryracsinference)
-data(balcattapark_coarse)
-img <- balcattapark_coarse$vegmask
-img <- as.im(balcattapark_coarse$vegmask)
-#' 
-
-bandwidths <- c(1.6,1.9,3.2,5*0.8) #in units of img
-lacgb(img,bandwidths)
+#' data(balcattapark_coarse)
+#' img <- as.im(balcattapark_coarse$vegmask)
+#' bandwidths <- c(1.6,1.9,3.2,5*0.8) #in units of img
+#' lac <- lacgb(img,bandwidths)
+#' plot(lac, cbind(RS,nobord) ~ b)
+#'
 lacgb <- function(img,bandwidths){
   if(img$xstep != img$ystep){print("ERROR: image pixels must be square")}
+#convert bandwiths to pixel amounts
   b <- round(bandwidths/img$xstep)
   b <- unique(b) 
   bandwidths <- b*img$xstep
 
   lacs <- mapply(lacgb0,bX=b,bY=b,b=bandwidths,MoreArgs=list(img=img),SIMPLIFY=FALSE)
-
-  return(lacs)
+  nobord <- unlist(lapply(lacs, `[[`, 1) )
+nobord
+  RS <- unlist(lapply(lacs, `[[`, 2) )
+  lacsdf <- data.frame(b = bandwidths,nobord=nobord,RS=RS)
+  lacfv <- fv(lacsdf,argu="b",valu="RS",
+           ylab = "lacunarity",
+	   unitname=unitname(img))
+  return(lacfv)
 }
 
-lacgb0(img,5,5,5*0.8)
 
-lacgb0(img,bX,bY,bX*0.8) #b is bandwidth in img units for the RS correction
+##########################
+##The following function calculates lacunarity for a box with sidelengths 2*bX+1 and 2*bY+1 (in pixels). It also calculates the RS by eroding by `b' where b is in UNITS OF THE IMAGE.
+#eg lacgb0(img,5,5,5*0.8)
+
 lacgb0 <- function(img,bX,bY,b){
+##building the kernel fcn
   mat <- matrix(1/((1+2*bX)*(1+2*bY)),ncol=1+2*bX,nrow=1+2*bY)
   kernelfcn <- im(mat,xcol=(-bX:bX)*img$xstep,yrow=(-bY:bY)*img$ystep)
  
@@ -48,42 +55,10 @@ lacgb0 <- function(img,bX,bY,b){
   smRS <- mean(areafracsRS) #sample mean
   ss2RS <- mean(areafracsRS^2) #biased sample second moment
   lacRS <- ss2RS/(smRS^2) -1
-  return(list(lacA=lacA,lacRS=lacRS))
+  return(list(nobord=lacA,RS=lacRS))
 }
-lacA
-lacRS
-#create window kernel
-  xstep = img$xstep
-  ystep = img$ystep
-  mat <- matrix(1/((1+2*bandwidth)^2),ncol=1+2*bandwidth,nrow=1+2*bandwidth)
-  kernelfcn <- im(mat,xcol=(-bandwidth:bandwidth)*xstep,yrow=(-bandwidth:bandwidth)*ystep)
-
-  convolvedimg <- convolve.im(img,kernelfcn)
-  dim(convolvedimg)
-  dim(img)
-
-#lacunarity if you let the box centeres be everywhere
-  smA <- mean(convolvedimg) #sample mean
-  ss2A <- mean(convolvedimg^2) #biased sample second moment
-  lacA <- ss2A/(smA^2) -1
-lacA
-  convolvedimgRS <-  as.im(convolvedimg,W=erosion(Window(img),bandwidth))
-  Window(convolvedimgRS)
-  Window(img)
-  smB <- mean(convolvedimgRS) #sample mean
-  ss2B <- mean(convolvedimgRS^2) #biased sample second moment
-  lacB <- ss2B/(smB^2) -1
-lacB
-plot(img)
-plot(convolvedimg)
-plot(convolvedimgRS)
   
-Algorithm Plan:
-+ do FFT (convolve.im) with a uniform kernel.
-+ sum over the result in an eroded window
-+ change kernel and repeat
-
-+ get lidar data at some point
 
 #TO DO:
 ## catch warnings about empty RS window and print something more understandble
+## get lidar data at some point
