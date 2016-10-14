@@ -17,17 +17,20 @@ img <- balcattapark_coarse$vegmask
 img <- as.im(balcattapark_coarse$vegmask)
 #' 
 
-bandwidths <- c(1.6,1.9,3.2) #in units of img
+bandwidths <- c(1.6,1.9,3.2,5*0.8) #in units of img
+lacgb(img,bandwidths)
 lacgb <- function(img,bandwidths){
   if(img$xstep != img$ystep){print("ERROR: image pixels must be square")}
   b <- round(bandwidths/img$xstep)
-  b <- unique(bandwidthspixX) 
+  b <- unique(b) 
   bandwidths <- b*img$xstep
 
   lacs <- mapply(lacgb0,bX=b,bY=b,b=bandwidths,MoreArgs=list(img=img),SIMPLIFY=FALSE)
 
   return(lacs)
 }
+
+lacgb0(img,5,5,5*0.8)
 
 lacgb0(img,bX,bY,bX*0.8) #b is bandwidth in img units for the RS correction
 lacgb0 <- function(img,bX,bY,b){
