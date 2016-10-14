@@ -17,7 +17,7 @@
 #' plot(lac, cbind(RS,nobord) ~ b)
 #'
 lacgb <- function(img,bandwidths){
-  if(img$xstep != img$ystep){print("ERROR: image pixels must be square")}
+  if(abs(img$xstep -img$ystep)>1E-6 * img$xstep){print("ERROR: image pixels must be square")}
 #convert bandwiths to pixel amounts
   b <- round(bandwidths/img$xstep)
   b <- unique(b) 
@@ -51,7 +51,7 @@ lacgb0 <- function(img,bX,bY,b){
   ss2A <- mean(areafracs^2) #biased sample second moment
   lacA <- ss2A/(smA^2) -1
   if (is.empty(erosion(Window(img),b))){return(list(lacA=lacA,lacRS=NULL))}
-  areafracsRS <-  as.im(convolvedimg,W=erosion(Window(img),b))
+  areafracsRS <-  as.im(areafracs,W=erosion(Window(img),b))
   smRS <- mean(areafracsRS) #sample mean
   ss2RS <- mean(areafracsRS^2) #biased sample second moment
   lacRS <- ss2RS/(smRS^2) -1
@@ -62,3 +62,4 @@ lacgb0 <- function(img,bX,bY,b){
 #TO DO:
 ## catch warnings about empty RS window and print something more understandble
 ## get lidar data at some point
+## a test to make sure the function stays working
