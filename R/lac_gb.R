@@ -62,4 +62,3 @@ lacgb0 <- function(img,bX,bY,b){
 #TO DO:
 ## catch warnings about empty RS window and print something more understandble
 ## get lidar data at some point
-## a test to make sure the function stays working
