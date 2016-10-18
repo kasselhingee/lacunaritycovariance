@@ -7,7 +7,7 @@
 #' @param values A pixel image to be integrated
 
 #' @examples 
-#' twptprob <- covariance(heather$coarse,Frame(heather$coarse))[[1]]
+#' twptprob <- covariance(heather$coarse,Frame(heather$coarse))
 #' kfcn <- integratebyradius(c(0,0),twptprob)
 #' plot(kfcn)
 #' 

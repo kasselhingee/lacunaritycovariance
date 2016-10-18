@@ -40,7 +40,7 @@ For an observation of a single phase \eqn{\Xi} this is easy to calculate.
 }
 \examples{
 xi <- heather$coarse
-covariance <- covariance(xi,Frame(xi))$covariance
+covariance <- covariance(xi,Frame(xi))
 twoptcontagion <- contagTwoPtProb(covariance)
 p <- coveragefrac(xi,Frame(xi))
 twoptcontagion <- contagTwoPtProb(covariance,p)

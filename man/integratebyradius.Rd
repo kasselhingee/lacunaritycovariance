@@ -18,7 +18,7 @@ An fv object
 Estimates the integral of image values within a radius r from the centre.
 }
 \examples{
-twptprob <- covariance(heather$coarse,Frame(heather$coarse))[[1]]
+twptprob <- covariance(heather$coarse,Frame(heather$coarse))
 kfcn <- integratebyradius(c(0,0),twptprob)
 plot(kfcn)
 

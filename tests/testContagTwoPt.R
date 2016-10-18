@@ -3,7 +3,7 @@
 library(stationaryracsinference, quietly = TRUE)
 
 xi <- heather$coarse
-covariance <- covariance(xi,Frame(xi))$covariance
+covariance <- covariance(xi,Frame(xi))
 twoptcontagion <- contagTwoPtProb(covariance)
 p <- coveragefrac(xi,Frame(xi))
 twoptcontagion <- contagTwoPtProb(covariance,p)

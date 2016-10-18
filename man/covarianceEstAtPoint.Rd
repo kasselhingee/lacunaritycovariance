@@ -12,17 +12,13 @@ covarianceMapEst_direct(Xi, w, maxXshiftdistance, maxYshiftdistance)
 \arguments{
 \item{Xi}{An observation (in spatstat owin format or for \code{covariance} an \code{im} object is allowed) of the RACS of interest.}
 
-\item{w}{The observation window in \code{owin} format. If itsn't included its taken to be the smallest rectangle enclosing \code{Xi}.}
+\item{w}{The boundary of the observation in OWIN format. This is needed for the cases where the observation is not a rectangular region.}
 
 \item{v}{A 2D vector in c(x,y) format.}
 
 \item{maxXshiftdistance}{the maximum size of x-component of vectors \eqn{v} to estimate}
 
 \item{maxYshiftdistance}{the maximum size of y-component of vectors \eqn{v} to estimate}
-
-\item{w}{The boundary of the observation in OWIN format. This is needed for the cases where the observation is not a rectangular region.}
-
-\item{setCovBoundaryThresh}{to avoid instabilities of dividing by very small areas, any vector \eqn{v} set covariance of the boundary smaller than this threshold is given a covariance of NA}
 }
 \value{
 \item{comp1 }{An estimate (assuming stationarity of \eqn{\Xi}) that two points separated by \eqn{v} will be in \eqn{\Xi}.}
@@ -63,10 +59,6 @@ covariancePt <- covarianceEstAtPoint(XiOWIN,windowOWIN,c(3,5))
 covarianceDirectEst <- covarianceMapEst_direct(XiOWIN,windowOWIN,1,1)
 filled.contour(covarianceDirectEst$covariance)
 
-
-covarianceFcn <- covariance(XiOWIN,windowOWIN)
-plot(covarianceFcn$covariance)
-plot(covarianceFcn$covariance - coverageProb*coverageProb)
 }
 \author{
 {Kassel Hingee}

@@ -9,9 +9,7 @@
 
 
 #' @param Xi An observation (in spatstat owin format or for \code{covariance} an \code{im} object is allowed) of the RACS of interest.
-#' @param w The observation window in \code{owin} format. If itsn't included its taken to be the smallest rectangle enclosing \code{Xi}.
 #' @param w The boundary of the observation in OWIN format. This is needed for the cases where the observation is not a rectangular region.
-#' @param setCovBoundaryThresh to avoid instabilities of dividing by very small areas, any vector \eqn{v} set covariance of the boundary smaller than this threshold is given a covariance of NA 
 
 #' @return 
 #' \item{comp1 }{An estimate (assuming stationarity of \eqn{\Xi}) that two points separated by \eqn{v} will be in \eqn{\Xi}.}
@@ -32,10 +30,6 @@
 #' covarianceDirectEst <- covarianceMapEst_direct(XiOWIN,windowOWIN,1,1)
 #' filled.contour(covarianceDirectEst$covariance)
 #' 
-#' 
-#' covarianceFcn <- covariance(XiOWIN,windowOWIN)
-#' plot(covarianceFcn$covariance)
-#' plot(covarianceFcn$covariance - coverageProb*coverageProb)
 
 #' @note 
 #' The name of this function is probably a bit confusing. Perhaps call it two-point coverage probability, and the other functions `two-point coverage probability' functions.

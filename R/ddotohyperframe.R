@@ -32,7 +32,7 @@
   #' 
   #' return(list(
   #'   coveragefrac = coveragefrac,
-  #'   covariance = covariances$covariance,
+  #'   covariance = covariances,
   #'   sphcontactxi = sphContact$xiHest,
   #'   sphcontactnotxi = sphContact$notxiHest,
   #'   sphcontactcontag = sphcontactcontag
