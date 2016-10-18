@@ -49,14 +49,12 @@ and the raw estimate is
 \eqn{\hat{\tilde{C}}(v) = \frac{|\Xi \cap W \cap ((\Xi \cap W ) \oplus v)|}{|W|}.}
 }
 \examples{
-XiOWIN <- heather$coarse
-windowOWIN <- Frame(heather$coarse)
+xi <- heather$coarse
+covar <- covariance(xi,inclraw=FALSE)
 data(balcattapark_coarse)
 xi <- balcattapark_coarse$vegmask
 w <- balcattapark_coarse$boundary
 covar <- covariance(xi,w,inclraw=FALSE)
-plot(covar,clipwin=owin(xrange=c(-10,10),yrange=c(-10,10)),axes=TRUE)
-
 data(balcattapark_coarse)
 xi <- balcattapark_coarse$vegmask
 w <- balcattapark_coarse$boundary

@@ -17,15 +17,13 @@
 
 
 #' @examples
-#' XiOWIN <- heather$coarse
-#' windowOWIN <- Frame(heather$coarse)
+#' xi <- heather$coarse
+#' covar <- covariance(xi,inclraw=FALSE)
 
 #' data(balcattapark_coarse)
 #' xi <- balcattapark_coarse$vegmask
 #' w <- balcattapark_coarse$boundary
 #' covar <- covariance(xi,w,inclraw=FALSE)
-#' plot(covar,clipwin=owin(xrange=c(-10,10),yrange=c(-10,10)),axes=TRUE)
-#' 
 
 #' @keywords spatial nonparametric
 
