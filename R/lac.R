@@ -12,15 +12,15 @@
 #' @param boxes Either a list of sidelengths for square boxes or a list of \code{owin} objects of shape.
 
 #' @examples
-xi <- heather$coarse
-covar <- covariance(xi,inclraw=FALSE)
-p <- area(xi)/area(Frame(xi))
+#' xi <- heather$coarse
+#' covar <- covariance(xi,inclraw=FALSE)
+#' p <- area(xi)/area(Frame(xi))
 
-boxes <- c(0.3,0.5,0.8,1)
-lac(boxes,covar,p)
+#' boxes <- c(0.3,0.5,0.8,1)
+#' lac(boxes,covar,p)
 
-boxesowin <- list(square(0.3),disc(0.5),square(0.8),square(1))
-lac(boxesowin,covar,p)
+#' otherboxes <- list(square(0.3),square(0.5),disc(0.8),square(1))
+#' lac(otherboxes,covar,p)
 
 lac <- function(boxes, covariance, p){
   if (mode(boxes) %in% c("integer","numeric")){
@@ -40,28 +40,13 @@ lac <- function(boxes, covariance, p){
 }
 
 
-
-boxcov <- lapply(boxes,setcovsquare,xy=covar) #theoretical 
-boxcovN <- lapply(boxes,function(x) setcov(square(x))) #numerical
-boxarea <- boxes^2  #or non boxes use area.owin
-
-
-integrationresults <- mapply(innerprod.im,boxcov,list(covar),na.rm=FALSE,SIMPLIFY=FALSE)# the list around the covar is necessary to stop mapply unlisting the image itself
-integrationresults <- mapply(innerprod.im,boxcovN,list(covar),na.rm=FALSE,SIMPLIFY=FALSE)# the list around the covar is necessary to stop mapply unlisting the image itself
-
-unlist(integrationresults)
-lac <- unlist(integrationresults)/(p^2 *boxes^2) -1
-lac
-boxes^2
-
-
 innerprod.im <- function(A,B,na.rm=FALSE){
    integrationregion <- intersect.owin(Frame(A),Frame(B))
    prdimg <- eval.im(imA*imB,list(imA=A[integrationregion], imB=B[integrationregion]),harmonize=TRUE)
    return(sum(prdimg,na.rm=na.rm)*prdimg$xstep*prdimg$ystep)
 }
 
-
+#for a square the set covariance can be calculated analytically using sidelengths
 setcovsquare <- function(side,xy=NULL){
   if (is.im(xy)){
      xcol <- xy$xcol
