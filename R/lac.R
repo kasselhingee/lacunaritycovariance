@@ -16,17 +16,43 @@ xi <- heather$coarse
 covar <- covariance(xi,inclraw=FALSE)
 p <- area(xi)/area(Frame(xi))
 
-boxes <- c(0.5,0.3,0.8,1)
-xy<-covar
+boxes <- c(0.3,0.5,0.8,1)
+lac(boxes,covar,p)
+
+boxesowin <- list(square(0.3),disc(0.5),square(0.8),square(1))
+lac(boxesowin,covar,p)
+
+lac <- function(boxes, covariance, p){
+  if (mode(boxes) %in% c("integer","numeric")){
+     boxcov <- lapply(boxes,setcovsquare,xy=covar) #theoretical 
+     boxarea <- boxes^2
+  }
+  else { #box must be a list of owin objects
+     boxcov <- lapply(boxes,setcov) #numerical
+     boxarea <- lapply(boxes,area.owin)
+     boxarea <- unlist(boxarea)
+  }
+
+  integrationresults <- mapply(innerprod.im,boxcov,list(covar),na.rm=FALSE,SIMPLIFY=FALSE)# the list around the covar is necessary to stop mapply unlisting the image itself
+
+  lac <- unlist(integrationresults)/(p^2 *boxarea) -1
+  return(lac)
+}
+
+
+
 boxcov <- lapply(boxes,setcovsquare,xy=covar) #theoretical 
 boxcovN <- lapply(boxes,function(x) setcov(square(x))) #numerical
-plot(as.solist(boxcov),axes=TRUE)
-plot(as.solist(boxcovN),axes=TRUE)
+boxarea <- boxes^2  #or non boxes use area.owin
 
 
-mapply(innerprod.im,boxcov,list(covar),na.rm=FALSE,SIMPLIFY=FALSE)# the list around the covar is necessary to stop mapply unlisting the image itself
+integrationresults <- mapply(innerprod.im,boxcov,list(covar),na.rm=FALSE,SIMPLIFY=FALSE)# the list around the covar is necessary to stop mapply unlisting the image itself
+integrationresults <- mapply(innerprod.im,boxcovN,list(covar),na.rm=FALSE,SIMPLIFY=FALSE)# the list around the covar is necessary to stop mapply unlisting the image itself
 
-
+unlist(integrationresults)
+lac <- unlist(integrationresults)/(p^2 *boxes^2) -1
+lac
+boxes^2
 
 
 innerprod.im <- function(A,B,na.rm=FALSE){
