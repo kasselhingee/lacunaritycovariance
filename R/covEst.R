@@ -8,13 +8,17 @@
 
 
 
-#' @param Xi An observation (in spatstat owin format) of the RACS of interest.
+#' @param Xi An observation (in spatstat owin format or for \code{covariance} an \code{im} object is allowed) of the RACS of interest.
+#' @param w The observation window in \code{owin} format. If itsn't included its taken to be the smallest rectangle enclosing \code{Xi}.
 #' @param w The boundary of the observation in OWIN format. This is needed for the cases where the observation is not a rectangular region.
 #' @param setCovBoundaryThresh to avoid instabilities of dividing by very small areas, any vector \eqn{v} set covariance of the boundary smaller than this threshold is given a covariance of NA 
+#' @param inclraw If TRUE the output will be two \code{im} objects one for the standard estimator and one raw estimate.
+
 #' @return 
 #' \item{comp1 }{An estimate (assuming stationarity of \eqn{\Xi}) that two points separated by \eqn{v} will be in \eqn{\Xi}.}
 #' \item{comp2 }{Denominator - The set covariance of the boundary \code{w}}
 #' \item{comp3 }{Numerator - The set covariance of \eqn{\Xi_{obs}}}
+#' @return \code{SpatStat} \code{im} objects containing the estimated covariances.
 #' 
 #' For \code{covarianceEstAtPoint} these are single numerical values; for \code{covarianceMapEst_direct} they are matrices; for \code{covariance} they are objects of SpatStat's \code{im} class.
 
@@ -22,6 +26,12 @@
 #' @examples
 #' XiOWIN <- heather$coarse
 #' windowOWIN <- Frame(heather$coarse)
+#' 
+#' data(balcattapark_coarse)
+#' xi <- balcattapark_coarse$vegmask
+#' w <- balcattapark_coarse$boundary
+#' covar <- covariance(xi,w,inclraw=FALSE)
+#' plot(covar,clipwin=owin(xrange=c(-10,10),yrange=c(-10,10)),axes=TRUE)
 #' 
 #' coverageProb <- coveragefrac(XiOWIN,windowOWIN)
 #' 
@@ -45,19 +55,46 @@
 
 #' @keywords spatial nonparametric
 
-#' @details \code{covariance} estimates uses Fourier transforms to calculate set covariances (using \code{\link[spatstat]{setcov}} function). It is much faster (500 times faster in one comparison) than \code{covarianceMapEst_direct}.
+#' @details 
+#' The reduced sample estimator is [1]
+#' \eqn{ \hat{C}(v) = \frac{|\Xi \cap W \cap ((\Xi \cap W ) \oplus v)|}{|W \cap W\oplus v|}}
+#' and the raw estimate (if requested) is
+#' \eqn{\hat{\tilde{C}}(v) = \frac{|\Xi \cap W \cap ((\Xi \cap W ) \oplus v)|}{|W|}.}
+#' \code{covariance} uses Fourier transforms to calculate set covariances (using \code{\link[spatstat]{setcov}} function). It is much faster (500 times faster in one comparison) than \code{covarianceMapEst_direct}.
 #' Vectors with small set covariance of the window are eliminated (using \code{setCovBoundaryThresh} because they cause the covariance to be enormous)
-covariance <- function(Xi,w,setCovBoundaryThresh = 0.1*area.owin(w)){
-  Xiinside <- intersect.owin(Xi,w) #seems like extra work to do this check :(, but safer to
-  numerator <- setcov(Xiinside)
-  denominator <- setcov(w) 
-  denominatorThresh <- denominator #extra memory - more than required if not interested in saving denominator
-  denominatorThresh[denominator<setCovBoundaryThresh] <- NA
-  covariance <- eval.im(numerator / denominatorThresh,harmonize=TRUE)
 
-  covarianceMap = list(covariance = covariance, numerator=numerator, denominator = denominator)
-  return(covarianceMap)                     
+#' @references [1] Molchanov, I. (1997) Statistics of the Boolean Model for Practitioners and Mathematicians. John Wiley & Sons.
+
+covariance <- function(Xi,w=NULL,inclraw=FALSE,setCovBoundaryThresh = 0.1*area.owin(w)){
+   if (is.owin(xi)){
+      if (!is.null(w)){xi <- intersect.owin(xi,w)}
+      else {w <- Frame(xi)}
+      setcovXi <- setcov(xi)
+      setcovB <- setcov(w)
+   }
+   else if (is.im(xi)){
+      if (!is.null(w)) {
+          winim <- as.im(w,xy=xi)
+          xi <- eval.im(xi*winim)
+      }
+      else {w <- Frame(xi)}
+      setcovXi <- imcov(xi)
+      setcovB <- setcov(w)
+   }
+   else {
+      print("ERROR: Input xi is not an image or owin object")
+      return(NULL)
+   }
+   setcovB[setcovB<setCovBoundaryThresh] <- NA #make NA any values that are too small and lead to division to close to 0
+   covar <- eval.im(setcovXi/setcovB,harmonize=TRUE)
+   if (!inclraw) {return(covar)}
+   if (inclraw) {
+      return(list(rs = covar,
+                  raw = setcovXi/area(w)))
+   }
 }
+
+#catch the warning message about harmonising 
 
 ########################################
 #' @rdname covariance
