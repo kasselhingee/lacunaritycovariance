@@ -28,5 +28,29 @@ boxes <- c(0.3,0.5,0.8,1)
 lac(boxes,covar,p)
 otherboxes <- list(square(0.3),square(0.5),disc(0.8),square(1))
 lac(otherboxes,covar,p)
+
+#Test on a Boolean Model
+lambda <- 2.2064E-3
+discr <- 10
+w <- owin(xrange=c(0,100),yrange=c(0,100))
+xi <- rBooleanDetermDiscs(lambda,discr,w)
+plot(xi)
+xiimg <- as.mask(xi,eps=c(0.1,0.1))
+#estimated lacunarity
+estcov <- covariance(xiimg,w=w)
+estp <- area(xiimg)/area(w)
+lac(c(0.5,0.8,1,2,3,4,5,6),estcov,estp)
+#theoretical lacunarity very different because window is small **I think
+thcovariance <- thcovarDeterministicDiscs(
+                 xrange=c(-10,10),
+	    yrange=c(-10,10),
+	    eps=c(0.1,0.1),lambda,discr)
+thcoverageprob <- booldetermdiscs_truecoveragefrac(lambda,discr)
+lac(c(0.5,0.8,1,2,3,4,5,6),thcovariance,thcoverageprob)
+
+#look at why there is a difference
+estp
+thcoverageprob
+plot(as.solist(list(estcov,thcovariance)),axes=TRUE)
 }
 
