@@ -64,7 +64,9 @@ lac <- function(boxes, covariance, p){
 
 innerprod.im <- function(A,B,na.rm=FALSE){
    integrationregion <- intersect.owin(Frame(A),Frame(B))
-   prdimg <- eval.im(imA*imB,envir=list(imA=A[integrationregion], imB=B[integrationregion]),harmonize=TRUE)
+   A <- A[integrationregion]
+   B <- B[integrationregion]
+   prdimg <- eval.im(A*B,harmonize=TRUE)
    return(sum(prdimg,na.rm=na.rm)*prdimg$xstep*prdimg$ystep)
 }
 
