@@ -24,8 +24,8 @@ Denoted the estimated covariance by \eqn{\hat{C}(v)} and coverage probability \e
 xi <- heather$coarse
 covar <- covariance(xi,inclraw=FALSE)
 p <- area(xi)/area(Frame(xi))
-boxes <- c(0.3,0.5,0.8,1)
-lac(boxes,covar,p)
+sidelengths <- c(0.3,0.5,0.8,1)
+lac(sidelengths,covar,p)
 otherboxes <- list(square(0.3),square(0.5),disc(0.8),square(1))
 lac(otherboxes,covar,p)
 
