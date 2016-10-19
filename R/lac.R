@@ -46,7 +46,7 @@
 
 lac <- function(boxes, covariance, p){
   if (mode(boxes) %in% c("integer","numeric")){
-     boxcov <- lapply(boxes,setcovsquare,xy=covar) #theoretical 
+     boxcov <- lapply(boxes,setcovsquare,xy=covariance) #theoretical 
      boxarea <- boxes^2
   }
   else { #box must be a list of owin objects
@@ -55,7 +55,7 @@ lac <- function(boxes, covariance, p){
      boxarea <- unlist(boxarea)
   }
 
-  integrationresults <- mapply(innerprod.im,boxcov,list(covar),na.rm=FALSE,SIMPLIFY=FALSE)# the list around the covar is necessary to stop mapply unlisting the image itself
+  integrationresults <- mapply(innerprod.im,boxcov,list(covariance),na.rm=FALSE,SIMPLIFY=FALSE)# the list around the covariance is necessary to stop mapply unlisting the image itself
 
   lac <- unlist(integrationresults)/(p^2 *boxarea^2) -1
   return(lac)
@@ -64,7 +64,7 @@ lac <- function(boxes, covariance, p){
 
 innerprod.im <- function(A,B,na.rm=FALSE){
    integrationregion <- intersect.owin(Frame(A),Frame(B))
-   prdimg <- eval.im(imA*imB,list(imA=A[integrationregion], imB=B[integrationregion]),harmonize=TRUE)
+   prdimg <- eval.im(imA*imB,envir=list(imA=A[integrationregion], imB=B[integrationregion]),harmonize=TRUE)
    return(sum(prdimg,na.rm=na.rm)*prdimg$xstep*prdimg$ystep)
 }
 
