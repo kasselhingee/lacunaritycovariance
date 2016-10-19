@@ -1,6 +1,6 @@
 # laslett transform script
 
-library(stationaryracsinference, quietly = TRUE)
+suppressPackageStartupMessages(library(stationaryracsinference))
 
 #test on a known true boolean model
 set.seed(135498156)

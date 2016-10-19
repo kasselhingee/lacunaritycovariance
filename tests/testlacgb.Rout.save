@@ -15,12 +15,7 @@ Type 'demo()' for some demos, 'help()' for on-line help, or
 'help.start()' for an HTML browser interface to help.
 Type 'q()' to quit R.
 
-> library(stationaryracsinference, quietly = TRUE)
-
-spatstat 1.44-1.027       (nickname: 'Levity Waves') 
-For an introduction to spatstat, type 'beginner'
-
-Note: R version 3.2.3 (2015-12-10) is more than 9 months old; we strongly recommend upgrading to the latest version
+> suppressPackageStartupMessages(library(stationaryracsinference))
 > 
 > data(balcattapark_coarse)
 > img <- as.im(balcattapark_coarse$vegmask)

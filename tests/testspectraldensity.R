@@ -1,6 +1,6 @@
 #testspectraldensity
 
-library(stationaryracsinference, quietly = TRUE)
+suppressPackageStartupMessages(library(stationaryracsinference))
 
 #apply to heather
 xi <- heather$coarse

@@ -1,4 +1,4 @@
-library(stationaryracsinference, quietly = TRUE)
+suppressPackageStartupMessages(library(stationaryracsinference))
 
 #test units using a sine wave
 A <- matrix(cos((1:1000)/10),nrow=10,ncol=1000,byrow=TRUE)

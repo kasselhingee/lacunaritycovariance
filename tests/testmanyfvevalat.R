@@ -1,5 +1,5 @@
 
-library(stationaryracsinference, quietly = TRUE)
+suppressPackageStartupMessages(library(stationaryracsinference))
 
 fv1 <- Hest(heather$coarse)
 fv2 <- Hest(complement.owin(heather$coarse))

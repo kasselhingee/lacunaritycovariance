@@ -17,10 +17,7 @@ Type 'q()' to quit R.
 
 > # laslett transform script
 > 
-> library(stationaryracsinference, quietly = TRUE)
-
-spatstat 1.44-1.027       (nickname: 'Levity Waves') 
-For an introduction to spatstat, type 'beginner'
+> suppressPackageStartupMessages(library(stationaryracsinference))
 > 
 > #test on a known true boolean model
 > set.seed(135498156)

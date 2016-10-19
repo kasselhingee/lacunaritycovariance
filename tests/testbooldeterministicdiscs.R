@@ -1,7 +1,7 @@
 ## tests for Boolean simulations of deterministic disc code
 
 
-library(stationaryracsinference, quietly = TRUE)
+suppressPackageStartupMessages(library(stationaryracsinference))
 
 #check that its producing the same pattern
 #Boolean model with discs of radius 10.

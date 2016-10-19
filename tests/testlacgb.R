@@ -1,4 +1,4 @@
-library(stationaryracsinference, quietly = TRUE)
+suppressPackageStartupMessages(library(stationaryracsinference))
 
 data(balcattapark_coarse)
 img <- as.im(balcattapark_coarse$vegmask)

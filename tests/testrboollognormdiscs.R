@@ -1,7 +1,7 @@
 ## tests for Boolean simulations of deterministic disc code
 
 
-library(stationaryracsinference, quietly = TRUE)
+suppressPackageStartupMessages(library(stationaryracsinference))
 
 ##test that seed option is keeping things reproducible
 w <- owin(xrange=c(0,10),yrange=c(0,10))

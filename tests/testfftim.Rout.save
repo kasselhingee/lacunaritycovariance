@@ -15,14 +15,7 @@ Type 'demo()' for some demos, 'help()' for on-line help, or
 'help.start()' for an HTML browser interface to help.
 Type 'q()' to quit R.
 
-> library(stationaryracsinference, quietly = TRUE)
-
-spatstat 1.45-0       (nickname: 'One Lakh') 
-For an introduction to spatstat, type 'beginner'
-
-Note: R version 3.2.2 (2015-08-14) is more than 9 months old; we strongly recommend upgrading to the latest version
-Warning message:
-package 'spatstat' was built under R version 3.2.4 
+> suppressPackageStartupMessages(library(stationaryracsinference))
 > 
 > #test units using a sine wave
 > A <- matrix(cos((1:1000)/10),nrow=10,ncol=1000,byrow=TRUE)

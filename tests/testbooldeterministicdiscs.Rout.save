@@ -18,12 +18,7 @@ Type 'q()' to quit R.
 > ## tests for Boolean simulations of deterministic disc code
 > 
 > 
-> library(stationaryracsinference, quietly = TRUE)
-
-spatstat 1.45-0       (nickname: 'One Lakh') 
-For an introduction to spatstat, type 'beginner'
-Warning message:
-package 'spatstat' was built under R version 3.2.4 
+> suppressPackageStartupMessages(library(stationaryracsinference))
 > 
 > #check that its producing the same pattern
 > #Boolean model with discs of radius 10.

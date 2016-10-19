@@ -1,6 +1,6 @@
 # test twopt contag
 
-library(stationaryracsinference, quietly = TRUE)
+suppressPackageStartupMessages(library(stationaryracsinference))
 
 xi <- heather$coarse
 covariance <- covariance(xi,Frame(xi))

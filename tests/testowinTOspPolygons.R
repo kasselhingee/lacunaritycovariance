@@ -1,7 +1,6 @@
 #testing spatial polygon conversion
 
-library(spatstat, quietly = TRUE)
-library(stationaryracsinference, quietly = TRUE)
+suppressPackageStartupMessages(library(stationaryracsinference))
 
 #polygons that are all have simple boundary
 data(polygontest, package="stationaryracsinference")

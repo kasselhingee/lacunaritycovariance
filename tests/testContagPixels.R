@@ -1,6 +1,6 @@
 #test contagion for pixels
 
-library(stationaryracsinference, quietly = TRUE)
+suppressPackageStartupMessages(library(stationaryracsinference))
 
 #should have 0 nbrs of Xi and Xi, and 4 nbrs of xi and not xi
 #should have 4 nbrs of not xi and xi, and lots of not xi and not xi

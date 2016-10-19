@@ -17,10 +17,7 @@ Type 'q()' to quit R.
 
 > #testspectraldensity
 > 
-> library(stationaryracsinference, quietly = TRUE)
-
-spatstat 1.44-1.039       (nickname: 'Levity Waves') 
-For an introduction to spatstat, type 'beginner'
+> suppressPackageStartupMessages(library(stationaryracsinference))
 > 
 > #apply to heather
 > xi <- heather$coarse
