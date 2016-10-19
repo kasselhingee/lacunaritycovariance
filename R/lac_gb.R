@@ -4,7 +4,9 @@
 #' @description Calculates the gliding box lacunarity
 #' @details Calculates the gliding box lacunarity for a given range of box sizes (`radius').
 #' The centres are given the pixels of \code{img}.
-#' @references **Algorithm described in Allain1991ch**
+#' 
+#' Note: (1) The bandwidths are rounded such that box sidelengths are an odd number of pixels across. (2) The reduced sample points are given by erosion of the image by a disc with radius bandwidth+0.5*pixelwidth, which is note quite erosion by a square.
+#' @references The gliding box algorithm is described in Allain, C. and Cloitre, M. (1991) Characterizing the lacunarity of random and deterministic fractal sets. Physical Review A, 44, 3552-3558.
 #'
 #' @return An fv object with items for no edge correction and reduced sample border correction
 #' @param img An image of 0's and 1's.
