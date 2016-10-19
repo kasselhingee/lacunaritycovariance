@@ -17,14 +17,15 @@ Type 'q()' to quit R.
 
 > suppressPackageStartupMessages(library(stationaryracsinference))
 > 
-> img <- as.im(heather$coarse,eps=heather$coarse$xstep)
-> bandwidths <- c(1.1)
-> lac <- lacgb(img,bandwidths)
-> lac$RS
-[1] 0.03413792
-> lac$nobord
-[1] 0.2937303
+> covar <- covariance(heather$coarse)
+Warning message:
+ the images 'setcovXi' and 'setcovB' were not compatible 
+> p <- area(heather$coarse)/area(Frame(heather$coarse))
+> sidelengths <- 2.2
+> lac <- lac(sidelengths,covar,p)
+> lac
+[1] 0.05774827
 > 
 > proc.time()
    user  system elapsed 
-  1.304   0.036   1.339 
+  1.336   0.052   1.385 

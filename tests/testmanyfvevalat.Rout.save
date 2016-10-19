@@ -15,16 +15,26 @@ Type 'demo()' for some demos, 'help()' for on-line help, or
 'help.start()' for an HTML browser interface to help.
 Type 'q()' to quit R.
 
+> 
 > suppressPackageStartupMessages(library(stationaryracsinference))
 > 
-> img <- as.im(heather$coarse,eps=heather$coarse$xstep)
-> bandwidths <- c(1.1)
-> lac <- lacgb(img,bandwidths)
-> lac$RS
-[1] 0.03413792
-> lac$nobord
-[1] 0.2937303
+> fv1 <- Hest(heather$coarse)
+> fv2 <- Hest(complement.owin(heather$coarse))
+> fvlist <- list(fv1,fv2) 
+> 
+> fvfunc01 <- as.function.fv(fv1, value="km")
+> manyfvevalat(fvlist,0.19,value="km")[[1]]==fvfunc01(0.19)
+[1] TRUE
+> 
+> manyfvevalat(fvlist,0.19,value="km")
+[[1]]
+[1] 0.4742971
+
+[[2]]
+[1] 0.4449431
+
+> 
 > 
 > proc.time()
    user  system elapsed 
-  1.304   0.036   1.339 
+  1.280   0.020   1.301 
