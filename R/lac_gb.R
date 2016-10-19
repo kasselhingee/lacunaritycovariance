@@ -17,7 +17,7 @@
 #' plot(lac, cbind(RS,nobord) ~ b)
 #'
 lacgb <- function(img,bandwidths){
-  if(abs(img$xstep -img$ystep)>1E-6 * img$xstep){print("ERROR: image pixels must be square")}
+  if(abs(img$xstep -img$ystep)>1E-2 * img$xstep){print("ERROR: image pixels must be square")}
 #convert bandwiths to pixel amounts
   b <- round(bandwidths/img$xstep)
   b <- unique(b) 
