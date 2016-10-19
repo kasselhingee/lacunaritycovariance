@@ -21,9 +21,9 @@ Type 'q()' to quit R.
 > img <- as.im(balcattapark_coarse$vegmask)
 > bandwidths <- 5*0.8
 > lac <- lacgb(img,bandwidths)
-> abs(lac$RS-1.701478) < 1E-6
+> abs(lac$RS-0.07396426) < 1E-6
 [1] TRUE
-> abs(lac$nobord-1.776974) < 1E-6
+> abs(lac$nobord-0.279406) < 1E-6
 [1] TRUE
 > 
 > proc.time()
