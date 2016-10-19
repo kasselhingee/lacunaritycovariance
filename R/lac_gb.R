@@ -50,9 +50,8 @@ lacgb0 <- function(img,bX,bY,b){
   smA <- mean(areafracs) #sample mean
   ss2A <- mean(areafracs^2) #biased sample second moment
   lacA <- ss2A/(smA^2) -1
-  if (is.empty(erosion(Frame(img),b))){return(list(lacA=lacA,lacRS=NULL))}
-  areafracsRS <-  as.im(areafracs,W=erosion(Frame(img),b))a #note erosion by distance b is not quite the same as erosion by a square of "radius" b
-  #also need to erode by b+0.5*xstep
+  if (is.empty(erosion(Frame(img),b+0.5*img$xstep))){return(list(lacA=lacA,lacRS=NULL))}
+  areafracsRS <-  as.im(areafracs,W=erosion(Frame(img),b+0.5*img$xstep)) #note erosion by distance b is not quite the same as erosion by a square of "radius" b
   smRS <- mean(areafracsRS) #sample mean
   ss2RS <- mean(areafracsRS^2) #biased sample second moment
   lacRS <- ss2RS/(smRS^2) -1
