@@ -8,7 +8,7 @@
 
 
 
-#' @param Xi An observation (in spatstat owin format or black and white \code{im} object) of the RACS of interest.
+#' @param xi An observation (in spatstat owin format or black and white \code{im} object) of the RACS of interest.
 #' @param w The observation window in \code{owin} format. If itsn't included its taken to be the smallest rectangle enclosing \code{Xi}.
 #' @param setCovBoundaryThresh to avoid instabilities of dividing by very small areas, any vector \eqn{v} set covariance of the boundary smaller than this threshold is given a covariance of NA 
 #' @param inclraw If TRUE the output will be two \code{im} objects one for the standard estimator and one raw estimate.
@@ -37,7 +37,7 @@
 
 #' @references [1] Molchanov, I. (1997) Statistics of the Boolean Model for Practitioners and Mathematicians. John Wiley & Sons.
 
-covariance <- function(Xi,w=NULL,inclraw=FALSE,setCovBoundaryThresh = 0.1*area.owin(w)){
+covariance <- function(xi,w=NULL,inclraw=FALSE,setCovBoundaryThresh = 0.1*area.owin(w)){
    if (is.owin(xi)){
       if (!is.null(w)){xi <- intersect.owin(xi,w)}
       else {w <- Frame(xi)}

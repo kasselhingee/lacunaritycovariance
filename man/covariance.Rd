@@ -4,11 +4,11 @@
 \alias{covariance}
 \title{Covariance estimates, also known as `two-point probabilities' for stationary RACS}
 \usage{
-covariance(Xi, w = NULL, inclraw = FALSE, setCovBoundaryThresh = 0.1 *
+covariance(xi, w = NULL, inclraw = FALSE, setCovBoundaryThresh = 0.1 *
   area.owin(w))
 }
 \arguments{
-\item{Xi}{An observation (in spatstat owin format or black and white \code{im} object) of the RACS of interest.}
+\item{xi}{An observation (in spatstat owin format or black and white \code{im} object) of the RACS of interest.}
 
 \item{w}{The observation window in \code{owin} format. If itsn't included its taken to be the smallest rectangle enclosing \code{Xi}.}
 
