@@ -23,7 +23,7 @@ spatstat 1.44-1.027       (nickname: 'Levity Waves')
 For an introduction to spatstat, type 'beginner'
 > 
 > xi <- heather$coarse
-> covariance <- covariance(xi,Frame(xi))$covariance
+> covariance <- covariance(xi,Frame(xi))
 Warning message:
  the images 'numerator' and 'denominatorThresh' were not compatible 
 > twoptcontagion <- contagTwoPtProb(covariance)

@@ -38,7 +38,7 @@ windowOWIN <- Frame(heather$coarse)
  
 coverageProb <- coveragefrac(XiOWIN,windowOWIN)
  
-covarianceFcn <- covariance(XiOWIN,windowOWIN)
-plot(covarianceFcn$covariance)
-plot(covarianceFcn$covariance - coverageProb*coverageProb)
+covar <- covariance(XiOWIN,windowOWIN)
+plot(covar)
+plot(covar - coverageProb*coverageProb)
 }
