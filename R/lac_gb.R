@@ -8,7 +8,7 @@
 #' Note: (1) The bandwidths are rounded such that box sidelengths are an odd number of pixels across. (2) The reduced sample points are given by erosion of the image by a disc with radius bandwidth+0.5*pixelwidth, which is note quite erosion by a square.
 #' @references The gliding box algorithm is described in Allain, C. and Cloitre, M. (1991) Characterizing the lacunarity of random and deterministic fractal sets. Physical Review A, 44, 3552-3558.
 #'
-#' @return An fv object with items for no edge correction and reduced sample border correction
+#' @return An fv object with columns for no edge correction (raw) and reduced sample border correction (RS)
 #' @param img An image of 0's and 1's.
 #' @param bandwidths A list of bandwidths (half the box sidelengths) in the dimensions of \code{img}
 #' @examples
@@ -27,9 +27,8 @@ lacgb <- function(img,bandwidths){
 
   lacs <- mapply(lacgb0,bX=b,bY=b,b=bandwidths,MoreArgs=list(img=img),SIMPLIFY=FALSE)
   nobord <- unlist(lapply(lacs, `[[`, 1) )
-nobord
   RS <- unlist(lapply(lacs, `[[`, 2) )
-  lacsdf <- data.frame(b = bandwidths,nobord=nobord,RS=RS)
+  lacsdf <- data.frame(b = bandwidths,raw=nobord,RS=RS)
   lacfv <- fv(lacsdf,argu="b",valu="RS",
            ylab = "lacunarity",
 	   unitname=unitname(img))
@@ -57,7 +56,7 @@ lacgb0 <- function(img,bX,bY,b){
   smRS <- mean(areafracsRS) #sample mean
   ss2RS <- mean(areafracsRS^2) #biased sample second moment
   lacRS <- ss2RS/(smRS^2) -1
-  return(list(nobord=lacA,RS=lacRS))
+  return(list(raw=lacA,RS=lacRS))
 }
   
 

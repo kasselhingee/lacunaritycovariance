@@ -12,7 +12,7 @@ lacgb(img, bandwidths)
 \item{bandwidths}{A list of bandwidths (half the box sidelengths) in the dimensions of \code{img}}
 }
 \value{
-An fv object with items for no edge correction and reduced sample border correction
+An fv object with columns for no edge correction (raw) and reduced sample border correction (RS)
 }
 \description{
 Calculates the gliding box lacunarity
