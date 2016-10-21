@@ -11,13 +11,14 @@
 #' @return An fv object with columns for no edge correction (raw) and reduced sample border correction (RS)
 #' @param img An image of 0's and 1's.
 #' @param sidelengths A list of box sidelengths in the dimensions of \code{img}
+#' @param inclraw If TRUE the function will also return a gliding box lacunarity that ignores edge effects.
 #' @examples
 #' img <- as.im(heather$coarse)
 #' sidelengths <- c(1,2.2,3) #in units of img
 #' lac <- lacgb(img,sidelengths)
 #' plot(lac, cbind(RS,raw) ~ s)
 #'
-lacgb <- function(img,sidelengths){
+lacgb <- function(img,sidelengths,inclraw=TRUE){
   if(abs(img$xstep -img$ystep)>1E-2 * img$xstep){print("ERROR: image pixels must be square")}
 #convert sidelengths to odd pixel amounts, taking into account that want a distance to edge
   spix <- 1+round((sidelengths-img$xstep)/(2*img$xstep))*2
@@ -25,7 +26,9 @@ lacgb <- function(img,sidelengths){
   rpix <- (spix-1)/2
   sidel <- spix*img$xstep 
 
-  lacs <- mapply(lacgb0,bX=rpix,bY=rpix,MoreArgs=list(img=img),SIMPLIFY=FALSE)
+  lacs <- mapply(lacgb0,bX=rpix,bY=rpix,MoreArgs=list(img=img),SIMPLIFY=FALSE,inclraw)
+
+if (inclraw){
   nobord <- unlist(lapply(lacs, `[[`, 1) )
   RS <- unlist(lapply(lacs, `[[`, 2) )
   lacsdf <- data.frame(s = sidel,raw=nobord,RS=RS)
@@ -35,6 +38,17 @@ lacgb <- function(img,sidelengths){
            labl = c("Sidelength","Raw Lacunarity","Reduced Sample Lacunarity"),
            desc = c("Sidelengths of boxes", "Gliding Box Lacunarity ignoring edge effects", "Gliding Box Lacunarity that only uses boxes entirely within the observation")
            )
+}
+else {
+  RS <- unlist(lapply(lacs, `[[`, 1) )
+  lacsdf <- data.frame(s = sidel,RS=RS)
+  lacfv <- fv(lacsdf,argu="s",valu="RS",
+           ylab = "lacunarity",
+	   unitname=unitname(img),
+           labl = c("Sidelength","Reduced Sample Lacunarity"),
+           desc = c("Sidelengths of boxes", "Gliding Box Lacunarity that only uses boxes entirely within the observation")
+           )
+}
   return(lacfv)
 }
 
@@ -43,7 +57,7 @@ lacgb <- function(img,sidelengths){
 ##The following function calculates lacunarity for a box with sidelengths 2*bX+1 and 2*bY+1 (in pixels). It also calculates the RS by eroding by `b' where b is in UNITS OF THE IMAGE.
 #eg lacgb0(img,5,5,5*0.8)
 
-lacgb0 <- function(img,bX,bY){
+lacgb0 <- function(img,bX,bY,inclraw){
   distfromCentrePtofCentrePix <- bX*img$xstep+0.5*img$xstep
 ##building the kernel fcn
   mat <- matrix(1/((1+2*bY)*(1+2*bX)*img$xstep*img$ystep),ncol=round(1+2*bX),nrow=round(1+2*bY)) #because convolve.im approximates the integral the weight here must be area not just number of pixels
@@ -51,16 +65,19 @@ lacgb0 <- function(img,bX,bY){
  
   areafracs <- convolve.im(img,kernelfcn) #this map includes all the box centres that intersect img (aka it is bigger than img) - means no buffer is required for raw lacunarity
 
-#lacunarity if the box centeres can be everywhere (aka no boundary correction)
-  smA <- sum(areafracs)*img$xstep*img$ystep/area(img) 
-  ss2A <- sum(areafracs^2)*img$xstep*img$ystep/area(img)
-  lacA <- ss2A/(smA^2) -1
+  if (inclraw) {
+    #lacunarity if the box centeres can be everywhere (aka no boundary correction)
+    smA <- sum(areafracs)*img$xstep*img$ystep/area(img) 
+    ss2A <- sum(areafracs^2)*img$xstep*img$ystep/area(img)
+    lacA <- ss2A/(smA^2) -1
+  }
   if (is.empty(erosion(Frame(img),distfromCentrePtofCentrePix))){return(list(lacA=lacA,lacRS=NULL))}
   areafracsRS <-  as.im(areafracs,W=erosion(Frame(img),distfromCentrePtofCentrePix)) #note erosion by distance b is not quite the same as erosion by a square of "radius" b
   smRS <- mean(areafracsRS) #sample mean
   ss2RS <- mean(areafracsRS^2) #biased sample second moment
   lacRS <- ss2RS/(smRS^2) -1
-  return(list(raw=lacA,RS=lacRS))
+  if (inclraw){ return(list(raw=lacA,RS=lacRS))}
+  else {return(RS=lacRS)}
 }
   
 

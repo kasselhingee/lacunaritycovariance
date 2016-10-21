@@ -4,12 +4,14 @@
 \alias{lacgb}
 \title{Gliding Box lacunarity from a black and white image}
 \usage{
-lacgb(img, sidelengths)
+lacgb(img, sidelengths, inclraw = TRUE)
 }
 \arguments{
 \item{img}{An image of 0's and 1's.}
 
 \item{sidelengths}{A list of box sidelengths in the dimensions of \code{img}}
+
+\item{inclraw}{If TRUE the function will also return a gliding box lacunarity that ignores edge effects.}
 }
 \value{
 An fv object with columns for no edge correction (raw) and reduced sample border correction (RS)
