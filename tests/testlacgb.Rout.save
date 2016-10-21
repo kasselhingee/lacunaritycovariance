@@ -18,13 +18,13 @@ Type 'q()' to quit R.
 > suppressPackageStartupMessages(library(stationaryracsinference))
 > 
 > img <- as.im(heather$coarse,eps=heather$coarse$xstep)
-> bandwidths <- c(1.1)
-> lac <- lacgb(img,bandwidths)
+> sidel <- c(2.2)
+> lac <- lacgb(img,sidel)
 > lac$RS
 [1] 0.03413792
-> lac$nobord
-[1] 0.2937303
+> lac$raw
+[1] -0.5337149
 > 
 > proc.time()
    user  system elapsed 
-  1.304   0.036   1.339 
+  1.312   0.032   1.356 
