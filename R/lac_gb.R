@@ -42,10 +42,10 @@ lacgb <- function(img,bandwidths){
 
 lacgb0 <- function(img,bX,bY,b){
 ##building the kernel fcn
-  mat <- matrix(1/((1+2*bX)*(1+2*bY)),ncol=1+2*bX,nrow=1+2*bY)
+  mat <- matrix(1/((1+2*bX)*(1+2*bY)),ncol=round(1+2*bX),nrow=round(1+2*bY))
   kernelfcn <- im(mat,xcol=(-bX:bX)*img$xstep,yrow=(-bY:bY)*img$ystep)
  
-  areafracs <- convolve.im(img,kernelfcn)
+  areafracs <- convolve.im(img,kernelfcn) #this map includes all the box centres that intersect img (aka it is bigger than img) - means no buffer is required for raw lacunarity
 
 #lacunarity if the box centeres can be everywhere (aka no boundary correction)
   smA <- mean(areafracs) #sample mean
