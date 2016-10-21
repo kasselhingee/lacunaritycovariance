@@ -4,12 +4,12 @@
 \alias{lacgb}
 \title{Gliding Box lacunarity from a black and white image}
 \usage{
-lacgb(img, bandwidths)
+lacgb(img, sidelengths)
 }
 \arguments{
 \item{img}{An image of 0's and 1's.}
 
-\item{bandwidths}{A list of bandwidths (half the box sidelengths) in the dimensions of \code{img}}
+\item{sidelengths}{A list of box sidelengths in the dimensions of \code{img}}
 }
 \value{
 An fv object with columns for no edge correction (raw) and reduced sample border correction (RS)
@@ -21,7 +21,7 @@ Calculates the gliding box lacunarity
 Calculates the gliding box lacunarity for a given range of box sizes (`radius').
 The centres are given the pixels of \code{img}.
 
-Note: (1) The bandwidths are rounded such that box sidelengths are an odd number of pixels across. (2) The reduced sample points are given by erosion of the image by a disc with radius bandwidth+0.5*pixelwidth, which is note quite erosion by a square.
+Note: (1) The sidelengths are rounded such that they are an odd number of pixels across. (2) The reduced sample points are given by erosion of the image by a disc with radius sidelength/2
 }
 \examples{
 data(balcattapark_coarse)
