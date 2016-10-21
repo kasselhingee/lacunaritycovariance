@@ -24,11 +24,10 @@ The centres are given the pixels of \code{img}.
 Note: (1) The sidelengths are rounded such that they are an odd number of pixels across. (2) The reduced sample points are given by erosion of the image by a disc with radius sidelength/2
 }
 \examples{
-data(balcattapark_coarse)
-img <- as.im(balcattapark_coarse$vegmask)
-bandwidths <- c(1.6,1.9,3.2,5*0.8) #in units of img
-lac <- lacgb(img,bandwidths)
-plot(lac, cbind(RS,nobord) ~ b)
+img <- as.im(heather$coarse)
+sidelengths <- c(1,2.2,3) #in units of img
+lac <- lacgb(img,sidelengths)
+plot(lac, cbind(RS,raw) ~ s)
 
 }
 \references{
