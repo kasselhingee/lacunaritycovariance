@@ -42,14 +42,14 @@ lacgb <- function(img,bandwidths){
 
 lacgb0 <- function(img,bX,bY,b){
 ##building the kernel fcn
-  mat <- matrix(1/((1+2*bY)*(1+2*bX)*img$xstep*img$ystep),ncol=round(1+2*bX),nrow=round(1+2*bY))
+  mat <- matrix(1/((1+2*bY)*(1+2*bX)*img$xstep*img$ystep),ncol=round(1+2*bX),nrow=round(1+2*bY)) #because convolve.im approximates the integral the weight here must be area not just number of pixels
   kernelfcn <- im(mat,xcol=(-bX:bX)*img$xstep,yrow=(-bY:bY)*img$ystep)
  
   areafracs <- convolve.im(img,kernelfcn) #this map includes all the box centres that intersect img (aka it is bigger than img) - means no buffer is required for raw lacunarity
 
 #lacunarity if the box centeres can be everywhere (aka no boundary correction)
-  smA <- mean(areafracs) #sample mean
-  ss2A <- mean(areafracs^2) #biased sample second moment
+  smA <- sum(areafracs)*img$xstep*img$ystep/area(img) 
+  ss2A <- sum(areafracs^2)*img$xstep*img$ystep/area(img)
   lacA <- ss2A/(smA^2) -1
   if (is.empty(erosion(Frame(img),b+0.5*img$xstep))){return(list(lacA=lacA,lacRS=NULL))}
   areafracsRS <-  as.im(areafracs,W=erosion(Frame(img),b+0.5*img$xstep)) #note erosion by distance b is not quite the same as erosion by a square of "radius" b
