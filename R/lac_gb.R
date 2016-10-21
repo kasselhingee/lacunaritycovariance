@@ -23,7 +23,7 @@ lacgb <- function(img,sidelengths){
 #convert sidelengths to odd pixel amounts, taking into account that want a distance to edge
   spix <- 1+round((sidelengths-img$xstep)/(2*img$xstep))*2
   spix <- unique(spix)
-  rpix <- spix-1
+  rpix <- (spix-1)/2
   sidel <- spix*img$xstep 
 
   lacs <- mapply(lacgb0,bX=rpix,bY=rpix,MoreArgs=list(img=img),SIMPLIFY=FALSE)
