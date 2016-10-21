@@ -12,11 +12,10 @@
 #' @param img An image of 0's and 1's.
 #' @param sidelengths A list of box sidelengths in the dimensions of \code{img}
 #' @examples
-#' data(balcattapark_coarse)
-#' img <- as.im(balcattapark_coarse$vegmask)
-#' bandwidths <- c(1.6,1.9,3.2,5*0.8) #in units of img
-#' lac <- lacgb(img,bandwidths)
-#' plot(lac, cbind(RS,nobord) ~ b)
+#' img <- as.im(heather$coarse)
+#' sidelengths <- c(1,2.2,3) #in units of img
+#' lac <- lacgb(img,sidelengths)
+#' plot(lac, cbind(RS,raw) ~ s)
 #'
 lacgb <- function(img,sidelengths){
   if(abs(img$xstep -img$ystep)>1E-2 * img$xstep){print("ERROR: image pixels must be square")}
