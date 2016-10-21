@@ -31,7 +31,10 @@ lacgb <- function(img,sidelengths){
   lacsdf <- data.frame(s = sidel,raw=nobord,RS=RS)
   lacfv <- fv(lacsdf,argu="s",valu="RS",
            ylab = "lacunarity",
-	   unitname=unitname(img))
+	   unitname=unitname(img),
+           labl = c("Sidelength","Raw Lacunarity","Reduced Sample Lacunarity"),
+           desc = c("Sidelengths of boxes", "Gliding Box Lacunarity ignoring edge effects", "Gliding Box Lacunarity that only uses boxes entirely within the observation")
+           )
   return(lacfv)
 }
 
