@@ -35,7 +35,7 @@ if (inclraw){
   lacfv <- fv(lacsdf,argu="s",valu="RS",
            ylab = "lacunarity",
 	   unitname=unitname(img),
-           labl = c("Sidelength","Raw Lacunarity","Reduced Sample Lacunarity"),
+           labl = c("Sidelength","raw","RS"),
            desc = c("Sidelengths of boxes", "Gliding Box Lacunarity ignoring edge effects", "Gliding Box Lacunarity that only uses boxes entirely within the observation")
            )
 }
@@ -45,7 +45,7 @@ else {
   lacfv <- fv(lacsdf,argu="s",valu="RS",
            ylab = "lacunarity",
 	   unitname=unitname(img),
-           labl = c("Sidelength","Reduced Sample Lacunarity"),
+           labl = c("Sidelength","RS"),
            desc = c("Sidelengths of boxes", "Gliding Box Lacunarity that only uses boxes entirely within the observation")
            )
 }
@@ -67,7 +67,7 @@ lacgb0 <- function(img,bX,bY,inclraw){
 
   if (inclraw) {
     #lacunarity if the box centeres can be everywhere (aka no boundary correction)
-    numpixinimage <- dim(img)[1]*dim(img[1])
+    numpixinimage <- dim(img)[1]*dim(img)[2]
     smA <- sum(areafracs)/numpixinimage #note this isn't simply the mean of areafracs because the areafracs image is larger than the input image
     ss2A <- sum(areafracs^2)/numpixinimage
     lacA <- ss2A/(smA^2) -1
