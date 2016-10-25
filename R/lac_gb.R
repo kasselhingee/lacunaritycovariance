@@ -67,8 +67,9 @@ lacgb0 <- function(img,bX,bY,inclraw){
 
   if (inclraw) {
     #lacunarity if the box centeres can be everywhere (aka no boundary correction)
-    smA <- sum(areafracs)*img$xstep*img$ystep/area(img) 
-    ss2A <- sum(areafracs^2)*img$xstep*img$ystep/area(img)
+    numpixinimage <- dim(img)[1]*dim(img[1])
+    smA <- sum(areafracs)/numpixinimage #note this isn't simply the mean of areafracs because the areafracs image is larger than the input image
+    ss2A <- sum(areafracs^2)/numpixinimage
     lacA <- ss2A/(smA^2) -1
   }
   if (is.empty(erosion(Frame(img),distfromCentrePtofCentrePix))){return(list(lacA=lacA,lacRS=NULL))}
