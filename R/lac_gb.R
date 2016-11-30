@@ -57,7 +57,7 @@ else {
 ##The following function calculates lacunarity for a box with sidelengths 2*bX+1 and 2*bY+1 (in pixels). It also calculates the RS by eroding by `b' where b is in UNITS OF THE IMAGE.
 #eg lacgb0(img,5,5,5*0.8)
 
-lacgb0 <- function(img,bX,bY,inclraw){
+lacgb0 <- function(img,bX,bY,inclraw,W=Frame(img)){
   distfromCentrePtofCentrePix <- bX*img$xstep+0.5*img$xstep
 ##building the kernel fcn
   mat <- matrix(1/((1+2*bY)*(1+2*bX)*img$xstep*img$ystep),ncol=round(1+2*bX),nrow=round(1+2*bY)) #because convolve.im approximates the integral the weight here must be area not just number of pixels
@@ -72,10 +72,12 @@ lacgb0 <- function(img,bX,bY,inclraw){
     ss2A <- sum(areafracs^2)/numpixinimage
     lacA <- ss2A/(smA^2) -1
   }
-  if (is.empty(erosion(Frame(img),distfromCentrePtofCentrePix))){return(list(lacA=lacA,lacRS=NULL))}
-  areafracsRS <-  as.im(areafracs,W=erosion(Frame(img),distfromCentrePtofCentrePix)) #note erosion by distance b is not quite the same as erosion by a square of "radius" b
-  smRS <- mean(areafracsRS) #sample mean
-  ss2RS <- mean(areafracsRS^2) #biased sample second moment
+  if (is.empty(erosion(W,distfromCentrePtofCentrePix))){return(list(lacA=lacA,lacRS=NULL))}
+  areafracsRS <-  as.im(areafracs,W=Frame(img)) #note erosion by distance b is not quite the same as erosion by a square of "radius" b
+  rsW <- as.im(erosion(W,distfromCentrePtofCentrePix),xy=areafracsRS)
+  areafracsRS <- eval.im(areafracsRS * rsW)
+  smRS <- mean(areafracsRS, na.rm=TRUE) #sample mean
+  ss2RS <- mean(areafracsRS^2, na.rm=TRUE) #biased sample second moment
   lacRS <- ss2RS/(smRS^2) -1
   if (inclraw){ return(list(raw=lacA,RS=lacRS))}
   else {return(RS=lacRS)}
