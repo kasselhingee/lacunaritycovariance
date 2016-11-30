@@ -73,8 +73,8 @@ lacgb0 <- function(img,bX,bY,inclraw,W=Frame(img)){
     lacA <- ss2A/(smA^2) -1
   }
   if (is.empty(erosion(W,distfromCentrePtofCentrePix))){return(list(lacA=lacA,lacRS=NULL))}
-  areafracsRS <-  as.im(areafracs,W=Frame(img)) #note erosion by distance b is not quite the same as erosion by a square of "radius" b
-  rsW <- as.im(erosion(W,distfromCentrePtofCentrePix),xy=areafracsRS)
+  areafracsRS <-  as.im(areafracs,W=Frame(img)) 
+  rsW <- as.im(erosion(W,distfromCentrePtofCentrePix),xy=areafracsRS) #note erosion by distance b is not quite the same as erosion by a square of "radius" b
   areafracsRS <- eval.im(areafracsRS * rsW)
   smRS <- mean(areafracsRS, na.rm=TRUE) #sample mean
   ss2RS <- mean(areafracsRS^2, na.rm=TRUE) #biased sample second moment
