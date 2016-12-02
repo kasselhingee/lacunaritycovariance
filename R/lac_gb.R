@@ -5,7 +5,7 @@
 #' @details Calculates the gliding box lacunarity for a given range of box sizes (`radius').
 #' The centres are given the pixels of \code{img}.
 #' 
-#' Note: (1) The sidelengths are rounded such that they are an odd number of pixels across. (2) The reduced sample points are given by erosion of the image by a disc with radius sidelength/2 - this is a much larger issue for NON-RECTAGULAR non-convex windows
+#' Note: (1) The sidelengths are rounded such that they are an odd number of pixels across. (2) The reduced sample points are given by Minkowski subtraction
 #' @references The gliding box algorithm is described in Allain, C. and Cloitre, M. (1991) Characterizing the lacunarity of random and deterministic fractal sets. Physical Review A, 44, 3552-3558.
 #'
 #' @return An fv object with columns for no edge correction (raw) and reduced sample border correction (RS)
@@ -84,7 +84,7 @@ lacgb0 <- function(img,bX,bY,inclraw,W=Frame(img)){
     ss2A <- sum(areafracs^2)/numpixinimage
     lacA <- ss2A/(smA^2) -1
   }
-  allowedBoxCentres <- erosion(W,distfromCentrePtofCentrePix)
+  allowedBoxCentres <- erosionAny(W,Frame(kernelfcn))
   if (is.empty(allowedBoxCentres)){lacRS=NULL}
   else {
     areafracsRS <-  as.im(areafracs,W=Frame(img)) 
