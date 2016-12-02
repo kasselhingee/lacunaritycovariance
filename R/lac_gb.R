@@ -5,20 +5,21 @@
 #' @details Calculates the gliding box lacunarity for a given range of box sizes (`radius').
 #' The centres are given the pixels of \code{img}.
 #' 
-#' Note: (1) The sidelengths are rounded such that they are an odd number of pixels across. (2) The reduced sample points are given by erosion of the image by a disc with radius sidelength/2
+#' Note: (1) The sidelengths are rounded such that they are an odd number of pixels across. (2) The reduced sample points are given by erosion of the image by a disc with radius sidelength/2 - this is a much larger issue for NON-RECTAGULAR non-convex windows
 #' @references The gliding box algorithm is described in Allain, C. and Cloitre, M. (1991) Characterizing the lacunarity of random and deterministic fractal sets. Physical Review A, 44, 3552-3558.
 #'
 #' @return An fv object with columns for no edge correction (raw) and reduced sample border correction (RS)
-#' @param img An image of 0's and 1's.
+#' @param img An image of 0's and 1's, and NA pixels are assumed to be outside the observation window.
 #' @param sidelengths A list of box sidelengths in the dimensions of \code{img}
 #' @param inclraw If TRUE the function will also return a gliding box lacunarity that ignores edge effects.
+#' @param W Optional observation window. The observation window used for the estimator will be the union of \code{W} and the NA pixles in \code{img}.
 #' @examples
 #' img <- as.im(heather$coarse)
 #' sidelengths <- c(1,2.2,3) #in units of img
 #' lac <- lacgb(img,sidelengths)
 #' plot(lac, cbind(RS,raw) ~ s)
 #'
-lacgb <- function(img,sidelengths,inclraw=TRUE){
+lacgb <- function(img,sidelengths,inclraw=TRUE,W=Frame(img)){
   if(abs(img$xstep -img$ystep)>1E-2 * img$xstep){print("ERROR: image pixels must be square")}
 #convert sidelengths to odd pixel amounts, taking into account that want a distance to edge
   spix <- 1+round((sidelengths-img$xstep)/(2*img$xstep))*2
@@ -26,7 +27,16 @@ lacgb <- function(img,sidelengths,inclraw=TRUE){
   rpix <- (spix-1)/2
   sidel <- spix*img$xstep 
 
-  lacs <- mapply(lacgb0,bX=rpix,bY=rpix,MoreArgs=list(img=img),SIMPLIFY=FALSE,inclraw)
+#compute observation mask
+  if (class(img)!="im"){print("ERROR: input img must be of class im")}
+  obsvd <- img
+  obsvd[is.finite(img$v)] <- TRUE
+  if (class(W)=="im"){obsvd <- eval.im(W * obsvd)}
+  obsvd <- as.owin(obsvd) #owin format needed for use of dilation lacgb0 
+  if (class(W)=="owin"){obsvd <- intersect.owin(obsvd,W)}
+  img[!is.finite(img$v)] <- 0
+
+  lacs <- mapply(lacgb0,bX=rpix,bY=rpix,MoreArgs=list(img=img, W=obsvd),SIMPLIFY=FALSE,inclraw)
 
 if (inclraw){
   nobord <- unlist(lapply(lacs, `[[`, 1) )
@@ -56,8 +66,10 @@ else {
 ##########################
 ##The following function calculates lacunarity for a box with sidelengths 2*bX+1 and 2*bY+1 (in pixels). It also calculates the RS by eroding by `b' where b is in UNITS OF THE IMAGE.
 #eg lacgb0(img,5,5,5*0.8)
+#W MUST be an owin object
 
 lacgb0 <- function(img,bX,bY,inclraw,W=Frame(img)){
+  stopifnot(class(W)=="owin")#for dilation
   distfromCentrePtofCentrePix <- bX*img$xstep+0.5*img$xstep
 ##building the kernel fcn
   mat <- matrix(1/((1+2*bY)*(1+2*bX)*img$xstep*img$ystep),ncol=round(1+2*bX),nrow=round(1+2*bY)) #because convolve.im approximates the integral the weight here must be area not just number of pixels
@@ -72,13 +84,16 @@ lacgb0 <- function(img,bX,bY,inclraw,W=Frame(img)){
     ss2A <- sum(areafracs^2)/numpixinimage
     lacA <- ss2A/(smA^2) -1
   }
-  if (is.empty(erosion(W,distfromCentrePtofCentrePix))){return(list(lacA=lacA,lacRS=NULL))}
-  areafracsRS <-  as.im(areafracs,W=Frame(img)) 
-  rsW <- as.im(erosion(W,distfromCentrePtofCentrePix),xy=areafracsRS) #note erosion by distance b is not quite the same as erosion by a square of "radius" b
-  areafracsRS <- eval.im(areafracsRS * rsW)
-  smRS <- mean(areafracsRS, na.rm=TRUE) #sample mean
-  ss2RS <- mean(areafracsRS^2, na.rm=TRUE) #biased sample second moment
-  lacRS <- ss2RS/(smRS^2) -1
+  allowedBoxCentres <- erosion(W,distfromCentrePtofCentrePix)
+  if (is.empty(allowedBoxCentres)){lacRS=NULL}
+  else {
+    areafracsRS <-  as.im(areafracs,W=Frame(img)) 
+    rsW <- as.im(allowedBoxCentres,xy=areafracsRS) #note erosion by distance b is not quite the same as erosion by a square of "radius" b - but no function is available for the correct method yet
+    areafracsRS <- eval.im(areafracsRS * rsW)
+    smRS <- mean(areafracsRS, na.rm=TRUE) #sample mean
+    ss2RS <- mean(areafracsRS^2, na.rm=TRUE) #biased sample second moment
+    lacRS <- ss2RS/(smRS^2) -1
+  }
   if (inclraw){ return(list(raw=lacA,RS=lacRS))}
   else {return(RS=lacRS)}
 }

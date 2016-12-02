@@ -4,14 +4,16 @@
 \alias{lacgb}
 \title{Gliding Box lacunarity from a black and white image}
 \usage{
-lacgb(img, sidelengths, inclraw = TRUE)
+lacgb(img, sidelengths, inclraw = TRUE, W = Frame(img))
 }
 \arguments{
-\item{img}{An image of 0's and 1's.}
+\item{img}{An image of 0's and 1's, and NA pixels are assumed to be outside the observation window.}
 
 \item{sidelengths}{A list of box sidelengths in the dimensions of \code{img}}
 
 \item{inclraw}{If TRUE the function will also return a gliding box lacunarity that ignores edge effects.}
+
+\item{W}{Optional observation window. The observation window used for the estimator will be the union of \code{W} and the NA pixles in \code{img}.}
 }
 \value{
 An fv object with columns for no edge correction (raw) and reduced sample border correction (RS)
@@ -23,7 +25,7 @@ Calculates the gliding box lacunarity
 Calculates the gliding box lacunarity for a given range of box sizes (`radius').
 The centres are given the pixels of \code{img}.
 
-Note: (1) The sidelengths are rounded such that they are an odd number of pixels across. (2) The reduced sample points are given by erosion of the image by a disc with radius sidelength/2
+Note: (1) The sidelengths are rounded such that they are an odd number of pixels across. (2) The reduced sample points are given by erosion of the image by a disc with radius sidelength/2 - this is a much larger issue for NON-RECTAGULAR non-convex windows
 }
 \examples{
 img <- as.im(heather$coarse)
