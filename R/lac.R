@@ -21,8 +21,8 @@
 #' lac(otherboxes,covar,p)
 #' 
 #' #Test on a Boolean Model
-#'lambda <- 2.2064E-3
-#'discr <- 10
+#' lambda <- 2.2064E-3
+#' discr <- 10
 #' w <- owin(xrange=c(0,100),yrange=c(0,100))
 #' xi <- rBooleanDetermDiscs(lambda,discr,w)
 #' plot(xi)
