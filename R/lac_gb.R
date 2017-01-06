@@ -89,7 +89,7 @@ lacgb0 <- function(img,bX,bY,inclraw,W=Frame(img)){
   if (is.empty(allowedBoxCentres)){lacRS=NA}
   else {
     areafracsRS <-  as.im(areafracs,W=Frame(img)) 
-    rsW <- as.im(allowedBoxCentres,xy=areafracsRS) #note erosion by distance b is not quite the same as erosion by a square of "radius" b - but no function is available for the correct method yet
+    rsW <- as.im(allowedBoxCentres,xy=areafracsRS) 
     areafracsRS <- eval.im(areafracsRS * rsW)
     smRS <- mean(areafracsRS, na.rm=TRUE) #sample mean
     ss2RS <- mean(areafracsRS^2, na.rm=TRUE) #biased sample second moment
