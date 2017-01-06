@@ -14,8 +14,8 @@
 #' @param inclraw If TRUE the function will also return a gliding box lacunarity that ignores edge effects.
 #' @param W Optional observation window. The observation window used for the estimator will be the union of \code{W} and the NA pixles in \code{img}.
 #' @examples
-#' img <- as.im(heather$coarse)
-#' sidelengths <- c(1,2.2,3) #in units of img
+#' img <- as.im(heather$coarse,na.replace=0)
+#' sidelengths <- c(0.2,1,2.2,3) #in units of img
 #' lac <- lacgb(img,sidelengths)
 #' plot(lac, cbind(RS,raw) ~ s)
 #'
