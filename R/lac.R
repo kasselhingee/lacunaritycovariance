@@ -11,6 +11,8 @@
 #' @param p The coverage probability. Typically estimated by the fraction of the observation window covered by the set of interest.
 #' @param boxes Either a list of sidelengths for square boxes or a list of \code{owin} objects of shape.
 
+#' @return A list of mass-variance lacunarity estimates corresponding to \code{boxes}. If NA or NaN values in the \code{covariance} object are used then function return NA or NaN instead of a lacunarity estimate. 
+
 #' @examples
 #' xi <- heather$coarse
 #' covar <- covariance(xi,inclraw=FALSE)
@@ -67,7 +69,7 @@ innerprod.im <- function(A,B,na.rm=FALSE){
    A <- A[integrationregion]
    B <- B[integrationregion]
    prdimg <- eval.im(A*B,harmonize=TRUE)
-   return(sum(prdimg,na.rm=na.rm)*prdimg$xstep*prdimg$ystep)
+   return(sum(prdimg[,],na.rm=na.rm)*prdimg$xstep*prdimg$ystep)
 }
 
 #for a square the set covariance can be calculated analytically using sidelengths

@@ -13,6 +13,9 @@ lac(boxes, covariance, p)
 
 \item{p}{The coverage probability. Typically estimated by the fraction of the observation window covered by the set of interest.}
 }
+\value{
+A list of mass-variance lacunarity estimates corresponding to \code{boxes}. If NA or NaN values in the \code{covariance} object are used then function return NA or NaN instead of a lacunarity estimate.
+}
 \description{
 Estimates the Theoretical Lacunarity of a stationary RACS using estimated covariance (two-point probability) and coverage fraction.
 }
