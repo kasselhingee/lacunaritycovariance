@@ -44,7 +44,7 @@ if (inclraw){
   RS <- unlist(lapply(lacs, `[[`, 2) )
   lacsdf <- data.frame(s = sidel,raw=nobord,RS=RS)
   lacfv <- fv(lacsdf,argu="s",valu="RS",
-           ylab = "lacunarity",
+           ylab = expression(MVL[gb]),
 	   unitname=unitname(img),
            labl = c("Sidelength","raw","RS"),
            desc = c("Sidelengths of boxes", "Gliding Box Lacunarity ignoring edge effects", "Gliding Box Lacunarity that only uses boxes entirely within the observation")
@@ -54,7 +54,7 @@ else {
   RS <- unlist(lapply(lacs, `[[`, 1) )
   lacsdf <- data.frame(s = sidel,RS=RS)
   lacfv <- fv(lacsdf,argu="s",valu="RS",
-           ylab = "lacunarity",
+           ylab = expression(MVL[gb]),
 	   unitname=unitname(img),
            labl = c("Sidelength","RS"),
            desc = c("Sidelengths of boxes", "Gliding Box Lacunarity that only uses boxes entirely within the observation")
