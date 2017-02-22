@@ -25,11 +25,11 @@ Calculates the gliding box lacunarity
 Calculates the gliding box lacunarity for a given range of box sizes (`radius').
 The centres are given the pixels of \code{img}.
 
-Note: (1) The sidelengths are rounded such that they are an odd number of pixels across. (2) The reduced sample points are given by erosion of the image by a disc with radius sidelength/2 - this is a much larger issue for NON-RECTAGULAR non-convex windows
+Note: (1) The sidelengths are rounded such that they are an odd number of pixels across. (2) The reduced sample points are given by Minkowski subtraction
 }
 \examples{
-img <- as.im(heather$coarse)
-sidelengths <- c(1,2.2,3) #in units of img
+img <- as.im(heather$coarse,na.replace=0)
+sidelengths <- c(0.2,1,2.2,3) #in units of img
 lac <- lacgb(img,sidelengths)
 plot(lac, cbind(RS,raw) ~ s)
 
