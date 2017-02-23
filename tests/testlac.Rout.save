@@ -23,7 +23,7 @@ Warning message:
 > p <- area(heather$coarse)/area(Frame(heather$coarse))
 > sidelengths <- 2.2
 > lac <- lac(sidelengths,covar,p)
-> lac
+> lac$MVL
 [1] 0.05774827
 > 
 > proc.time()

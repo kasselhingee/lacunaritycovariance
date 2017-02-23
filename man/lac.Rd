@@ -2,9 +2,9 @@
 % Please edit documentation in R/lac.R
 \name{lac}
 \alias{lac}
-\title{Estimates of Theoretical Lacunarity}
+\title{Covariance-based calculations of mass-variance lacunarity}
 \usage{
-lac(boxes, covariance, p)
+lac(boxes, covariance = NULL, p = NULL, xiim = NULL)
 }
 \arguments{
 \item{boxes}{Either a list of sidelengths for square boxes or a list of \code{owin} objects of shape.}
@@ -12,12 +12,14 @@ lac(boxes, covariance, p)
 \item{covariance}{A \code{im} object containing the covariance function (typically estimated by \code{covariance})}
 
 \item{p}{The coverage probability. Typically estimated by the fraction of the observation window covered by the set of interest.}
+
+\item{xiim}{An observation of a stationary RACS in \code{im} format. \code{xiim} must have values of either 1, 0 or NA; 1 denotes inside the RACS, 0 denotes outside, and NA denotes unobserved.}
 }
 \value{
-A list of mass-variance lacunarity estimates corresponding to \code{boxes}. If NA or NaN values in the \code{covariance} object are used then function return NA or NaN instead of a lacunarity estimate.
+Either an \code{fv} object containing the MVL values and box side lengths or if \code{boxes} is a list of owin objects then \code{lac} returns a list of corresponding MVL values. Note if NA or NaN values in the \code{covariance} object are used then function will return NA or NaN instead of an MVL value.
 }
 \description{
-Estimates the Theoretical Lacunarity of a stationary RACS using estimated covariance (two-point probability) and coverage fraction.
+Estimates the mass-variance lacunarity (MVL) of a stationary RACS from an image, or calculates the MVL from provided covariance (two-point probability) and coverage fraction.
 }
 \details{
 Denoted the estimated covariance by \eqn{\hat{C}(v)} and coverage probability \eqn{\hat{p}} then the estimate lacunarity is
@@ -28,7 +30,7 @@ xi <- heather$coarse
 covar <- covariance(xi,inclraw=FALSE)
 p <- area(xi)/area(Frame(xi))
 sidelengths <- c(0.3,0.5,0.8,1)
-lac(sidelengths,covar,p)
+plot(lac(sidelengths,covar,p))
 otherboxes <- list(square(0.3),square(0.5),disc(0.8),square(1))
 lac(otherboxes,covar,p)
 
@@ -38,22 +40,17 @@ discr <- 10
 w <- owin(xrange=c(0,100),yrange=c(0,100))
 xi <- rBooleanDetermDiscs(lambda,discr,w)
 plot(xi)
-xiimg <- as.mask(xi,eps=c(0.1,0.1))
+xiimg <- as.im(xi, W=w, eps=c(0.1,0.1), na.replace=0)
 #estimated lacunarity
-estcov <- covariance(xiimg,w=w)
-estp <- area(xiimg)/area(w)
-lac(c(0.5,0.8,1,2,3,4,5,6),estcov,estp)
+mvl.est <- lac(c(0.5,0.8,1,2,3,4,5,6),xiim=xiimg)
+plot(mvl.est)
 #theoretical lacunarity very different because window is small **I think
 thcovariance <- thcovarDeterministicDiscs(
                  xrange=c(-10,10),
 	    yrange=c(-10,10),
 	    eps=c(0.1,0.1),lambda,discr)
 thcoverageprob <- booldetermdiscs_truecoveragefrac(lambda,discr)
-lac(c(0.5,0.8,1,2,3,4,5,6),thcovariance,thcoverageprob)
-
-#look at why there is a difference
-estp
-thcoverageprob
-plot(as.solist(list(estcov,thcovariance)),axes=TRUE)
+mvl.th <- lac(c(0.5,0.8,1,2,3,4,5,6),thcovariance,thcoverageprob)
+plot(add=TRUE, mvl.th, col="red", lty="dashed")
 }
 

@@ -1,24 +1,25 @@
-#' @title Estimates of Theoretical Lacunarity
+#' @title Covariance-based calculations of mass-variance lacunarity
 #' @export lac
 #'
-#' @description Estimates the Theoretical Lacunarity of a stationary RACS using estimated covariance (two-point probability) and coverage fraction.
+#' @description Estimates the mass-variance lacunarity (MVL) of a stationary RACS from an image, or calculates the MVL from provided covariance (two-point probability) and coverage fraction.
 
 #' @details
 #' Denoted the estimated covariance by \eqn{\hat{C}(v)} and coverage probability \eqn{\hat{p}} then the estimate lacunarity is
 #' \deqn{\frac{1}{\hat{p}^2 |B|^2}\int \gamma_B(v)\hat{C}(v)dv -1 }
 
+#' @param boxes Either a list of sidelengths for square boxes or a list of \code{owin} objects of shape.
 #' @param covariance  A \code{im} object containing the covariance function (typically estimated by \code{covariance})
 #' @param p The coverage probability. Typically estimated by the fraction of the observation window covered by the set of interest.
-#' @param boxes Either a list of sidelengths for square boxes or a list of \code{owin} objects of shape.
+#' @param xiim An observation of a stationary RACS in \code{im} format. \code{xiim} must have values of either 1, 0 or NA; 1 denotes inside the RACS, 0 denotes outside, and NA denotes unobserved.
 
-#' @return A list of mass-variance lacunarity estimates corresponding to \code{boxes}. If NA or NaN values in the \code{covariance} object are used then function return NA or NaN instead of a lacunarity estimate. 
+#' @return Either an \code{fv} object containing the MVL values and box side lengths or if \code{boxes} is a list of owin objects then \code{lac} returns a list of corresponding MVL values. Note if NA or NaN values in the \code{covariance} object are used then function will return NA or NaN instead of an MVL value. 
 
 #' @examples
 #' xi <- heather$coarse
 #' covar <- covariance(xi,inclraw=FALSE)
 #' p <- area(xi)/area(Frame(xi))
 #' sidelengths <- c(0.3,0.5,0.8,1)
-#' lac(sidelengths,covar,p)
+#' plot(lac(sidelengths,covar,p))
 #' otherboxes <- list(square(0.3),square(0.5),disc(0.8),square(1))
 #' lac(otherboxes,covar,p)
 #' 
@@ -28,25 +29,51 @@
 #' w <- owin(xrange=c(0,100),yrange=c(0,100))
 #' xi <- rBooleanDetermDiscs(lambda,discr,w)
 #' plot(xi)
-#' xiimg <- as.mask(xi,eps=c(0.1,0.1))
+#' xiimg <- as.im(xi, W=w, eps=c(0.1,0.1), na.replace=0)
 #' #estimated lacunarity
-#' estcov <- covariance(xiimg,w=w)
-#' estp <- area(xiimg)/area(w)
-#' lac(c(0.5,0.8,1,2,3,4,5,6),estcov,estp)
+#' mvl.est <- lac(c(0.5,0.8,1,2,3,4,5,6),xiim=xiimg)
+#' plot(mvl.est)
 #' #theoretical lacunarity very different because window is small **I think
 #' thcovariance <- thcovarDeterministicDiscs(
 #'                  xrange=c(-10,10),
 #'		    yrange=c(-10,10),
 #'		    eps=c(0.1,0.1),lambda,discr)
 #' thcoverageprob <- booldetermdiscs_truecoveragefrac(lambda,discr)
-#' lac(c(0.5,0.8,1,2,3,4,5,6),thcovariance,thcoverageprob)
-#' 
-#' #look at why there is a difference
-#' estp
-#' thcoverageprob
-#' plot(as.solist(list(estcov,thcovariance)),axes=TRUE)
+#' mvl.th <- lac(c(0.5,0.8,1,2,3,4,5,6),thcovariance,thcoverageprob)
+#' plot(add=TRUE, mvl.th, col="red", lty="dashed")
 
-lac <- function(boxes, covariance, p){
+lac <- function(boxes, covariance=NULL, p=NULL, xiim=NULL){
+   if (!(is.null(covariance) | is.null(p))){
+      if (!is.null(xiim)){cat("WARNING: covariance, p and observation image, xiim, given. Only the covariance and p will be used\n")}
+      lacv <- lac.cov(boxes,covariance,p)
+      unitname <- unitname(covariance)
+   } else if (!is.null(xiim)){
+      if (is.null(covariance) & is.null(p) != TRUE){ cat("WARNING: xiim supplied and only one of covariance or p supplied so using xiim\n")}
+      cat("calculating lacv from image")
+      p <- sum(xiim)/sum(is.finite(xiim$v))
+      w <- as.owin(xiim) #w is observation window - only the non NA values end up in window
+      xiim[is.na(xiim$v)] <- 0
+      covar <- covariance(xiim,w = w)
+      lacv <- lac.cov(boxes, covar, p)
+      unitname <- unitname(xiim)
+   } else {
+      return(NULL)
+   }
+ 
+   if (mode(boxes) %in% c("integer","numeric")){
+      lacfv <- fv(data.frame(s = boxes, MVL=lacv),
+                  argu="s",
+		  valu="MVL",
+		  ylab=expression(MVL),
+		  unitname=unitname,
+		  labl = c("Box Side Length", "MVL"),
+		  desc = c("Side length of boxes", "MVL derived from covariance")
+		  )
+       return(lacfv)
+   } else (return(lacv)) 
+}
+
+lac.cov <- function(boxes, covariance, p){
   if (mode(boxes) %in% c("integer","numeric")){
      boxcov <- lapply(boxes,setcovsquare,xy=covariance) #theoretical 
      boxarea <- boxes^2
