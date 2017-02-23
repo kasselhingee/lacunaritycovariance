@@ -49,7 +49,6 @@ lac <- function(boxes, covariance=NULL, p=NULL, xiim=NULL){
       unitname <- unitname(covariance)
    } else if (!is.null(xiim)){
       if (is.null(covariance) & is.null(p) != TRUE){ cat("WARNING: xiim supplied and only one of covariance or p supplied so using xiim\n")}
-      cat("calculating lacv from image")
       p <- sum(xiim)/sum(is.finite(xiim$v))
       w <- as.owin(xiim) #w is observation window - only the non NA values end up in window
       xiim[is.na(xiim$v)] <- 0
