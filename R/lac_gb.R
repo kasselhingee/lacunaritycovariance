@@ -8,9 +8,9 @@
 #' Note: (1) The sidelengths are rounded such that they are an odd number of pixels across. (2) The reduced sample points are given by Minkowski subtraction
 #' @references The gliding box algorithm is described in Allain, C. and Cloitre, M. (1991) Characterizing the lacunarity of random and deterministic fractal sets. Physical Review A, 44, 3552-3558.
 #'
-#' @return An fv object with columns for no edge correction (raw) and reduced sample border correction (RS)
+#' @return An fv object with columns for no edge correction (raw) and reduced sample border correction (RS). The side lengths (labelled \code{s}) are always odd multiples of pixel widths.
 #' @param img An image of 0's and 1's, and NA pixels are assumed to be outside the observation window.
-#' @param sidelengths A list of box sidelengths in the dimensions of \code{img}
+#' @param sidelengths A list of suggested box side lengths in the dimensions of \code{img}. Note the actual side lengths used will be the closest multiple of an odd number of pixel widths.
 #' @param inclraw If TRUE the function will also return a gliding box lacunarity that ignores edge effects.
 #' @param W Optional observation window. The observation window used for the estimator will be the union of \code{W} and the NA pixles in \code{img}.
 #' @examples

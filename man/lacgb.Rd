@@ -9,14 +9,14 @@ lacgb(img, sidelengths, inclraw = TRUE, W = Frame(img))
 \arguments{
 \item{img}{An image of 0's and 1's, and NA pixels are assumed to be outside the observation window.}
 
-\item{sidelengths}{A list of box sidelengths in the dimensions of \code{img}}
+\item{sidelengths}{A list of suggested box side lengths in the dimensions of \code{img}. Note the actual side lengths used will be the closest multiple of an odd number of pixel widths.}
 
 \item{inclraw}{If TRUE the function will also return a gliding box lacunarity that ignores edge effects.}
 
 \item{W}{Optional observation window. The observation window used for the estimator will be the union of \code{W} and the NA pixles in \code{img}.}
 }
 \value{
-An fv object with columns for no edge correction (raw) and reduced sample border correction (RS)
+An fv object with columns for no edge correction (raw) and reduced sample border correction (RS). The side lengths (labelled \code{s}) are always odd multiples of pixel widths.
 }
 \description{
 Calculates the gliding box lacunarity
