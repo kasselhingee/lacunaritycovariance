@@ -56,7 +56,7 @@ lac <- function(boxes, covariance=NULL, p=NULL, xiim=NULL){
       lacv <- lac.cov(boxes, covar, p)
       unitname <- unitname(xiim)
    } else {
-      return(NULL)
+      stop("Input requires specification of xiim or covariance and p\n")
    }
  
    if (mode(boxes) %in% c("integer","numeric")){
