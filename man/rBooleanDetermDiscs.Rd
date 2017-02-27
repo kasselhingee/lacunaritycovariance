@@ -34,7 +34,7 @@ thspecdensAtOrigin(lambda, discr)
 \item{eps}{list of length 2 of the steps between samples points in x and y respectively for \code{thcovarDeterministicDiscs}.}
 }
 \value{
-\code{rBooleanDetermDiscs} returns an owin object containing the locations covered by the Boolean model. The window information is not contained.
+\code{rBooleanDetermDiscs} returns an owin object containing the locations covered by the Boolean model. The window information is not contained. If an empty set is simulated then an empty owin object is returned.
 
 \code{booldetermdiscs_truecoveragefrac} returns the true coverage fraction given the intensity and the radius.
 
@@ -52,8 +52,7 @@ It is the integral of the covariance - (coverage fraction)^2 over all space.
 }}
 \section{WARNING}{
 
- \code{rBooleanDetermDiscs} does not handle the case of an empty realisation very well.
-This is because the frame of returned value \code{Xi} can be smaller than the simulation window.
+The returned object is for the contents of Xi only and thus might have an enclosing rectangle that is smaller than the window.
 }
 \examples{
 #Boolean model with discs of radius 10.

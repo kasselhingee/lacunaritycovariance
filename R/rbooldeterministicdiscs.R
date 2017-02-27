@@ -9,15 +9,14 @@
 #' @param seed Optional input (default in NULL). Is an integer passed to \code{\link{base}{set.seed}}. Used to reproduce patterns exactly.
 
 #' @return 
-#' \code{rBooleanDetermDiscs} returns an owin object containing the locations covered by the Boolean model. The window information is not contained.
+#' \code{rBooleanDetermDiscs} returns an owin object containing the locations covered by the Boolean model. The window information is not contained. If an empty set is simulated then an empty owin object is returned.
 #' 
 #' \code{booldetermdiscs_truecoveragefrac} returns the true coverage fraction given the intensity and the radius.
 #' 
 #' \code{thcovarDeterministicDiscs} returns an image of the covariance (which will be isotropic)
 
 #' @section WARNING:
-#'  \code{rBooleanDetermDiscs} does not handle the case of an empty realisation very well.
-#' This is because the frame of returned value \code{Xi} can be smaller than the simulation window.
+#' The returned object is for the contents of Xi only and thus might have an enclosing rectangle that is smaller than the window.
 #' 
 #' 
 #' @examples 
@@ -44,8 +43,7 @@ rBooleanDetermDiscs <- function(lambda,discr,window,seed=NULL){
   
   if (!missing(seed)){set.seed(seed)}
   pp <- rpoispp(lambda=lambda,win=dilation(window,bufferdist),nsim=1,drop=TRUE)#lambda from B\"{o}m (2002) - chosen to make coverage probability very close to 0.5
-  if (pp$n ==0 ){warning("No points simulated.")
-       return(NULL)}
+  if (pp$n ==0 ){return(complement.owin(window))}
   xibuffer <- placegrainsfromlib(pp,grainlib)
   xi <- intersect.owin(xibuffer,window)
   return(xi)
