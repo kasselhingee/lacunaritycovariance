@@ -3,7 +3,8 @@
 #'
 #' @description Calculates the gliding box lacunarity
 #' @details Calculates the gliding box lacunarity for a given range of box sizes (`radius').
-#' The centres are given the pixels of \code{img}.
+#' The centres are given the pixels of \code{img}. If the package \code{raster} is available a moving window algorithm is used (via \code{focal()}) however if it is not available the results of the moving window algorithm are obtained using convolutions.
+#' Due to constraints in \code{focal} the raw version of the gliding box algorithm always uses convolutions.
 #' 
 #' Note: (1) The sidelengths are rounded such that they are an odd number of pixels across. (2) The reduced sample points are given by Minkowski subtraction
 #' @references The gliding box algorithm is described in Allain, C. and Cloitre, M. (1991) Characterizing the lacunarity of random and deterministic fractal sets. Physical Review A, 44, 3552-3558.
@@ -70,8 +71,7 @@ else {
 #W MUST be an owin object
 
 lacgb0 <- function(img,bX,bY,inclraw,W=Frame(img)){
-  stopifnot(class(W)=="owin")#for dilation
-  img <- img[W] #make sure the pixels outside W are set to NA
+  img <- img[W,drop=FALSE] #make sure the pixels outside W are set to NA
   distfromCentrePtofCentrePix <- bX*img$xstep+0.5*img$xstep
   mat <- matrix(1,ncol=round(1+2*bX),nrow=round(1+2*bY))
   useraster = ("raster" %in% installed.packages()[,1])

@@ -23,7 +23,8 @@ Calculates the gliding box lacunarity
 }
 \details{
 Calculates the gliding box lacunarity for a given range of box sizes (`radius').
-The centres are given the pixels of \code{img}.
+The centres are given the pixels of \code{img}. If the package \code{raster} is available a moving window algorithm is used (via \code{focal()}) however if it is not available the results of the moving window algorithm are obtained using convolutions.
+Due to constraints in \code{focal} the raw version of the gliding box algorithm always uses convolutions.
 
 Note: (1) The sidelengths are rounded such that they are an odd number of pixels across. (2) The reduced sample points are given by Minkowski subtraction
 }
