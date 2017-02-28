@@ -71,12 +71,39 @@ else {
 
 lacgb0 <- function(img,bX,bY,inclraw,W=Frame(img)){
   stopifnot(class(W)=="owin")#for dilation
+  img <- img[W] #make sure the pixels outside W are set to NA
   distfromCentrePtofCentrePix <- bX*img$xstep+0.5*img$xstep
-##building the kernel fcn
-  mat <- matrix(1/((1+2*bY)*(1+2*bX)*img$xstep*img$ystep),ncol=round(1+2*bX),nrow=round(1+2*bY)) #because convolve.im approximates the integral the weight here must be area not just number of pixels
-  kernelfcn <- im(mat,xcol=(-bX:bX)*img$xstep,yrow=(-bY:bY)*img$ystep)
- 
-  areafracs <- convolve.im(img,kernelfcn) #this map includes all the box centres that intersect img (aka it is bigger than img) - means no buffer is required for raw lacunarity
+  mat <- matrix(1,ncol=round(1+2*bX),nrow=round(1+2*bY))
+  useraster = ("raster" %in% installed.packages()[,1])
+  
+  if (useraster){#use raster's fast moving window function (called focal)
+  		xiras <- raster::raster(img)
+		#using raster's moving window stuff
+		areas.movwind <- raster::focal(xiras, mat)
+		areas.movwind <- raster::as.array(areas.movwind)[,,1]
+		areas.movwind <- as.im(areas.movwind[nrow(areas.movwind):1,], W=img)*img$xstep*img$ystep
+		smRS <- mean(areas.movwind, na.rm=TRUE) #sample mean
+		ss2RS <- mean(areas.movwind^2, na.rm=TRUE) #biased sample second moment
+		lacRS <- ss2RS/(smRS^2) -1
+  }
+  if (!useraster | inclraw){ #convolve is only needed if raw is requested, or if it is not possible to use raster
+	##building the kernel fcn
+	  kernelfcn <- im(mat/((1+2*bY)*(1+2*bX)*img$xstep*img$ystep),xcol=(-bX:bX)*img$xstep,yrow=(-bY:bY)*img$ystep)#because convolve.im approximates the integral the weight here must be area not just number of pixels
+	 
+	  areafracs <- convolve.im(img,kernelfcn) #this map includes all the box centres that intersect img (aka it is bigger than img) - means no buffer is required for raw lacunarity
+  }
+  if (!useraster){
+	  allowedBoxCentres <- erosionAny(W,Frame(kernelfcn))
+	  if (is.empty(allowedBoxCentres)){lacRS=NA}
+	  else {
+		areafracsRS <-  as.im(areafracs,W=Frame(img)) 
+		rsW <- as.im(allowedBoxCentres,xy=areafracsRS) 
+		areafracsRS <- eval.im(areafracsRS * rsW)
+		smRS <- mean(areafracsRS, na.rm=TRUE) #sample mean
+		ss2RS <- mean(areafracsRS^2, na.rm=TRUE) #biased sample second moment
+		lacRS <- ss2RS/(smRS^2) -1
+	  }
+  }
 
   if (inclraw) {
     #lacunarity if the box centeres can be everywhere (aka no boundary correction)
@@ -84,16 +111,6 @@ lacgb0 <- function(img,bX,bY,inclraw,W=Frame(img)){
     smA <- sum(areafracs)/numpixinimage #note this isn't simply the mean of areafracs because the areafracs image is larger than the input image
     ss2A <- sum(areafracs^2)/numpixinimage
     lacA <- ss2A/(smA^2) -1
-  }
-  allowedBoxCentres <- erosionAny(W,Frame(kernelfcn))
-  if (is.empty(allowedBoxCentres)){lacRS=NA}
-  else {
-    areafracsRS <-  as.im(areafracs,W=Frame(img)) 
-    rsW <- as.im(allowedBoxCentres,xy=areafracsRS) 
-    areafracsRS <- eval.im(areafracsRS * rsW)
-    smRS <- mean(areafracsRS, na.rm=TRUE) #sample mean
-    ss2RS <- mean(areafracsRS^2, na.rm=TRUE) #biased sample second moment
-    lacRS <- ss2RS/(smRS^2) -1
   }
   if (inclraw){ return(list(raw=lacA,RS=lacRS))}
   else {return(RS=lacRS)}
