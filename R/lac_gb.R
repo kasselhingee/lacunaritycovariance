@@ -3,8 +3,7 @@
 #'
 #' @description Calculates the gliding box lacunarity
 #' @details Calculates the gliding box lacunarity for a given range of box sizes (`radius').
-#' The centres are given the pixels of \code{img}. If the package \code{raster} is available a moving window algorithm is used (via \code{focal()}) however if it is not available the results of the moving window algorithm are obtained using convolutions.
-#' Due to constraints in \code{focal} the raw version of the gliding box algorithm always uses convolutions.
+#' The centres are given the pixels of \code{img}. If the package \code{raster} is available a moving window algorithm is may be used (via \code{focal()}), however for now the convolution method in spatstat appears to be faster and is default.
 #' 
 #' Note: (1) The sidelengths are rounded such that they are an odd number of pixels across. (2) The reduced sample points are given by Minkowski subtraction
 #' @references The gliding box algorithm is described in Allain, C. and Cloitre, M. (1991) Characterizing the lacunarity of random and deterministic fractal sets. Physical Review A, 44, 3552-3558.
@@ -20,7 +19,7 @@
 #' lac <- lacgb(img,sidelengths)
 #' plot(lac, cbind(RS,raw) ~ s)
 #'
-lacgb <- function(img,sidelengths,inclraw=TRUE,W=Frame(img), forceconvolvemethod=FALSE){
+lacgb <- function(img,sidelengths,inclraw=TRUE,W=Frame(img), forceconvolvemethod=TRUE){
   if(abs(img$xstep -img$ystep)>1E-2 * img$xstep){print("ERROR: image pixels must be square")}
 #convert sidelengths to odd pixel amounts, taking into account that want a distance to edge
   spix <- 1+round((sidelengths-img$xstep)/(2*img$xstep))*2
@@ -35,11 +34,17 @@ lacgb <- function(img,sidelengths,inclraw=TRUE,W=Frame(img), forceconvolvemethod
   if (class(W)=="im"){obsvd <- eval.im(W * obsvd)}
   obsvd <- as.owin(obsvd) #owin format needed for use of dilation lacgb0 
   if (class(W)=="owin"){obsvd <- intersect.owin(obsvd,W)}
-  img[!is.finite(img$v)] <- 0
 
-  lacs <- mapply(lacgb0,bX=rpix,bY=rpix,MoreArgs=list(img=img, W=obsvd),SIMPLIFY=FALSE,inclraw, forceconvolvemethod=forceconvolvemethod)
-
-
+  useraster = (("raster" %in% installed.packages()[,1]) & !forceconvolvemethod) #use raster's fast moving window function (called focal)  
+  
+  if (!useraster){
+	img[!is.finite(img$v)] <- 0 #set all NA pixels to 0 - so FFT doesn't error
+	lacs <- mapply(lacgb0.conv,bX=rpix,bY=rpix,MoreArgs=list(img=img, W=obsvd),SIMPLIFY=FALSE,inclraw)
+  } else {
+	img[complement.owin(W,Frame(img))] <- NA #make sure the pixels outside W are set to NA so that reduce sampling happens naturally
+	lacs <- mapply(lacgb0.wraster,bX=rpix,bY=rpix,MoreArgs=list(img=img, W=obsvd),SIMPLIFY=FALSE,inclraw)	
+  }
+  
 if (inclraw){
   nobord <- unlist(lapply(lacs, `[[`, 1) )
   RS <- unlist(lapply(lacs, `[[`, 2) )
@@ -70,38 +75,9 @@ else {
 #eg lacgb0(img,5,5,5*0.8)
 #W MUST be an owin object
 
-lacgb0 <- function(img,bX,bY,inclraw,W=Frame(img), forceconvolvemethod=FALSE){
-  img <- img[W,drop=FALSE] #make sure the pixels outside W are set to NA
+lacgb0.conv <- function(img,bX,bY,inclraw,W=Frame(img)){
   distfromCentrePtofCentrePix <- bX*img$xstep+0.5*img$xstep
   mat <- matrix(1,ncol=round(1+2*bX),nrow=round(1+2*bY))
-  useraster = (("raster" %in% installed.packages()[,1]) & !forceconvolvemethod)
-  
-  if (useraster){#use raster's fast moving window function (called focal)
-  		xiras <- raster::raster(img)
-		#using raster's moving window stuff
-		areas.movwind <- raster::focal(xiras, mat)
-		areas.movwind <- raster::as.array(areas.movwind)[,,1]
-		areas.movwind <- as.im(areas.movwind[nrow(areas.movwind):1,], W=img)*img$xstep*img$ystep
-		smRS <- mean(areas.movwind, na.rm=TRUE) #sample mean
-		ss2RS <- mean(areas.movwind^2, na.rm=TRUE) #biased sample second moment
-		lacRS <- ss2RS/(smRS^2) -1
-		
-		if (inclraw){
-			imgPAD <- as.im(img, W=dilation(Frame(img), (bX+2)*img$xstep*sqrt(2)), eps=c(img$xstep, img$ystep), na.replace=0) #make raster image bigger - padded with zeros
-			xiras <- raster::raster(imgPAD)
-			#using raster's moving window stuff
-			areas.movwind <- raster::focal(xiras, mat, pad=TRUE, padValue=0, na.rm=TRUE) #these padding options and the enlarged img needed to get box centres outside W
-			areas.movwind <- raster::as.array(areas.movwind)[,,1]
-			areas.movwind <- as.im(areas.movwind[nrow(areas.movwind):1,], W=imgPAD)*imgPAD$xstep*imgPAD$ystep
-
-			#lacunarity if the box centeres can be everywhere (aka no boundary correction)
-			numpixelsinwindow <- area(W)/(areas.movwind$xstep*areas.movwind$ystep)
-			smA <- sum(areas.movwind)/numpixelsinwindow #note this isn't simply the mean of areafracs because the areafracs image is larger than the input image
-			ss2A <- sum(areas.movwind^2)/numpixelsinwindow
-			lacA <- ss2A/(smA^2) -1
-		}
-  }
-  if (!useraster){
 	##building the kernel fcn
 	  kernelfcn <- im(mat,xcol=(-bX:bX)*img$xstep,yrow=(-bY:bY)*img$ystep)#because convolve.im approximates the integral the weight here must be area not just number of pixels
 	  kernelfcn <- as.im(kernelfcn,eps=img$xstep/1.1) #something about forcing convolve.im to give a better approximation
@@ -126,11 +102,41 @@ lacgb0 <- function(img,bX,bY,inclraw,W=Frame(img), forceconvolvemethod=FALSE){
 		ss2RS <- mean(areasRS^2, na.rm=TRUE) #biased sample second moment
 		lacRS <- ss2RS/(smRS^2) -1
 	  }
-  }
   if (inclraw){ return(list(raw=lacA,RS=lacRS))}
   else {return(RS=lacRS)}
 }
   
+  
+lacgb0.wraster <- function(img,bX,bY,inclraw,W=Frame(img)){
+  distfromCentrePtofCentrePix <- bX*img$xstep+0.5*img$xstep
+  mat <- matrix(1,ncol=round(1+2*bX),nrow=round(1+2*bY))
+  
+	xiras <- raster::raster(img)
+	#using raster's moving window stuff
+	areas.movwind <- raster::focal(xiras, mat)
+	areas.movwind <- raster::as.array(areas.movwind)[,,1]
+	areas.movwind <- as.im(areas.movwind[nrow(areas.movwind):1,], W=img)*img$xstep*img$ystep
+	smRS <- mean(areas.movwind, na.rm=TRUE) #sample mean
+	ss2RS <- mean(areas.movwind^2, na.rm=TRUE) #biased sample second moment
+	lacRS <- ss2RS/(smRS^2) -1
+	
+	if (inclraw){
+		imgPAD <- as.im(img, W=dilation(Frame(img), (bX+2)*img$xstep*sqrt(2)), eps=c(img$xstep, img$ystep), na.replace=0) #make raster image bigger - padded with zeros
+		xiras <- raster::raster(imgPAD)
+		#using raster's moving window stuff
+		areas.movwind <- raster::focal(xiras, mat, pad=TRUE, padValue=0, na.rm=TRUE) #these padding options and the enlarged img needed to get box centres outside W
+		areas.movwind <- raster::as.array(areas.movwind)[,,1]
+		areas.movwind <- as.im(areas.movwind[nrow(areas.movwind):1,], W=imgPAD)*imgPAD$xstep*imgPAD$ystep
+
+		#lacunarity if the box centeres can be everywhere (aka no boundary correction)
+		numpixelsinwindow <- area(W)/(areas.movwind$xstep*areas.movwind$ystep)
+		smA <- sum(areas.movwind)/numpixelsinwindow #note this isn't simply the mean of areafracs because the areafracs image is larger than the input image
+		ss2A <- sum(areas.movwind^2)/numpixelsinwindow
+		lacA <- ss2A/(smA^2) -1
+	}
+  if (inclraw){ return(list(raw=lacA,RS=lacRS))}
+  else {return(RS=lacRS)}
+}
 
 #TO DO:
 ## catch warnings about empty RS window and print something more understandble

@@ -4,7 +4,8 @@
 \alias{lacgb}
 \title{Gliding Box lacunarity from a black and white image}
 \usage{
-lacgb(img, sidelengths, inclraw = TRUE, W = Frame(img))
+lacgb(img, sidelengths, inclraw = TRUE, W = Frame(img),
+  forceconvolvemethod = TRUE)
 }
 \arguments{
 \item{img}{An image of 0's and 1's, and NA pixels are assumed to be outside the observation window.}
@@ -23,8 +24,7 @@ Calculates the gliding box lacunarity
 }
 \details{
 Calculates the gliding box lacunarity for a given range of box sizes (`radius').
-The centres are given the pixels of \code{img}. If the package \code{raster} is available a moving window algorithm is used (via \code{focal()}) however if it is not available the results of the moving window algorithm are obtained using convolutions.
-Due to constraints in \code{focal} the raw version of the gliding box algorithm always uses convolutions.
+The centres are given the pixels of \code{img}. If the package \code{raster} is available a moving window algorithm is may be used (via \code{focal()}), however for now the convolution method in spatstat appears to be faster and is default.
 
 Note: (1) The sidelengths are rounded such that they are an odd number of pixels across. (2) The reduced sample points are given by Minkowski subtraction
 }
