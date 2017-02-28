@@ -18,6 +18,8 @@
 #' 
 #' smstepim <- kernelsmooth(stepim,0.5)
 #' plot(smstepim,axes=TRUE)
+
+#' @section Notes: This function is almost superfluous - \code{spatstat} has a function \code{Smooth.im} for smoothing using Gaussian kernels.
 kernelsmooth <- function(im,bandwidth,kernel="Epanechnikov"){
   stopifnot(is.im(im))
   xstep = im$xstep
