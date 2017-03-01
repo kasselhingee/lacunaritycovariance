@@ -1,5 +1,6 @@
 #' @title Simulation of Boolean Model of Deterministic Discs
 #' @export rBooleanDetermDiscs  booldetermdiscs_truecoveragefrac thcovarDeterministicDiscs thspecdensAtOrigin quasithspecdens
+#' @importFrom stats fft
 #' 
 #' @description Function for simulating a Boolean model with deterministic discs, and also functions for calculating theoretical properties such as coverage function, covariance, and spectral density.
 #' 

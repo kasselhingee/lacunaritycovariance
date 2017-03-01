@@ -1,5 +1,6 @@
 #' @title Simulate a Boolean model of discs with log normal disc radii and Poisson germs
 #' @export rboollognormdiscs
+#' @importFrom stats rlnorm
 
 #' @description Simulates a Poisson point process and places discs of random radii around each point.  The radii are generated using a log normal distribution.
 #' @param  window An \code{owin} object specifying the desired simulation region

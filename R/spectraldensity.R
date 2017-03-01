@@ -1,5 +1,6 @@
 #' @title Spectral Density of a RACS
 #' @export unsmoothedspectraldensity spectraldensity 
+#' @importFrom stats fft
 #' 
 #' @description 
 #' \code{unsmoothedspectraldensity} estimates the spectral density of a RACS without any kernal smoothing.

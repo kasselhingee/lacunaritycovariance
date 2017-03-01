@@ -1,5 +1,6 @@
 #' @title Fast Fourier Transform of Images
 #' @export fft.im
+#' @importFrom stats fft
 #' 
 #' @description  Uses R's inbuilt FFT function it has addition machinery for returning corrects scales for approximating the continuous fourier transform
 #' \deqn{
