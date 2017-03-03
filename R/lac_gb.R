@@ -1,5 +1,6 @@
 #' @title Gliding Box lacunarity from a black and white image
 #' @export lacgb 
+#' @importFrom utils installed.packages
 #'
 #' @description Calculates the gliding box lacunarity
 #' @details Calculates the gliding box lacunarity for a given range of box sizes (`radius').

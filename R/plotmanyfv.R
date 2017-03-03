@@ -1,5 +1,6 @@
 #' @title Plot multiple fv objects of similar ilk
 #' @export manylines.fv
+#' @importFrom graphics plot.new plot.window title axis
 #' 
 #' @description Plots multiple fv objects on the same window. 
 #' @param fvlist A list of fv objects

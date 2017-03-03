@@ -9,6 +9,7 @@
 #' confidenceIntervalOfGaussian(0.95,1)
 #' 
 #' @export confidenceIntervalOfGaussian
+#' @importFrom stats qnorm
  confidenceIntervalOfGaussian <- function(confidenceLevel,sd){
    minBound <- qnorm((1-confidenceLevel)/2,sd=sd)
    maxBound <- -minBound
