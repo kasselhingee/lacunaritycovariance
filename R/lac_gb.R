@@ -42,7 +42,7 @@ lacgb <- function(img,sidelengths,inclraw=TRUE,W=Frame(img), forceconvolvemethod
 	img[!is.finite(img$v)] <- 0 #set all NA pixels to 0 - so FFT doesn't error
 	lacs <- mapply(lacgb0.conv,bX=rpix,bY=rpix,MoreArgs=list(img=img, W=obsvd),SIMPLIFY=FALSE,inclraw)
   } else {
-	img[complement.owin(W,Frame(img))] <- NA #make sure the pixels outside W are set to NA so that reduce sampling happens naturally
+        img[(complement.owin(intersect.owin(W,Frame(img)),frame=Frame(img)))] <- NA  #make sure the pixels outside W are set to NA so that reduce sampling happens naturally ##NOTE: this a time consuming operation that may never be needed
 	lacs <- mapply(lacgb0.wraster,bX=rpix,bY=rpix,MoreArgs=list(img=img, W=obsvd),SIMPLIFY=FALSE,inclraw)	
   }
   
