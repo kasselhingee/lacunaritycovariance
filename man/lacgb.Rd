@@ -5,7 +5,7 @@
 \title{Gliding Box lacunarity from a black and white image}
 \usage{
 lacgb(img, sidelengths, inclraw = TRUE, W = Frame(img),
-  forceconvolvemethod = TRUE)
+  convolvemethod = FALSE)
 }
 \arguments{
 \item{img}{An image of 0's and 1's, and NA pixels are assumed to be outside the observation window.}
@@ -15,6 +15,8 @@ lacgb(img, sidelengths, inclraw = TRUE, W = Frame(img),
 \item{inclraw}{If TRUE the function will also return a gliding box lacunarity that ignores edge effects.}
 
 \item{W}{Optional observation window. The observation window used for the estimator will be the union of \code{W} and the NA pixles in \code{img}.}
+
+\item{convolvemethod}{Defaults to FALSE. If FALSE \code{raster}'s moving window function \code{focal} is used, unless the \code{raster} package is not available. If TRUE or \code{raster} is not available then spatstat's \code{convolve.im} is used to approximate the areas in the gliding box.}
 }
 \value{
 An fv object with columns for no edge correction (raw) and reduced sample border correction (RS). The side lengths (labelled \code{s}) are always odd multiples of pixel widths.

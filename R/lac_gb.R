@@ -14,13 +14,14 @@
 #' @param sidelengths A list of suggested box side lengths in the dimensions of \code{img}. Note the actual side lengths used will be the closest multiple of an odd number of pixel widths.
 #' @param inclraw If TRUE the function will also return a gliding box lacunarity that ignores edge effects.
 #' @param W Optional observation window. The observation window used for the estimator will be the union of \code{W} and the NA pixles in \code{img}.
+#' @param convolvemethod Defaults to FALSE. If FALSE \code{raster}'s moving window function \code{focal} is used, unless the \code{raster} package is not available. If TRUE or \code{raster} is not available then spatstat's \code{convolve.im} is used to approximate the areas in the gliding box. 
 #' @examples
 #' img <- as.im(heather$coarse,na.replace=0)
 #' sidelengths <- c(0.2,1,2.2,3) #in units of img
 #' lac <- lacgb(img,sidelengths)
 #' plot(lac, cbind(RS,raw) ~ s)
 #'
-lacgb <- function(img,sidelengths,inclraw=TRUE,W=Frame(img), forceconvolvemethod=TRUE){
+lacgb <- function(img,sidelengths,inclraw=TRUE,W=Frame(img), convolvemethod=FALSE){
   if(abs(img$xstep -img$ystep)>1E-2 * img$xstep){print("ERROR: image pixels must be square")}
 #convert sidelengths to odd pixel amounts, taking into account that want a distance to edge
   spix <- 1+round((sidelengths-img$xstep)/(2*img$xstep))*2
@@ -36,7 +37,7 @@ lacgb <- function(img,sidelengths,inclraw=TRUE,W=Frame(img), forceconvolvemethod
   obsvd <- as.owin(obsvd) #owin format needed for use of dilation lacgb0 
   if (class(W)=="owin"){obsvd <- intersect.owin(obsvd,W)}
 
-  useraster = (("raster" %in% installed.packages()[,1]) & !forceconvolvemethod) #use raster's fast moving window function (called focal)  
+  useraster = (("raster" %in% installed.packages()[,1]) & !convolvemethod) #use raster's fast moving window function (called focal)  
   
   if (!useraster){
 	img[!is.finite(img$v)] <- 0 #set all NA pixels to 0 - so FFT doesn't error
