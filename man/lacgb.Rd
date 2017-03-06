@@ -4,7 +4,7 @@
 \alias{lacgb}
 \title{Gliding Box lacunarity from a black and white image}
 \usage{
-lacgb(img, sidelengths, inclraw = TRUE, W = Frame(img),
+lacgb(img, sidelengths, inclraw = FALSE, W = Frame(img),
   convolvemethod = FALSE)
 }
 \arguments{
@@ -12,7 +12,7 @@ lacgb(img, sidelengths, inclraw = TRUE, W = Frame(img),
 
 \item{sidelengths}{A list of suggested box side lengths in the dimensions of \code{img}. Note the actual side lengths used will be the closest multiple of an odd number of pixel widths.}
 
-\item{inclraw}{If TRUE the function will also return a gliding box lacunarity that ignores edge effects.}
+\item{inclraw}{If TRUE the function will also return a gliding box lacunarity that ignores edge effects. (Default is FALSE)}
 
 \item{W}{Optional observation window. The observation window used for the estimator will be the union of \code{W} and the NA pixles in \code{img}.}
 
