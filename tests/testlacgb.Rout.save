@@ -21,9 +21,9 @@ Type 'q()' to quit R.
 > sidel <- c(2.2)
 > lac <- lacgb(img,sidel)
 > lac$RS
-[1] 0.03413792
+[1] 0.03253836
 > lac$raw
-[1] -0.5337149
+[1] -0.06768891
 > 
 > proc.time()
    user  system elapsed 
