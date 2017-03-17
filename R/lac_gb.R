@@ -17,11 +17,11 @@
 #' @param convolvemethod Defaults to FALSE. If FALSE \code{raster}'s moving window function \code{focal} is used, unless the \code{raster} package is not available. If TRUE or \code{raster} is not available then spatstat's \code{convolve.im} is used to approximate the areas in the gliding box. 
 #' @examples
 #' img <- as.im(heather$coarse,na.replace=0)
-#' sidelengths <- c(0.2,1,2.2,3) #in units of img
+#' sidelengths <- c(0.2,1,2.2,10) #in units of img
 #' lac <- lacgb(img,sidelengths)
 #' plot(lac, cbind(RS,raw) ~ s)
 #'
-lacgb <- function(img,sidelengths,inclraw=FALSE,W=Frame(img), convolvemethod=FALSE){
+lacgb <- function(img,sidelengths,inclraw=FALSE,W=Frame(img), method=""){
   if(abs(img$xstep -img$ystep)>1E-2 * img$xstep){print("ERROR: image pixels must be square")}
 #convert sidelengths to odd pixel amounts, taking into account that want a distance to edge
   spix <- 1+round((sidelengths-img$xstep)/(2*img$xstep))*2
@@ -37,15 +37,21 @@ lacgb <- function(img,sidelengths,inclraw=FALSE,W=Frame(img), convolvemethod=FAL
   obsvd <- as.owin(obsvd) #owin format needed for use of dilation lacgb0 
   if (class(W)=="owin"){obsvd <- intersect.owin(obsvd,W)}
 
-  useraster = (("raster" %in% installed.packages()[,1]) & !convolvemethod) #use raster's fast moving window function (called focal)  
+  usercpproll = ( ("RcppRoll" %in% installed.packages()[,1]) &
+                        (is.null(method) | (method=="") | (method=="rcpproll")) ) #use rcpproll's fcns   
+  useraster = (("raster" %in% installed.packages()[,1]) & (is.null(method) | (method=="raster") )) #use raster's fast moving window function (called focal)  
+  if (!useraster & !usercpproll){warning("lac_gb will use FFT and convolutions to mimic moving windows")}
   
-  if (!useraster){
-	img[!is.finite(img$v)] <- 0 #set all NA pixels to 0 - so FFT doesn't error
-	lacs <- mapply(lacgb0.conv,bX=rpix,bY=rpix,MoreArgs=list(img=img, W=obsvd),SIMPLIFY=FALSE,inclraw)
-  } else {
+ if (useraster) {
         img[(complement.owin(intersect.owin(W,Frame(img)),frame=Frame(img)))] <- NA  #make sure the pixels outside W are set to NA so that reduce sampling happens naturally ##NOTE: this a time consuming operation that may never be needed
 	lacs <- mapply(lacgb0.wraster,bX=rpix,bY=rpix,MoreArgs=list(img=img, W=obsvd),SIMPLIFY=FALSE,inclraw)	
-  }
+  } else if (usercpproll){
+        img[(complement.owin(intersect.owin(W,Frame(img)),frame=Frame(img)))] <- NA  #make sure the pixels outside W are set to NA so that reduce sampling happens naturally ##NOTE: this a time consuming operation that may never be needed
+	lacs <- mapply(lacgb0.rcpproll, sidep=2*rpix+1,MoreArgs=list(img=img, W=obsvd),SIMPLIFY=FALSE,inclraw)	
+  } else {
+	img[!is.finite(img$v)] <- 0 #set all NA pixels to 0 - so FFT doesn't error
+	lacs <- mapply(lacgb0.conv,bX=rpix,bY=rpix,MoreArgs=list(img=img, W=obsvd),SIMPLIFY=FALSE,inclraw)
+  } 
   
 if (inclraw){
   nobord <- unlist(lapply(lacs, `[[`, 1) )
@@ -88,7 +94,7 @@ lacgb0.conv <- function(img,bX,bY,inclraw,W=Frame(img)){
 	  
 	  if (inclraw) {
 		#lacunarity if the box centeres can be everywhere (aka no boundary correction)
-		numpixinwindow <- area(W)/(areas$xstep*areas$ystep)
+		numpixinwindow <- area.owin(W)/(areas$xstep*areas$ystep)
 		smA <- sum(areas)/numpixinwindow #note this isn't simply the mean of areafracs because the areafracs image is larger than the input image
 		ss2A <- sum(areas^2)/numpixinwindow
 		lacA <- ss2A/(smA^2) -1
@@ -131,7 +137,7 @@ lacgb0.wraster <- function(img,bX,bY,inclraw,W=Frame(img)){
 		areas.movwind <- as.im(areas.movwind[nrow(areas.movwind):1,], W=imgPAD)*imgPAD$xstep*imgPAD$ystep
 
 		#lacunarity if the box centeres can be everywhere (aka no boundary correction)
-		numpixelsinwindow <- area(W)/(areas.movwind$xstep*areas.movwind$ystep)
+		numpixelsinwindow <- area.owin(W)/(areas.movwind$xstep*areas.movwind$ystep)
 		smA <- sum(areas.movwind)/numpixelsinwindow #note this isn't simply the mean of areafracs because the areafracs image is larger than the input image
 		ss2A <- sum(areas.movwind^2)/numpixelsinwindow
 		lacA <- ss2A/(smA^2) -1
@@ -140,26 +146,27 @@ lacgb0.wraster <- function(img,bX,bY,inclraw,W=Frame(img)){
   else {return(RS=lacRS)}
 }
 
-
-lacgb0.rcpproll <- function(img,sidep,inclraw){
+#the W is only for the raw version. 
+lacgb0.rcpproll <- function(img,sidep,inclraw,W=Frame(img)){
   	mat <- as.matrix(img)
 	movline.overrows <- roll_sum(mat, sidep)
 	movline.overrowthencols <- roll_sum(t(movline.overrows),sidep)*img$xstep*img$ystep
 	smRS <- mean(movline.overrowthencols, na.rm=TRUE) #sample mean
-	ss2RS <- mean(movline.overrowthencols, na.rm=TRUE) #biased sample second moment
+	ss2RS <- mean(movline.overrowthencols^2, na.rm=TRUE) #biased sample second moment
 	lacRS <- ss2RS/(smRS^2) -1
 	
 	if (inclraw){
 		#lacunarity if the box centeres can be everywhere (aka no boundary correction)
-		imgFr <- Frame(img)
-		imgPAD <- as.im(img, W=owin(xrange=imgFr$xrange+c(-sidep*img$xstep,sidep*img$xstep), yrange=xrange=imgFr$yrange+c(-sidep*img$ystep,sidep*img$ystep)), eps=c(img$xstep, img$ystep), na.replace=0) #make raster image bigger - padded with zeros
-                mat <- as.matrix(imgPAD)
-		movline.overrows <- roll_sum(mat, sidep)
-		movline.overrowthencols <- roll_sum(t(movline.overrows),sidep)*img$xstep*img$ystep
+		matPAD <- matrix(0,ncol=ncol(mat)+2*sidep, nrow=nrow(mat)+2*sidep)
+		matPAD[1*sidep+1:nrow(img),1*sidep+1:ncol(img)] <- mat
+		matPAT[is.na(matPAD)] <- 0
+		movline.overrows <- roll_sum(matPAD, sidep)
+		movline.overrowthencols <- roll_sum(t(movline.overrows),sidep)
+		
 
-		numpixelsinwindow <- area(W)/(img$xstep*img$ystep)
-		smA <- sum(movline.overrowthencols)/numpixelsinwindow #note this isn't simply the mean of areafracs because the areafracs image is larger than the input image
-		ss2A <- sum(movline.overrowthencols^2)/numpixelsinwindow
+		numpixelsinwindow <- area.owin(W)/(img$xstep*img$ystep)
+		smA <- sum(movline.overrowthencols)*img$xstep*img$ystep/numpixelsinwindow #note this isn't simply the mean of areafracs because the areafracs image is larger than the input image
+		ss2A <- sum(movline.overrowthencols^2)*(img$xstep*img$ystep)^2/numpixelsinwindow
 		lacA <- ss2A/(smA^2) -1
 	}
   if (inclraw){ return(list(raw=lacA,RS=lacRS))}
