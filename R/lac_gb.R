@@ -38,7 +38,7 @@ lacgb <- function(img,sidelengths,inclraw=FALSE,W=Frame(img), method=""){
   if (class(W)=="owin"){obsvd <- intersect.owin(obsvd,W)}
 
   usercpproll = ( ("RcppRoll" %in% installed.packages()[,1]) &
-                        (is.null(method) | (method=="") | (method=="rcpproll")) ) #use rcpproll's fcns   
+                        (is.null(method) | (method=="") | (method=="RcppRoll")) ) #use rcpproll's fcns   
   useraster = (("raster" %in% installed.packages()[,1]) & (is.null(method) | (method=="raster") )) #use raster's fast moving window function (called focal)  
   if (!useraster & !usercpproll){warning("lac_gb will use FFT and convolutions to mimic moving windows")}
   
