@@ -14,7 +14,7 @@
 #' @param sidelengths A list of suggested box side lengths in the dimensions of \code{img}. Note the actual side lengths used will be the closest multiple of an odd number of pixel widths.
 #' @param inclraw If TRUE the function will also return a gliding box lacunarity that ignores edge effects. (Default is FALSE)
 #' @param W Optional observation window. The observation window used for the estimator will be the union of \code{W} and the NA pixles in \code{img}.
-#' @param convolvemethod Defaults to FALSE. If FALSE \code{raster}'s moving window function \code{focal} is used, unless the \code{raster} package is not available. If TRUE or \code{raster} is not available then spatstat's \code{convolve.im} is used to approximate the areas in the gliding box. 
+#' @param method Defaults to "". If "" lacgb first tries to use RcppRoll and then raster, and finally spatstat's convolve. If method is either "RcppRoll" or "raster" then lacgb tries to use these packages. 
 #' @examples
 #' img <- as.im(heather$coarse,na.replace=0)
 #' sidelengths <- c(0.2,1,2.2,10) #in units of img
@@ -159,7 +159,7 @@ lacgb0.rcpproll <- function(img,sidep,inclraw,W=Frame(img)){
 		#lacunarity if the box centeres can be everywhere (aka no boundary correction)
 		matPAD <- matrix(0,ncol=ncol(mat)+2*sidep, nrow=nrow(mat)+2*sidep)
 		matPAD[1*sidep+1:nrow(img),1*sidep+1:ncol(img)] <- mat
-		matPAT[is.na(matPAD)] <- 0
+		matPAD[is.na(matPAD)] <- 0
 		movline.overrows <- roll_sum(matPAD, sidep)
 		movline.overrowthencols <- roll_sum(t(movline.overrows),sidep)
 		

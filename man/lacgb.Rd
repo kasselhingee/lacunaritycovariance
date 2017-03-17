@@ -4,8 +4,7 @@
 \alias{lacgb}
 \title{Gliding Box lacunarity from a black and white image}
 \usage{
-lacgb(img, sidelengths, inclraw = FALSE, W = Frame(img),
-  convolvemethod = FALSE)
+lacgb(img, sidelengths, inclraw = FALSE, W = Frame(img), method = "")
 }
 \arguments{
 \item{img}{An image of 0's and 1's, and NA pixels are assumed to be outside the observation window.}
@@ -16,7 +15,7 @@ lacgb(img, sidelengths, inclraw = FALSE, W = Frame(img),
 
 \item{W}{Optional observation window. The observation window used for the estimator will be the union of \code{W} and the NA pixles in \code{img}.}
 
-\item{convolvemethod}{Defaults to FALSE. If FALSE \code{raster}'s moving window function \code{focal} is used, unless the \code{raster} package is not available. If TRUE or \code{raster} is not available then spatstat's \code{convolve.im} is used to approximate the areas in the gliding box.}
+\item{method}{Defaults to "". If "" lacgb first tries to use RcppRoll and then raster, and finally spatstat's convolve. If method is either "RcppRoll" or "raster" then lacgb tries to use these packages.}
 }
 \value{
 An fv object with columns for no edge correction (raw) and reduced sample border correction (RS). The side lengths (labelled \code{s}) are always odd multiples of pixel widths.
@@ -32,7 +31,7 @@ Note: (1) The sidelengths are rounded such that they are an odd number of pixels
 }
 \examples{
 img <- as.im(heather$coarse,na.replace=0)
-sidelengths <- c(0.2,1,2.2,3) #in units of img
+sidelengths <- c(0.2,1,2.2,10) #in units of img
 lac <- lacgb(img,sidelengths)
 plot(lac, cbind(RS,raw) ~ s)
 
