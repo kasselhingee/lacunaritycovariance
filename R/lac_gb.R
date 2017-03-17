@@ -149,8 +149,8 @@ lacgb0.wraster <- function(img,bX,bY,inclraw,W=Frame(img)){
 #the W is only for the raw version. 
 lacgb0.rcpproll <- function(img,sidep,inclraw,W=Frame(img)){
   	mat <- as.matrix(img)
-	movline.overrows <- roll_sum(mat, sidep)
-	movline.overrowthencols <- roll_sum(t(movline.overrows),sidep)*img$xstep*img$ystep
+	movline.overrows <- RcppRoll::roll_sum(mat, sidep)
+	movline.overrowthencols <- RcppRoll::roll_sum(t(movline.overrows),sidep)*img$xstep*img$ystep
 	smRS <- mean(movline.overrowthencols, na.rm=TRUE) #sample mean
 	ss2RS <- mean(movline.overrowthencols^2, na.rm=TRUE) #biased sample second moment
 	lacRS <- ss2RS/(smRS^2) -1
@@ -160,8 +160,8 @@ lacgb0.rcpproll <- function(img,sidep,inclraw,W=Frame(img)){
 		matPAD <- matrix(0,ncol=ncol(mat)+2*sidep, nrow=nrow(mat)+2*sidep)
 		matPAD[1*sidep+1:nrow(img),1*sidep+1:ncol(img)] <- mat
 		matPAD[is.na(matPAD)] <- 0
-		movline.overrows <- roll_sum(matPAD, sidep)
-		movline.overrowthencols <- roll_sum(t(movline.overrows),sidep)
+		movline.overrows <- RcppRoll::roll_sum(matPAD, sidep)
+		movline.overrowthencols <- RcppRoll::roll_sum(t(movline.overrows),sidep)
 		
 
 		numpixelsinwindow <- area.owin(W)/(img$xstep*img$ystep)
