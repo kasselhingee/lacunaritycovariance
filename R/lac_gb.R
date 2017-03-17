@@ -140,6 +140,32 @@ lacgb0.wraster <- function(img,bX,bY,inclraw,W=Frame(img)){
   else {return(RS=lacRS)}
 }
 
+
+lacgb0.rcpproll <- function(img,sidep,inclraw){
+  	mat <- as.matrix(img)
+	movline.overrows <- roll_sum(mat, sidep)
+	movline.overrowthencols <- roll_sum(t(movline.overrows),sidep)*img$xstep*img$ystep
+	smRS <- mean(movline.overrowthencols, na.rm=TRUE) #sample mean
+	ss2RS <- mean(movline.overrowthencols, na.rm=TRUE) #biased sample second moment
+	lacRS <- ss2RS/(smRS^2) -1
+	
+	if (inclraw){
+		#lacunarity if the box centeres can be everywhere (aka no boundary correction)
+		imgFr <- Frame(img)
+		imgPAD <- as.im(img, W=owin(xrange=imgFr$xrange+c(-sidep*img$xstep,sidep*img$xstep), yrange=xrange=imgFr$yrange+c(-sidep*img$ystep,sidep*img$ystep)), eps=c(img$xstep, img$ystep), na.replace=0) #make raster image bigger - padded with zeros
+                mat <- as.matrix(imgPAD)
+		movline.overrows <- roll_sum(mat, sidep)
+		movline.overrowthencols <- roll_sum(t(movline.overrows),sidep)*img$xstep*img$ystep
+
+		numpixelsinwindow <- area(W)/(img$xstep*img$ystep)
+		smA <- sum(movline.overrowthencols)/numpixelsinwindow #note this isn't simply the mean of areafracs because the areafracs image is larger than the input image
+		ss2A <- sum(movline.overrowthencols^2)/numpixelsinwindow
+		lacA <- ss2A/(smA^2) -1
+	}
+  if (inclraw){ return(list(raw=lacA,RS=lacRS))}
+  else {return(RS=lacRS)}
+}
+
 #TO DO:
 ## catch warnings about empty RS window and print something more understandble
 ## get lidar data at some point
