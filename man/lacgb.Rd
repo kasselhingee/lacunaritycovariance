@@ -15,7 +15,7 @@ lacgb(img, sidelengths, inclraw = FALSE, W = Frame(img), method = "")
 
 \item{W}{Optional observation window. The observation window used for the estimator will be the union of \code{W} and the NA pixles in \code{img}.}
 
-\item{method}{Defaults to "". If "" lacgb first tries to use RcppRoll and then raster, and finally spatstat's convolve. If method is either "RcppRoll" or "raster" then lacgb tries to use these packages.}
+\item{method}{Obsolete.}
 }
 \value{
 An fv object with columns for no edge correction (raw) and reduced sample border correction (RS). The side lengths (labelled \code{s}) are always odd multiples of pixel widths.

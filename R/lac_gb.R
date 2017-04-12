@@ -14,7 +14,7 @@
 #' @param sidelengths A list of suggested box side lengths in the dimensions of \code{img}. Note the actual side lengths used will be the closest multiple of an odd number of pixel widths.
 #' @param inclraw If TRUE the function will also return a gliding box lacunarity that ignores edge effects. (Default is FALSE)
 #' @param W Optional observation window. The observation window used for the estimator will be the union of \code{W} and the NA pixles in \code{img}.
-#' @param method Defaults to "". If "" lacgb first tries to use RcppRoll and then raster, and finally spatstat's convolve. If method is either "RcppRoll" or "raster" then lacgb tries to use these packages. 
+#' @param method Obsolete.  
 #' @examples
 #' img <- as.im(heather$coarse,na.replace=0)
 #' sidelengths <- c(0.2,1,2.2,10) #in units of img
@@ -37,21 +37,12 @@ lacgb <- function(img,sidelengths,inclraw=FALSE,W=Frame(img), method=""){
   obsvd <- as.owin(obsvd) #owin format needed for use of dilation lacgb0 
   if (class(W)=="owin"){obsvd <- intersect.owin(obsvd,W)}
 
-  usercpproll = ( ("RcppRoll" %in% installed.packages()[,1]) &
-                        (is.null(method) | (method=="") | (method=="RcppRoll")) ) #use rcpproll's fcns   
-  useraster = (("raster" %in% installed.packages()[,1]) & (is.null(method) | (method=="raster") )) #use raster's fast moving window function (called focal)  
-  if (!useraster & !usercpproll){warning("lac_gb will use FFT and convolutions to mimic moving windows")}
+  if (!("RcppRoll" %in% installed.packages()[,1])){
+     stop("Need RcppRoll installed to calculate gliding box lacunarity")
+  }
   
- if (useraster) {
-        img[(complement.owin(intersect.owin(W,Frame(img)),frame=Frame(img)))] <- NA  #make sure the pixels outside W are set to NA so that reduce sampling happens naturally ##NOTE: this a time consuming operation that may never be needed
-	lacs <- mapply(lacgb0.wraster,bX=rpix,bY=rpix,MoreArgs=list(img=img, W=obsvd),SIMPLIFY=FALSE,inclraw)	
-  } else if (usercpproll){
-        img[(complement.owin(intersect.owin(W,Frame(img)),frame=Frame(img)))] <- NA  #make sure the pixels outside W are set to NA so that reduce sampling happens naturally ##NOTE: this a time consuming operation that may never be needed
+  img[(complement.owin(intersect.owin(W,Frame(img)),frame=Frame(img)))] <- NA  #make sure the pixels outside W are set to NA so that reduce sampling happens naturally ##NOTE: this a time consuming operation that may never be needed
 	lacs <- mapply(lacgb0.rcpproll, sidep=2*rpix+1,MoreArgs=list(img=img, W=obsvd),SIMPLIFY=FALSE,inclraw)	
-  } else {
-	img[!is.finite(img$v)] <- 0 #set all NA pixels to 0 - so FFT doesn't error
-	lacs <- mapply(lacgb0.conv,bX=rpix,bY=rpix,MoreArgs=list(img=img, W=obsvd),SIMPLIFY=FALSE,inclraw)
-  } 
   
 if (inclraw){
   nobord <- unlist(lapply(lacs, `[[`, 1) )
@@ -79,74 +70,10 @@ else {
 
 
 ##########################
-##The following function calculates lacunarity for a box with sidelengths 2*bX+1 and 2*bY+1 (in pixels). It also calculates the RS by eroding by `b' where b is in UNITS OF THE IMAGE.
+##The following function calculates lacunarity for a box with sidelengths 2*bX+1 and 2*bY+1 (in pixels). The RS version is automatically calculated by ignoring those boxes that have sums that includa NA values. 
 #eg lacgb0(img,5,5,5*0.8)
-#W MUST be an owin object
-
-lacgb0.conv <- function(img,bX,bY,inclraw,W=Frame(img)){
-  distfromCentrePtofCentrePix <- bX*img$xstep+0.5*img$xstep
-  mat <- matrix(1,ncol=round(1+2*bX),nrow=round(1+2*bY))
-	##building the kernel fcn
-	  kernelfcn <- im(mat,xcol=(-bX:bX)*img$xstep,yrow=(-bY:bY)*img$ystep)#because convolve.im approximates the integral the weight here must be area not just number of pixels
-	  kernelfcn <- as.im(kernelfcn,eps=img$xstep/1.1) #something about forcing convolve.im to give a better approximation
-	 
-	  areas <- convolve.im(img,kernelfcn) #this map includes all the box centres that intersect img (aka it is bigger than img) - means no buffer is required for raw lacunarity
-	  
-	  if (inclraw) {
-		#lacunarity if the box centeres can be everywhere (aka no boundary correction)
-		numpixinwindow <- area.owin(W)/(areas$xstep*areas$ystep)
-		smA <- sum(areas)/numpixinwindow #note this isn't simply the mean of areafracs because the areafracs image is larger than the input image
-		ss2A <- sum(areas^2)/numpixinwindow
-		lacA <- ss2A/(smA^2) -1
-	  }
-	  
-	  allowedBoxCentres <- erosionAny(W,Frame(kernelfcn))
-	  if (is.empty(allowedBoxCentres)){lacRS=NA}
-	  else {
-		areasRS <-  as.im(areas,W=Frame(img)) 
-		rsW <- as.im(allowedBoxCentres,xy=areasRS) 
-		areasRS <- eval.im(areasRS * rsW)
-		smRS <- mean(areasRS, na.rm=TRUE) #sample mean
-		ss2RS <- mean(areasRS^2, na.rm=TRUE) #biased sample second moment
-		lacRS <- ss2RS/(smRS^2) -1
-	  }
-  if (inclraw){ return(list(raw=lacA,RS=lacRS))}
-  else {return(RS=lacRS)}
-}
-  
-  
-lacgb0.wraster <- function(img,bX,bY,inclraw,W=Frame(img)){
-  distfromCentrePtofCentrePix <- bX*img$xstep+0.5*img$xstep
-  mat <- matrix(1,ncol=round(1+2*bX),nrow=round(1+2*bY))
-  
-	xiras <- raster::raster(img)
-	#using raster's moving window stuff
-	areas.movwind <- raster::focal(xiras, mat)
-	areas.movwind <- raster::as.array(areas.movwind)[,,1]
-	areas.movwind <- as.im(areas.movwind[nrow(areas.movwind):1,], W=img)*img$xstep*img$ystep
-	smRS <- mean(areas.movwind, na.rm=TRUE) #sample mean
-	ss2RS <- mean(areas.movwind^2, na.rm=TRUE) #biased sample second moment
-	lacRS <- ss2RS/(smRS^2) -1
-	
-	if (inclraw){
-		imgPAD <- as.im(img, W=dilation(Frame(img), (bX+2)*img$xstep*sqrt(2)), eps=c(img$xstep, img$ystep), na.replace=0) #make raster image bigger - padded with zeros
-		xiras <- raster::raster(imgPAD)
-		#using raster's moving window stuff
-		areas.movwind <- raster::focal(xiras, mat, pad=TRUE, padValue=0, na.rm=TRUE) #these padding options and the enlarged img needed to get box centres outside W
-		areas.movwind <- raster::as.array(areas.movwind)[,,1]
-		areas.movwind <- as.im(areas.movwind[nrow(areas.movwind):1,], W=imgPAD)*imgPAD$xstep*imgPAD$ystep
-
-		#lacunarity if the box centeres can be everywhere (aka no boundary correction)
-		numpixelsinwindow <- area.owin(W)/(areas.movwind$xstep*areas.movwind$ystep)
-		smA <- sum(areas.movwind)/numpixelsinwindow #note this isn't simply the mean of areafracs because the areafracs image is larger than the input image
-		ss2A <- sum(areas.movwind^2)/numpixelsinwindow
-		lacA <- ss2A/(smA^2) -1
-	}
-  if (inclraw){ return(list(raw=lacA,RS=lacRS))}
-  else {return(RS=lacRS)}
-}
-
-#the W is only for the raw version. 
+#the W is only for the raw version and must be an owin object. 
+#uses rcpproll
 lacgb0.rcpproll <- function(img,sidep,inclraw,W=Frame(img)){
   	mat <- as.matrix(img)
 	movline.overrows <- RcppRoll::roll_sum(mat, sidep)
