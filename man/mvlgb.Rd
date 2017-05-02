@@ -35,7 +35,7 @@ Note: (1) The sidelengths are rounded such that they are an odd number of pixels
 \examples{
 img <- as.im(heather$coarse,na.replace=0)
 sidelengths <- c(0.2,1,2.2,10) #in units of img
-lac <- lacgb(img,sidelengths, inclraw=TRUE)
+lac <- mvlgb(img,sidelengths, inclraw=TRUE)
 plot(lac, cbind(RS,raw) ~ s)
 
 }
