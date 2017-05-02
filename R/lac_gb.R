@@ -1,5 +1,5 @@
 #' @title Gliding Box lacunarity from a black and white image
-#' @export lacgb 
+#' @export lacgb  mvlgb
 #' @importFrom utils installed.packages
 #'
 #' @description Calculates the gliding box lacunarity
@@ -99,6 +99,9 @@ lacgb0.rcpproll <- function(img,sidep,inclraw,W=Frame(img)){
   if (inclraw){ return(list(raw=lacA,RS=lacRS))}
   else {return(RS=lacRS)}
 }
+
+#' @rdname lacgb
+mvlgb <- lacgb
 
 #TO DO:
 ## catch warnings about empty RS window and print something more understandble

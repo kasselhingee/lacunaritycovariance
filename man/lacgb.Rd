@@ -2,9 +2,12 @@
 % Please edit documentation in R/lac_gb.R
 \name{lacgb}
 \alias{lacgb}
+\alias{mvlgb}
 \title{Gliding Box lacunarity from a black and white image}
 \usage{
 lacgb(img, sidelengths, inclraw = FALSE, W = Frame(img), method = "")
+
+mvlgb(img, sidelengths, inclraw = FALSE, W = Frame(img), method = "")
 }
 \arguments{
 \item{img}{An image of 0's and 1's, and NA pixels are assumed to be outside the observation window.}
