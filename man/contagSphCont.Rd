@@ -59,4 +59,3 @@ plot(contagion)
 \references{
 Hingee, K.L. (2016) Statistics for Patch Observations. ISPRS Congress Proceedings p. IPSRS.
 }
-

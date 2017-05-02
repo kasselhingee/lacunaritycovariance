@@ -16,4 +16,3 @@ a list of SpatialPolgyonsDataFrames, each data frame contains exactly one polygo
 Takes a SpatialPolygonsDataFrame object and splits it into individual SpatialPolygonsDataFrames. One for each polygon.
 I wish there was a nicer way than currently in this function.
 }
-

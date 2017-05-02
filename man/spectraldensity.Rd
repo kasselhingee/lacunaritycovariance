@@ -41,6 +41,7 @@ This is what \code{unsmoothedspectraldensity} returns.
 \section{WARNING}{
  WARNING RESULTS OF THIS FUNCTION HAVENT BEEN TESTED - THEY COULD BE WILDLY WRONG
 }
+
 \examples{
 #apply to heather
 xi <- heather$coarse
@@ -60,4 +61,3 @@ B\"{o}hm, S., Heinrich, L., Schmidt, V., 2004. Kernel Estimation of the Spectral
 
 Fan, J., Kreutzberger, E., 1998. Automatic Local Smoothing for Spectral Density Estimation. Scandinavian Journal of Statistics 25 (2): 359-69. doi:10.1111/1467-9469.00109.
 }
-

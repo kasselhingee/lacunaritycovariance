@@ -13,4 +13,4 @@ Suggests:
     sp, raster, datadr, rgdal, RcppRoll
 Description: Functions for non-parametric estimation of 2D RACS properties from observations of the Earth.  The aim is to develop methods that apply to remote sensing products (such as tree canopy maps).  Consequently the methods focus on RACS that are observed only once.  The package is very dependent on spatstat for many of the functions.
 License: GNU General Public License
-RoxygenNote: 5.0.1
+RoxygenNote: 6.0.0

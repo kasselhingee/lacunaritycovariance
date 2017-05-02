@@ -30,4 +30,3 @@ manyfvevalat(fvlist,0.19)
 out <- manylines.fv(fvlist, fmla="km~r")
 abline(v=0.19)
 }
-
