@@ -2,9 +2,15 @@
 % Please edit documentation in R/lac.R
 \name{lac}
 \alias{lac}
+\alias{mvl}
+\alias{mvlc}
 \title{Covariance-based calculations of mass-variance lacunarity}
 \usage{
 lac(boxes, covariance = NULL, p = NULL, xiim = NULL)
+
+mvl(boxes, covariance = NULL, p = NULL, xiim = NULL)
+
+mvlc(boxes, covariance = NULL, p = NULL, xiim = NULL)
 }
 \arguments{
 \item{boxes}{Either a list of sidelengths for square boxes or a list of \code{owin} objects of shape.}
@@ -53,4 +59,3 @@ thcoverageprob <- booldetermdiscs_truecoveragefrac(lambda,discr)
 mvl.th <- lac(c(0.5,0.8,1,2,3,4,5,6),thcovariance,thcoverageprob)
 plot(add=TRUE, mvl.th, col="red", lty="dashed")
 }
-

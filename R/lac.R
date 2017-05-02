@@ -1,5 +1,7 @@
 #' @title Covariance-based calculations of mass-variance lacunarity
 #' @export lac
+#' @export mvl
+#' @export mvlc
 #'
 #' @description Estimates the mass-variance lacunarity (MVL) of a stationary RACS from an image, or calculates the MVL from provided covariance (two-point probability) and coverage fraction.
 
@@ -121,4 +123,8 @@ setcovsquare <- function(side,xy=NULL){
   return(im(boxcovV,xcol = xcol, yrow =yrow))
 }
 
+#' @rdname lac
+mvl <- lac
 
+#' @rdname lac
+mvlc <- lac
