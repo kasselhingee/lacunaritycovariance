@@ -44,7 +44,7 @@
 #' mvl.th <- lac(c(0.5,0.8,1,2,3,4,5,6),thcovariance,thcoverageprob)
 #' plot(add=TRUE, mvl.th, col="red", lty="dashed")
 
-lac <- function(boxes, covariance=NULL, p=NULL, xiim=NULL){
+mvlc <- function(boxes, covariance=NULL, p=NULL, xiim=NULL){
    if (!(is.null(covariance) | is.null(p))){
       if (!is.null(xiim)){cat("WARNING: covariance, p and observation image, xiim, given. Only the covariance and p will be used\n")}
       lacv <- lac.cov(boxes,covariance,p)
@@ -123,8 +123,8 @@ setcovsquare <- function(side,xy=NULL){
   return(im(boxcovV,xcol = xcol, yrow =yrow))
 }
 
-#' @rdname lac
-mvl <- lac
+#' @rdname mvlc 
+mvl <- mvlc
 
-#' @rdname lac
-mvlc <- lac
+#' @rdname mvlc
+lac <- mvlc

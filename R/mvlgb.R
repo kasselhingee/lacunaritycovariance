@@ -1,5 +1,5 @@
 #' @title Gliding Box lacunarity from a black and white image
-#' @export lacgb  mvlgb
+#' @export mvlgb lacgb
 #' @importFrom utils installed.packages
 #'
 #' @description Calculates the gliding box lacunarity
@@ -21,7 +21,7 @@
 #' lac <- lacgb(img,sidelengths, inclraw=TRUE)
 #' plot(lac, cbind(RS,raw) ~ s)
 #'
-lacgb <- function(img,sidelengths,inclraw=FALSE,W=Frame(img), method=""){
+mvlgb <- function(img,sidelengths,inclraw=FALSE,W=Frame(img), method=""){
   if(abs(img$xstep -img$ystep)>1E-2 * img$xstep){print("ERROR: image pixels must be square")}
 #convert sidelengths to odd pixel amounts, taking into account that want a distance to edge
   spix <- 1+round((sidelengths-img$xstep)/(2*img$xstep))*2
@@ -100,8 +100,8 @@ lacgb0.rcpproll <- function(img,sidep,inclraw,W=Frame(img)){
   else {return(RS=lacRS)}
 }
 
-#' @rdname lacgb
-mvlgb <- lacgb
+#' @rdname mvlgb
+lacgb <- mvlgb
 
 #TO DO:
 ## catch warnings about empty RS window and print something more understandble
