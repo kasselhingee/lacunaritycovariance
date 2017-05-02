@@ -32,11 +32,10 @@ Note: (1) The sidelengths are rounded such that they are an odd number of pixels
 \examples{
 img <- as.im(heather$coarse,na.replace=0)
 sidelengths <- c(0.2,1,2.2,10) #in units of img
-lac <- lacgb(img,sidelengths)
+lac <- lacgb(img,sidelengths, inclraw=TRUE)
 plot(lac, cbind(RS,raw) ~ s)
 
 }
 \references{
 The gliding box algorithm is described in Allain, C. and Cloitre, M. (1991) Characterizing the lacunarity of random and deterministic fractal sets. Physical Review A, 44, 3552-3558.
 }
-
