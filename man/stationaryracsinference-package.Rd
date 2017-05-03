@@ -1,12 +1,12 @@
-\name{stationaryracsinference-package}
-\alias{stationaryracsinference-package}
-\alias{stationaryracsinference}
+\name{racssummfuncs-package}
+\alias{racssummfuncs-package}
+\alias{racssummfuncs}
 \docType{package}
 \title{
-\packageTitle{stationaryracsinference}
+\packageTitle{racssummfuncs}
 }
 \description{
-\packageDescription{stationaryracsinference}
+\packageDescription{racssummfuncs}
 }
 \details{
 The aim of this package is to include functions for estimating various parameters/properties of random closed set (RACS) from single 2D binary digital images. 
@@ -29,7 +29,7 @@ Conversion of binary raster images in other formats to \code{owin} is quite easy
  Typically the functions require passing both an \code{owin} object containing the random set observation (an image) and an \code{owin} object specifying the boundary of the observation.
 
  An example application to data in shapefile and ERMapper format is contained in an attached vignette \emph{remotesensedatademo}. 
- This can be accessed by starting \R and typing \code{library(stationaryracsinference)} and \code{vignette('remotesensedatademo')}.
+ This can be accessed by starting \R and typing \code{library(racssummfuncs)} and \code{vignette('remotesensedatademo')}.
 
 The only functions in this (very small) package are:
 \itemize{
@@ -45,9 +45,9 @@ Through out this manual the RACS process is referred to as `Xi' or \eqn{\Xi}, wi
 }
 
 \author{
-\packageAuthor{stationaryracsinference}
+\packageAuthor{racssummfuncs}
 
-Maintainer: \packageMaintainer{stationaryracsinference}
+Maintainer: \packageMaintainer{racssummfuncs}
 }
 \references{
 Hingee, K.L. (2016) Statistics for Patch Observations. ISPRS Congress Proceedings, IPSRS.
