@@ -1,0 +1,4116 @@
+
+R version 3.2.2 (2015-08-14) -- "Fire Safety"
+Copyright (C) 2015 The R Foundation for Statistical Computing
+Platform: x86_64-pc-linux-gnu (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> #testing spatial polygon conversion
+> 
+> suppressPackageStartupMessages(library(stationaryracsinference))
+> 
+> #polygons that are all have simple boundary
+> data(polygontest, package="stationaryracsinference")
+> tess <- quadrats(maptools::as.owin.SpatialPolygons(polygontest))
+> tilelist <- tiles(tess)
+> id <- data.frame(id = 1:length(tilelist),stringsAsFactors = FALSE)
+> tileauxdata <- data.frame(t(simplify2array(strsplit(names(tilelist), "[ , ]"))),stringsAsFactors=FALSE)
+> tileauxdata <- tileauxdata[,c(3,6)]
+> names(tileauxdata) <- c("TileRow", "TileCol")
+> tileauxdata$TileRow <- factor(tileauxdata$TileRow,ordered=TRUE) 
+> tileauxdata$TileCol <- factor(tileauxdata$TileCol,ordered=TRUE)
+> auxdata <- cbind(id,tileauxdata)
+> 
+> spdf1 <- as.spdf.owin(tilelist, tileauxdata, idcolumn = NULL, 
++                      proj4string = sp::CRS(sp::proj4string(polygontest)), match.ID=FALSE)
+NOTE: rgdal::checkCRSArgs: no proj_defs.dat in PROJ.4 shared files
+> spdf1
+An object of class "SpatialPolygonsDataFrame"
+Slot "data":
+   TileRow TileCol
+1        1       2
+2        1       3
+3        1       4
+4        1       5
+5        2       1
+6        2       2
+7        2       3
+8        2       4
+9        2       5
+10       3       1
+11       3       2
+12       3       3
+13       3       4
+14       3       5
+15       4       1
+16       4       2
+17       4       3
+18       4       4
+19       4       5
+20       5       1
+21       5       2
+22       5       3
+23       5       4
+24       5       5
+
+Slot "polygons":
+$`Tile row 1, col 2`
+An object of class "Polygons"
+Slot "Polygons":
+[[1]]
+An object of class "Polygon"
+Slot "labpt":
+[1]  377785.8 6527190.2
+
+Slot "area":
+[1] 17294.05
+
+Slot "hole":
+[1] FALSE
+
+Slot "ringDir":
+[1] 1
+
+Slot "coords":
+         [,1]    [,2]
+[1,] 377857.6 6527291
+[2,] 377857.6 6527137
+[3,] 377656.9 6527137
+[4,] 377712.2 6527197
+[5,] 377857.6 6527291
+
+
+
+Slot "plotOrder":
+[1] 1
+
+Slot "labpt":
+[1]  377785.8 6527190.2
+
+Slot "ID":
+[1] "1"
+
+Slot "area":
+[1] 17294.05
+
+
+$`Tile row 1, col 3`
+An object of class "Polygons"
+Slot "Polygons":
+[[1]]
+An object of class "Polygon"
+Slot "labpt":
+[1]  378029.2 6527254.0
+
+Slot "area":
+[1] 74683.51
+
+Slot "hole":
+[1] FALSE
+
+Slot "ringDir":
+[1] 1
+
+Slot "coords":
+         [,1]    [,2]
+[1,] 378182.5 6527352
+[2,] 378182.5 6527137
+[3,] 377857.6 6527137
+[4,] 377857.6 6527291
+[5,] 378051.3 6527417
+[6,] 378182.5 6527352
+
+
+
+Slot "plotOrder":
+[1] 1
+
+Slot "labpt":
+[1]  378029.2 6527254.0
+
+Slot "ID":
+[1] "2"
+
+Slot "area":
+[1] 74683.51
+
+
+$`Tile row 1, col 4`
+An object of class "Polygons"
+Slot "Polygons":
+[[1]]
+An object of class "Polygon"
+Slot "labpt":
+[1]  378312.2 6527211.7
+
+Slot "area":
+[1] 43520.93
+
+Slot "hole":
+[1] FALSE
+
+Slot "ringDir":
+[1] 1
+
+Slot "coords":
+         [,1]    [,2]
+[1,] 378507.5 6527189
+[2,] 378507.5 6527137
+[3,] 378182.5 6527137
+[4,] 378182.5 6527352
+[5,] 378507.5 6527189
+
+
+
+Slot "plotOrder":
+[1] 1
+
+Slot "labpt":
+[1]  378312.2 6527211.7
+
+Slot "ID":
+[1] "3"
+
+Slot "area":
+[1] 43520.93
+
+
+$`Tile row 1, col 5`
+An object of class "Polygons"
+Slot "Polygons":
+[[1]]
+An object of class "Polygon"
+Slot "labpt":
+[1]  378542.7 6527154.2
+
+Slot "area":
+[1] 2795.123
+
+Slot "hole":
+[1] FALSE
+
+Slot "ringDir":
+[1] 1
+
+Slot "coords":
+         [,1]    [,2]
+[1,] 378507.5 6527189
+[2,] 378613.3 6527137
+[3,] 378507.5 6527137
+[4,] 378507.5 6527189
+
+
+
+Slot "plotOrder":
+[1] 1
+
+Slot "labpt":
+[1]  378542.7 6527154.2
+
+Slot "ID":
+[1] "4"
+
+Slot "area":
+[1] 2795.123
+
+
+$`Tile row 2, col 1`
+An object of class "Polygons"
+Slot "Polygons":
+[[1]]
+An object of class "Polygon"
+Slot "labpt":
+[1]  377489.9 6526905.4
+
+Slot "area":
+[1] 9500.535
+
+Slot "hole":
+[1] FALSE
+
+Slot "ringDir":
+[1] 1
+
+Slot "coords":
+         [,1]    [,2]
+[1,] 377532.7 6527001
+[2,] 377532.7 6526856
+[3,] 377415.4 6526856
+[4,] 377423.9 6526883
+[5,] 377532.7 6527001
+
+
+
+Slot "plotOrder":
+[1] 1
+
+Slot "labpt":
+[1]  377489.9 6526905.4
+
+Slot "ID":
+[1] "5"
+
+Slot "area":
+[1] 9500.535
+
+
+$`Tile row 2, col 2`
+An object of class "Polygons"
+Slot "Polygons":
+[[1]]
+An object of class "Polygon"
+Slot "labpt":
+[1]  377707.4 6526986.6
+
+Slot "area":
+[1] 82783.69
+
+Slot "hole":
+[1] FALSE
+
+Slot "ringDir":
+[1] 1
+
+Slot "coords":
+         [,1]    [,2]
+[1,] 377857.6 6527137
+[2,] 377857.6 6526856
+[3,] 377532.7 6526856
+[4,] 377532.7 6527001
+[5,] 377656.9 6527137
+[6,] 377857.6 6527137
+
+
+
+Slot "plotOrder":
+[1] 1
+
+Slot "labpt":
+[1]  377707.4 6526986.6
+
+Slot "ID":
+[1] "6"
+
+Slot "area":
+[1] 82783.69
+
+
+$`Tile row 2, col 3`
+An object of class "Polygons"
+Slot "Polygons":
+[[1]]
+An object of class "Polygon"
+Slot "labpt":
+[1]  378020.1 6526996.2
+
+Slot "area":
+[1] 91172.6
+
+Slot "hole":
+[1] FALSE
+
+Slot "ringDir":
+[1] 1
+
+Slot "coords":
+         [,1]    [,2]
+[1,] 377857.6 6526856
+[2,] 377857.6 6527137
+[3,] 378182.5 6527137
+[4,] 378182.5 6526856
+[5,] 377857.6 6526856
+
+
+
+Slot "plotOrder":
+[1] 1
+
+Slot "labpt":
+[1]  378020.1 6526996.2
+
+Slot "ID":
+[1] "7"
+
+Slot "area":
+[1] 91172.6
+
+
+$`Tile row 2, col 4`
+An object of class "Polygons"
+Slot "Polygons":
+[[1]]
+An object of class "Polygon"
+Slot "labpt":
+[1]  378345 6526996
+
+Slot "area":
+[1] 91172.6
+
+Slot "hole":
+[1] FALSE
+
+Slot "ringDir":
+[1] 1
+
+Slot "coords":
+         [,1]    [,2]
+[1,] 378182.5 6526856
+[2,] 378182.5 6527137
+[3,] 378507.5 6527137
+[4,] 378507.5 6526856
+[5,] 378182.5 6526856
+
+
+
+Slot "plotOrder":
+[1] 1
+
+Slot "labpt":
+[1]  378345 6526996
+
+Slot "ID":
+[1] "8"
+
+Slot "area":
+[1] 91172.6
+
+
+$`Tile row 2, col 5`
+An object of class "Polygons"
+Slot "Polygons":
+[[1]]
+An object of class "Polygon"
+Slot "labpt":
+[1]  378655.4 6526980.9
+
+Slot "area":
+[1] 78741.28
+
+Slot "hole":
+[1] FALSE
+
+Slot "ringDir":
+[1] 1
+
+Slot "coords":
+         [,1]    [,2]
+[1,] 378832.4 6527027
+[2,] 378827.2 6526856
+[3,] 378507.5 6526856
+[4,] 378507.5 6527137
+[5,] 378613.3 6527137
+[6,] 378832.4 6527027
+
+
+
+Slot "plotOrder":
+[1] 1
+
+Slot "labpt":
+[1]  378655.4 6526980.9
+
+Slot "ID":
+[1] "9"
+
+Slot "area":
+[1] 78741.28
+
+
+$`Tile row 3, col 1`
+An object of class "Polygons"
+Slot "Polygons":
+[[1]]
+An object of class "Polygon"
+Slot "labpt":
+[1]  377450.1 6526702.9
+
+Slot "area":
+[1] 45214.66
+
+Slot "hole":
+[1] FALSE
+
+Slot "ringDir":
+[1] 1
+
+Slot "coords":
+         [,1]    [,2]
+[1,] 377532.7 6526856
+[2,] 377532.7 6526575
+[3,] 377327.7 6526575
+[4,] 377415.4 6526856
+[5,] 377532.7 6526856
+
+
+
+Slot "plotOrder":
+[1] 1
+
+Slot "labpt":
+[1]  377450.1 6526702.9
+
+Slot "ID":
+[1] "10"
+
+Slot "area":
+[1] 45214.66
+
+
+$`Tile row 3, col 2`
+An object of class "Polygons"
+Slot "Polygons":
+[[1]]
+An object of class "Polygon"
+Slot "labpt":
+[1]  377695.1 6526715.7
+
+Slot "area":
+[1] 91172.6
+
+Slot "hole":
+[1] FALSE
+
+Slot "ringDir":
+[1] 1
+
+Slot "coords":
+         [,1]    [,2]
+[1,] 377532.7 6526575
+[2,] 377532.7 6526856
+[3,] 377857.6 6526856
+[4,] 377857.6 6526575
+[5,] 377532.7 6526575
+
+
+
+Slot "plotOrder":
+[1] 1
+
+Slot "labpt":
+[1]  377695.1 6526715.7
+
+Slot "ID":
+[1] "11"
+
+Slot "area":
+[1] 91172.6
+
+
+$`Tile row 3, col 3`
+An object of class "Polygons"
+Slot "Polygons":
+[[1]]
+An object of class "Polygon"
+Slot "labpt":
+[1]  378020.1 6526715.7
+
+Slot "area":
+[1] 91172.6
+
+Slot "hole":
+[1] FALSE
+
+Slot "ringDir":
+[1] 1
+
+Slot "coords":
+         [,1]    [,2]
+[1,] 377857.6 6526575
+[2,] 377857.6 6526856
+[3,] 378182.5 6526856
+[4,] 378182.5 6526575
+[5,] 377857.6 6526575
+
+
+
+Slot "plotOrder":
+[1] 1
+
+Slot "labpt":
+[1]  378020.1 6526715.7
+
+Slot "ID":
+[1] "12"
+
+Slot "area":
+[1] 91172.6
+
+
+$`Tile row 3, col 4`
+An object of class "Polygons"
+Slot "Polygons":
+[[1]]
+An object of class "Polygon"
+Slot "labpt":
+[1]  378345 6526716
+
+Slot "area":
+[1] 91172.6
+
+Slot "hole":
+[1] FALSE
+
+Slot "ringDir":
+[1] 1
+
+Slot "coords":
+         [,1]    [,2]
+[1,] 378182.5 6526575
+[2,] 378182.5 6526856
+[3,] 378507.5 6526856
+[4,] 378507.5 6526575
+[5,] 378182.5 6526575
+
+
+
+Slot "plotOrder":
+[1] 1
+
+Slot "labpt":
+[1]  378345 6526716
+
+Slot "ID":
+[1] "13"
+
+Slot "area":
+[1] 91172.6
+
+
+$`Tile row 3, col 5`
+An object of class "Polygons"
+Slot "Polygons":
+[[1]]
+An object of class "Polygon"
+Slot "labpt":
+[1]  378665.2 6526716.3
+
+Slot "area":
+[1] 88507.75
+
+Slot "hole":
+[1] FALSE
+
+Slot "ringDir":
+[1] 1
+
+Slot "coords":
+         [,1]    [,2]
+[1,] 378827.2 6526856
+[2,] 378818.6 6526575
+[3,] 378507.5 6526575
+[4,] 378507.5 6526856
+[5,] 378827.2 6526856
+
+
+
+Slot "plotOrder":
+[1] 1
+
+Slot "labpt":
+[1]  378665.2 6526716.3
+
+Slot "ID":
+[1] "14"
+
+Slot "area":
+[1] 88507.75
+
+
+$`Tile row 4, col 1`
+An object of class "Polygons"
+Slot "Polygons":
+[[1]]
+An object of class "Polygon"
+Slot "labpt":
+[1]  377406.9 6526426.8
+
+Slot "area":
+[1] 69849.61
+
+Slot "hole":
+[1] FALSE
+
+Slot "ringDir":
+[1] 1
+
+Slot "coords":
+         [,1]    [,2]
+[1,] 377532.7 6526575
+[2,] 377532.7 6526295
+[3,] 377239.9 6526295
+[4,] 377327.7 6526575
+[5,] 377532.7 6526575
+
+
+
+Slot "plotOrder":
+[1] 1
+
+Slot "labpt":
+[1]  377406.9 6526426.8
+
+Slot "ID":
+[1] "15"
+
+Slot "area":
+[1] 69849.61
+
+
+$`Tile row 4, col 2`
+An object of class "Polygons"
+Slot "Polygons":
+[[1]]
+An object of class "Polygon"
+Slot "labpt":
+[1]  377695.1 6526435.1
+
+Slot "area":
+[1] 91172.6
+
+Slot "hole":
+[1] FALSE
+
+Slot "ringDir":
+[1] 1
+
+Slot "coords":
+         [,1]    [,2]
+[1,] 377532.7 6526295
+[2,] 377532.7 6526575
+[3,] 377857.6 6526575
+[4,] 377857.6 6526295
+[5,] 377532.7 6526295
+
+
+
+Slot "plotOrder":
+[1] 1
+
+Slot "labpt":
+[1]  377695.1 6526435.1
+
+Slot "ID":
+[1] "16"
+
+Slot "area":
+[1] 91172.6
+
+
+$`Tile row 4, col 3`
+An object of class "Polygons"
+Slot "Polygons":
+[[1]]
+An object of class "Polygon"
+Slot "labpt":
+[1]  378020.1 6526435.1
+
+Slot "area":
+[1] 91172.6
+
+Slot "hole":
+[1] FALSE
+
+Slot "ringDir":
+[1] 1
+
+Slot "coords":
+         [,1]    [,2]
+[1,] 377857.6 6526295
+[2,] 377857.6 6526575
+[3,] 378182.5 6526575
+[4,] 378182.5 6526295
+[5,] 377857.6 6526295
+
+
+
+Slot "plotOrder":
+[1] 1
+
+Slot "labpt":
+[1]  378020.1 6526435.1
+
+Slot "ID":
+[1] "17"
+
+Slot "area":
+[1] 91172.6
+
+
+$`Tile row 4, col 4`
+An object of class "Polygons"
+Slot "Polygons":
+[[1]]
+An object of class "Polygon"
+Slot "labpt":
+[1]  378345 6526435
+
+Slot "area":
+[1] 91172.6
+
+Slot "hole":
+[1] FALSE
+
+Slot "ringDir":
+[1] 1
+
+Slot "coords":
+         [,1]    [,2]
+[1,] 378182.5 6526295
+[2,] 378182.5 6526575
+[3,] 378507.5 6526575
+[4,] 378507.5 6526295
+[5,] 378182.5 6526295
+
+
+
+Slot "plotOrder":
+[1] 1
+
+Slot "labpt":
+[1]  378345 6526435
+
+Slot "ID":
+[1] "18"
+
+Slot "area":
+[1] 91172.6
+
+
+$`Tile row 4, col 5`
+An object of class "Polygons"
+Slot "Polygons":
+[[1]]
+An object of class "Polygon"
+Slot "labpt":
+[1]  378660.9 6526435.7
+
+Slot "area":
+[1] 86107.29
+
+Slot "hole":
+[1] FALSE
+
+Slot "ringDir":
+[1] 1
+
+Slot "coords":
+         [,1]    [,2]
+[1,] 378818.6 6526575
+[2,] 378810.0 6526295
+[3,] 378507.5 6526295
+[4,] 378507.5 6526575
+[5,] 378818.6 6526575
+
+
+
+Slot "plotOrder":
+[1] 1
+
+Slot "labpt":
+[1]  378660.9 6526435.7
+
+Slot "ID":
+[1] "19"
+
+Slot "area":
+[1] 86107.29
+
+
+$`Tile row 5, col 1`
+An object of class "Polygons"
+Slot "Polygons":
+[[1]]
+An object of class "Polygon"
+Slot "labpt":
+[1]  377388.5 6526227.0
+
+Slot "area":
+[1] 40895.82
+
+Slot "hole":
+[1] FALSE
+
+Slot "ringDir":
+[1] 1
+
+Slot "coords":
+         [,1]    [,2]
+[1,] 377532.7 6526295
+[2,] 377532.7 6526135
+[3,] 377207.8 6526192
+[4,] 377239.9 6526295
+[5,] 377532.7 6526295
+
+
+
+Slot "plotOrder":
+[1] 1
+
+Slot "labpt":
+[1]  377388.5 6526227.0
+
+Slot "ID":
+[1] "20"
+
+Slot "area":
+[1] 40895.82
+
+
+$`Tile row 5, col 2`
+An object of class "Polygons"
+Slot "Polygons":
+[[1]]
+An object of class "Polygon"
+Slot "labpt":
+[1]  377703.3 6526200.2
+
+Slot "area":
+[1] 60967.61
+
+Slot "hole":
+[1] FALSE
+
+Slot "ringDir":
+[1] 1
+
+Slot "coords":
+         [,1]    [,2]
+[1,] 377857.6 6526295
+[2,] 377857.6 6526079
+[3,] 377532.7 6526135
+[4,] 377532.7 6526295
+[5,] 377857.6 6526295
+
+
+
+Slot "plotOrder":
+[1] 1
+
+Slot "labpt":
+[1]  377703.3 6526200.2
+
+Slot "ID":
+[1] "21"
+
+Slot "area":
+[1] 60967.61
+
+
+$`Tile row 5, col 3`
+An object of class "Polygons"
+Slot "Polygons":
+[[1]]
+An object of class "Polygon"
+Slot "labpt":
+[1]  378025.7 6526172.8
+
+Slot "area":
+[1] 78975.45
+
+Slot "hole":
+[1] FALSE
+
+Slot "ringDir":
+[1] 1
+
+Slot "coords":
+         [,1]    [,2]
+[1,] 378182.5 6526295
+[2,] 378182.5 6526033
+[3,] 378106.4 6526035
+[4,] 377857.6 6526079
+[5,] 377857.6 6526295
+[6,] 378182.5 6526295
+
+
+
+Slot "plotOrder":
+[1] 1
+
+Slot "labpt":
+[1]  378025.7 6526172.8
+
+Slot "ID":
+[1] "22"
+
+Slot "area":
+[1] 78975.45
+
+
+$`Tile row 5, col 4`
+An object of class "Polygons"
+Slot "Polygons":
+[[1]]
+An object of class "Polygon"
+Slot "labpt":
+[1]  378346 6526161
+
+Slot "area":
+[1] 86650.44
+
+Slot "hole":
+[1] FALSE
+
+Slot "ringDir":
+[1] 1
+
+Slot "coords":
+         [,1]    [,2]
+[1,] 378507.5 6526295
+[2,] 378507.5 6526023
+[3,] 378182.5 6526033
+[4,] 378182.5 6526295
+[5,] 378507.5 6526295
+
+
+
+Slot "plotOrder":
+[1] 1
+
+Slot "labpt":
+[1]  378346 6526161
+
+Slot "ID":
+[1] "23"
+
+Slot "area":
+[1] 86650.44
+
+
+$`Tile row 5, col 5`
+An object of class "Polygons"
+Slot "Polygons":
+[[1]]
+An object of class "Polygon"
+Slot "labpt":
+[1]  378657.4 6526157.3
+
+Slot "area":
+[1] 82388.86
+
+Slot "hole":
+[1] FALSE
+
+Slot "ringDir":
+[1] 1
+
+Slot "coords":
+         [,1]    [,2]
+[1,] 378810.0 6526295
+[2,] 378801.5 6526014
+[3,] 378507.5 6526023
+[4,] 378507.5 6526295
+[5,] 378810.0 6526295
+
+
+
+Slot "plotOrder":
+[1] 1
+
+Slot "labpt":
+[1]  378657.4 6526157.3
+
+Slot "ID":
+[1] "24"
+
+Slot "area":
+[1] 82388.86
+
+
+
+Slot "plotOrder":
+ [1] 18  8 16 17  7 13 11 12 14 23 19  6 24 22  9  2 15 21 10  3 20  1  5  4
+
+Slot "bbox":
+        min       max
+x  377207.8  378832.4
+y 6526014.2 6527417.1
+
+Slot "proj4string":
+CRS arguments:
+ +proj=utm +zone=50 +south +ellps=GRS80 +units=m +no_defs 
+
+>                      
+> spdf2 <- sp::SpatialPolygonsDataFrame(as.SpatialPolygons.tess(tess), auxdata, match.ID = FALSE)
+> sp::proj4string(spdf2) <- sp::CRS(sp::proj4string(polygontest))
+NOTE: rgdal::checkCRSArgs: no proj_defs.dat in PROJ.4 shared files
+> spdf2
+An object of class "SpatialPolygonsDataFrame"
+Slot "data":
+   id TileRow TileCol
+1   1       1       2
+2   2       1       3
+3   3       1       4
+4   4       1       5
+5   5       2       1
+6   6       2       2
+7   7       2       3
+8   8       2       4
+9   9       2       5
+10 10       3       1
+11 11       3       2
+12 12       3       3
+13 13       3       4
+14 14       3       5
+15 15       4       1
+16 16       4       2
+17 17       4       3
+18 18       4       4
+19 19       4       5
+20 20       5       1
+21 21       5       2
+22 22       5       3
+23 23       5       4
+24 24       5       5
+
+Slot "polygons":
+[[1]]
+An object of class "Polygons"
+Slot "Polygons":
+[[1]]
+An object of class "Polygon"
+Slot "labpt":
+[1]  377785.8 6527190.2
+
+Slot "area":
+[1] 17294.05
+
+Slot "hole":
+[1] FALSE
+
+Slot "ringDir":
+[1] 1
+
+Slot "coords":
+         [,1]    [,2]
+[1,] 377857.6 6527291
+[2,] 377857.6 6527137
+[3,] 377656.9 6527137
+[4,] 377712.2 6527197
+[5,] 377857.6 6527291
+
+
+
+Slot "plotOrder":
+[1] 1
+
+Slot "labpt":
+[1]  377785.8 6527190.2
+
+Slot "ID":
+[1] "Tile row 1, col 2"
+
+Slot "area":
+[1] 17294.05
+
+
+[[2]]
+An object of class "Polygons"
+Slot "Polygons":
+[[1]]
+An object of class "Polygon"
+Slot "labpt":
+[1]  378029.2 6527254.0
+
+Slot "area":
+[1] 74683.51
+
+Slot "hole":
+[1] FALSE
+
+Slot "ringDir":
+[1] 1
+
+Slot "coords":
+         [,1]    [,2]
+[1,] 378182.5 6527352
+[2,] 378182.5 6527137
+[3,] 377857.6 6527137
+[4,] 377857.6 6527291
+[5,] 378051.3 6527417
+[6,] 378182.5 6527352
+
+
+
+Slot "plotOrder":
+[1] 1
+
+Slot "labpt":
+[1]  378029.2 6527254.0
+
+Slot "ID":
+[1] "Tile row 1, col 3"
+
+Slot "area":
+[1] 74683.51
+
+
+[[3]]
+An object of class "Polygons"
+Slot "Polygons":
+[[1]]
+An object of class "Polygon"
+Slot "labpt":
+[1]  378312.2 6527211.7
+
+Slot "area":
+[1] 43520.93
+
+Slot "hole":
+[1] FALSE
+
+Slot "ringDir":
+[1] 1
+
+Slot "coords":
+         [,1]    [,2]
+[1,] 378507.5 6527189
+[2,] 378507.5 6527137
+[3,] 378182.5 6527137
+[4,] 378182.5 6527352
+[5,] 378507.5 6527189
+
+
+
+Slot "plotOrder":
+[1] 1
+
+Slot "labpt":
+[1]  378312.2 6527211.7
+
+Slot "ID":
+[1] "Tile row 1, col 4"
+
+Slot "area":
+[1] 43520.93
+
+
+[[4]]
+An object of class "Polygons"
+Slot "Polygons":
+[[1]]
+An object of class "Polygon"
+Slot "labpt":
+[1]  378542.7 6527154.2
+
+Slot "area":
+[1] 2795.123
+
+Slot "hole":
+[1] FALSE
+
+Slot "ringDir":
+[1] 1
+
+Slot "coords":
+         [,1]    [,2]
+[1,] 378507.5 6527189
+[2,] 378613.3 6527137
+[3,] 378507.5 6527137
+[4,] 378507.5 6527189
+
+
+
+Slot "plotOrder":
+[1] 1
+
+Slot "labpt":
+[1]  378542.7 6527154.2
+
+Slot "ID":
+[1] "Tile row 1, col 5"
+
+Slot "area":
+[1] 2795.123
+
+
+[[5]]
+An object of class "Polygons"
+Slot "Polygons":
+[[1]]
+An object of class "Polygon"
+Slot "labpt":
+[1]  377489.9 6526905.4
+
+Slot "area":
+[1] 9500.535
+
+Slot "hole":
+[1] FALSE
+
+Slot "ringDir":
+[1] 1
+
+Slot "coords":
+         [,1]    [,2]
+[1,] 377532.7 6527001
+[2,] 377532.7 6526856
+[3,] 377415.4 6526856
+[4,] 377423.9 6526883
+[5,] 377532.7 6527001
+
+
+
+Slot "plotOrder":
+[1] 1
+
+Slot "labpt":
+[1]  377489.9 6526905.4
+
+Slot "ID":
+[1] "Tile row 2, col 1"
+
+Slot "area":
+[1] 9500.535
+
+
+[[6]]
+An object of class "Polygons"
+Slot "Polygons":
+[[1]]
+An object of class "Polygon"
+Slot "labpt":
+[1]  377707.4 6526986.6
+
+Slot "area":
+[1] 82783.69
+
+Slot "hole":
+[1] FALSE
+
+Slot "ringDir":
+[1] 1
+
+Slot "coords":
+         [,1]    [,2]
+[1,] 377857.6 6527137
+[2,] 377857.6 6526856
+[3,] 377532.7 6526856
+[4,] 377532.7 6527001
+[5,] 377656.9 6527137
+[6,] 377857.6 6527137
+
+
+
+Slot "plotOrder":
+[1] 1
+
+Slot "labpt":
+[1]  377707.4 6526986.6
+
+Slot "ID":
+[1] "Tile row 2, col 2"
+
+Slot "area":
+[1] 82783.69
+
+
+[[7]]
+An object of class "Polygons"
+Slot "Polygons":
+[[1]]
+An object of class "Polygon"
+Slot "labpt":
+[1]  378020.1 6526996.2
+
+Slot "area":
+[1] 91172.6
+
+Slot "hole":
+[1] FALSE
+
+Slot "ringDir":
+[1] 1
+
+Slot "coords":
+         [,1]    [,2]
+[1,] 377857.6 6526856
+[2,] 377857.6 6527137
+[3,] 378182.5 6527137
+[4,] 378182.5 6526856
+[5,] 377857.6 6526856
+
+
+
+Slot "plotOrder":
+[1] 1
+
+Slot "labpt":
+[1]  378020.1 6526996.2
+
+Slot "ID":
+[1] "Tile row 2, col 3"
+
+Slot "area":
+[1] 91172.6
+
+
+[[8]]
+An object of class "Polygons"
+Slot "Polygons":
+[[1]]
+An object of class "Polygon"
+Slot "labpt":
+[1]  378345 6526996
+
+Slot "area":
+[1] 91172.6
+
+Slot "hole":
+[1] FALSE
+
+Slot "ringDir":
+[1] 1
+
+Slot "coords":
+         [,1]    [,2]
+[1,] 378182.5 6526856
+[2,] 378182.5 6527137
+[3,] 378507.5 6527137
+[4,] 378507.5 6526856
+[5,] 378182.5 6526856
+
+
+
+Slot "plotOrder":
+[1] 1
+
+Slot "labpt":
+[1]  378345 6526996
+
+Slot "ID":
+[1] "Tile row 2, col 4"
+
+Slot "area":
+[1] 91172.6
+
+
+[[9]]
+An object of class "Polygons"
+Slot "Polygons":
+[[1]]
+An object of class "Polygon"
+Slot "labpt":
+[1]  378655.4 6526980.9
+
+Slot "area":
+[1] 78741.28
+
+Slot "hole":
+[1] FALSE
+
+Slot "ringDir":
+[1] 1
+
+Slot "coords":
+         [,1]    [,2]
+[1,] 378832.4 6527027
+[2,] 378827.2 6526856
+[3,] 378507.5 6526856
+[4,] 378507.5 6527137
+[5,] 378613.3 6527137
+[6,] 378832.4 6527027
+
+
+
+Slot "plotOrder":
+[1] 1
+
+Slot "labpt":
+[1]  378655.4 6526980.9
+
+Slot "ID":
+[1] "Tile row 2, col 5"
+
+Slot "area":
+[1] 78741.28
+
+
+[[10]]
+An object of class "Polygons"
+Slot "Polygons":
+[[1]]
+An object of class "Polygon"
+Slot "labpt":
+[1]  377450.1 6526702.9
+
+Slot "area":
+[1] 45214.66
+
+Slot "hole":
+[1] FALSE
+
+Slot "ringDir":
+[1] 1
+
+Slot "coords":
+         [,1]    [,2]
+[1,] 377532.7 6526856
+[2,] 377532.7 6526575
+[3,] 377327.7 6526575
+[4,] 377415.4 6526856
+[5,] 377532.7 6526856
+
+
+
+Slot "plotOrder":
+[1] 1
+
+Slot "labpt":
+[1]  377450.1 6526702.9
+
+Slot "ID":
+[1] "Tile row 3, col 1"
+
+Slot "area":
+[1] 45214.66
+
+
+[[11]]
+An object of class "Polygons"
+Slot "Polygons":
+[[1]]
+An object of class "Polygon"
+Slot "labpt":
+[1]  377695.1 6526715.7
+
+Slot "area":
+[1] 91172.6
+
+Slot "hole":
+[1] FALSE
+
+Slot "ringDir":
+[1] 1
+
+Slot "coords":
+         [,1]    [,2]
+[1,] 377532.7 6526575
+[2,] 377532.7 6526856
+[3,] 377857.6 6526856
+[4,] 377857.6 6526575
+[5,] 377532.7 6526575
+
+
+
+Slot "plotOrder":
+[1] 1
+
+Slot "labpt":
+[1]  377695.1 6526715.7
+
+Slot "ID":
+[1] "Tile row 3, col 2"
+
+Slot "area":
+[1] 91172.6
+
+
+[[12]]
+An object of class "Polygons"
+Slot "Polygons":
+[[1]]
+An object of class "Polygon"
+Slot "labpt":
+[1]  378020.1 6526715.7
+
+Slot "area":
+[1] 91172.6
+
+Slot "hole":
+[1] FALSE
+
+Slot "ringDir":
+[1] 1
+
+Slot "coords":
+         [,1]    [,2]
+[1,] 377857.6 6526575
+[2,] 377857.6 6526856
+[3,] 378182.5 6526856
+[4,] 378182.5 6526575
+[5,] 377857.6 6526575
+
+
+
+Slot "plotOrder":
+[1] 1
+
+Slot "labpt":
+[1]  378020.1 6526715.7
+
+Slot "ID":
+[1] "Tile row 3, col 3"
+
+Slot "area":
+[1] 91172.6
+
+
+[[13]]
+An object of class "Polygons"
+Slot "Polygons":
+[[1]]
+An object of class "Polygon"
+Slot "labpt":
+[1]  378345 6526716
+
+Slot "area":
+[1] 91172.6
+
+Slot "hole":
+[1] FALSE
+
+Slot "ringDir":
+[1] 1
+
+Slot "coords":
+         [,1]    [,2]
+[1,] 378182.5 6526575
+[2,] 378182.5 6526856
+[3,] 378507.5 6526856
+[4,] 378507.5 6526575
+[5,] 378182.5 6526575
+
+
+
+Slot "plotOrder":
+[1] 1
+
+Slot "labpt":
+[1]  378345 6526716
+
+Slot "ID":
+[1] "Tile row 3, col 4"
+
+Slot "area":
+[1] 91172.6
+
+
+[[14]]
+An object of class "Polygons"
+Slot "Polygons":
+[[1]]
+An object of class "Polygon"
+Slot "labpt":
+[1]  378665.2 6526716.3
+
+Slot "area":
+[1] 88507.75
+
+Slot "hole":
+[1] FALSE
+
+Slot "ringDir":
+[1] 1
+
+Slot "coords":
+         [,1]    [,2]
+[1,] 378827.2 6526856
+[2,] 378818.6 6526575
+[3,] 378507.5 6526575
+[4,] 378507.5 6526856
+[5,] 378827.2 6526856
+
+
+
+Slot "plotOrder":
+[1] 1
+
+Slot "labpt":
+[1]  378665.2 6526716.3
+
+Slot "ID":
+[1] "Tile row 3, col 5"
+
+Slot "area":
+[1] 88507.75
+
+
+[[15]]
+An object of class "Polygons"
+Slot "Polygons":
+[[1]]
+An object of class "Polygon"
+Slot "labpt":
+[1]  377406.9 6526426.8
+
+Slot "area":
+[1] 69849.61
+
+Slot "hole":
+[1] FALSE
+
+Slot "ringDir":
+[1] 1
+
+Slot "coords":
+         [,1]    [,2]
+[1,] 377532.7 6526575
+[2,] 377532.7 6526295
+[3,] 377239.9 6526295
+[4,] 377327.7 6526575
+[5,] 377532.7 6526575
+
+
+
+Slot "plotOrder":
+[1] 1
+
+Slot "labpt":
+[1]  377406.9 6526426.8
+
+Slot "ID":
+[1] "Tile row 4, col 1"
+
+Slot "area":
+[1] 69849.61
+
+
+[[16]]
+An object of class "Polygons"
+Slot "Polygons":
+[[1]]
+An object of class "Polygon"
+Slot "labpt":
+[1]  377695.1 6526435.1
+
+Slot "area":
+[1] 91172.6
+
+Slot "hole":
+[1] FALSE
+
+Slot "ringDir":
+[1] 1
+
+Slot "coords":
+         [,1]    [,2]
+[1,] 377532.7 6526295
+[2,] 377532.7 6526575
+[3,] 377857.6 6526575
+[4,] 377857.6 6526295
+[5,] 377532.7 6526295
+
+
+
+Slot "plotOrder":
+[1] 1
+
+Slot "labpt":
+[1]  377695.1 6526435.1
+
+Slot "ID":
+[1] "Tile row 4, col 2"
+
+Slot "area":
+[1] 91172.6
+
+
+[[17]]
+An object of class "Polygons"
+Slot "Polygons":
+[[1]]
+An object of class "Polygon"
+Slot "labpt":
+[1]  378020.1 6526435.1
+
+Slot "area":
+[1] 91172.6
+
+Slot "hole":
+[1] FALSE
+
+Slot "ringDir":
+[1] 1
+
+Slot "coords":
+         [,1]    [,2]
+[1,] 377857.6 6526295
+[2,] 377857.6 6526575
+[3,] 378182.5 6526575
+[4,] 378182.5 6526295
+[5,] 377857.6 6526295
+
+
+
+Slot "plotOrder":
+[1] 1
+
+Slot "labpt":
+[1]  378020.1 6526435.1
+
+Slot "ID":
+[1] "Tile row 4, col 3"
+
+Slot "area":
+[1] 91172.6
+
+
+[[18]]
+An object of class "Polygons"
+Slot "Polygons":
+[[1]]
+An object of class "Polygon"
+Slot "labpt":
+[1]  378345 6526435
+
+Slot "area":
+[1] 91172.6
+
+Slot "hole":
+[1] FALSE
+
+Slot "ringDir":
+[1] 1
+
+Slot "coords":
+         [,1]    [,2]
+[1,] 378182.5 6526295
+[2,] 378182.5 6526575
+[3,] 378507.5 6526575
+[4,] 378507.5 6526295
+[5,] 378182.5 6526295
+
+
+
+Slot "plotOrder":
+[1] 1
+
+Slot "labpt":
+[1]  378345 6526435
+
+Slot "ID":
+[1] "Tile row 4, col 4"
+
+Slot "area":
+[1] 91172.6
+
+
+[[19]]
+An object of class "Polygons"
+Slot "Polygons":
+[[1]]
+An object of class "Polygon"
+Slot "labpt":
+[1]  378660.9 6526435.7
+
+Slot "area":
+[1] 86107.29
+
+Slot "hole":
+[1] FALSE
+
+Slot "ringDir":
+[1] 1
+
+Slot "coords":
+         [,1]    [,2]
+[1,] 378818.6 6526575
+[2,] 378810.0 6526295
+[3,] 378507.5 6526295
+[4,] 378507.5 6526575
+[5,] 378818.6 6526575
+
+
+
+Slot "plotOrder":
+[1] 1
+
+Slot "labpt":
+[1]  378660.9 6526435.7
+
+Slot "ID":
+[1] "Tile row 4, col 5"
+
+Slot "area":
+[1] 86107.29
+
+
+[[20]]
+An object of class "Polygons"
+Slot "Polygons":
+[[1]]
+An object of class "Polygon"
+Slot "labpt":
+[1]  377388.5 6526227.0
+
+Slot "area":
+[1] 40895.82
+
+Slot "hole":
+[1] FALSE
+
+Slot "ringDir":
+[1] 1
+
+Slot "coords":
+         [,1]    [,2]
+[1,] 377532.7 6526295
+[2,] 377532.7 6526135
+[3,] 377207.8 6526192
+[4,] 377239.9 6526295
+[5,] 377532.7 6526295
+
+
+
+Slot "plotOrder":
+[1] 1
+
+Slot "labpt":
+[1]  377388.5 6526227.0
+
+Slot "ID":
+[1] "Tile row 5, col 1"
+
+Slot "area":
+[1] 40895.82
+
+
+[[21]]
+An object of class "Polygons"
+Slot "Polygons":
+[[1]]
+An object of class "Polygon"
+Slot "labpt":
+[1]  377703.3 6526200.2
+
+Slot "area":
+[1] 60967.61
+
+Slot "hole":
+[1] FALSE
+
+Slot "ringDir":
+[1] 1
+
+Slot "coords":
+         [,1]    [,2]
+[1,] 377857.6 6526295
+[2,] 377857.6 6526079
+[3,] 377532.7 6526135
+[4,] 377532.7 6526295
+[5,] 377857.6 6526295
+
+
+
+Slot "plotOrder":
+[1] 1
+
+Slot "labpt":
+[1]  377703.3 6526200.2
+
+Slot "ID":
+[1] "Tile row 5, col 2"
+
+Slot "area":
+[1] 60967.61
+
+
+[[22]]
+An object of class "Polygons"
+Slot "Polygons":
+[[1]]
+An object of class "Polygon"
+Slot "labpt":
+[1]  378025.7 6526172.8
+
+Slot "area":
+[1] 78975.45
+
+Slot "hole":
+[1] FALSE
+
+Slot "ringDir":
+[1] 1
+
+Slot "coords":
+         [,1]    [,2]
+[1,] 378182.5 6526295
+[2,] 378182.5 6526033
+[3,] 378106.4 6526035
+[4,] 377857.6 6526079
+[5,] 377857.6 6526295
+[6,] 378182.5 6526295
+
+
+
+Slot "plotOrder":
+[1] 1
+
+Slot "labpt":
+[1]  378025.7 6526172.8
+
+Slot "ID":
+[1] "Tile row 5, col 3"
+
+Slot "area":
+[1] 78975.45
+
+
+[[23]]
+An object of class "Polygons"
+Slot "Polygons":
+[[1]]
+An object of class "Polygon"
+Slot "labpt":
+[1]  378346 6526161
+
+Slot "area":
+[1] 86650.44
+
+Slot "hole":
+[1] FALSE
+
+Slot "ringDir":
+[1] 1
+
+Slot "coords":
+         [,1]    [,2]
+[1,] 378507.5 6526295
+[2,] 378507.5 6526023
+[3,] 378182.5 6526033
+[4,] 378182.5 6526295
+[5,] 378507.5 6526295
+
+
+
+Slot "plotOrder":
+[1] 1
+
+Slot "labpt":
+[1]  378346 6526161
+
+Slot "ID":
+[1] "Tile row 5, col 4"
+
+Slot "area":
+[1] 86650.44
+
+
+[[24]]
+An object of class "Polygons"
+Slot "Polygons":
+[[1]]
+An object of class "Polygon"
+Slot "labpt":
+[1]  378657.4 6526157.3
+
+Slot "area":
+[1] 82388.86
+
+Slot "hole":
+[1] FALSE
+
+Slot "ringDir":
+[1] 1
+
+Slot "coords":
+         [,1]    [,2]
+[1,] 378810.0 6526295
+[2,] 378801.5 6526014
+[3,] 378507.5 6526023
+[4,] 378507.5 6526295
+[5,] 378810.0 6526295
+
+
+
+Slot "plotOrder":
+[1] 1
+
+Slot "labpt":
+[1]  378657.4 6526157.3
+
+Slot "ID":
+[1] "Tile row 5, col 5"
+
+Slot "area":
+[1] 82388.86
+
+
+
+Slot "plotOrder":
+ [1] 18  8 16 17  7 13 11 12 14 23 19  6 24 22  9  2 15 21 10  3 20  1  5  4
+
+Slot "bbox":
+        min       max
+x  377207.8  378832.4
+y 6526014.2 6527417.1
+
+Slot "proj4string":
+CRS arguments:
+ +proj=utm +zone=50 +south +ellps=GRS80 +units=m +no_defs 
+
+> 
+> #######################################################################
+> #introduce a non-simply boundary
+> polyowin <- maptools::as.owin.SpatialPolygons(polygontest)
+> polyowin <- setminus.owin(polyowin,owin(xrange=c(377850,377855),yrange=c(6527140,6527145)))
+> tess <- quadrats(polyowin)
+> tilelist <- tiles(tess)
+> id <- data.frame(id = 1:length(tilelist),stringsAsFactors = FALSE)
+> tileauxdata <- data.frame(t(simplify2array(strsplit(names(tilelist), "[ , ]"))),stringsAsFactors=FALSE)
+> tileauxdata <- tileauxdata[,c(3,6)]
+> names(tileauxdata) <- c("TileRow", "TileCol")
+> tileauxdata$TileRow <- factor(tileauxdata$TileRow,ordered=TRUE) 
+> tileauxdata$TileCol <- factor(tileauxdata$TileCol,ordered=TRUE)
+> auxdata <- cbind(id,tileauxdata)
+> 
+> spdf1 <- as.spdf.owin(tilelist, tileauxdata, 
++                       proj4string = sp::CRS(sp::proj4string(polygontest)), match.ID=FALSE)
+NOTE: rgdal::checkCRSArgs: no proj_defs.dat in PROJ.4 shared files
+> spdf1
+An object of class "SpatialPolygonsDataFrame"
+Slot "data":
+   TileRow TileCol
+1        1       2
+2        1       3
+3        1       4
+4        1       5
+5        2       1
+6        2       2
+7        2       3
+8        2       4
+9        2       5
+10       3       1
+11       3       2
+12       3       3
+13       3       4
+14       3       5
+15       4       1
+16       4       2
+17       4       3
+18       4       4
+19       4       5
+20       5       1
+21       5       2
+22       5       3
+23       5       4
+24       5       5
+
+Slot "polygons":
+$`Tile row 1, col 2`
+An object of class "Polygons"
+Slot "Polygons":
+[[1]]
+An object of class "Polygon"
+Slot "labpt":
+[1]  377785.8 6527190.2
+
+Slot "area":
+[1] 17294.05
+
+Slot "hole":
+[1] FALSE
+
+Slot "ringDir":
+[1] 1
+
+Slot "coords":
+         [,1]    [,2]
+[1,] 377857.6 6527291
+[2,] 377857.6 6527137
+[3,] 377656.9 6527137
+[4,] 377712.2 6527197
+[5,] 377857.6 6527291
+
+
+
+Slot "plotOrder":
+[1] 1
+
+Slot "labpt":
+[1]  377785.8 6527190.2
+
+Slot "ID":
+[1] "1"
+
+Slot "area":
+[1] 17294.05
+
+
+$`Tile row 1, col 3`
+An object of class "Polygons"
+Slot "Polygons":
+[[1]]
+An object of class "Polygon"
+Slot "labpt":
+[1]  378029.2 6527254.0
+
+Slot "area":
+[1] 74683.51
+
+Slot "hole":
+[1] FALSE
+
+Slot "ringDir":
+[1] 1
+
+Slot "coords":
+         [,1]    [,2]
+[1,] 378182.5 6527352
+[2,] 378182.5 6527137
+[3,] 377857.6 6527137
+[4,] 377857.6 6527291
+[5,] 378051.3 6527417
+[6,] 378182.5 6527352
+
+
+
+Slot "plotOrder":
+[1] 1
+
+Slot "labpt":
+[1]  378029.2 6527254.0
+
+Slot "ID":
+[1] "2"
+
+Slot "area":
+[1] 74683.51
+
+
+$`Tile row 1, col 4`
+An object of class "Polygons"
+Slot "Polygons":
+[[1]]
+An object of class "Polygon"
+Slot "labpt":
+[1]  378312.2 6527211.7
+
+Slot "area":
+[1] 43520.93
+
+Slot "hole":
+[1] FALSE
+
+Slot "ringDir":
+[1] 1
+
+Slot "coords":
+         [,1]    [,2]
+[1,] 378507.5 6527189
+[2,] 378507.5 6527137
+[3,] 378182.5 6527137
+[4,] 378182.5 6527352
+[5,] 378507.5 6527189
+
+
+
+Slot "plotOrder":
+[1] 1
+
+Slot "labpt":
+[1]  378312.2 6527211.7
+
+Slot "ID":
+[1] "3"
+
+Slot "area":
+[1] 43520.93
+
+
+$`Tile row 1, col 5`
+An object of class "Polygons"
+Slot "Polygons":
+[[1]]
+An object of class "Polygon"
+Slot "labpt":
+[1]  378542.7 6527154.2
+
+Slot "area":
+[1] 2795.123
+
+Slot "hole":
+[1] FALSE
+
+Slot "ringDir":
+[1] 1
+
+Slot "coords":
+         [,1]    [,2]
+[1,] 378507.5 6527189
+[2,] 378613.3 6527137
+[3,] 378507.5 6527137
+[4,] 378507.5 6527189
+
+
+
+Slot "plotOrder":
+[1] 1
+
+Slot "labpt":
+[1]  378542.7 6527154.2
+
+Slot "ID":
+[1] "4"
+
+Slot "area":
+[1] 2795.123
+
+
+$`Tile row 2, col 1`
+An object of class "Polygons"
+Slot "Polygons":
+[[1]]
+An object of class "Polygon"
+Slot "labpt":
+[1]  377489.9 6526905.4
+
+Slot "area":
+[1] 9500.535
+
+Slot "hole":
+[1] FALSE
+
+Slot "ringDir":
+[1] 1
+
+Slot "coords":
+         [,1]    [,2]
+[1,] 377532.7 6527001
+[2,] 377532.7 6526856
+[3,] 377415.4 6526856
+[4,] 377423.9 6526883
+[5,] 377532.7 6527001
+
+
+
+Slot "plotOrder":
+[1] 1
+
+Slot "labpt":
+[1]  377489.9 6526905.4
+
+Slot "ID":
+[1] "5"
+
+Slot "area":
+[1] 9500.535
+
+
+$`Tile row 2, col 2`
+An object of class "Polygons"
+Slot "Polygons":
+[[1]]
+An object of class "Polygon"
+Slot "labpt":
+[1]  377707.4 6526986.6
+
+Slot "area":
+[1] 82783.69
+
+Slot "hole":
+[1] FALSE
+
+Slot "ringDir":
+[1] 1
+
+Slot "coords":
+         [,1]    [,2]
+[1,] 377857.6 6527137
+[2,] 377857.6 6526856
+[3,] 377532.7 6526856
+[4,] 377532.7 6527001
+[5,] 377656.9 6527137
+[6,] 377857.6 6527137
+
+
+
+Slot "plotOrder":
+[1] 1
+
+Slot "labpt":
+[1]  377707.4 6526986.6
+
+Slot "ID":
+[1] "6"
+
+Slot "area":
+[1] 82783.69
+
+
+$`Tile row 2, col 3`
+An object of class "Polygons"
+Slot "Polygons":
+[[1]]
+An object of class "Polygon"
+Slot "labpt":
+[1]  378020.1 6526996.2
+
+Slot "area":
+[1] 91172.6
+
+Slot "hole":
+[1] FALSE
+
+Slot "ringDir":
+[1] 1
+
+Slot "coords":
+         [,1]    [,2]
+[1,] 377857.6 6526856
+[2,] 377857.6 6527137
+[3,] 378182.5 6527137
+[4,] 378182.5 6526856
+[5,] 377857.6 6526856
+
+
+
+Slot "plotOrder":
+[1] 1
+
+Slot "labpt":
+[1]  378020.1 6526996.2
+
+Slot "ID":
+[1] "7"
+
+Slot "area":
+[1] 91172.6
+
+
+$`Tile row 2, col 4`
+An object of class "Polygons"
+Slot "Polygons":
+[[1]]
+An object of class "Polygon"
+Slot "labpt":
+[1]  378345 6526996
+
+Slot "area":
+[1] 91172.6
+
+Slot "hole":
+[1] FALSE
+
+Slot "ringDir":
+[1] 1
+
+Slot "coords":
+         [,1]    [,2]
+[1,] 378182.5 6526856
+[2,] 378182.5 6527137
+[3,] 378507.5 6527137
+[4,] 378507.5 6526856
+[5,] 378182.5 6526856
+
+
+
+Slot "plotOrder":
+[1] 1
+
+Slot "labpt":
+[1]  378345 6526996
+
+Slot "ID":
+[1] "8"
+
+Slot "area":
+[1] 91172.6
+
+
+$`Tile row 2, col 5`
+An object of class "Polygons"
+Slot "Polygons":
+[[1]]
+An object of class "Polygon"
+Slot "labpt":
+[1]  378655.4 6526980.9
+
+Slot "area":
+[1] 78741.28
+
+Slot "hole":
+[1] FALSE
+
+Slot "ringDir":
+[1] 1
+
+Slot "coords":
+         [,1]    [,2]
+[1,] 378832.4 6527027
+[2,] 378827.2 6526856
+[3,] 378507.5 6526856
+[4,] 378507.5 6527137
+[5,] 378613.3 6527137
+[6,] 378832.4 6527027
+
+
+
+Slot "plotOrder":
+[1] 1
+
+Slot "labpt":
+[1]  378655.4 6526980.9
+
+Slot "ID":
+[1] "9"
+
+Slot "area":
+[1] 78741.28
+
+
+$`Tile row 3, col 1`
+An object of class "Polygons"
+Slot "Polygons":
+[[1]]
+An object of class "Polygon"
+Slot "labpt":
+[1]  377450.1 6526702.9
+
+Slot "area":
+[1] 45214.66
+
+Slot "hole":
+[1] FALSE
+
+Slot "ringDir":
+[1] 1
+
+Slot "coords":
+         [,1]    [,2]
+[1,] 377532.7 6526856
+[2,] 377532.7 6526575
+[3,] 377327.7 6526575
+[4,] 377415.4 6526856
+[5,] 377532.7 6526856
+
+
+
+Slot "plotOrder":
+[1] 1
+
+Slot "labpt":
+[1]  377450.1 6526702.9
+
+Slot "ID":
+[1] "10"
+
+Slot "area":
+[1] 45214.66
+
+
+$`Tile row 3, col 2`
+An object of class "Polygons"
+Slot "Polygons":
+[[1]]
+An object of class "Polygon"
+Slot "labpt":
+[1]  377695.1 6526715.7
+
+Slot "area":
+[1] 91172.6
+
+Slot "hole":
+[1] FALSE
+
+Slot "ringDir":
+[1] 1
+
+Slot "coords":
+         [,1]    [,2]
+[1,] 377532.7 6526575
+[2,] 377532.7 6526856
+[3,] 377857.6 6526856
+[4,] 377857.6 6526575
+[5,] 377532.7 6526575
+
+
+
+Slot "plotOrder":
+[1] 1
+
+Slot "labpt":
+[1]  377695.1 6526715.7
+
+Slot "ID":
+[1] "11"
+
+Slot "area":
+[1] 91172.6
+
+
+$`Tile row 3, col 3`
+An object of class "Polygons"
+Slot "Polygons":
+[[1]]
+An object of class "Polygon"
+Slot "labpt":
+[1]  378020.1 6526715.7
+
+Slot "area":
+[1] 91172.6
+
+Slot "hole":
+[1] FALSE
+
+Slot "ringDir":
+[1] 1
+
+Slot "coords":
+         [,1]    [,2]
+[1,] 377857.6 6526575
+[2,] 377857.6 6526856
+[3,] 378182.5 6526856
+[4,] 378182.5 6526575
+[5,] 377857.6 6526575
+
+
+
+Slot "plotOrder":
+[1] 1
+
+Slot "labpt":
+[1]  378020.1 6526715.7
+
+Slot "ID":
+[1] "12"
+
+Slot "area":
+[1] 91172.6
+
+
+$`Tile row 3, col 4`
+An object of class "Polygons"
+Slot "Polygons":
+[[1]]
+An object of class "Polygon"
+Slot "labpt":
+[1]  378345 6526716
+
+Slot "area":
+[1] 91172.6
+
+Slot "hole":
+[1] FALSE
+
+Slot "ringDir":
+[1] 1
+
+Slot "coords":
+         [,1]    [,2]
+[1,] 378182.5 6526575
+[2,] 378182.5 6526856
+[3,] 378507.5 6526856
+[4,] 378507.5 6526575
+[5,] 378182.5 6526575
+
+
+
+Slot "plotOrder":
+[1] 1
+
+Slot "labpt":
+[1]  378345 6526716
+
+Slot "ID":
+[1] "13"
+
+Slot "area":
+[1] 91172.6
+
+
+$`Tile row 3, col 5`
+An object of class "Polygons"
+Slot "Polygons":
+[[1]]
+An object of class "Polygon"
+Slot "labpt":
+[1]  378665.2 6526716.3
+
+Slot "area":
+[1] 88507.75
+
+Slot "hole":
+[1] FALSE
+
+Slot "ringDir":
+[1] 1
+
+Slot "coords":
+         [,1]    [,2]
+[1,] 378827.2 6526856
+[2,] 378818.6 6526575
+[3,] 378507.5 6526575
+[4,] 378507.5 6526856
+[5,] 378827.2 6526856
+
+
+
+Slot "plotOrder":
+[1] 1
+
+Slot "labpt":
+[1]  378665.2 6526716.3
+
+Slot "ID":
+[1] "14"
+
+Slot "area":
+[1] 88507.75
+
+
+$`Tile row 4, col 1`
+An object of class "Polygons"
+Slot "Polygons":
+[[1]]
+An object of class "Polygon"
+Slot "labpt":
+[1]  377406.9 6526426.8
+
+Slot "area":
+[1] 69849.6
+
+Slot "hole":
+[1] FALSE
+
+Slot "ringDir":
+[1] 1
+
+Slot "coords":
+         [,1]    [,2]
+[1,] 377532.7 6526575
+[2,] 377532.7 6526295
+[3,] 377239.9 6526295
+[4,] 377327.7 6526575
+[5,] 377532.7 6526575
+
+
+
+Slot "plotOrder":
+[1] 1
+
+Slot "labpt":
+[1]  377406.9 6526426.8
+
+Slot "ID":
+[1] "15"
+
+Slot "area":
+[1] 69849.6
+
+
+$`Tile row 4, col 2`
+An object of class "Polygons"
+Slot "Polygons":
+[[1]]
+An object of class "Polygon"
+Slot "labpt":
+[1]  377695.1 6526435.1
+
+Slot "area":
+[1] 91172.6
+
+Slot "hole":
+[1] FALSE
+
+Slot "ringDir":
+[1] 1
+
+Slot "coords":
+         [,1]    [,2]
+[1,] 377532.7 6526295
+[2,] 377532.7 6526575
+[3,] 377857.6 6526575
+[4,] 377857.6 6526295
+[5,] 377532.7 6526295
+
+
+
+Slot "plotOrder":
+[1] 1
+
+Slot "labpt":
+[1]  377695.1 6526435.1
+
+Slot "ID":
+[1] "16"
+
+Slot "area":
+[1] 91172.6
+
+
+$`Tile row 4, col 3`
+An object of class "Polygons"
+Slot "Polygons":
+[[1]]
+An object of class "Polygon"
+Slot "labpt":
+[1]  378020.1 6526435.1
+
+Slot "area":
+[1] 91172.6
+
+Slot "hole":
+[1] FALSE
+
+Slot "ringDir":
+[1] 1
+
+Slot "coords":
+         [,1]    [,2]
+[1,] 377857.6 6526295
+[2,] 377857.6 6526575
+[3,] 378182.5 6526575
+[4,] 378182.5 6526295
+[5,] 377857.6 6526295
+
+
+
+Slot "plotOrder":
+[1] 1
+
+Slot "labpt":
+[1]  378020.1 6526435.1
+
+Slot "ID":
+[1] "17"
+
+Slot "area":
+[1] 91172.6
+
+
+$`Tile row 4, col 4`
+An object of class "Polygons"
+Slot "Polygons":
+[[1]]
+An object of class "Polygon"
+Slot "labpt":
+[1]  378345 6526435
+
+Slot "area":
+[1] 91172.6
+
+Slot "hole":
+[1] FALSE
+
+Slot "ringDir":
+[1] 1
+
+Slot "coords":
+         [,1]    [,2]
+[1,] 378182.5 6526295
+[2,] 378182.5 6526575
+[3,] 378507.5 6526575
+[4,] 378507.5 6526295
+[5,] 378182.5 6526295
+
+
+
+Slot "plotOrder":
+[1] 1
+
+Slot "labpt":
+[1]  378345 6526435
+
+Slot "ID":
+[1] "18"
+
+Slot "area":
+[1] 91172.6
+
+
+$`Tile row 4, col 5`
+An object of class "Polygons"
+Slot "Polygons":
+[[1]]
+An object of class "Polygon"
+Slot "labpt":
+[1]  378660.9 6526435.7
+
+Slot "area":
+[1] 86107.29
+
+Slot "hole":
+[1] FALSE
+
+Slot "ringDir":
+[1] 1
+
+Slot "coords":
+         [,1]    [,2]
+[1,] 378818.6 6526575
+[2,] 378810.0 6526295
+[3,] 378507.5 6526295
+[4,] 378507.5 6526575
+[5,] 378818.6 6526575
+
+
+
+Slot "plotOrder":
+[1] 1
+
+Slot "labpt":
+[1]  378660.9 6526435.7
+
+Slot "ID":
+[1] "19"
+
+Slot "area":
+[1] 86107.29
+
+
+$`Tile row 5, col 1`
+An object of class "Polygons"
+Slot "Polygons":
+[[1]]
+An object of class "Polygon"
+Slot "labpt":
+[1]  377388.5 6526227.0
+
+Slot "area":
+[1] 40895.82
+
+Slot "hole":
+[1] FALSE
+
+Slot "ringDir":
+[1] 1
+
+Slot "coords":
+         [,1]    [,2]
+[1,] 377532.7 6526295
+[2,] 377532.7 6526135
+[3,] 377207.8 6526192
+[4,] 377239.9 6526295
+[5,] 377532.7 6526295
+
+
+
+Slot "plotOrder":
+[1] 1
+
+Slot "labpt":
+[1]  377388.5 6526227.0
+
+Slot "ID":
+[1] "20"
+
+Slot "area":
+[1] 40895.82
+
+
+$`Tile row 5, col 2`
+An object of class "Polygons"
+Slot "Polygons":
+[[1]]
+An object of class "Polygon"
+Slot "labpt":
+[1]  377703.3 6526200.2
+
+Slot "area":
+[1] 60967.61
+
+Slot "hole":
+[1] FALSE
+
+Slot "ringDir":
+[1] 1
+
+Slot "coords":
+         [,1]    [,2]
+[1,] 377857.6 6526295
+[2,] 377857.6 6526079
+[3,] 377532.7 6526135
+[4,] 377532.7 6526295
+[5,] 377857.6 6526295
+
+
+
+Slot "plotOrder":
+[1] 1
+
+Slot "labpt":
+[1]  377703.3 6526200.2
+
+Slot "ID":
+[1] "21"
+
+Slot "area":
+[1] 60967.61
+
+
+$`Tile row 5, col 3`
+An object of class "Polygons"
+Slot "Polygons":
+[[1]]
+An object of class "Polygon"
+Slot "labpt":
+[1]  378025.7 6526172.8
+
+Slot "area":
+[1] 78975.45
+
+Slot "hole":
+[1] FALSE
+
+Slot "ringDir":
+[1] 1
+
+Slot "coords":
+         [,1]    [,2]
+[1,] 378182.5 6526295
+[2,] 378182.5 6526033
+[3,] 378106.4 6526035
+[4,] 377857.6 6526079
+[5,] 377857.6 6526295
+[6,] 378182.5 6526295
+
+
+
+Slot "plotOrder":
+[1] 1
+
+Slot "labpt":
+[1]  378025.7 6526172.8
+
+Slot "ID":
+[1] "22"
+
+Slot "area":
+[1] 78975.45
+
+
+$`Tile row 5, col 4`
+An object of class "Polygons"
+Slot "Polygons":
+[[1]]
+An object of class "Polygon"
+Slot "labpt":
+[1]  378346 6526161
+
+Slot "area":
+[1] 86650.44
+
+Slot "hole":
+[1] FALSE
+
+Slot "ringDir":
+[1] 1
+
+Slot "coords":
+         [,1]    [,2]
+[1,] 378507.5 6526295
+[2,] 378507.5 6526023
+[3,] 378182.5 6526033
+[4,] 378182.5 6526295
+[5,] 378507.5 6526295
+
+
+
+Slot "plotOrder":
+[1] 1
+
+Slot "labpt":
+[1]  378346 6526161
+
+Slot "ID":
+[1] "23"
+
+Slot "area":
+[1] 86650.44
+
+
+$`Tile row 5, col 5`
+An object of class "Polygons"
+Slot "Polygons":
+[[1]]
+An object of class "Polygon"
+Slot "labpt":
+[1]  378657.4 6526157.3
+
+Slot "area":
+[1] 82388.86
+
+Slot "hole":
+[1] FALSE
+
+Slot "ringDir":
+[1] 1
+
+Slot "coords":
+         [,1]    [,2]
+[1,] 378810.0 6526295
+[2,] 378801.5 6526014
+[3,] 378507.5 6526023
+[4,] 378507.5 6526295
+[5,] 378810.0 6526295
+
+
+
+Slot "plotOrder":
+[1] 1
+
+Slot "labpt":
+[1]  378657.4 6526157.3
+
+Slot "ID":
+[1] "24"
+
+Slot "area":
+[1] 82388.86
+
+
+
+Slot "plotOrder":
+ [1] 16 18  8 11 13 17  7 12 14 23 19  6 24 22  9  2 15 21 10  3 20  1  5  4
+
+Slot "bbox":
+        min       max
+x  377207.8  378832.4
+y 6526014.2 6527417.1
+
+Slot "proj4string":
+CRS arguments:
+ +proj=utm +zone=50 +south +ellps=GRS80 +units=m +no_defs 
+
+> 
+> spdf2 <- sp::SpatialPolygonsDataFrame(as.SpatialPolygons.tess(tess), auxdata, match.ID = FALSE)
+> sp::proj4string(spdf2) <- sp::CRS(sp::proj4string(polygontest))
+NOTE: rgdal::checkCRSArgs: no proj_defs.dat in PROJ.4 shared files
+> spdf2
+An object of class "SpatialPolygonsDataFrame"
+Slot "data":
+   id TileRow TileCol
+1   1       1       2
+2   2       1       3
+3   3       1       4
+4   4       1       5
+5   5       2       1
+6   6       2       2
+7   7       2       3
+8   8       2       4
+9   9       2       5
+10 10       3       1
+11 11       3       2
+12 12       3       3
+13 13       3       4
+14 14       3       5
+15 15       4       1
+16 16       4       2
+17 17       4       3
+18 18       4       4
+19 19       4       5
+20 20       5       1
+21 21       5       2
+22 22       5       3
+23 23       5       4
+24 24       5       5
+
+Slot "polygons":
+[[1]]
+An object of class "Polygons"
+Slot "Polygons":
+[[1]]
+An object of class "Polygon"
+Slot "labpt":
+[1]  377785.8 6527190.2
+
+Slot "area":
+[1] 17294.05
+
+Slot "hole":
+[1] FALSE
+
+Slot "ringDir":
+[1] 1
+
+Slot "coords":
+         [,1]    [,2]
+[1,] 377857.6 6527291
+[2,] 377857.6 6527137
+[3,] 377656.9 6527137
+[4,] 377712.2 6527197
+[5,] 377857.6 6527291
+
+
+[[2]]
+An object of class "Polygon"
+Slot "labpt":
+[1]  377852.5 6527142.5
+
+Slot "area":
+[1] 25
+
+Slot "hole":
+[1] TRUE
+
+Slot "ringDir":
+[1] -1
+
+Slot "coords":
+       [,1]    [,2]
+[1,] 377850 6527140
+[2,] 377855 6527140
+[3,] 377855 6527145
+[4,] 377850 6527145
+[5,] 377850 6527140
+
+
+
+Slot "plotOrder":
+[1] 1 2
+
+Slot "labpt":
+[1]  377785.8 6527190.2
+
+Slot "ID":
+[1] "Tile row 1, col 2"
+
+Slot "area":
+[1] 17294.05
+
+
+[[2]]
+An object of class "Polygons"
+Slot "Polygons":
+[[1]]
+An object of class "Polygon"
+Slot "labpt":
+[1]  378029.2 6527254.0
+
+Slot "area":
+[1] 74683.51
+
+Slot "hole":
+[1] FALSE
+
+Slot "ringDir":
+[1] 1
+
+Slot "coords":
+         [,1]    [,2]
+[1,] 378182.5 6527352
+[2,] 378182.5 6527137
+[3,] 377857.6 6527137
+[4,] 377857.6 6527291
+[5,] 378051.3 6527417
+[6,] 378182.5 6527352
+
+
+
+Slot "plotOrder":
+[1] 1
+
+Slot "labpt":
+[1]  378029.2 6527254.0
+
+Slot "ID":
+[1] "Tile row 1, col 3"
+
+Slot "area":
+[1] 74683.51
+
+
+[[3]]
+An object of class "Polygons"
+Slot "Polygons":
+[[1]]
+An object of class "Polygon"
+Slot "labpt":
+[1]  378312.2 6527211.7
+
+Slot "area":
+[1] 43520.93
+
+Slot "hole":
+[1] FALSE
+
+Slot "ringDir":
+[1] 1
+
+Slot "coords":
+         [,1]    [,2]
+[1,] 378507.5 6527189
+[2,] 378507.5 6527137
+[3,] 378182.5 6527137
+[4,] 378182.5 6527352
+[5,] 378507.5 6527189
+
+
+
+Slot "plotOrder":
+[1] 1
+
+Slot "labpt":
+[1]  378312.2 6527211.7
+
+Slot "ID":
+[1] "Tile row 1, col 4"
+
+Slot "area":
+[1] 43520.93
+
+
+[[4]]
+An object of class "Polygons"
+Slot "Polygons":
+[[1]]
+An object of class "Polygon"
+Slot "labpt":
+[1]  378542.7 6527154.2
+
+Slot "area":
+[1] 2795.123
+
+Slot "hole":
+[1] FALSE
+
+Slot "ringDir":
+[1] 1
+
+Slot "coords":
+         [,1]    [,2]
+[1,] 378507.5 6527189
+[2,] 378613.3 6527137
+[3,] 378507.5 6527137
+[4,] 378507.5 6527189
+
+
+
+Slot "plotOrder":
+[1] 1
+
+Slot "labpt":
+[1]  378542.7 6527154.2
+
+Slot "ID":
+[1] "Tile row 1, col 5"
+
+Slot "area":
+[1] 2795.123
+
+
+[[5]]
+An object of class "Polygons"
+Slot "Polygons":
+[[1]]
+An object of class "Polygon"
+Slot "labpt":
+[1]  377489.9 6526905.4
+
+Slot "area":
+[1] 9500.535
+
+Slot "hole":
+[1] FALSE
+
+Slot "ringDir":
+[1] 1
+
+Slot "coords":
+         [,1]    [,2]
+[1,] 377532.7 6527001
+[2,] 377532.7 6526856
+[3,] 377415.4 6526856
+[4,] 377423.9 6526883
+[5,] 377532.7 6527001
+
+
+
+Slot "plotOrder":
+[1] 1
+
+Slot "labpt":
+[1]  377489.9 6526905.4
+
+Slot "ID":
+[1] "Tile row 2, col 1"
+
+Slot "area":
+[1] 9500.535
+
+
+[[6]]
+An object of class "Polygons"
+Slot "Polygons":
+[[1]]
+An object of class "Polygon"
+Slot "labpt":
+[1]  377707.4 6526986.6
+
+Slot "area":
+[1] 82783.69
+
+Slot "hole":
+[1] FALSE
+
+Slot "ringDir":
+[1] 1
+
+Slot "coords":
+         [,1]    [,2]
+[1,] 377857.6 6527137
+[2,] 377857.6 6526856
+[3,] 377532.7 6526856
+[4,] 377532.7 6527001
+[5,] 377656.9 6527137
+[6,] 377857.6 6527137
+
+
+
+Slot "plotOrder":
+[1] 1
+
+Slot "labpt":
+[1]  377707.4 6526986.6
+
+Slot "ID":
+[1] "Tile row 2, col 2"
+
+Slot "area":
+[1] 82783.69
+
+
+[[7]]
+An object of class "Polygons"
+Slot "Polygons":
+[[1]]
+An object of class "Polygon"
+Slot "labpt":
+[1]  378020.1 6526996.2
+
+Slot "area":
+[1] 91172.6
+
+Slot "hole":
+[1] FALSE
+
+Slot "ringDir":
+[1] 1
+
+Slot "coords":
+         [,1]    [,2]
+[1,] 377857.6 6526856
+[2,] 377857.6 6527137
+[3,] 378182.5 6527137
+[4,] 378182.5 6526856
+[5,] 377857.6 6526856
+
+
+
+Slot "plotOrder":
+[1] 1
+
+Slot "labpt":
+[1]  378020.1 6526996.2
+
+Slot "ID":
+[1] "Tile row 2, col 3"
+
+Slot "area":
+[1] 91172.6
+
+
+[[8]]
+An object of class "Polygons"
+Slot "Polygons":
+[[1]]
+An object of class "Polygon"
+Slot "labpt":
+[1]  378345 6526996
+
+Slot "area":
+[1] 91172.6
+
+Slot "hole":
+[1] FALSE
+
+Slot "ringDir":
+[1] 1
+
+Slot "coords":
+         [,1]    [,2]
+[1,] 378182.5 6526856
+[2,] 378182.5 6527137
+[3,] 378507.5 6527137
+[4,] 378507.5 6526856
+[5,] 378182.5 6526856
+
+
+
+Slot "plotOrder":
+[1] 1
+
+Slot "labpt":
+[1]  378345 6526996
+
+Slot "ID":
+[1] "Tile row 2, col 4"
+
+Slot "area":
+[1] 91172.6
+
+
+[[9]]
+An object of class "Polygons"
+Slot "Polygons":
+[[1]]
+An object of class "Polygon"
+Slot "labpt":
+[1]  378655.4 6526980.9
+
+Slot "area":
+[1] 78741.28
+
+Slot "hole":
+[1] FALSE
+
+Slot "ringDir":
+[1] 1
+
+Slot "coords":
+         [,1]    [,2]
+[1,] 378832.4 6527027
+[2,] 378827.2 6526856
+[3,] 378507.5 6526856
+[4,] 378507.5 6527137
+[5,] 378613.3 6527137
+[6,] 378832.4 6527027
+
+
+
+Slot "plotOrder":
+[1] 1
+
+Slot "labpt":
+[1]  378655.4 6526980.9
+
+Slot "ID":
+[1] "Tile row 2, col 5"
+
+Slot "area":
+[1] 78741.28
+
+
+[[10]]
+An object of class "Polygons"
+Slot "Polygons":
+[[1]]
+An object of class "Polygon"
+Slot "labpt":
+[1]  377450.1 6526702.9
+
+Slot "area":
+[1] 45214.66
+
+Slot "hole":
+[1] FALSE
+
+Slot "ringDir":
+[1] 1
+
+Slot "coords":
+         [,1]    [,2]
+[1,] 377532.7 6526856
+[2,] 377532.7 6526575
+[3,] 377327.7 6526575
+[4,] 377415.4 6526856
+[5,] 377532.7 6526856
+
+
+
+Slot "plotOrder":
+[1] 1
+
+Slot "labpt":
+[1]  377450.1 6526702.9
+
+Slot "ID":
+[1] "Tile row 3, col 1"
+
+Slot "area":
+[1] 45214.66
+
+
+[[11]]
+An object of class "Polygons"
+Slot "Polygons":
+[[1]]
+An object of class "Polygon"
+Slot "labpt":
+[1]  377695.1 6526715.7
+
+Slot "area":
+[1] 91172.6
+
+Slot "hole":
+[1] FALSE
+
+Slot "ringDir":
+[1] 1
+
+Slot "coords":
+         [,1]    [,2]
+[1,] 377532.7 6526575
+[2,] 377532.7 6526856
+[3,] 377857.6 6526856
+[4,] 377857.6 6526575
+[5,] 377532.7 6526575
+
+
+
+Slot "plotOrder":
+[1] 1
+
+Slot "labpt":
+[1]  377695.1 6526715.7
+
+Slot "ID":
+[1] "Tile row 3, col 2"
+
+Slot "area":
+[1] 91172.6
+
+
+[[12]]
+An object of class "Polygons"
+Slot "Polygons":
+[[1]]
+An object of class "Polygon"
+Slot "labpt":
+[1]  378020.1 6526715.7
+
+Slot "area":
+[1] 91172.6
+
+Slot "hole":
+[1] FALSE
+
+Slot "ringDir":
+[1] 1
+
+Slot "coords":
+         [,1]    [,2]
+[1,] 377857.6 6526575
+[2,] 377857.6 6526856
+[3,] 378182.5 6526856
+[4,] 378182.5 6526575
+[5,] 377857.6 6526575
+
+
+
+Slot "plotOrder":
+[1] 1
+
+Slot "labpt":
+[1]  378020.1 6526715.7
+
+Slot "ID":
+[1] "Tile row 3, col 3"
+
+Slot "area":
+[1] 91172.6
+
+
+[[13]]
+An object of class "Polygons"
+Slot "Polygons":
+[[1]]
+An object of class "Polygon"
+Slot "labpt":
+[1]  378345 6526716
+
+Slot "area":
+[1] 91172.6
+
+Slot "hole":
+[1] FALSE
+
+Slot "ringDir":
+[1] 1
+
+Slot "coords":
+         [,1]    [,2]
+[1,] 378182.5 6526575
+[2,] 378182.5 6526856
+[3,] 378507.5 6526856
+[4,] 378507.5 6526575
+[5,] 378182.5 6526575
+
+
+
+Slot "plotOrder":
+[1] 1
+
+Slot "labpt":
+[1]  378345 6526716
+
+Slot "ID":
+[1] "Tile row 3, col 4"
+
+Slot "area":
+[1] 91172.6
+
+
+[[14]]
+An object of class "Polygons"
+Slot "Polygons":
+[[1]]
+An object of class "Polygon"
+Slot "labpt":
+[1]  378665.2 6526716.3
+
+Slot "area":
+[1] 88507.75
+
+Slot "hole":
+[1] FALSE
+
+Slot "ringDir":
+[1] 1
+
+Slot "coords":
+         [,1]    [,2]
+[1,] 378827.2 6526856
+[2,] 378818.6 6526575
+[3,] 378507.5 6526575
+[4,] 378507.5 6526856
+[5,] 378827.2 6526856
+
+
+
+Slot "plotOrder":
+[1] 1
+
+Slot "labpt":
+[1]  378665.2 6526716.3
+
+Slot "ID":
+[1] "Tile row 3, col 5"
+
+Slot "area":
+[1] 88507.75
+
+
+[[15]]
+An object of class "Polygons"
+Slot "Polygons":
+[[1]]
+An object of class "Polygon"
+Slot "labpt":
+[1]  377406.9 6526426.8
+
+Slot "area":
+[1] 69849.6
+
+Slot "hole":
+[1] FALSE
+
+Slot "ringDir":
+[1] 1
+
+Slot "coords":
+         [,1]    [,2]
+[1,] 377532.7 6526575
+[2,] 377532.7 6526295
+[3,] 377239.9 6526295
+[4,] 377327.7 6526575
+[5,] 377532.7 6526575
+
+
+
+Slot "plotOrder":
+[1] 1
+
+Slot "labpt":
+[1]  377406.9 6526426.8
+
+Slot "ID":
+[1] "Tile row 4, col 1"
+
+Slot "area":
+[1] 69849.6
+
+
+[[16]]
+An object of class "Polygons"
+Slot "Polygons":
+[[1]]
+An object of class "Polygon"
+Slot "labpt":
+[1]  377695.1 6526435.1
+
+Slot "area":
+[1] 91172.6
+
+Slot "hole":
+[1] FALSE
+
+Slot "ringDir":
+[1] 1
+
+Slot "coords":
+         [,1]    [,2]
+[1,] 377532.7 6526295
+[2,] 377532.7 6526575
+[3,] 377857.6 6526575
+[4,] 377857.6 6526295
+[5,] 377532.7 6526295
+
+
+
+Slot "plotOrder":
+[1] 1
+
+Slot "labpt":
+[1]  377695.1 6526435.1
+
+Slot "ID":
+[1] "Tile row 4, col 2"
+
+Slot "area":
+[1] 91172.6
+
+
+[[17]]
+An object of class "Polygons"
+Slot "Polygons":
+[[1]]
+An object of class "Polygon"
+Slot "labpt":
+[1]  378020.1 6526435.1
+
+Slot "area":
+[1] 91172.6
+
+Slot "hole":
+[1] FALSE
+
+Slot "ringDir":
+[1] 1
+
+Slot "coords":
+         [,1]    [,2]
+[1,] 377857.6 6526295
+[2,] 377857.6 6526575
+[3,] 378182.5 6526575
+[4,] 378182.5 6526295
+[5,] 377857.6 6526295
+
+
+
+Slot "plotOrder":
+[1] 1
+
+Slot "labpt":
+[1]  378020.1 6526435.1
+
+Slot "ID":
+[1] "Tile row 4, col 3"
+
+Slot "area":
+[1] 91172.6
+
+
+[[18]]
+An object of class "Polygons"
+Slot "Polygons":
+[[1]]
+An object of class "Polygon"
+Slot "labpt":
+[1]  378345 6526435
+
+Slot "area":
+[1] 91172.6
+
+Slot "hole":
+[1] FALSE
+
+Slot "ringDir":
+[1] 1
+
+Slot "coords":
+         [,1]    [,2]
+[1,] 378182.5 6526295
+[2,] 378182.5 6526575
+[3,] 378507.5 6526575
+[4,] 378507.5 6526295
+[5,] 378182.5 6526295
+
+
+
+Slot "plotOrder":
+[1] 1
+
+Slot "labpt":
+[1]  378345 6526435
+
+Slot "ID":
+[1] "Tile row 4, col 4"
+
+Slot "area":
+[1] 91172.6
+
+
+[[19]]
+An object of class "Polygons"
+Slot "Polygons":
+[[1]]
+An object of class "Polygon"
+Slot "labpt":
+[1]  378660.9 6526435.7
+
+Slot "area":
+[1] 86107.29
+
+Slot "hole":
+[1] FALSE
+
+Slot "ringDir":
+[1] 1
+
+Slot "coords":
+         [,1]    [,2]
+[1,] 378818.6 6526575
+[2,] 378810.0 6526295
+[3,] 378507.5 6526295
+[4,] 378507.5 6526575
+[5,] 378818.6 6526575
+
+
+
+Slot "plotOrder":
+[1] 1
+
+Slot "labpt":
+[1]  378660.9 6526435.7
+
+Slot "ID":
+[1] "Tile row 4, col 5"
+
+Slot "area":
+[1] 86107.29
+
+
+[[20]]
+An object of class "Polygons"
+Slot "Polygons":
+[[1]]
+An object of class "Polygon"
+Slot "labpt":
+[1]  377388.5 6526227.0
+
+Slot "area":
+[1] 40895.82
+
+Slot "hole":
+[1] FALSE
+
+Slot "ringDir":
+[1] 1
+
+Slot "coords":
+         [,1]    [,2]
+[1,] 377532.7 6526295
+[2,] 377532.7 6526135
+[3,] 377207.8 6526192
+[4,] 377239.9 6526295
+[5,] 377532.7 6526295
+
+
+
+Slot "plotOrder":
+[1] 1
+
+Slot "labpt":
+[1]  377388.5 6526227.0
+
+Slot "ID":
+[1] "Tile row 5, col 1"
+
+Slot "area":
+[1] 40895.82
+
+
+[[21]]
+An object of class "Polygons"
+Slot "Polygons":
+[[1]]
+An object of class "Polygon"
+Slot "labpt":
+[1]  377703.3 6526200.2
+
+Slot "area":
+[1] 60967.61
+
+Slot "hole":
+[1] FALSE
+
+Slot "ringDir":
+[1] 1
+
+Slot "coords":
+         [,1]    [,2]
+[1,] 377857.6 6526295
+[2,] 377857.6 6526079
+[3,] 377532.7 6526135
+[4,] 377532.7 6526295
+[5,] 377857.6 6526295
+
+
+
+Slot "plotOrder":
+[1] 1
+
+Slot "labpt":
+[1]  377703.3 6526200.2
+
+Slot "ID":
+[1] "Tile row 5, col 2"
+
+Slot "area":
+[1] 60967.61
+
+
+[[22]]
+An object of class "Polygons"
+Slot "Polygons":
+[[1]]
+An object of class "Polygon"
+Slot "labpt":
+[1]  378025.7 6526172.8
+
+Slot "area":
+[1] 78975.45
+
+Slot "hole":
+[1] FALSE
+
+Slot "ringDir":
+[1] 1
+
+Slot "coords":
+         [,1]    [,2]
+[1,] 378182.5 6526295
+[2,] 378182.5 6526033
+[3,] 378106.4 6526035
+[4,] 377857.6 6526079
+[5,] 377857.6 6526295
+[6,] 378182.5 6526295
+
+
+
+Slot "plotOrder":
+[1] 1
+
+Slot "labpt":
+[1]  378025.7 6526172.8
+
+Slot "ID":
+[1] "Tile row 5, col 3"
+
+Slot "area":
+[1] 78975.45
+
+
+[[23]]
+An object of class "Polygons"
+Slot "Polygons":
+[[1]]
+An object of class "Polygon"
+Slot "labpt":
+[1]  378346 6526161
+
+Slot "area":
+[1] 86650.44
+
+Slot "hole":
+[1] FALSE
+
+Slot "ringDir":
+[1] 1
+
+Slot "coords":
+         [,1]    [,2]
+[1,] 378507.5 6526295
+[2,] 378507.5 6526023
+[3,] 378182.5 6526033
+[4,] 378182.5 6526295
+[5,] 378507.5 6526295
+
+
+
+Slot "plotOrder":
+[1] 1
+
+Slot "labpt":
+[1]  378346 6526161
+
+Slot "ID":
+[1] "Tile row 5, col 4"
+
+Slot "area":
+[1] 86650.44
+
+
+[[24]]
+An object of class "Polygons"
+Slot "Polygons":
+[[1]]
+An object of class "Polygon"
+Slot "labpt":
+[1]  378657.4 6526157.3
+
+Slot "area":
+[1] 82388.86
+
+Slot "hole":
+[1] FALSE
+
+Slot "ringDir":
+[1] 1
+
+Slot "coords":
+         [,1]    [,2]
+[1,] 378810.0 6526295
+[2,] 378801.5 6526014
+[3,] 378507.5 6526023
+[4,] 378507.5 6526295
+[5,] 378810.0 6526295
+
+
+
+Slot "plotOrder":
+[1] 1
+
+Slot "labpt":
+[1]  378657.4 6526157.3
+
+Slot "ID":
+[1] "Tile row 5, col 5"
+
+Slot "area":
+[1] 82388.86
+
+
+
+Slot "plotOrder":
+ [1] 16 18  8 11 13 17  7 12 14 23 19  6 24 22  9  2 15 21 10  3 20  1  5  4
+
+Slot "bbox":
+        min       max
+x  377207.8  378832.4
+y 6526014.2 6527417.1
+
+Slot "proj4string":
+CRS arguments:
+ +proj=utm +zone=50 +south +ellps=GRS80 +units=m +no_defs 
+
+> 
+> 
+> #my code misses the interior boundary, but Adrian's code has preserved it :)
+> 
+> proc.time()
+   user  system elapsed 
+  1.408   0.012   1.418 
