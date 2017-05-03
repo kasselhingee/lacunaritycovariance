@@ -31,3 +31,4 @@ plot(Re(fftA),axes=TRUE,clipwin=owin(xrange=c(-4,4),yrange=c(-5,5)))
 # and 0 elsewhere. So result should be an image with units 1/m, with a single large peak at x=1 
 
 }
+

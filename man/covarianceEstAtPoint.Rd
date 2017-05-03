@@ -65,3 +65,4 @@ filled.contour(covarianceDirectEst$covariance)
 }
 \keyword{nonparametric}
 \keyword{spatial}
+

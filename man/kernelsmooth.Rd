@@ -26,7 +26,6 @@ Uses FFT to do the calculation.
 \section{Notes}{
  This function is almost superfluous - \code{spatstat} has a function \code{Smooth.im} for smoothing using Gaussian kernels.
 }
-
 \examples{
 #smooth a step image
 stepim <- im(matrix(0,nrow=100,ncol=100),xrange=c(-1,1),yrange=c(-1,1))
@@ -36,3 +35,4 @@ plot(stepim,axes=TRUE)
 smstepim <- kernelsmooth(stepim,0.5)
 plot(smstepim,axes=TRUE)
 }
+

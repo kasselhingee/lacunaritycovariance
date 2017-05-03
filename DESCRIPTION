@@ -1,7 +1,7 @@
 Package: racssummfuncs
 Type: Package
-<<<<<<< HEAD
-Title: Methods for estimating summary functions of RACS observations with positive area in 2D.
+Title: Methods for estimating summary functions of RACS observations with
+    positive area in 2D.
 Version: 0.2-7
 Date: 2017-05-03
 Author: Kassel Liam Hingee
@@ -9,7 +9,15 @@ Maintainer: <kassel.hingee@research.uwa.edu.au>
 Depends:
     spatstat
 Suggests:
-    sp, raster, maptools, RcppRoll
-Description: Functions for non-parametric estimation of 2D RACS properties from observations.  The aim is to develop methods that apply to bitonal images, such as two-class land cover maps derived from remotely sensed data. The methods focus on extracting properties from a single observation. Currently all of the methods pretend that the RACS is stationary.  Most of the functions depend heavily on the tools made available by the \code{spatstat} packaged.
+    sp,
+    raster,
+    maptools,
+    RcppRoll
+Description: Functions for non-parametric estimation of 2D RACS properties from
+    observations. The aim is to develop methods that apply to bitonal images, such
+    as two-class land cover maps derived from remotely sensed data. The methods
+    focus on extracting properties from a single observation. Currently all of
+    the methods pretend that the RACS is stationary. Most of the functions depend
+    heavily on the tools made available by the \code{spatstat} packaged.
 License: GNU General Public License
-RoxygenNote: 6.0.0
+RoxygenNote: 5.0.1

@@ -57,3 +57,4 @@ hframe <- ddotohyperframe(estimatesddo)
 plot(hframe[,"sphcontactxi",drop=TRUE], main = "Spherical Contact Distribution:\\n Diggle's Heather Data")
 
 }
+

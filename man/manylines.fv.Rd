@@ -40,3 +40,4 @@ manylines.fv(fvlist, km~r)
 out <- manylines.fv(fvlist,  
 main="Spherical Contact Distribution\\n from different resolutions", col=rainbow(length(fvlist)))
 }
+

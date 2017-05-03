@@ -38,7 +38,6 @@ For an observation of a single phase \eqn{\Xi} this is easy to calculate.
 \section{Warning}{
  there might still be some instability for covariance very close, but less than p
 }
-
 \examples{
 xi <- heather$coarse
 covariance <- covariance(xi,Frame(xi))
@@ -57,3 +56,4 @@ contagTwoPtProb(covariance,p=p, v=c(5,15))
 \seealso{
 \code{\link{contagSphCont}}
 }
+

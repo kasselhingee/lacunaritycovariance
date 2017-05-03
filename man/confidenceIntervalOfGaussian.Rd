@@ -21,3 +21,4 @@ A simple function for getting symmetric confidence intervals for a given confide
 confidenceIntervalOfGaussian(0.95,1)
 
 }
+
