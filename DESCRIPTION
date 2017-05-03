@@ -18,6 +18,6 @@ Description: Functions for non-parametric estimation of 2D RACS properties from
     as two-class land cover maps derived from remotely sensed data. The methods
     focus on extracting properties from a single observation. Currently all of
     the methods pretend that the RACS is stationary. Most of the functions depend
-    heavily on the tools made available by the \code{spatstat} packaged.
+    heavily on the tools made available by the spatstat package.
 License: GNU General Public License
 RoxygenNote: 5.0.1
