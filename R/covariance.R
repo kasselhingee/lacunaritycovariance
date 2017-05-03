@@ -20,11 +20,6 @@
 #' xi <- heather$coarse
 #' covar <- covariance(xi,inclraw=FALSE)
 
-#' data(balcattapark_coarse)
-#' xi <- balcattapark_coarse$vegmask
-#' w <- balcattapark_coarse$boundary
-#' covar <- covariance(xi,w,inclraw=FALSE)
-
 #' @keywords spatial nonparametric
 
 #' @details 

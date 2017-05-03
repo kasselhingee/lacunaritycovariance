@@ -35,10 +35,6 @@ Vectors with small set covariance of the window are eliminated (using \code{setC
 \examples{
 xi <- heather$coarse
 covar <- covariance(xi,inclraw=FALSE)
-data(balcattapark_coarse)
-xi <- balcattapark_coarse$vegmask
-w <- balcattapark_coarse$boundary
-covar <- covariance(xi,w,inclraw=FALSE)
 }
 \author{
 {Kassel Hingee}
