@@ -1,14 +1,14 @@
-Package: stationaryracsinference
+Package: racssummfuncs
 Type: Package
-Title: Some inference tools for remotely sensed random closed sets in 2D
-Version: 0.2-6
-Date: 2016-06-30
+Title: Methods for estimating summary functions of RACS observations with positive area in 2D.
+Version: 0.2-7
+Date: 2017-05-03
 Author: Kassel Liam Hingee
 Maintainer: <kassel.hingee@research.uwa.edu.au>
 Depends:
     spatstat
 Suggests:
     sp, raster, maptools
-Description: Functions for non-parametric estimation of 2D RACS properties from observations of the Earth.  The aim is to develop methods that apply to remote sensing products (such as tree canopy maps).  Consequently the methods focus on RACS that are observed only once.  The package is very dependent on spatstat for many of the functions.
+Description: Functions for non-parametric estimation of 2D RACS properties from observations.  The aim is to develop methods that apply to bitonal images, such as two-class land cover maps derived from remotely sensed data. The methods focus on extracting properties from a single observation. Currently all of the methods pretend that the RACS is stationary.  Most of the functions depend heavily on the tools made available by the \code{spatstat} packaged.
 License: GNU General Public License
 RoxygenNote: 5.0.1
