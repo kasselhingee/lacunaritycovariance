@@ -41,7 +41,7 @@ Another function \code{Hest()} from \code{spatstat} is used heavily in Hingee (2
 
 }
 \section{Notation}{
-Through out this manual the RACS process is referred to as \theracs `\theracst' or \eqn{\Xi}{Xi}, with the observation (the image) called `xi' or \eqn{\xi}.
+Through out this manual the RACS is referred to as `Xi' and an observation of Xi (which is a bitonal image) is referred to as `xi'.
 }
 
 \author{
