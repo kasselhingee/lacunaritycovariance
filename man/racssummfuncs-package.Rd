@@ -27,9 +27,12 @@ The summary functions that this package can generate include:
 **include list, function and history/use case.
 
 Additionally \code{\link[spatstat]{Hest}} from \pkg{spatstat} will estimate spherical contact distributions (used heavily in \cite{Hingee (2016)}) which can also be used to estimate the \emph{Minkowski-Bouligand Fractal Dimension} \cite{**still looking**}.
+
+**what about background warning/theory - like the RACS being stationary and mixing**
 }
 \section{Notation}{
-Through out this manual the RACS is referred to as `Xi' and an observation of Xi (which is a bitonal image) is referred to as `xi'.
+Through out this manual an observation (a bi-tonal \code{im} object, or \code{owin} object with an observation region) is referred to as \sQuote{xi}.
+ The underlying RACS from which this observation comes is referred to as \sQuote{Xi}.
 }
 
 \author{
@@ -38,7 +41,11 @@ Through out this manual the RACS is referred to as `Xi' and an observation of Xi
 Maintainer: \packageMaintainer{racssummfuncs}
 }
 \references{
-Hingee, K.L. (2016) Statistics for Patch Observations. ISPRS Congress Proceedings, IPSRS.
+Hingee, K.L. (2016) Statistics for Patch Observations. ISPRS - International Archives of the Photogrammetry, Remote Sensing and Spatial Information Sciences pp. 235-242. ISPRS.
+
+Hingee, K.L. (2017) A covariance-based estimator and relationship for lacunarity. In preparation.
+
+Hingee, K.L. (2018) Spatial statistics of random closed sets for Earth observations. The University of Western Australia. PhD Thesis. In preparation.
 }
 \keyword{ package }
 \keyword{ spatial }
