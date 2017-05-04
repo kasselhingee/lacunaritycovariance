@@ -1,4 +1,4 @@
-\name{racssummfuncs-package}
+\name{An overview of this package}
 \alias{racssummfuncs-package}
 \alias{racssummfuncs}
 \docType{package}
