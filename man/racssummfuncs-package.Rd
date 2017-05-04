@@ -9,27 +9,20 @@
 \packageDescription{racssummfuncs}
 }
 \details{
-The aim of this package is to include functions for estimating various parameters/properties of random closed set (RACS) from single 2D binary digital images. 
- This is particularly relevant to remotely sensed thematic maps and landscape pattern indices.
- More background and details can be found in Hingee (2016).
+This package contains functions that estimate various parameters/properties of random closed sets (RACS) from single 2D bi-tonal digital images.
+ It enables description of spatial patterns from a rigorous RACS foundation.
+ The theoretical background and motivation for these tools can be found in \cite{Hingee (2016)}, \cite{Hingee (2017)} and \cite{Hingee (2018PhDThesis**)}.
+ An introduction to using these tools with remotely sensed data is included in  the vignette \emph{remotesensedatademo}. 
+ This can be accessed by starting \R and typing \kbd{library(racssummfuncs)} and \kbd{vignette('remotesensedatademo')}.
+ Specific help for each function can be accessed by \kbd{help(fun)} where \kbd{fun} is replaced by the name of the function.
 
- The estimators represent the image as a digitisation of a stationary and mixing RACS.
- A RACS is any process that generates closed sets (intuitively one may think of them as generating sets that include their boundary).
- A stationary and mixing RACS is a RACS for which
- the statistical properties are invariant to translation (stationarity) and observations at locations far away from each other approach independence (mixing). 
+The functions accept observations in raster \code{owin} format provided by the \pkg{spatstat} package, or for \command{mvlc} and \code{mvlgb} the observation can be provided as an \code{im} object (also provided by \pkg{spatstat}) with pixel values of only \eqn{1}s, \eqn{0}s and \code{NA}s.
+ These formats were chosen because \pkg{spatstat} has many tools that ease the statistical analysis of spatial data, and many of the functions in \pkg{racssummfuncs} take advantage of these. 
+ Conversion from other raster formats to \code{im} is quite easy using either \code{\link[spatstat]{im}} or \code{\link[spatstat]{as.im}}.
+ The function \code{\link[spatstat]{as.owin}} can then be used to obtain an \code{im} object; note that for the \code{owin} object to correspond to all the \eqn{1}s in the \code{im} object, every non-\eqn{1} pixel must be first set to \code{NA}. 
+ 
+Typically the functions will also require passing an \code{owin} object that specifies the observation window.
 
-Thus this package provides a way to describe a statistical representation of a landscape. 
-These are more abstract and synoptic descriptions (and thus hopefully less sensitive to measurement artefacts) than Landscape Pattern Indices.
-
-
-The package expects observations to be in binary raster \code{owin} format (this format is provided by the \code{spatstat} package).
- \code{owin} objects are used because \code{spatstat} has many relevant tools for statistical analysis of spatial data. 
-Conversion of binary raster images in other formats to \code{owin} is quite easy by first converting any images to \code{spatstat}'s \code{im} format (using \code{as.im()}).
- \code{as.owin()} can then be applied to get an owin object.
- Typically the functions require passing both an \code{owin} object containing the random set observation (an image) and an \code{owin} object specifying the boundary of the observation.
-
- An example application to data in shapefile and ERMapper format is contained in an attached vignette \emph{remotesensedatademo}. 
- This can be accessed by starting \R and typing \code{library(racssummfuncs)} and \code{vignette('remotesensedatademo')}.
 
 The only functions in this (very small) package are:
 \itemize{
