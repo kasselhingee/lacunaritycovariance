@@ -23,15 +23,10 @@ The functions accept observations in raster \code{owin} format provided by the \
  
 Typically the functions will also require passing an \code{owin} object that specifies the observation window.
 
+The summary functions that this package can generate include:
+**include list, function and history/use case.
 
-The only functions in this (very small) package are:
-\itemize{
-\item \code{coveragefrac()} for estimating coverage probability 
-\item \code{contagSphCont()} for estimating disc-state contagion
-}
-
-Another function \code{Hest()} from \code{spatstat} is used heavily in Hingee (2016) to estimate the spherical contact distributions and conditional core probability.
-
+Additionally \code{\link[spatstat]{Hest}} from \pkg{spatstat} will estimate spherical contact distributions (used heavily in \cite{Hingee (2016)}) which can also be used to estimate the \emph{Minkowski-Bouligand Fractal Dimension} \cite{**still looking**}.
 }
 \section{Notation}{
 Through out this manual the RACS is referred to as `Xi' and an observation of Xi (which is a bitonal image) is referred to as `xi'.
