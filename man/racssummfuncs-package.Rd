@@ -51,12 +51,16 @@ Hingee, K.L. (2018) Spatial statistics of random closed sets for Earth observati
 \keyword{ spatial }
 \examples{
 %coverage probability, core probability, SCD, and disc-state contagion estimation
-xi <- heather$coarse
+xi <- heather$coarse    #an observation of Xi
 obswindow <- Frame(heather$coarse)
  
+#estimate coverage probability
 coverageprob <- coveragefrac(xi,obswindow)
 
-scdest <- Hest(xi,W=obswindow)
+#estimate covariance from xi
+xi.covariance <- covariance(xi)
+#estimate spherical contact distribution, core probability and disc-state contagion
+scdest <- Hest(xi,W=obswindow)   #Hest is from spatstat package
 coreprob <- Hest(complement.owin(xi),W=obswindow)
 discstatecontag <- contagSphCont(scdest,coreprob,coverageprob)
 
@@ -66,4 +70,12 @@ plot(coreprob, main = "Conditional Core Probability Estimates\n
  Showing Estimates using various Border Corrections")
 plot(discstatecontag, main = "A Disc-State Contagion Estimate\n
  (Using the Reduced-Sample Border Correction)")
+
+#Mass-Variance Lacunarity Estimates. If RcppRoll is installed than the gliding box estimate can also be generated for comparison.
+xi.mvlc <- mvlc(c(1,2,3,4), covariance = xi.covariance, p = coverageprob)
+xi.im <- as.im(xi, na.replace = 0)
+xi.mvlgb <- mvlgb(xi.im, c(1,2,3,4))
+
+#Simulation of Boolean Models
+booldisc.rfixed.xi <- rBooleanDetermDiscs(2.2064E-3,2,obswindow)
 }
