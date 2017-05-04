@@ -49,6 +49,9 @@ Hingee, K.L. (2018) Spatial statistics of random closed sets for Earth observati
 }
 \keyword{ package }
 \keyword{ spatial }
+\concept{ landscape ecology }
+\concept{ pattern metric }
+\concept{ landscape pattern indices }
 \examples{
 %coverage probability, core probability, SCD, and disc-state contagion estimation
 xi <- heather$coarse    #an observation of Xi
