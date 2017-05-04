@@ -3,7 +3,7 @@
 \alias{racssummfuncs}
 \docType{package}
 \title{
-\packageTitle{racssummfuncs}
+\packageTitle{racssummfuncs}: An Overview
 }
 \description{
 \packageDescription{racssummfuncs}
