@@ -1,7 +1,7 @@
 Package: racssummfuncs
 Type: Package
 Title: Methods for estimating summary functions of RACS observations with
-    positive area in 2D.
+    positive area in 2D
 Version: 0.2-7
 Date: 2017-05-03
 Author: Kassel Liam Hingee
