@@ -13,11 +13,14 @@ Suggests:
     raster,
     maptools,
     RcppRoll
-Description: Functions for non-parametric estimation of 2D RACS properties from
-    observations. The aim is to develop methods that apply to bitonal images, such
-    as two-class land cover maps derived from remotely sensed data. The methods
-    focus on extracting properties from a single observation. Currently all of
-    the methods pretend that the RACS is stationary. Most of the functions depend
-    heavily on the tools made available by the spatstat package.
+Description: Methods for non-parametric estimation of 2D RACS properties from
+    observations. These sort of methods have various names depending on the
+    field, including landscape pattern indices (from landscape ecology),
+    pattern metrics and spatial statistical summary functions.  The methods are
+    designed to apply to bi-tonal images, such as two-class land cover maps
+    derived from remotely sensed data, and focus on extracting properties from 
+    a single observation. Currently all methods pretend that the RACS is
+    stationary. The package depends heavily on tools provided by the spatstat
+    package.
 License: GNU General Public License
 RoxygenNote: 5.0.1
