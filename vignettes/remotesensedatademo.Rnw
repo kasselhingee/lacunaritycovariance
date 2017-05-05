@@ -18,7 +18,7 @@ The format used as an example here is ERMapper raster format (extension .ers) wi
 \tableofcontents
 
 \section{Installation of Packages}
-It is necessary to install the following packages to read remote sensing data and convert it into the formats used by \code{stationaryracsinference}:
+It is necessary to install the following packages to read remote sensing data and convert it into the formats used by \code{racssummfuncs}:
 \begin{itemize}
 \item sp
 \item rgdal
@@ -32,7 +32,7 @@ It is necessary to install the following packages to read remote sensing data an
 
 After installation load packages for use
 <<loadpackages,echo=TRUE>>=
-library("stationaryracsinference")
+library("racssummfuncs")
 library("rgdal")
 library("maptools")
 library("raster")
@@ -58,7 +58,7 @@ Usually it is not desired (nor computationally feasible) to analyse an entire re
 
 
 <<readpolygon>>=
-regionfilepath <- system.file("extdata", package="stationaryracsinference")
+regionfilepath <- system.file("extdata", package="racssummfuncs")
 obspoly <- readOGR(regionfilepath,"aregionofinterest")
 #print the coordinate projection of the polygon data for sanity
 crs(proj4string(obspoly)) 
@@ -99,7 +99,7 @@ plot(add=TRUE,obsbdry)
  The pixels in this data either \code{NA} or \code{1} where 1 is our class of interest (tree canopy).
 If your data is not in this form then additional transformations will be needed at this point because later \code{as.owin()} assumes \code{NA} values are outside the set and everything else is inside the class.
 
-To use functions in \code{stationaryracsinference} the observation must be converted into an \code{owin} object.
+To use functions in \code{racssummfuncs} the observation must be converted into an \code{owin} object.
 This is a two step process that requires conversion into \code{spatstat} image object and then conversion into an \code{owin} object.
 <<conversiontoowin>>=
 xiimage <- as.im(xidataset)
@@ -117,7 +117,7 @@ plot(xiowin,main="Class cover in the region of interest",axes=TRUE)
 @
 
 \section{Estimation of RACS Summary Functions}
-For now \code{stationaryracsinference} only has functions for estimating coverage probability and disc-state contagion, with spherical contact distribution and conditional core probability estimated using \code{Hest} from \code{spatstat}.
+For now \code{racssummfuncs} only has functions for estimating coverage probability and disc-state contagion, with spherical contact distribution and conditional core probability estimated using \code{Hest} from \code{spatstat}.
  These are the only estimators described in Hingee (2016).
 
 <<estimationsummfcn,fig=TRUE,include=FALSE,width=12,height=6>>=
