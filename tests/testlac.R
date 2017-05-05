@@ -1,4 +1,4 @@
-suppressPackageStartupMessages(library(stationaryracsinference))
+suppressPackageStartupMessages(library(racssummfuncs))
 
 covar <- covariance(heather$coarse)
 p <- area(heather$coarse)/area(Frame(heather$coarse))

@@ -84,7 +84,7 @@ The data is not actually loaded into memory (RAM) until it is converted into a \
 #First unzip raster data
 #(raster data was compressed in a zip to save space)
 rsdatafilepath <- system.file("extdata/demorsraster.zip",
-                              package="stationaryracsinference")
+                              package="racssummfuncs")
 rsfiles <- unzip(rsdatafilepath,exdir=tempdir())
 xidataset<-raster(rsfiles[[2]])
 # if this doesn't load you may need to try opening rsfiles[[1]]

@@ -1,5 +1,5 @@
 # test integratebyradius
-suppressPackageStartupMessages(library(stationaryracsinference))
+suppressPackageStartupMessages(library(racssummfuncs))
 
 testim <- square(r=5)
 testim <- setminus.owin(testim,square(r=2))
