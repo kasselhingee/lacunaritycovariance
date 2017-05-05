@@ -1,0 +1,22 @@
+run /cygdrive/c/Program\ Files/R/R-3.2.2/bin/R.exe CMD check ...
+
+Alternatively open R at package location, load devtools and run check()
+library("devtools")
+check(".",check_dir="..")
+
+
+to install stuff need to run cygwin terminal as administrator and use /cygdrive/c/Program\ Files/R/R-3.2.2/bin/R.exe CMD INSTALL -l C:/Users/hin117/Documents/R/win-library/3.2  DIRECTORY OF PACKAGE
+
+Also put library path (using -l option) to C:/Users/hin117/Documents/R/win-library/3.2
+
+
+Or inside R use devtools package and check(,cleanup=FALSE,check_dir = "../Rcheck")
+
+To INSTALL from inside R use:
+library("devtools")
+install(".",upgrade_dependencies=FALSE)
+install(".",upgrade_dependencies=TRUE)
+
+roxygen2::roxygenise()
+
+
