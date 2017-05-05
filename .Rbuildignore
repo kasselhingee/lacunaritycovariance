@@ -3,3 +3,4 @@
 ^\.git*$
 ^\racsScratch$
 ^\.gitignore$
+build_and_inst_hints_on_windows.txt
