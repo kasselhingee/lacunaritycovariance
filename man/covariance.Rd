@@ -36,12 +36,11 @@ Vectors with small set covariance of the window are eliminated (using \code{setC
 xi <- heather$coarse
 covar <- covariance(xi,inclraw=FALSE)
 }
-\author{
-{Kassel Hingee}
-}
 \references{
 [1] Molchanov, I. (1997) Statistics of the Boolean Model for Practitioners and Mathematicians. John Wiley & Sons.
 }
+\author{
+{Kassel Hingee}
+}
 \keyword{nonparametric}
 \keyword{spatial}
-

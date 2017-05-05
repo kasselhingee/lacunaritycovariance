@@ -22,4 +22,4 @@ Description: Methods for non-parametric estimation of 2D RACS properties from
     stationary. The package depends heavily on tools provided by the spatstat
     package.
 License: GNU General Public License
-RoxygenNote: 5.0.1
+RoxygenNote: 6.0.1
