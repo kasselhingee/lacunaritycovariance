@@ -62,11 +62,24 @@ contagSphCont <- function(XiH, XiHc, p, normalise=FALSE){
   if (is.fv(XiH) && is.fv(XiHc)) {#then new version of contagion
     returnfv <- TRUE
     unitnames <- unitname(XiH)
+    fvin <- list(XiH=XiH,XiHc=XiHc)
+    XiHf <- as.function.fv(XiH,value=".y",extrapolate=TRUE)
+    XiHcf <- as.function.fv(XiHc,value=".y",extrapolate=TRUE)
+    argranges <- lapply(list(XiH=XiH,XiHc=XiHc),argumentrange)
+    ## determine finest resolution (from spatstat)
+    xsteps <- sapply(fvin, argumentstep)
+    finest <- which.min(xsteps)
+    ## extract argument values (from spatstat)
+    xx <- with(fvin[[finest]], .x)
+    xx <- xx[xrange[1L] <= xx & xx <= xrange[2L]]
+    xrange <- range(xx)
+    ##
+
     harmonisedSCDs <- harmonise(XiH,XiHc)
     r <- harmonisedSCDs[[1]]$r
     rharmleng <- length(r)
     #the following if/else statements extends the harmonised values when its known that XiH==1 or XiHc==1
-    if (max(XiH$r)>r[rharmleng] & (harmonisedSCDs[[2]]$rs[rharmleng]>0.99)){
+    if ( (argranges$XiH[[2]] > argranges$XiHc[[2]])  & (XiHcf(argranges$XiHc[[2]])>0.99)) {
       r <- c(r,XiH$r[XiH$r>r[rharmleng]])
       XiH <- c(harmonisedSCDs[[1]]$rs,XiH$rs[XiH$r>r[rharmleng]])
       XiHc <- c(harmonisedSCDs[[2]]$rs,rep(1,length(r)-rharmleng))
@@ -115,3 +128,6 @@ contagSphCont <- function(XiH, XiHc, p, normalise=FALSE){
   return(contag)
 }
 
+
+argumentrange <- function(f) { range(with(f, .x)) }  #copied from spatstat code
+argumentstep <- function(f) { mean(diff(with(f, .x))) }  #copied from spatstat code
