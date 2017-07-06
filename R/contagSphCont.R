@@ -72,28 +72,11 @@ contagSphCont <- function(XiH, XiHc, p, normalise=FALSE){
     ## extract argument values (from spatstat)
     xvals <- with(fvin[[finest]], .x)
     fvwlargestarg <- which.max(list(XiH=argranges$XiH[[2]],XiHc=argranges$XiHc[[2]]))
-    xvals <- c(xvals,with(fvin[[fvwlargestarg]], .x))
-    xrange <- range(xvals)
+    xvals <- c(xvals,with(fvin[[fvwlargestarg]], .x)[with(fvin[[fvwlargestarg]], .x)>max(xvals)])
     ##
 
-    harmonisedSCDs <- harmonise(XiH,XiHc)
-    r <- harmonisedSCDs[[1]]$r
-    rharmleng <- length(r)
-    #the following if/else statements extends the harmonised values when its known that XiH==1 or XiHc==1
-    if ( (argranges$XiH[[2]] > argranges$XiHc[[2]])  & (XiHcf(argranges$XiHc[[2]])>0.99)) {
-      r <- c(r,XiH$r[XiH$r>r[rharmleng]])
-      XiH <- c(harmonisedSCDs[[1]]$rs,XiH$rs[XiH$r>r[rharmleng]])
-      XiHc <- c(harmonisedSCDs[[2]]$rs,rep(1,length(r)-rharmleng))
-    }
-    else if (max(XiHc$r)>r[rharmleng] & (harmonisedSCDs[[1]]$rs[rharmleng]>0.99)){
-      r <- c(r,XiHc$r[XiHc$r>r[rharmleng]])
-      XiHc <- c(harmonisedSCDs[[1]]$rs,XiHc$rs[XiHc$r>r[rharmleng]])
-      XiH <- c(harmonisedSCDs[[2]]$rs,rep(1,length(r)-rharmleng))
-    }
-    else {
-      XiH <- harmonisedSCDs[[1]]$rs
-      XiHc <- harmonisedSCDs[[2]]$rs
-    }
+    XiH <- XiHf(xvals)
+    XiHc <- XiHcf(xvals)
   }
   Pstates <- matrix(NA,nrow=4,ncol=length(XiH))
   rownames(Pstates)=c("P11","P10","P01","P00")
@@ -108,7 +91,7 @@ contagSphCont <- function(XiH, XiHc, p, normalise=FALSE){
   if (normalise) {contag <- 1+ contag/(-4/exp(1)*log(1/exp(1)))}
   if (returnfv){
     if (normalise) {
-      return(fv(data.frame(r= r,
+      return(fv(data.frame(r= xvals,
                            contag = contag),
                 valu = "contag",
                 desc=c("radius",
@@ -117,7 +100,7 @@ contagSphCont <- function(XiH, XiHc, p, normalise=FALSE){
       ))
     }
     else {
-      return(fv(data.frame(r= r,
+      return(fv(data.frame(r= xvals,
                            contag = contag),
                 valu = "contag",
                 desc=c("radius",
