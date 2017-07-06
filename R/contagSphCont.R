@@ -6,13 +6,14 @@
 #' \enumerate{
 #'   \item the disc is completely contained in \eqn{\Xi}
 #'   \item the disc does not intersect \eqn{\Xi}
-#'   \item the centre of the disc is in \eqn{\Xi} but the disc is not contained in \eqn{Xi}
-#'   \item the disc intersects \eqn{Xi} but the centre is outside \eqn{Xi}
+#'   \item the centre of the disc is in \eqn{\Xi} but the disc is not contained in \eqn{\Xi}
+#'   \item the disc intersects \eqn{\Xi} but the centre is outside \eqn{\Xi}
 #' }
-#' The user is required to specify the radius of the disc which is essentially a distance for which the user is interested in quantifying mixing. 
 #' 
-#' The difference to classical contagion is that disc-state contagion is based on the spherical contact distribution instead of pixel neighbours.
-#' One impact of this design is that a distance to quantify the mixing between \eqn{Xi} and the background is chosen by the user (for classical contagion this distance is fixed by the image resolution).
+#' Dics-state contagion is a function of the disc radius.
+#' 
+#' The main difference to classical contagion is that disc-state contagion is based on the spherical contact distribution instead of pixel neighbours.
+#' One impact of this design is that the distance with which to quantify the mixing between \eqn{\Xi} and the background may be chosen by the user by choosing the disc radius (for classical contagion this distance is fixed by the image resolution).
 #' 
 #' @param XiH Conditional spherical contact distribution function for \eqn{\Xi}. 
 #' Typically this is an \code{fv} object but could also be a vector of values.
@@ -25,22 +26,19 @@
 #' In applications to images an estimate of the coverage fraction can be obtained using \code{\link{coveragefrac}}.
 #' @param normalise Optional. If TRUE \code{contagSphCont} normalises the results so that all RACS return a value between 0 and 1. Default is FALSE. 
 #' @details XiH should be a function of radius that gives (or estimates) the probability of a disc of radius \eqn{r} not intersecting \eqn{\Xi} if the disc's centre is not in \eqn{\Xi} 
-#' \deqn{XiH(r) = P(B_r(x) \subseteq \Xi^c | x \in \Xi^c).}
+#' \deqn{\code{XiH}(r) = P(B_r(x) \subseteq \Xi^c | x \in \Xi^c).}
 #' Similarly \code{XiHc} should be an estimate of the probability of a disc being fully contained in \eqn{\Xi} given its centre is in \eqn{\Xi}
-#' \deqn{XiHc(r)\approx P(B_r(x) \subseteq \Xi | x \in \Xi).}
+#' \deqn{\code{XiHc}(r)\approx P(B_r(x) \subseteq \Xi | x \in \Xi).}
 #' These can both be obtained using \code{\link{Hest}} in \pkg{spatstat}.
 #' For \code{XiHc} take care to apply Hest to the complement of \eqn{\Xi} with the observation window \eqn{W}.
 #' 
-#' If \code{XiH} and \code{XiHc} are both fv objects then they must be generated using Hest because the function automatically uses the reduce-sample border correction estimates.
-#' In this case the return value is an fv object.
-#'
 #' If \code{normalise} is \code{TRUE} then the result is divided by 
-#' \eqn{\frac{-4}{e}ln(\frac{1}{e})} and added to 1 so that the normalised disc state contagion is between 0 and 1.
+#' \eqn{\frac{-4}{e}ln(\frac{1}{e})} and added to 1 so that the return value is between 0 and 1 for all possible \eqn{\Xi}.
 #'
 #' @return An \code{fv} object or a vector the same length as \code{XiH} corresponding to the contagion at each r value of \code{XiH}
 
 #' @references 
-#' Hingee, K.L. (2016) Statistics for Patch Observations. ISPRS Congress Proceedings p. IPSRS.
+#' Hingee, K.L. (2016) Statistics for Patch Observations. ISPRS - International Archives of the Photogrammetry, Remote Sensing and Spatial Information Sciences pp. 235-242. ISPRS.
 
 
 #' @examples
