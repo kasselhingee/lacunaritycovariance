@@ -70,9 +70,10 @@ contagSphCont <- function(XiH, XiHc, p, normalise=FALSE){
     xsteps <- sapply(fvin, argumentstep)
     finest <- which.min(xsteps)
     ## extract argument values (from spatstat)
-    xx <- with(fvin[[finest]], .x)
-    xx <- xx[xrange[1L] <= xx & xx <= xrange[2L]]
-    xrange <- range(xx)
+    xvals <- with(fvin[[finest]], .x)
+    fvwlargestarg <- which.max(list(XiH=argranges$XiH[[2]],XiHc=argranges$XiHc[[2]]))
+    xvals <- c(xvals,with(fvin[[fvwlargestarg]], .x))
+    xrange <- range(xvals)
     ##
 
     harmonisedSCDs <- harmonise(XiH,XiHc)
