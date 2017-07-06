@@ -16,7 +16,7 @@
 #' 
 #' @param XiH Conditional spherical contact distribution function for \eqn{\Xi}. 
 #' Typically this is an \code{fv} object but could also be a vector of values.
-#' In applications \code{xiH} would likely be estimated from an image using \code{\link{Hest}} in \package{spatstat}.
+#' In applications \code{XiH} would likely be estimated from an image using \code{\link{Hest}} in \package{spatstat}.
 #' @param XiHc Conditional spherical contact distribution for the complement of \eqn{\Xi}. 
 #' This is called the Conditional Core Probability in Hingee 2016.
 #' Typically this is an \code{fv} object but could also be a vector of values.
@@ -56,37 +56,37 @@
 #' plot(contagion)
 #' 
 
-contagSphCont <- function(xiH, xiHc, p, normalise=FALSE){
+contagSphCont <- function(XiH, XiHc, p, normalise=FALSE){
   returnfv <- FALSE
   unitnames <- NULL
-  if (is.fv(xiH) && is.fv(xiHc)) {#then new version of contagion
+  if (is.fv(XiH) && is.fv(XiHc)) {#then new version of contagion
     returnfv <- TRUE
-    unitnames <- unitname(xiH)
-    harmonisedSCDs <- harmonise(xiH,xiHc)
+    unitnames <- unitname(XiH)
+    harmonisedSCDs <- harmonise(XiH,XiHc)
     r <- harmonisedSCDs[[1]]$r
     rharmleng <- length(r)
-    #the following if/else statements extends the harmonised values when its known that xiH==1 or xiHc==1
-    if (max(xiH$r)>r[rharmleng] & (harmonisedSCDs[[2]]$rs[rharmleng]>0.99)){
-      r <- c(r,xiH$r[xiH$r>r[rharmleng]])
-      xiH <- c(harmonisedSCDs[[1]]$rs,xiH$rs[xiH$r>r[rharmleng]])
-      xiHc <- c(harmonisedSCDs[[2]]$rs,rep(1,length(r)-rharmleng))
+    #the following if/else statements extends the harmonised values when its known that XiH==1 or XiHc==1
+    if (max(XiH$r)>r[rharmleng] & (harmonisedSCDs[[2]]$rs[rharmleng]>0.99)){
+      r <- c(r,XiH$r[XiH$r>r[rharmleng]])
+      XiH <- c(harmonisedSCDs[[1]]$rs,XiH$rs[XiH$r>r[rharmleng]])
+      XiHc <- c(harmonisedSCDs[[2]]$rs,rep(1,length(r)-rharmleng))
     }
-    else if (max(xiHc$r)>r[rharmleng] & (harmonisedSCDs[[1]]$rs[rharmleng]>0.99)){
-      r <- c(r,xiHc$r[xiHc$r>r[rharmleng]])
-      xiHc <- c(harmonisedSCDs[[1]]$rs,xiHc$rs[xiHc$r>r[rharmleng]])
-      xiH <- c(harmonisedSCDs[[2]]$rs,rep(1,length(r)-rharmleng))
+    else if (max(XiHc$r)>r[rharmleng] & (harmonisedSCDs[[1]]$rs[rharmleng]>0.99)){
+      r <- c(r,XiHc$r[XiHc$r>r[rharmleng]])
+      XiHc <- c(harmonisedSCDs[[1]]$rs,XiHc$rs[XiHc$r>r[rharmleng]])
+      XiH <- c(harmonisedSCDs[[2]]$rs,rep(1,length(r)-rharmleng))
     }
     else {
-      xiH <- harmonisedSCDs[[1]]$rs
-      xiHc <- harmonisedSCDs[[2]]$rs
+      XiH <- harmonisedSCDs[[1]]$rs
+      XiHc <- harmonisedSCDs[[2]]$rs
     }
   }
-  Pstates <- matrix(NA,nrow=4,ncol=length(xiH))
+  Pstates <- matrix(NA,nrow=4,ncol=length(XiH))
   rownames(Pstates)=c("P11","P10","P01","P00")
-  Pstates["P11",] <- p* (1-xiHc)
-  Pstates["P10",] <- p*xiHc
-  Pstates["P00",] <- (1-p)*(1-xiH)
-  Pstates["P01",] <- (1-p)*(xiH)
+  Pstates["P11",] <- p* (1-XiHc)
+  Pstates["P10",] <- p*XiHc
+  Pstates["P00",] <- (1-p)*(1-XiH)
+  Pstates["P01",] <- (1-p)*(XiH)
   
   tempstates <- Pstates
   tempstates[Pstates<1E-8] <- 1
