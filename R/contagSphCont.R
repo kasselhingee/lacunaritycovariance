@@ -1,34 +1,43 @@
 #' @title Disc State Contagion
 #' @export contagSphCont
 #' 
-#' @description Calculates the disc-state contagion as described in Hingee 2016. It is like the contagion LPI but is based on the spherical contact version of contagion. 
-#' It describes the entropy (mixing) between four possible states of disc
-#' (see Hingee 2016 for more details).
-#' It requires a mixing distance of interest to be chosen by the user
-#' (compared to classical contagion for which this distance is set by the image resolution).
+#' @description Calculates the disc-state contagion LPI as described in Hingee 2016.
+#' The disc-state contagion LPI describes the entropy (mixing) between four possible states of a disc:
+#' \enumerate{
+#'   \item the disc is completely contained in \eqn{\Xi}
+#'   \item the disc does not intersect \eqn{\Xi}
+#'   \item the centre of the disc is in \eqn{\Xi} but the disc is not contained in \eqn{Xi}
+#'   \item the disc intersects \eqn{Xi} but the centre is outside \eqn{Xi}
+#' }
+#' The user is required to specify the radius of the disc which is essentially a distance for which the user is interested in quantifying mixing. 
 #' 
-#' @param xiH Estimated conditional spherical contact distribution function for \eqn{\Xi}. 
-#' Typically as a \code{fv} object but could also be a vector of values.
-#' @param xiHc Estimate conditional spherical contact distribution for the complement of \eqn{\Xi}. 
+#' The difference to classical contagion is that disc-state contagion is based on the spherical contact distribution instead of pixel neighbours.
+#' One impact of this design is that a distance to quantify the mixing between \eqn{Xi} and the background is chosen by the user (for classical contagion this distance is fixed by the image resolution).
+#' 
+#' @param XiH Conditional spherical contact distribution function for \eqn{\Xi}. 
+#' Typically this is an \code{fv} object but could also be a vector of values.
+#' In applications \code{xiH} would likely be estimated from an image using \code{\link{Hest}} in \package{spatstat}.
+#' @param XiHc Conditional spherical contact distribution for the complement of \eqn{\Xi}. 
 #' This is called the Conditional Core Probability in Hingee 2016.
-#' Typically is a \code{fv} object.
-#' @param p  An estimate of the coverage fraction of a RACS \eqn{\Xi}.
-#' Typically obtained using \code{coveragefrac}.
+#' Typically this is an \code{fv} object but could also be a vector of values.
+#' In applications \code{XiH} would likely be estimated from an image using \code{\link{Hest}} in \package{spatstat}.
+#' @param p  The coverage fraction of \eqn{\Xi}.
+#' In applications to images an estimate of the coverage fraction can be obtained using \code{\link{coveragefrac}}.
 #' @param normalise Optional. If TRUE \code{contagSphCont} normalises the results so that all RACS return a value between 0 and 1. Default is FALSE. 
-#' @details xiH should be a function of radius that estimates the probability 
-#' \deqn{xiH(r)\approx P(B_r(x) \subseteq \Xi^c | x \in \Xi^c)}
-#'  of a disc around an arbitrary point \eqn{x} is contained in \eqn{\Xi^c.}
-#' Similary xiHc should be an estimate of the probability of a disc being fully contained in \eqn{\Xi}
-#' \deqn{xiHc(r)\approx P(B_r(x) \subseteq \Xi | x \in \Xi).}
-#' These can both be obtained using \code{Hest} in \code{spatstat}.
+#' @details XiH should be a function of radius that gives (or estimates) the probability of a disc of radius \eqn{r} not intersecting \eqn{\Xi} if the disc's centre is not in \eqn{\Xi} 
+#' \deqn{XiH(r) = P(B_r(x) \subseteq \Xi^c | x \in \Xi^c).}
+#' Similarly \code{XiHc} should be an estimate of the probability of a disc being fully contained in \eqn{\Xi} given its centre is in \eqn{\Xi}
+#' \deqn{XiHc(r)\approx P(B_r(x) \subseteq \Xi | x \in \Xi).}
+#' These can both be obtained using \code{\link{Hest}} in \pkg{spatstat}.
+#' For \code{XiHc} take care to apply Hest to the complement of \eqn{\Xi} with the observation window \eqn{W}.
 #' 
-#' If xiH and xiHc are both fv objects then they must be generated using Hest because the function automatically uses the reduce-sample border correction estimates.
+#' If \code{XiH} and \code{XiHc} are both fv objects then they must be generated using Hest because the function automatically uses the reduce-sample border correction estimates.
 #' In this case the return value is an fv object.
 #'
 #' If \code{normalise} is \code{TRUE} then the result is divided by 
 #' \eqn{\frac{-4}{e}ln(\frac{1}{e})} and added to 1 so that the normalised disc state contagion is between 0 and 1.
 #'
-#' @return An \code{fv} object or a vector the same length as xiH corresponding to the contagion at each r value of xiH
+#' @return An \code{fv} object or a vector the same length as \code{XiH} corresponding to the contagion at each r value of \code{XiH}
 
 #' @references 
 #' Hingee, K.L. (2016) Statistics for Patch Observations. ISPRS Congress Proceedings p. IPSRS.
@@ -38,12 +47,12 @@
 #' xi <- heather$coarse
 #' obswindow <- Frame(heather$coarse)
 #' p <- coveragefrac(xi,Frame(xi))
-#' xiH <- Hest(xi,W=obswindow) #Sph. Contact Distrution Estimate
-#' xiHc <- Hest(complement.owin(xi),W=obswindow) #Conditional Core Prob. Estimate
-#' plot(xiH,type="l",col="red") 
-#' lines(xiHc,type="l",col="black") 
+#' XiH <- Hest(xi,W=obswindow) #Sph. Contact Distrution Estimate
+#' XiHc <- Hest(complement.owin(xi),W=obswindow) #Conditional Core Prob. Estimate
+#' plot(XiH,type="l",col="red") 
+#' lines(XiHc,type="l",col="black") 
 #' 
-#' contagion <- contagSphCont(xiH,xiHc,p)
+#' contagion <- contagSphCont(XiH,XiHc,p)
 #' plot(contagion)
 #' 
 
