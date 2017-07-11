@@ -8,9 +8,9 @@ covariance(xi, w = NULL, inclraw = FALSE, setCovBoundaryThresh = 0.1 *
   area.owin(w))
 }
 \arguments{
-\item{xi}{An observation (in spatstat owin format or black and white \code{im} object) of the RACS of interest.}
+\item{xi}{An observation of the RACS of interest. It can be in \pkg{spatstat}'s \code{owin} or \code{im} format. If \code{xi} is in \code{im} format then it is assumed that the pixels will be valued 1 (for foreground), 0 (for background) and NA for unobserved.}
 
-\item{w}{The observation window in \code{owin} format. If itsn't included its taken to be the smallest rectangle enclosing \code{Xi}.}
+\item{w}{The observation window in \code{owin} format. If itsn't included and \code{xi} is an \code{owin} object then \code{w} is taken to be the smallest rectangle enclosing \code{xi}. If \code{xi} is a \code{im} object than \code{w} is all the non-NA pixels in \code{xi}.}
 
 \item{inclraw}{If TRUE the output will be two \code{im} objects one for the standard estimator and one raw estimate.}
 
@@ -22,8 +22,8 @@ covariance(xi, w = NULL, inclraw = FALSE, setCovBoundaryThresh = 0.1 *
 \description{
 These functions estimate the covariance of a stationary RACS. 
 The covariance is also known as the two-point coverage probability, and very closely related to the semivariogram.
- The covariance of a vector \eqn{v} is the probability of two points separated by a \eqn{v} being covered by the random set \eqn{\Xi}.
-\deqn{C(v) = P(\{x,x+v\}\subseteq \Xi)}
+ The covariance of a vector \eqn{v} is the probability of two points separated by a \eqn{v} being covered by the random set \eqn{\Xi}
+\deqn{C(v) = P(\{x,x+v\}\subseteq \Xi).}
 }
 \details{
 The reduced sample estimator is [1]
@@ -36,6 +36,7 @@ Vectors with small set covariance of the window are eliminated (using \code{setC
 \examples{
 xi <- heather$coarse
 covar <- covariance(xi,inclraw=FALSE)
+covar <- covariance(as.im(heather$coarse,na.replace=1))
 }
 \references{
 [1] Molchanov, I. (1997) Statistics of the Boolean Model for Practitioners and Mathematicians. John Wiley & Sons.

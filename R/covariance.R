@@ -9,8 +9,8 @@
 
 
 
-#' @param xi An observation (in spatstat owin format or black and white \code{im} object) of the RACS of interest.
-#' @param w The observation window in \code{owin} format. If itsn't included its taken to be the smallest rectangle enclosing \code{Xi}.
+#' @param xi An observation of the RACS of interest. It can be in \pkg{spatstat}'s \code{owin} or \code{im} format. If \code{xi} is in \code{im} format then it is assumed that the pixels will be valued 1 (for foreground), 0 (for background) and NA for unobserved.
+#' @param w The observation window in \code{owin} format. If itsn't included and \code{xi} is an \code{owin} object then \code{w} is taken to be the smallest rectangle enclosing \code{xi}. If \code{xi} is a \code{im} object than \code{w} is all the non-NA pixels in \code{xi}.
 #' @param setCovBoundaryThresh to avoid instabilities of dividing by very small areas, any vector \eqn{v} set covariance of the boundary smaller than this threshold is given a covariance of NA 
 #' @param inclraw If TRUE the output will be two \code{im} objects one for the standard estimator and one raw estimate.
 
@@ -46,7 +46,16 @@ covariance <- function(xi,w=NULL,inclraw=FALSE,setCovBoundaryThresh = 0.1*area.o
           winim <- as.im(w,xy=xi)
           xi <- eval.im(xi*winim)
       }
-      else {w <- as.owin(xi)} #only the non-NA pixels will be in the window
+      #check that xi is only 1s, 0s and NAs
+      uvals <- unique(as.list(as.matrix(xi)))
+      if (sum(is.na(uvals), uvals %in% c(0,1)) != length(uvals)){
+          print("ERROR: input xi is an image object but has values which aren't 0, 1, or NA")
+          return(NULL)
+      }
+      else { 
+          w <- as.owin(xi) #only the non-NA pixels will be in the window
+          xi[is.na(as.matrix(xi))] <- 0 #turn all NA's in xi to 0s
+      } 
       setcovXi <- imcov(xi)
       setcovB <- setcov(w)
    }
