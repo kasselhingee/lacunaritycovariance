@@ -2,7 +2,7 @@
 % Please edit documentation in R/covariance.R
 \name{covariance}
 \alias{covariance}
-\title{Covariance estimates, also known as `two-point probabilities' for stationary RACS}
+\title{A spatial covariance, also known as `two-point probability', estimator for stationary RACS}
 \usage{
 covariance(xi, w = NULL, inclraw = FALSE, setCovBoundaryThresh = 0.1 *
   area.owin(w))
@@ -20,9 +20,10 @@ covariance(xi, w = NULL, inclraw = FALSE, setCovBoundaryThresh = 0.1 *
 \code{SpatStat} \code{im} objects containing the estimated covariances.
 }
 \description{
-These functions estimate the covariance of a stationary random closed set. 
+These functions estimate the covariance of a stationary RACS. 
 The covariance is also known as the two-point coverage probability, and very closely related to the semivariogram.
- The covariance of a vector \eqn{v} is the probability of two points separated by a \eqn{v} being covered by \eqn{\Xi}.
+ The covariance of a vector \eqn{v} is the probability of two points separated by a \eqn{v} being covered by the random set \eqn{\Xi}.
+\deqn{C(v) = P(\{x,x+v\}\subseteq \Xi)}
 }
 \details{
 The reduced sample estimator is [1]

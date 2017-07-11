@@ -1,9 +1,10 @@
-#' @title Covariance estimates, also known as `two-point probabilities' for stationary RACS
+#' @title A spatial covariance, also known as `two-point probability', estimator for stationary RACS
 #' @export covariance
 #' @description 
-#' These functions estimate the covariance of a stationary random closed set. 
+#' These functions estimate the covariance of a stationary RACS. 
 #' The covariance is also known as the two-point coverage probability, and very closely related to the semivariogram.
-#'  The covariance of a vector \eqn{v} is the probability of two points separated by a \eqn{v} being covered by \eqn{\Xi}.
+#'  The covariance of a vector \eqn{v} is the probability of two points separated by a \eqn{v} being covered by the random set \eqn{\Xi}
+#' \deqn{C(v) = P(\{x,x+v\}\subseteq \Xi).}
 #' @author{Kassel Hingee}
 
 
@@ -19,6 +20,7 @@
 #' @examples
 #' xi <- heather$coarse
 #' covar <- covariance(xi,inclraw=FALSE)
+#' covar <- covariance(as.im(heather$coarse,na.replace=1))
 
 #' @keywords spatial nonparametric
 
@@ -44,7 +46,7 @@ covariance <- function(xi,w=NULL,inclraw=FALSE,setCovBoundaryThresh = 0.1*area.o
           winim <- as.im(w,xy=xi)
           xi <- eval.im(xi*winim)
       }
-      else {w <- Frame(xi)}
+      else {w <- as.owin(xi)} #only the non-NA pixels will be in the window
       setcovXi <- imcov(xi)
       setcovB <- setcov(w)
    }
