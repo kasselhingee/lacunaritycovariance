@@ -1,12 +1,12 @@
-#' @title Covariance-based calculations of mass-variance lacunarity
+#' @title Covariance-based calculations of mass variance lacunarity
 #' @export lac
 #' @export mvl
 #' @export mvlc
 #'
-#' @description Estimates the mass-variance lacunarity (MVL) of a stationary RACS from an image, or calculates the MVL from provided covariance (two-point probability) and coverage fraction.
+#' @description Estimates the mass variance lacunarity (MVL) of a stationary RACS from a bi-tonal image, or calculates the MVL from provided covariance (two-point probability) and coverage fraction.
 
 #' @details
-#' Denoted the estimated covariance by \eqn{\hat{C}(v)} and coverage probability \eqn{\hat{p}} then the estimate lacunarity is
+#' If we denoted the estimated covariance by \eqn{\hat{C}(v)} and coverage probability \eqn{\hat{p}} then the estimate of MVL is
 #' \deqn{\frac{1}{\hat{p}^2 |B|^2}\int \gamma_B(v)\hat{C}(v)dv -1 }
 
 #' @param boxes Either a list of sidelengths for square boxes or a list of \code{owin} objects of shape.
@@ -20,10 +20,12 @@
 #' xi <- heather$coarse
 #' covar <- covariance(xi,inclraw=FALSE)
 #' p <- area(xi)/area(Frame(xi))
-#' sidelengths <- c(0.3,0.5,0.8,1)
+#' sidelengths <- seq(0.3,3,by=0.2)
 #' plot(lac(sidelengths,covar,p))
-#' otherboxes <- list(square(0.3),square(0.5),disc(0.8),square(1))
-#' mvlc(otherboxes,covar,p)
+#' otherboxes <- list(owin(xrange=c(-0.15,0.15), yrange=c(-0.15,0.15)),
+#'                    square(0.3),square(0.5),disc(0.8),square(1))
+#' otherboxes.mvl <- mvlc(otherboxes,covar,p)
+#' points(c(0.3,0.5,0.8,1),otherboxes.mvl)
 #' 
 #' #Test on a Boolean Model
 #' lambda <- 2.2064E-3
@@ -94,9 +96,10 @@ lac.cov <- function(boxes, covariance, p){
 
 innerprod.im <- function(A,B,na.rm=FALSE){
    integrationregion <- intersect.owin(Frame(A),Frame(B))
-   A <- A[integrationregion]
-   B <- B[integrationregion]
-   prdimg <- eval.im(A*B,harmonize=TRUE)
+   harmonisingraster <- as.mask(integrationregion,eps=min(A$xstep,A$ystep,B$xstep,B$ystep))
+   A2 <- A[integrationregion, raster=harmonisingraster,drop=FALSE]
+   B2 <- B[integrationregion, raster=harmonisingraster,drop=FALSE]
+   prdimg <- eval.im(A2*B2,harmonize=TRUE)
    return(sum(prdimg[,],na.rm=na.rm)*prdimg$xstep*prdimg$ystep)
 }
 
