@@ -35,8 +35,12 @@ Denoted the estimated covariance by \eqn{\hat{C}(v)} and coverage probability \e
 xi <- heather$coarse
 covar <- covariance(xi,inclraw=FALSE)
 p <- area(xi)/area(Frame(xi))
-sidelengths <- c(0.3,0.5,0.8,1)
+sidelengths <- seq(0.3,3,by=0.2)
 plot(lac(sidelengths,covar,p))
+points(stationaryracsinference::lac(sidelengths,covar,p),col="red")
+points(racssummfuncs::mvlc(sidelengths,covar,p),col="blue")
+boxescheck <- lapply(sidelengths,square)
+points(sidelengths,mvlc(boxescheck,covar,p))
 otherboxes <- list(square(0.3),square(0.5),disc(0.8),square(1))
 mvlc(otherboxes,covar,p)
 

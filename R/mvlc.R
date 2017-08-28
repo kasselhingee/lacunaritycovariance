@@ -20,8 +20,10 @@
 #' xi <- heather$coarse
 #' covar <- covariance(xi,inclraw=FALSE)
 #' p <- area(xi)/area(Frame(xi))
-#' sidelengths <- c(0.3,0.5,0.8,1)
+#' sidelengths <- seq(0.3,3,by=0.2)
 #' plot(lac(sidelengths,covar,p))
+#' points(stationaryracsinference::lac(sidelengths,covar,p),col="red")
+#' points(racssummfuncs::mvlc(sidelengths,covar,p),col="blue")
 #' otherboxes <- list(square(0.3),square(0.5),disc(0.8),square(1))
 #' mvlc(otherboxes,covar,p)
 #' 
@@ -76,7 +78,7 @@ mvlc <- function(boxes, covariance=NULL, p=NULL, xiim=NULL){
 
 lac.cov <- function(boxes, covariance, p){
   if (mode(boxes) %in% c("integer","numeric")){
-     boxcov <- lapply(boxes,setcovsquare,xy=covariance) #theoretical 
+     boxcov <- lapply(boxes,setcovsquare) #theoretical 
      boxarea <- boxes^2
   }
   else { #box must be a list of owin objects
@@ -94,11 +96,12 @@ lac.cov <- function(boxes, covariance, p){
 
 innerprod.im <- function(A,B,na.rm=FALSE){
    integrationregion <- intersect.owin(Frame(A),Frame(B))
-   A <- A[integrationregion]
-   B <- B[integrationregion]
-   prdimg <- eval.im(A*B,harmonize=TRUE)
+   A2 <- A[integrationregion]
+   B2 <- B[integrationregion]
+   prdimg <- eval.im(A2*B2,harmonize=TRUE)
    return(sum(prdimg[,],na.rm=na.rm)*prdimg$xstep*prdimg$ystep)
 }
+
 
 #for a square the set covariance can be calculated analytically using sidelengths
 setcovsquare <- function(side,xy=NULL){
@@ -107,8 +110,8 @@ setcovsquare <- function(side,xy=NULL){
      yrow <- xy$yrow
   }
   if (is.null(xy)) {#defaul to 100 points
-     xcol <- seq(-side,side,length.out=100)
-     yrow <- seq(-side,side,length.out=100)
+     xcol <- seq(-side,side,length.out=2^8)
+     yrow <- seq(-side,side,length.out=2^8)
   }
   #caculate set covariance for each of the vectors given by xcol and yrow. It could 1/4 more efficient by only looking at the positive quadrant and reflect IF the vectors of interest are symmetrical
   #for a box with side length s the set covariance of (x,y) is:
