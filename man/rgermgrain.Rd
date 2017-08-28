@@ -3,43 +3,55 @@
 \name{rgermgrain}
 \alias{rgermgrain}
 \alias{placegrainsfromlib}
-\title{Functions for flexibly generating a simulation of germ grain model}
+\title{A function to help simulate Boolean models with user-provided grains}
 \usage{
 placegrainsfromlib(pp, grainlib, replace = TRUE, prob = NULL)
 }
 \arguments{
 \item{pp}{A point pattern (in \code{ppp} format).}
 
-\item{grainlib}{A list (aka. library/population) of grains (in \code{solist} format) that grains will be selected from}
+\item{grainlib}{A list of grains (in \code{\link[spatstat]{solist}} format) that grains will be selected from}
 
 \item{replace}{passed directly to \code{\link[base]{sample}}. When TRUE grains are chosen from library with replacement.}
 
-\item{prob}{A list of probability weights for each grain in the library. Passed directly to \code{\link[base]{sample}}. If NULL I'm pretty sure grains all have equal probability.}
+\item{prob}{A list of probability weights for each grain in the library. Passed directly to \code{\link[base]{sample}}.
+If NULL the grains are selected with equal probability.}
 }
 \value{
 Returns an \code{owin} object.
 }
 \description{
-Use point process simulations from spatstat to generate a point process in desired region (must include a buffer). \code{placegrainsfromlib} can then be used to randomly select grains from a library and place them around each point. Crop out the buffer zone to get a simulation.
+A Boolean model has two components, a point process (called germs) and a process that creates
+ independent identically distributed grains that are centred on the germs.
+The point process of germs can be easily simulated using a variety of \code{spatstat} functions
+ (note that this simulation window must include a buffer because grains centred outside an observation window can still be observed).
+  The function here, \code{placegrainsfromlib},
+  can then be used to randomly select grains from a library and place them around each point.
+  The buffer zone must then be cropped out to get a simulation of the Boolean model in the desired observation window.
 }
 \details{
 \code{placegrainsfromlib} randomly samples from a library of grains (\code{grainlib}) and places these on the points in \code{pp}.
 }
 \examples{
-#Generating a germ-grain models where germs are a Poisson Point process, and grains are 2 or 3 different disc sizes.
+#Generate a germ-grain models where germs are a Poisson point process
+# and grains are 2 or 3 different disc sizes.
 grainlib <- solist(disc(radius=1),disc(radius=1.9),disc(radius=0.2))
 bufferdist <- 2 #chosen to be larger than the largest radius in library
 
 w <- owin(xrange=c(0,10),yrange=c(0,10))
 
+#simulate the germ process in an enlarged window
 pp <- rpoispp(lambda=0.1,win=dilation(w,bufferdist),nsim=1,drop=TRUE)
-xibuffer <- placegrainsfromlib(pp,grainlib)
-xi <- intersect.owin(xibuffer,w)
 
 plot(w)
-plot(xibuffer,add=TRUE)
+xibuffer <- placegrainsfromlib(pp,grainlib)
+plot(xibuffer,add=TRUE, lty="dashed")
+
+#get final simulation by intersection with desired window
+xi <- intersect.owin(xibuffer,w)
 plot(xi,hatch=TRUE,add=TRUE)
-plot(pp,pch="+",add=TRUE)
+
+
 }
 \author{
 Kassel Hingee
