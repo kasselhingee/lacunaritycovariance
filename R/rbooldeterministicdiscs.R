@@ -47,6 +47,7 @@
 #'  model with specified intensity and disc radius.
 #'  The window information is not contained in this object.
 #'  If the simulated set is empy then an empty \code{owin} object is returned.
+#' The point process of germs is generated using spatstat's \code{\link[spatstat]{rpoispp}}.
 rbdd <- function(lambda,discr,window,seed=NULL){
   grainlib <- solist(disc(radius=discr))
   bufferdist <- 1.1*discr
