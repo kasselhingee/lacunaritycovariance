@@ -3,7 +3,7 @@
 #' @export mvl
 #' @export mvlc
 #'
-#' @description Estimates the mass variance lacunarity (MVL) of a stationary RACS from a bi-tonal image, or calculates the MVL from provided covariance (two-point probability) and coverage fraction.
+#' @description Estimates the mass variance lacunarity (MVL) of a stationary RACS from a bi-tonal image, or calculates the MVL from provided covariance (two-point probability) and coverage probability. 
 
 #' @details
 #' If we denoted the estimated covariance by \eqn{\hat{C}(v)} and coverage probability \eqn{\hat{p}} then the estimate of MVL is
