@@ -29,6 +29,10 @@ integratebyradius <- function(centre, values){
   sqdist <- sqdist[perm]
   valuesm <- valuesm[perm]
   
+  #cut out everything above an NA value
+  valuesm <- valuesm[1:which.min(!is.na(valuesm))]
+  sqdist <- sqdist[1:length(valuesm)]
+  
   #compute shortest distance to boundary from centre - stop summing after that happens.
   distfunc <- distfun.owin(Frame(values), discretise = FALSE, invert=TRUE)
   shdist <- distfunc(centre[[1]],centre[[2]])

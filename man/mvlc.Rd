@@ -35,27 +35,11 @@ Denoted the estimated covariance by \eqn{\hat{C}(v)} and coverage probability \e
 xi <- heather$coarse
 covar <- covariance(xi,inclraw=FALSE)
 p <- area(xi)/area(Frame(xi))
-sidelengths <- c(0.3,0.5,0.8,1)
+sidelengths <- seq(0.3,14,by=0.2)
 plot(lac(sidelengths,covar,p))
-otherboxes <- list(square(0.3),square(0.5),disc(0.8),square(1))
-mvlc(otherboxes,covar,p)
+# what is the MVL estimates for boxes that are discs?
+discboxes <- lapply(sidelengths/2,disc)
+discmvls <- mvlc(discboxes,covar,p)
+points(sidelengths,discmvls)
 
-#Test on a Boolean Model
-lambda <- 2.2064E-3
-discr <- 10
-w <- owin(xrange=c(0,100),yrange=c(0,100))
-xi <- rBooleanDetermDiscs(lambda,discr,w)
-plot(xi)
-xiimg <- as.im(xi, W=w, eps=c(0.1,0.1), na.replace=0)
-#estimated lacunarity
-mvl.est <- mvlc(c(0.5,0.8,1,2,3,4,5,6),xiim=xiimg)
-plot(mvl.est)
-#theoretical lacunarity very different because window is small **I think
-thcovariance <- thcovarDeterministicDiscs(
-                 xrange=c(-10,10),
-	    yrange=c(-10,10),
-	    eps=c(0.1,0.1),lambda,discr)
-thcoverageprob <- booldetermdiscs_truecoveragefrac(lambda,discr)
-mvl.th <- mvlc(c(0.5,0.8,1,2,3,4,5,6),thcovariance,thcoverageprob)
-plot(add=TRUE, mvl.th, col="red", lty="dashed")
 }

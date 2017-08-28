@@ -20,31 +20,13 @@
 #' xi <- heather$coarse
 #' covar <- covariance(xi,inclraw=FALSE)
 #' p <- area(xi)/area(Frame(xi))
-#' sidelengths <- seq(0.3,3,by=0.2)
+#' sidelengths <- seq(0.3,14,by=0.2)
 #' plot(lac(sidelengths,covar,p))
-#' otherboxes <- list(owin(xrange=c(-0.15,0.15), yrange=c(-0.15,0.15)),
-#'                    square(0.3),square(0.5),disc(0.8),square(1))
-#' otherboxes.mvl <- mvlc(otherboxes,covar,p)
-#' points(c(0.3,0.5,0.8,1),otherboxes.mvl)
+#' # what is the MVL estimates for boxes that are discs?
+#' discboxes <- lapply(sidelengths/2,disc)
+#' discmvls <- mvlc(discboxes,covar,p)
+#' points(sidelengths,discmvls)
 #' 
-#' #Test on a Boolean Model
-#' lambda <- 2.2064E-3
-#' discr <- 10
-#' w <- owin(xrange=c(0,100),yrange=c(0,100))
-#' xi <- rBooleanDetermDiscs(lambda,discr,w)
-#' plot(xi)
-#' xiimg <- as.im(xi, W=w, eps=c(0.1,0.1), na.replace=0)
-#' #estimated lacunarity
-#' mvl.est <- mvlc(c(0.5,0.8,1,2,3,4,5,6),xiim=xiimg)
-#' plot(mvl.est)
-#' #theoretical lacunarity very different because window is small **I think
-#' thcovariance <- thcovarDeterministicDiscs(
-#'                  xrange=c(-10,10),
-#'		    yrange=c(-10,10),
-#'		    eps=c(0.1,0.1),lambda,discr)
-#' thcoverageprob <- booldetermdiscs_truecoveragefrac(lambda,discr)
-#' mvl.th <- mvlc(c(0.5,0.8,1,2,3,4,5,6),thcovariance,thcoverageprob)
-#' plot(add=TRUE, mvl.th, col="red", lty="dashed")
 
 mvlc <- function(boxes, covariance=NULL, p=NULL, xiim=NULL){
    if (!(is.null(covariance) | is.null(p))){
@@ -78,7 +60,7 @@ mvlc <- function(boxes, covariance=NULL, p=NULL, xiim=NULL){
 
 lac.cov <- function(boxes, covariance, p){
   if (mode(boxes) %in% c("integer","numeric")){
-     boxcov <- lapply(boxes,setcovsquare,xy=covariance) #theoretical 
+     boxcov <- lapply(boxes,setcovsquare) #theoretical 
      boxarea <- boxes^2
   }
   else { #box must be a list of owin objects
@@ -96,11 +78,28 @@ lac.cov <- function(boxes, covariance, p){
 
 innerprod.im <- function(A,B,na.rm=FALSE){
    integrationregion <- intersect.owin(Frame(A),Frame(B))
-   A <- A[integrationregion]
-   B <- B[integrationregion]
-   prdimg <- eval.im(A*B,harmonize=TRUE)
+   #got to do the harmonisation manually so that NA values that the subsetting operation doesn't introduce NA values
+   harmgrid <- as.mask(integrationregion, eps=c(min(A$xstep,B$xstep),min(A$ystep,B$ystep)))
+   A2 <- as.im(A, xy=harmgrid)
+   B2 <- as.im(B, xy=harmgrid)
+   prdimg <- eval.im(A2*B2,harmonize=FALSE)
    return(sum(prdimg[,],na.rm=na.rm)*prdimg$xstep*prdimg$ystep)
 }
+#tests of innerprod.im:
+#innerprod.im(as.im(square(1)),as.im(square(1),value=1))
+#natest:
+#imna <- as.im(square(1.01),value=1)
+#imna[as.ppp(c(0.5,0.5),W=Frame(imna))] <- NA
+#innerprod.im(as.im(square(1)),imna, na.rm=FALSE)
+#innerprod.im(as.im(square(1)),imna, na.rm=TRUE)
+
+#innerprod.im(as.im(square(1)),as.im(square(0.25),value=1))
+
+#should be close to 0 (orthogonal):
+#innerprod.im(as.im(function(x,y) {sin(x)},W=square(7*pi),eps=0.01),as.im(function(x,y) {sin(2*x)},W=square(2*pi),eps=0.01))
+#should be very non-zero
+#innerprod.im(as.im(function(x,y) {sin(x)},W=square(7*pi),eps=0.01),as.im(function(x,y) {sin(x)},W=square(2*pi),eps=0.01))
+#it should be (and is) equal to this: sum(as.im(function(x,y){sin(x)*sin(x)},W=square(2*pi),eps=0.01))*0.01*0.01
 
 #for a square the set covariance can be calculated analytically using sidelengths
 setcovsquare <- function(side,xy=NULL){
@@ -109,8 +108,9 @@ setcovsquare <- function(side,xy=NULL){
      yrow <- xy$yrow
   }
   if (is.null(xy)) {#defaul to 100 points
-     xcol <- seq(-side,side,length.out=100)
-     yrow <- seq(-side,side,length.out=100)
+     step <- side/2^7
+     xcol <- seq(-side-step,side+step,by=step)
+     yrow <- seq(-side-step,side+step,by=step)
   }
   #caculate set covariance for each of the vectors given by xcol and yrow. It could 1/4 more efficient by only looking at the positive quadrant and reflect IF the vectors of interest are symmetrical
   #for a box with side length s the set covariance of (x,y) is:
