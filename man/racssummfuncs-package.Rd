@@ -53,7 +53,6 @@ Hingee, K.L. (2018) Spatial statistics of random closed sets for Earth observati
 \concept{ pattern metric }
 \concept{ landscape pattern indices }
 \examples{
-%coverage probability, core probability, SCD, and disc-state contagion estimation
 xi <- heather$coarse    #an observation of Xi
 obswindow <- Frame(heather$coarse)
  
@@ -74,11 +73,14 @@ plot(coreprob, main = "Conditional Core Probability Estimates\n
 plot(discstatecontag, main = "A Disc-State Contagion Estimate\n
  (Using the Reduced-Sample Border Correction)")
 
-#Mass-Variance Lacunarity Estimates. If RcppRoll is installed than the gliding box estimate can also be generated for comparison.
+#Mass-Variance Lacunarity Estimates.
+#If RcppRoll is installed than the gliding box estimate can also be generated for comparison.
 xi.mvlc <- mvlc(c(1,2,3,4), covariance = xi.covariance, p = coverageprob)
 xi.im <- as.im(xi, na.replace = 0)
 xi.mvlgb <- mvlgb(xi.im, c(1,2,3,4))
 
 #Simulation of Boolean Models
-booldisc.rfixed.xi <- rbdd(2.2064E-3,2,obswindow)
+booldisc.rfixed.xi <- rbdd(2.2064E-1,0.5,obswindow)
+plot(obswindow, main="A Simulation of a Boolean Model")
+plot(add=TRUE, booldisc.rfixed.xi)
 }
