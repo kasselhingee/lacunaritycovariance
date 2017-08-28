@@ -80,5 +80,5 @@ xi.im <- as.im(xi, na.replace = 0)
 xi.mvlgb <- mvlgb(xi.im, c(1,2,3,4))
 
 #Simulation of Boolean Models
-booldisc.rfixed.xi <- rBooleanDetermDiscs(2.2064E-3,2,obswindow)
+booldisc.rfixed.xi <- rbdd(2.2064E-3,2,obswindow)
 }
