@@ -8,3 +8,7 @@ TO DO BEFORE PUBLISHING:
 - Introduce or reference out Boolean Model
 
 - Refer to the lacunarity paper?
+
+- topic keywords of spatial and non-parametric
+
+- Make it make sense to someone who isn't a spatial stats expert, to an ecologist, that I want to use it.
