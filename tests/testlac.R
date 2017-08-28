@@ -19,7 +19,7 @@ xiimg <- as.im(xi, W=w, eps=c(0.1,0.1), na.replace=0)
 sidelengths <- seq(0.5,50,by=1)
 mvl.est <- mvlc(sidelengths,xiim=xiimg)
 #theoretical lacunarity very different because window is small **I think
-thcovariance <- thcovarDeterministicDiscs(
+thcovariance <- bdd.covar(
                  xrange=c(-10,10)*4,
 	    yrange=c(-10,10)*4,
 	    eps=c(0.1,0.1),lambda,discr)
