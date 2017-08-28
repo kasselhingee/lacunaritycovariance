@@ -10,7 +10,7 @@
 #'  
 #' WARNING: This function needs the \code{roll_sum} function in \code{RcppRoll} to operate.
 #' 
-#' Note: The sidelengths are rounded such that they are an odd number of pixels across.
+#' Note: The side lengths are rounded such that they are an odd number of pixels across.
 #' 
 #' @references [1] Allain, C. and Cloitre, M. (1991) Characterizing the lacunarity of random and deterministic fractal sets. Physical Review A, 44, 3552-3558.
 #'
@@ -60,8 +60,8 @@ if (inclraw){
   lacfv <- fv(lacsdf,argu="s",valu="MVL",
            ylab = expression(MVL[gb]),
 	   unitname=unitname(img),
-           labl = c("Sidelength","raw","MVL"),
-           desc = c("Sidelengths of boxes", "Gliding Box Lacunarity ignoring edge effects", "Gliding Box Lacunarity that only uses boxes entirely within the observation")
+           labl = c("side length","raw","MVL"),
+           desc = c("side lengths of boxes", "Gliding Box Lacunarity ignoring edge effects", "Gliding Box Lacunarity that only uses boxes entirely within the observation")
            )
 }
 else {
@@ -70,8 +70,8 @@ else {
   lacfv <- fv(lacsdf,argu="s",valu="MVL",
            ylab = expression(MVL[gb]),
 	   unitname=unitname(img),
-           labl = c("Sidelength","MVL"),
-           desc = c("Sidelengths of boxes", "Gliding Box Lacunarity that only uses boxes entirely within the observation")
+           labl = c("side length","MVL"),
+           desc = c("side lengths of boxes", "Gliding Box Lacunarity that only uses boxes entirely within the observation")
            )
 }
   return(lacfv)
@@ -79,17 +79,22 @@ else {
 
 
 ##########################
-##The following function calculates lacunarity for a box with sidelengths 2*bX+1 and 2*bY+1 (in pixels). The RS version is automatically calculated by ignoring those boxes that have sums that includa NA values. 
+##The following function calculates lacunarity for a box with side lengths 2*bX+1 and 2*bY+1 (in pixels). The RS version is automatically calculated by ignoring those boxes that have sums that includa NA values. 
 #eg lacgb0(img,5,5,5*0.8)
 #the W is only for the raw version and must be an owin object. 
 #uses rcpproll
 lacgb0.rcpproll <- function(img,sidep,inclraw,W=Frame(img)){
   	mat <- as.matrix(img)
-	movline.overrows <- RcppRoll::roll_sum(mat, sidep)
-	movline.overrowthencols <- RcppRoll::roll_sum(t(movline.overrows),sidep)*img$xstep*img$ystep
-	smRS <- mean(movline.overrowthencols, na.rm=TRUE) #sample mean
-	ss2RS <- mean(movline.overrowthencols^2, na.rm=TRUE) #biased sample second moment
-	lacRS <- ss2RS/(smRS^2) -1
+  if ((sidep > nrow(mat)) | (sidep > ncol(mat))){
+    lacRS <- NA
+  }
+  else {
+  	movline.overrows <- RcppRoll::roll_sum(mat, sidep)
+  	movline.overrowthencols <- RcppRoll::roll_sum(t(movline.overrows),sidep)*img$xstep*img$ystep
+  	smRS <- mean(movline.overrowthencols, na.rm=TRUE) #sample mean
+  	ss2RS <- mean(movline.overrowthencols^2, na.rm=TRUE) #biased sample second moment
+  	lacRS <- ss2RS/(smRS^2) -1
+  }
 	
 	if (inclraw){
 		#lacunarity if the box centeres can be everywhere (aka no boundary correction)

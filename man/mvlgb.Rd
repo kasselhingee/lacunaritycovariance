@@ -37,7 +37,7 @@ Locations where the box is not completely within the observation window are igno
  
 WARNING: This function needs the \code{roll_sum} function in \code{RcppRoll} to operate.
 
-Note: The sidelengths are rounded such that they are an odd number of pixels across.
+Note: The side lengths are rounded such that they are an odd number of pixels across.
 }
 \examples{
 img <- as.im(heather$coarse,na.replace=0)
