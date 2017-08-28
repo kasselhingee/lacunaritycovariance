@@ -96,10 +96,9 @@ lac.cov <- function(boxes, covariance, p){
 
 innerprod.im <- function(A,B,na.rm=FALSE){
    integrationregion <- intersect.owin(Frame(A),Frame(B))
-   harmonisingraster <- as.mask(integrationregion,eps=min(A$xstep,A$ystep,B$xstep,B$ystep))
-   A2 <- A[integrationregion, raster=harmonisingraster,drop=FALSE]
-   B2 <- B[integrationregion, raster=harmonisingraster,drop=FALSE]
-   prdimg <- eval.im(A2*B2,harmonize=TRUE)
+   A <- A[integrationregion]
+   B <- B[integrationregion]
+   prdimg <- eval.im(A*B,harmonize=TRUE)
    return(sum(prdimg[,],na.rm=na.rm)*prdimg$xstep*prdimg$ystep)
 }
 
