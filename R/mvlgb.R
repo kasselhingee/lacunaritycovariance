@@ -65,7 +65,7 @@ if (inclraw){
            )
 }
 else {
-  RS <- unlist(lapply(lacs, `[[`, 1) )
+  MVL <- unlist(lapply(lacs, `[[`, 1) )
   lacsdf <- data.frame(s = sidel, MVL=MVL)
   lacfv <- fv(lacsdf,argu="s",valu="MVL",
            ylab = expression(MVL[gb]),
