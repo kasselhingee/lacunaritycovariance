@@ -22,8 +22,11 @@
 #' p <- area(xi)/area(Frame(xi))
 #' sidelengths <- seq(0.3,3,by=0.2)
 #' plot(lac(sidelengths,covar,p))
+#' plot(add=TRUE, lac(sidelengths,covar,p), col="green")
 #' points(stationaryracsinference::lac(sidelengths,covar,p),col="red")
-#' points(racssummfuncs::mvlc(sidelengths,covar,p),col="blue")
+#' points(racssummfuncs::mvlc(sidelengths,covar,p),col="blue",pch="+")
+#' boxescheck <- lapply(sidelengths,square)
+#' points(sidelengths,mvlc(boxescheck,covar,p),col="green")
 #' otherboxes <- list(square(0.3),square(0.5),disc(0.8),square(1))
 #' mvlc(otherboxes,covar,p)
 #' 
@@ -96,12 +99,28 @@ lac.cov <- function(boxes, covariance, p){
 
 innerprod.im <- function(A,B,na.rm=FALSE){
    integrationregion <- intersect.owin(Frame(A),Frame(B))
-   A2 <- A[integrationregion]
-   B2 <- B[integrationregion]
-   prdimg <- eval.im(A2*B2,harmonize=TRUE)
+   #got to do the harmonisation manually so that NA values that the subsetting operation doesn't introduce NA values
+   harmgrid <- as.mask(integrationregion, eps=c(min(A$xstep,B$xstep),min(A$ystep,B$ystep)))
+   A2 <- as.im(A, xy=harmgrid)
+   B2 <- as.im(B, xy=harmgrid)
+   prdimg <- eval.im(A2*B2,harmonize=FALSE)
    return(sum(prdimg[,],na.rm=na.rm)*prdimg$xstep*prdimg$ystep)
 }
+#tests of innerprod.im:
+#innerprod.im(as.im(square(1)),as.im(square(1),value=1))
+#natest:
+#imna <- as.im(square(1.01),value=1)
+#imna[as.ppp(c(0.5,0.5),W=Frame(imna))] <- NA
+#innerprod.im(as.im(square(1)),imna, na.rm=FALSE)
+#innerprod.im(as.im(square(1)),imna, na.rm=TRUE)
 
+#innerprod.im(as.im(square(1)),as.im(square(0.25),value=1))
+
+#should be close to 0 (orthogonal):
+#innerprod.im(as.im(function(x,y) {sin(x)},W=square(7*pi),eps=0.01),as.im(function(x,y) {sin(2*x)},W=square(2*pi),eps=0.01))
+#should be very non-zero
+#innerprod.im(as.im(function(x,y) {sin(x)},W=square(7*pi),eps=0.01),as.im(function(x,y) {sin(x)},W=square(2*pi),eps=0.01))
+#it should be (and is) equal to this: sum(as.im(function(x,y){sin(x)*sin(x)},W=square(2*pi),eps=0.01))*0.01*0.01
 
 #for a square the set covariance can be calculated analytically using sidelengths
 setcovsquare <- function(side,xy=NULL){
@@ -110,8 +129,9 @@ setcovsquare <- function(side,xy=NULL){
      yrow <- xy$yrow
   }
   if (is.null(xy)) {#defaul to 100 points
-     xcol <- seq(-side,side,length.out=2^8)
-     yrow <- seq(-side,side,length.out=2^8)
+     step <- side/2^7
+     xcol <- seq(-side-step,side+step,by=step)
+     yrow <- seq(-side-step,side+step,by=step)
   }
   #caculate set covariance for each of the vectors given by xcol and yrow. It could 1/4 more efficient by only looking at the positive quadrant and reflect IF the vectors of interest are symmetrical
   #for a box with side length s the set covariance of (x,y) is:
