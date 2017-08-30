@@ -41,5 +41,4 @@ plot(lac(sidelengths,covar,p))
 discboxes <- lapply(sidelengths/2,disc)
 discmvls <- mvlc(discboxes,covar,p)
 points(sidelengths,discmvls)
-
 }
