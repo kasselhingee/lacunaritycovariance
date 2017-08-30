@@ -62,7 +62,7 @@ lac.cov <- function(boxes, covariance, p){
   if (mode(boxes) %in% c("integer","numeric")){
      squares <- lapply(boxes,square) #make into owin rectangles
      boxcov <- lapply(squares,setcov) #setcov is analytic for squares according to help, couldn't see it in code though.
-                                      #regardless - it produces much better plots then my own functions did
+                                      #regardless - it produces much better plots then my own function setcovsquare did
      boxarea <- boxes^2
   }
   else { #box must be a list of owin objects
