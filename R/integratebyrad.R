@@ -11,6 +11,14 @@
 #' kfcn <- integratebyradius(c(0,0),twptprob)
 #' plot(kfcn)
 #' 
+#' #duplicate with rotmean()
+#' twptprob.iso <- rotmean(twptprob,result="fv",Xname="radius")
+#' kfcn3.fun <- function(R){
+#'    integrate(as.function.fv(with.fv(twptprob.iso,f*(2*pi*.x), fun=TRUE)),lower=0,upper=R)$value
+#' }
+#' Rvals <- seq(0.1,8,by=0.1)
+#' points(Rvals,lapply(Rvals,kfcn3.fun),col="green")
+#' plot(add=TRUE,kfcn2,col="green")
 #' 
 integratebyradius <- function(centre, values){
   #this will be a lot faster if I do the whole thing in integer arithmetic, 
