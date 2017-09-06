@@ -53,7 +53,7 @@
 #' contagion <- contagSphCont(XiH,XiHc,p)
 #' plot(contagion)
 #' 
-
+#' @keywords spatial nonparametric 
 contagSphCont <- function(XiH, XiHc, p, normalise=FALSE){
   returnfv <- FALSE
   unitnames <- NULL

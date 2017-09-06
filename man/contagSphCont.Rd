@@ -66,3 +66,5 @@ plot(contagion)
 \references{
 Hingee, K.L. (2016) Statistics for Patch Observations. ISPRS - International Archives of the Photogrammetry, Remote Sensing and Spatial Information Sciences pp. 235-242. ISPRS.
 }
+\keyword{nonparametric}
+\keyword{spatial}

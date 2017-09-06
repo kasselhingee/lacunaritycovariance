@@ -38,7 +38,9 @@ Depends on the function used (see Functions section).
 }
 \description{
 Functions for simulating a Boolean model with grains that are discs of fixed constant radius (the abreviation bdd is short for Boolean model with Determinisitic Discs).
- Also includes functions for calculating the coverage probability, covariance, and spectral density [1,2] of such a model.
+A Boolean model is a two stage model, first the locations of grains, the germs are randomly distributed according to a Poisson point process, then a random grain is placed on each germ independently.
+A thorough introduction can be found in [3].
+Also described in this help file are functions for calculating from model parameters the true coverage probability, covariance, and spectral density [1,2].
 }
 \section{Functions}{
 \itemize{
@@ -85,4 +87,8 @@ thspecdens[round(dim(thspecdens)[2]/2),round(dim(thspecdens)[1]/2)]
 [1] Koch, K., Ohser, J. and Schladitz, K. (2003) Spectral Theory for Random Closed Sets and Estimating the Covariance via Frequency Space. Advances in Applied Probability, 35, 603-613.
 
 [2] Bohm, S., Heinrich, L. and Schmidt, V. (2004) Kernel Estimation of the Spectral Density of Stationary Random Closed Sets. Australian and New Zealand Journal of Statistics, 46, 41-51.
+
+[3] Chiu, S.N., Stoyan, D., Kendall, W.S. and Mecke, J. (2013) Stochastic Geometry and Its Applications, 3rd ed. Chichester, United Kingdom: John Wiley & Sons.
 }
+\keyword{datagen}
+\keyword{spatial}

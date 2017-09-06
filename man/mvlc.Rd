@@ -43,3 +43,5 @@ discmvls <- mvlc(discboxes,covar,p)
 points(sidelengths,discmvls)
 
 }
+\keyword{nonparametric}
+\keyword{spatial}

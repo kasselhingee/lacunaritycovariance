@@ -50,4 +50,5 @@ xi <- rboollognormdiscs(w,2,1,-1,0.5,seed=36)
 plot(w)
 plot(xi,add=TRUE)
 }
+\keyword{datagen}
 \keyword{spatial}
