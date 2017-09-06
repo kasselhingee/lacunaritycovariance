@@ -12,11 +12,11 @@ Suggests:
     raster,
     maptools,
     RcppRoll
-Description: Methods for non-parametric estimation of 2D RACS properties from
-    observations. This class of properties have various names depending on the
-    field, including landscape pattern indices (from landscape ecology),
-    pattern metrics and spatial statistical summary functions.  The methods are
-    designed to apply to bi-tonal images, such as two-class land cover maps
+Description: Methods for non-parametric estimation of 2D RAndom Closed Sets (RACS)
+    properties from observations. This class of properties have various names
+	depending on the field, including landscape pattern indices (from landscape
+	ecology), pattern metrics and spatial statistical summary functions. The methods
+	are designed to apply to bi-tonal images, such as two-class land cover maps
     derived from remotely sensed data, and focus on extracting properties from 
     a single observation. Currently all estimators assume that the RACS is
     stationary and mixing, and that the observation is sufficiently large

@@ -1,8 +1,4 @@
 TO DO BEFORE PUBLISHING:
-- Flesh out relation between Hest and Bouligand-Minkowski
-
-- Warning about assumptions of stationary and mixing
-
 - Discussion on when to use the functions?
 
 - Introduce or reference out Boolean Model
