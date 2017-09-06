@@ -60,7 +60,9 @@ mvlc <- function(boxes, covariance=NULL, p=NULL, xiim=NULL){
 
 lac.cov <- function(boxes, covariance, p){
   if (mode(boxes) %in% c("integer","numeric")){
-     boxcov <- lapply(boxes,setcovsquare) #theoretical 
+     squares <- lapply(boxes,square) #make into owin rectangles
+     boxcov <- lapply(squares,setcov) #setcov is analytic for squares according to help, couldn't see it in code though.
+                                      #regardless - it produces much better plots then my own function setcovsquare did
      boxarea <- boxes^2
   }
   else { #box must be a list of owin objects
@@ -101,29 +103,6 @@ innerprod.im <- function(A,B,na.rm=FALSE){
 #innerprod.im(as.im(function(x,y) {sin(x)},W=square(7*pi),eps=0.01),as.im(function(x,y) {sin(x)},W=square(2*pi),eps=0.01))
 #it should be (and is) equal to this: sum(as.im(function(x,y){sin(x)*sin(x)},W=square(2*pi),eps=0.01))*0.01*0.01
 
-#for a square the set covariance can be calculated analytically using sidelengths
-setcovsquare <- function(side,xy=NULL){
-  if (is.im(xy)){
-     xcol <- xy$xcol
-     yrow <- xy$yrow
-  }
-  if (is.null(xy)) {#defaul to 100 points
-     step <- side/2^7
-     xcol <- seq(-side-step,side+step,by=step)
-     yrow <- seq(-side-step,side+step,by=step)
-  }
-  #caculate set covariance for each of the vectors given by xcol and yrow. It could 1/4 more efficient by only looking at the positive quadrant and reflect IF the vectors of interest are symmetrical
-  #for a box with side length s the set covariance of (x,y) is:
-  #(s-|x|)*(s-|y|) whilst either side is 0
-  xsize <- pmax(side-abs(xcol),0)
-  xcol <- xcol[xsize >0] #save the columns that lead to non-zero image before deleting these columns.
-  xsize <- xsize[xsize>0]
-  ysize <- pmax(side-abs(yrow),0)
-  yrow <- yrow[ysize >0] #save the rows that lead to non-zero image before deleting these columns.
-  ysize <- ysize[ysize>0]
-  boxcovV <- outer(ysize,xsize) #first element becomes the rows.
-  return(im(boxcovV,xcol = xcol, yrow =yrow))
-}
 
 #' @rdname mvlc 
 mvl <- mvlc
