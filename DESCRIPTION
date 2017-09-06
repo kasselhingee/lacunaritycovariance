@@ -1,8 +1,8 @@
 Package: racssummfuncs
 Type: Package
 Title: Estimating summary functions of RACS from a bi-tonal image
-Version: 0.2-8
-Date: 2017-08-28
+Version: 0.2-9
+Date: 2017-09-06
 Author: Kassel Liam Hingee
 Maintainer: <kassel.hingee@research.uwa.edu.au>
 Depends:
@@ -13,13 +13,14 @@ Suggests:
     maptools,
     RcppRoll
 Description: Methods for non-parametric estimation of 2D RACS properties from
-    observations. These sort of methods have various names depending on the
+    observations. This class of properties have various names depending on the
     field, including landscape pattern indices (from landscape ecology),
     pattern metrics and spatial statistical summary functions.  The methods are
     designed to apply to bi-tonal images, such as two-class land cover maps
     derived from remotely sensed data, and focus on extracting properties from 
-    a single observation. Currently all methods pretend that the RACS is
-    stationary. The package depends heavily on tools provided by the spatstat
-    package.
+    a single observation. Currently all estimators assume that the RACS is
+    stationary and mixing, and that the observation is sufficiently large
+	compared to the spatial dependence of the RACS. The package depends heavily
+	on tools provided by the spatstat package.
 License: GNU General Public License
 RoxygenNote: 6.0.1
