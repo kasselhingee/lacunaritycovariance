@@ -13,7 +13,7 @@ This package contains functions that estimate various parameters/properties of r
  It enables description of spatial patterns from a rigorous RACS foundation.
  The theoretical background and motivation for these tools can be found in \cite{Hingee (2016)}, \cite{Chiu et. al. (2013)} and forthcoming papers.
  An introduction to using these tools on remotely sensed data is included in  the vignette \emph{remotesensedatademo}. 
- This can be accessed by starting \R and typing \kbd{library(racssummfuncs)} and \kbd{vignette('remotesensedatademo')}.
+ This can be accessed by starting \R and typing \kbd{library(racssummfuncs)} and \kbd{vignette("remotesensedatademo")}.
  Specific help for each function can be accessed by \kbd{help(fun)} where \kbd{fun} is replaced by the name of the function.
 
 The functions accept observations in raster \code{owin} format provided by the \pkg{spatstat} package, or for \command{mvlc} and \code{mvlgb} the observation can be provided as an \code{im} object (also provided by \pkg{spatstat}) with pixel values of only \eqn{1}s, \eqn{0}s and \code{NA}s.

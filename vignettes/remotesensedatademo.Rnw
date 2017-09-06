@@ -6,6 +6,7 @@
 \newcommand{\code}[1]{{\tt #1}}
 
 \begin{document}
+\SweaveOpts{concordance=TRUE}
 \title{Estimating RACS Summary Functions from data saved in Remote Sensing Formats}
 \author{Kassel Hingee}
 
@@ -127,12 +128,12 @@ rasterbdry=as.mask(obsbdry,xy=xiowin)
 # of the same resolution as the image now so that no 
 # issues in differing discretisations arise later
 
-coverageprob <- coveragefrac(xiowin,rasterbdry)
-coverageprob
+coverp <- coveragefrac(xiowin,rasterbdry)
+coverp
 
 scdest <- Hest(xiowin,W=rasterbdry)
 coreprob <- Hest(complement.owin(xiowin),W=rasterbdry)
-discstatecontag <- contagSphCont(scdest,coreprob,coverageprob)
+discstatecontag <- contagSphCont(scdest,coreprob,coverp)
 
 par(mfrow=c(1,3))
 plot(scdest, main="Conditional Spherical Contact Distribution Estimates\n
