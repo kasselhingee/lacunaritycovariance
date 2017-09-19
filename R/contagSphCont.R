@@ -50,66 +50,77 @@
 #' plot(xi.H,type="l",col="red") 
 #' lines(xic.H,type="l",col="black") 
 #' 
-#' contagion <- scdcontagion(xi.H,xic.H,p)
+#' contagion <- scdcontagion(xI.H,xic.H,p)
 #' plot(contagion)
 #' 
 #' @keywords spatial nonparametric 
 scdcontagion <- function(Xi.H, Xic.H, p, normalise=FALSE){
   returnfv <- FALSE
   unitnames <- NULL
-  if (is.fv(Xi.H) && is.fv(Xic.H)) {#then new version of contagion
+  if (is.fv(Xi.H) && is.fv(Xic.H)) {
     returnfv <- TRUE
     unitnames <- unitname(Xi.H)
-    fvin <- list(Xi.H=Xi.H,Xic.H=Xic.H)
-    Xi.Hf <- as.function.fv(Xi.H,value=".y",extrapolate=TRUE)
-    Xic.Hf <- as.function.fv(Xic.H,value=".y",extrapolate=TRUE)
-    argranges <- lapply(list(Xi.H=Xi.H,Xic.H=Xic.H),argumentrange)
+    fvin <- list(Xi.H = Xi.H, Xic.H = Xic.H)
+    Xi.Hf <- as.function.fv(Xi.H, value = ".y", extrapolate = TRUE)
+    Xic.Hf <- as.function.fv(Xic.H, value = ".y", extrapolate = TRUE)
+    argranges <- lapply(list(Xi.H = Xi.H, Xic.H = Xic.H), argumentrange)
     ## determine finest resolution (from spatstat)
     xsteps <- sapply(fvin, argumentstep)
     finest <- which.min(xsteps)
     ## extract argument values (from spatstat)
     xvals <- with(fvin[[finest]], .x)
-    fvwlargestarg <- which.max(list(Xi.H=argranges$Xi.H[[2]],Xic.H=argranges$Xic.H[[2]]))
-    xvals <- c(xvals,with(fvin[[fvwlargestarg]], .x)[with(fvin[[fvwlargestarg]], .x)>max(xvals)])
+    fvwlargestarg <- which.max(list(Xi.H = argranges$Xi.H[[2]],
+                                   Xic.H = argranges$Xic.H[[2]]))
+    xvals <- c(xvals,
+      with(fvin[[fvwlargestarg]], .x)[
+        with(fvin[[fvwlargestarg]], .x) > max(xvals)
+      ])
     ##
 
     Xi.H <- Xi.Hf(xvals)
     Xic.H <- Xic.Hf(xvals)
   }
-  Pstates <- matrix(NA,nrow=4,ncol=length(Xi.H))
-  rownames(Pstates)=c("P11","P10","P01","P00")
-  Pstates["P11",] <- p* (1-Xic.H)
-  Pstates["P10",] <- p*Xic.H
-  Pstates["P00",] <- (1-p)*(1-Xi.H)
-  Pstates["P01",] <- (1-p)*(Xi.H)
-  
-  tempstates <- Pstates
-  tempstates[Pstates<1E-8] <- 1
-  contag <- colSums(Pstates*log(tempstates))
-  if (normalise) {contag <- 1+ contag/(-4/exp(1)*log(1/exp(1)))}
-  if (returnfv){
+  probofstate <- matrix(NA, nrow = 4, ncol = length(Xi.H))
+  rownames(probofstate) <- c("P11", "P10", "P01", "P00")
+  probofstate["P11", ] <- p * (1 - Xic.H)
+  probofstate["P10", ] <- p * Xic.H
+  probofstate["P00", ] <- (1 - p) * (1 - Xi.H)
+  probofstate["P01", ] <- (1 - p) * (Xi.H)
+
+  tempstates <- probofstate
+  tempstates[probofstate < 1E-8] <- 1
+  contag <- colSums(probofstate * log(tempstates))
+  if (normalise) {
+    contag <- 1 + contag / (-4 / exp(1) * log(1 / exp(1)))
+  }
+  if (returnfv) {
     if (normalise) {
-      return(fv(data.frame(r= xvals,
+      return(fv(data.frame(r = xvals,
                            contag = contag),
                 valu = "contag",
-                desc=c("radius",
+                desc = c("radius",
                        "normalised SCD contagion estimate"),
-                unitname=unitnames
+                unitname = unitnames
       ))
     }
     else {
-      return(fv(data.frame(r= xvals,
+      return(fv(data.frame(r = xvals,
                            contag = contag),
                 valu = "contag",
-                desc=c("radius",
+                desc = c("radius",
                        "unnormalised SCD contagion estimate"),
-                unitname=unitnames
+                unitname = unitnames
       ))
     }
   }
   return(contag)
 }
 
-
-argumentrange <- function(f) { range(with(f, .x)) }  #copied from spatstat code
-argumentstep <- function(f) { mean(diff(with(f, .x))) }  #copied from spatstat code
+#copied from spatstat code
+argumentrange <- function(f) {
+  range(with(f, .x))
+}
+#copied from spatstat code
+argumentstep <- function(f) {
+  mean(diff(with(f, .x)))
+}

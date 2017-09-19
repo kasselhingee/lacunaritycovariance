@@ -59,7 +59,7 @@ xic.H <- Hest(complement.owin(xi),W=obswindow) #Conditional Core Prob. Estimate
 plot(xi.H,type="l",col="red") 
 lines(xic.H,type="l",col="black") 
 
-contagion <- scdcontagion(xi.H,xic.H,p)
+contagion <- scdcontagion(xI.H,xic.H,p)
 plot(contagion)
 
 }
