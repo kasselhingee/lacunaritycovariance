@@ -1,5 +1,5 @@
 #' @title Disc State Contagion
-#' @export contagSphCont
+#' @export scdcontagion
 #' 
 #' @description Calculates the disc-state contagion LPI as described in Hingee 2016.
 #' The disc-state contagion LPI describes the entropy (mixing) between four possible states of a disc:
@@ -24,7 +24,7 @@
 #' In applications \code{XiH} would likely be estimated from an image using \code{\link{Hest}} in \pkg{spatstat}.
 #' @param p  The coverage probability of \eqn{\Xi}.
 #' In applications to images an estimate of the coverage probability can be obtained using \code{\link{coverageprob}}.
-#' @param normalise Optional. If TRUE \code{contagSphCont} normalises the results so that all RACS return a value between 0 and 1. Default is FALSE. 
+#' @param normalise Optional. If TRUE \code{scdcontagion} normalises the results so that all RACS return a value between 0 and 1. Default is FALSE. 
 #' @details XiH should be a function of radius that gives (or estimates) the probability of a disc of radius \eqn{r} not intersecting \eqn{\Xi} if the disc's centre is not in \eqn{\Xi} 
 #' \deqn{\code{XiH}(r) = P(B_r(x) \subseteq \Xi^c | x \in \Xi^c).}
 #' Similarly \code{XiHc} should be an estimate of the probability of a disc being fully contained in \eqn{\Xi} given its centre is in \eqn{\Xi}
@@ -50,11 +50,11 @@
 #' plot(XiH,type="l",col="red") 
 #' lines(XiHc,type="l",col="black") 
 #' 
-#' contagion <- contagSphCont(XiH,XiHc,p)
+#' contagion <- scdcontagion(XiH,XiHc,p)
 #' plot(contagion)
 #' 
 #' @keywords spatial nonparametric 
-contagSphCont <- function(XiH, XiHc, p, normalise=FALSE){
+scdcontagion <- function(XiH, XiHc, p, normalise=FALSE){
   returnfv <- FALSE
   unitnames <- NULL
   if (is.fv(XiH) && is.fv(XiHc)) {#then new version of contagion

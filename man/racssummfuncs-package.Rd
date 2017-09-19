@@ -72,7 +72,7 @@ xi.covariance <- covariance(xi)
 #estimate spherical contact distribution, core probability and disc-state contagion
 scdest <- Hest(xi,W=obswindow)   #Hest is from spatstat package
 coreprob <- Hest(complement.owin(xi),W=obswindow)
-discstatecontag <- contagSphCont(scdest,coreprob,coverageprob)
+discstatecontag <- scdcontagion(scdest,coreprob,coverageprob)
 
 plot(scdest, main="Conditional Spherical Contact Distribution Estimates\n
  Showing Estimates Using Various Border Corrections")
