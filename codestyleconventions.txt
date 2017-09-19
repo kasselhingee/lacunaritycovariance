@@ -1,0 +1,6 @@
+Function Names:
+following spatstat as best I can:
+- no camel case
+- acronyms/abbreviations are lower case
+- things which have a capital in the name - eg. K-function will have capital in the function name
+- periods in function names are ok
