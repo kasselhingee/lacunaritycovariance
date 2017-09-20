@@ -23,14 +23,15 @@
 #' @keywords spatial nonparametric
 coverageprob <- function(xi,w){
   stopifnot(is.owin(xi))
-  stopifnot(is.owin(w))   
-  xiInsideW <- intersect.owin(xi,w)
-  areaxiInside <- area.owin(xiInsideW)
-  areaWindow <- area.owin(w)
-  
-  covProbEstimate <- areaxiInside/areaWindow
-  return(covProbEstimate)
+  stopifnot(is.owin(w))
+  xinw <- intersect.owin(xi, w)
+  xiinw_area <- area.owin(xinw)
+  w_area <- area.owin(w)
+
+  coverprobest <- xiinw_area / w_area
+  return(coverprobest)
 }
 
 #' @rdname coverageprob 
 coveragefrac <- coverageprob
+
