@@ -4,7 +4,7 @@
 \alias{covariance}
 \title{A spatial covariance, also known as `two-point probability', estimator for stationary RACS}
 \usage{
-covariance(xi, w = NULL, inclraw = FALSE, setCovBoundaryThresh = 0.1 *
+covariance(xi, w = NULL, inclraw = FALSE, setcov_boundarythresh = 0.1 *
   area.owin(w))
 }
 \arguments{
@@ -14,7 +14,7 @@ covariance(xi, w = NULL, inclraw = FALSE, setCovBoundaryThresh = 0.1 *
 
 \item{inclraw}{If TRUE the output will be two \code{im} objects one for the standard estimator and one raw estimate.}
 
-\item{setCovBoundaryThresh}{Any vector \eqn{v} such that set covariance of the observation window is smaller than this threshold is given a covariance of NA to avoid instabilities caused by dividing by very small areas,}
+\item{setcov_boundarythresh}{Any vector \eqn{v} such that set covariance of the observation window is smaller than this threshold is given a covariance of NA to avoid instabilities caused by dividing by very small areas,}
 }
 \value{
 A \pkg{SpatStat} \code{im} object containing the estimated covariance. The grey scale values in this image represent the covariance for an array of vectors. If the raw version is requested then a list of \code{im} objects is returned.
@@ -33,7 +33,7 @@ where \eqn{\gamma_{W}(v)} is the set covariance of the observation window \eqn{|
 The raw estimate (if requested) is
 \deqn{\hat{\tilde{C}}(v) = \frac{\gamma_{W\cap X}(v)}{|W|}.}
 \code{covariance} uses Fourier transforms to calculate set covariances (using the \code{\link{setcov}} function from \pkg{spatstat}). 
-Vectors with small \eqn{\gamma_W(v)} are eliminated using \code{setCovBoundaryThresh} because they cause numerical instabilities.
+Vectors with small \eqn{\gamma_W(v)} are eliminated using \code{setcov_boundarythresh} because they cause numerical instabilities.
 }
 \examples{
 xi <- heather$coarse

@@ -11,7 +11,7 @@
 
 #' @param xi An observation of the RACS of interest. It can be in \pkg{spatstat}'s \code{owin} or \code{im} format. If \code{xi} is in \code{im} format then it is assumed that the pixels will be valued 1 (for foreground), 0 (for background) and NA for unobserved.
 #' @param w The observation window in \code{owin} format. If it isn't included and \code{xi} is an \code{owin} object then \code{w} is taken to be the smallest rectangle enclosing \code{xi}. If \code{xi} is a \code{im} object than \code{w} is all the non-NA pixels in \code{xi}.
-#' @param setCovBoundaryThresh Any vector \eqn{v} such that set covariance of the observation window is smaller than this threshold is given a covariance of NA to avoid instabilities caused by dividing by very small areas, 
+#' @param setcov_boundarythresh Any vector \eqn{v} such that set covariance of the observation window is smaller than this threshold is given a covariance of NA to avoid instabilities caused by dividing by very small areas, 
 #' @param inclraw If TRUE the output will be two \code{im} objects one for the standard estimator and one raw estimate.
 
 #' @return A \pkg{SpatStat} \code{im} object containing the estimated covariance. The grey scale values in this image represent the covariance for an array of vectors. If the raw version is requested then a list of \code{im} objects is returned.
@@ -32,46 +32,48 @@
 #' The raw estimate (if requested) is
 #' \deqn{\hat{\tilde{C}}(v) = \frac{\gamma_{W\cap X}(v)}{|W|}.}
 #' \code{covariance} uses Fourier transforms to calculate set covariances (using the \code{\link{setcov}} function from \pkg{spatstat}). 
-#' Vectors with small \eqn{\gamma_W(v)} are eliminated using \code{setCovBoundaryThresh} because they cause numerical instabilities.
+#' Vectors with small \eqn{\gamma_W(v)} are eliminated using \code{setcov_boundarythresh} because they cause numerical instabilities.
 # I suspect this instabilities are because the fourier transforms are only approximately correct, and 0 is within the approximately correct range.
 
 #' @references [1] Serra, J.P. (1982) Image Analysis and Mathematical Morphology. London; New York: Academic Press.
 
-covariance <- function(xi,w=NULL,inclraw=FALSE,setCovBoundaryThresh = 0.1*area.owin(w)){
-   if (is.owin(xi)){
-      if (!is.null(w)){xi <- intersect.owin(xi,w)}
-      else {w <- Frame(xi)}
-      setcovXi <- setcov(xi)
-      setcovB <- setcov(w)
-   }
-   else if (is.im(xi)){
-      if (!is.null(w)) {
-          winim <- as.im(w,xy=xi)
-          xi <- eval.im(xi*winim)
-      }
-      #check that xi is only 1s, 0s and NAs
-      uvals <- unique(as.list(as.matrix(xi)))
-      if (sum(is.na(uvals), uvals %in% c(0,1)) != length(uvals)){
-          print("ERROR: input xi is an image object but has values which aren't 0, 1, or NA")
-          return(NULL)
-      }
-      else { 
-          w <- as.owin(xi) #only the non-NA pixels will be in the window
-          xi[is.na(as.matrix(xi))] <- 0 #turn all NA's in xi to 0s
-      } 
-      setcovXi <- imcov(xi)
-      setcovB <- setcov(w)
-   }
-   else {
-      print("ERROR: Input xi is not an image or owin object")
-      return(NULL)
-   }
-   setcovB[setcovB<setCovBoundaryThresh] <- NA #make NA any values that are too small and lead to division to close to 0
-   covar <- eval.im(setcovXi/setcovB,harmonize=TRUE)
-   if (!inclraw) {return(covar)}
-   if (inclraw) {
-      return(list(rs = covar,
-                  raw = setcovXi/area(w)))
+covariance <- function(xi,
+        w = NULL,
+        inclraw =FALSE,
+        setcov_boundarythresh = 0.1 * area.owin(w)) {
+  if (is.owin(xi)) {
+    if (!is.null(w)) {xi <- intersect.owin(xi, w)}
+    else {w <- Frame(xi)}
+    setcovxi <- setcov(xi)
+    setcovwindow <- setcov(w)
+  } else if (is.im(xi)) {
+    if (!is.null(w)) {
+        winim <- as.im(w, xy = xi)
+        xi <- eval.im(xi * winim)
+    }
+    #check that xi is only 1s, 0s and NAs
+    uvals <- unique(as.list(as.matrix(xi)))
+    if (sum(is.na(uvals), uvals %in% c(0, 1)) != length(uvals)){
+        print("ERROR: input xi has values other than 0, 1 or NA")
+        return(NULL)
+    } else {
+        w <- as.owin(xi) #only the non-NA pixels will be in the window
+        xi[is.na(as.matrix(xi))] <- 0 #turn all NA's in xi to 0s
+    }
+    setcovxi <- imcov(xi)
+    setcovwindow <- setcov(w)
+  }
+  else {
+    print("ERROR: Input xi is not an image or owin object")
+    return(NULL)
+  }
+  #make NA any values that are too small and lead to division to close to 0
+  setcovwindow[setcovwindow < setcov_boundarythresh] <- NA
+  covar <- eval.im(setcovxi / setcovwindow, harmonize = TRUE)
+  if (!inclraw) {return(covar)}
+  if (inclraw) {
+    return(list(rs = covar,
+               raw = setcovxi / area(w)))
    }
 }
 
