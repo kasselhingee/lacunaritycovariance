@@ -23,7 +23,7 @@
 #' @param img An image of pixels valued either \code{0}, \code{1} or \code{NA}. \code{NA} valued pixels are assumed to be outside the observation window.
 #' @param sidelengths A list of suggested box side lengths in the same units as \code{img}. Note the actual side lengths used will be the closest multiple of an odd number of pixel widths.
 #' @param inclraw If TRUE the function will also return a gliding box estimate that ignores edge effects. (Default is FALSE)
-#' @param W Optional observation window. The observation window used for the estimator will be the intersection of \code{W} and the pixels that are not \code{NA} in \code{img}.
+#' @param obswin Optional observation window. The observation window used for the estimator will be the intersection of \code{obswin} and the pixels that are not \code{NA} in \code{img}.
 #' @examples
 #' img <- as.im(heather$coarse,na.replace=0)
 #' sidelengths <- seq(0.2,14,by=0.2) #in units of img
@@ -31,7 +31,7 @@
 #' plot(lac, cbind(MVL,raw) ~ s)
 #'
 #' @keywords spatial nonparametric 
-mvlgb <- function(img, sidelengths, inclraw = FALSE, W = Frame(img)){
+mvlgb <- function(img, sidelengths, inclraw = FALSE, obswin = Frame(img)){
   if (abs(img$xstep - img$ystep) > 1E-2 * img$xstep){print("ERROR: image pixels must be square")}
 #convert sidelengths to odd pixel amounts, taking into account that want a distance to edge
   spix <- 1 + round( (sidelengths - img$xstep) / (2 * img$xstep)) * 2
@@ -43,16 +43,16 @@ mvlgb <- function(img, sidelengths, inclraw = FALSE, W = Frame(img)){
   if (class(img) != "im"){print("ERROR: input img must be of class im")}
   obsvd <- img
   obsvd[is.finite(img$v)] <- TRUE
-  if (class(W) == "im"){obsvd <- eval.im(W * obsvd)}
+  if (class(obswin) == "im"){obsvd <- eval.im(obswin * obsvd)}
   obsvd <- as.owin(obsvd) #owin format needed for use of dilation lacgb0
-  if (class(W) == "owin"){obsvd <- intersect.owin(obsvd, W)}
+  if (class(obswin) == "owin"){obsvd <- intersect.owin(obsvd, obswin)}
 
   if (!("RcppRoll" %in% installed.packages()[, 1])){
      stop("RcppRoll must be installed to calculate gliding box lacunarity")
   }
 
-img[(complement.owin(intersect.owin(W, Frame(img)), frame = Frame(img)))] <- NA  #make sure the pixels outside W are set to NA so that reduce sampling happens naturally ##NOTE: this a time consuming operation that may never be needed
-lacs <- mapply(lacgb0.rcpproll, sidep = 2 * rpix + 1, MoreArgs = list(img = img, W = obsvd), SIMPLIFY = FALSE, inclraw)
+img[(complement.owin(intersect.owin(obswin, Frame(img)), frame = Frame(img)))] <- NA  #make sure the pixels outside obswin are set to NA so that reduce sampling happens naturally ##NOTE: this a time consuming operation that may never be needed
+lacs <- mapply(lacgb0.rcpproll, sidep = 2 * rpix + 1, MoreArgs = list(img = img, obswin = obsvd), SIMPLIFY = FALSE, inclraw)
 
   if (inclraw){
     nobord <- unlist(lapply(lacs, `[[`, 1) )
@@ -82,9 +82,9 @@ lacs <- mapply(lacgb0.rcpproll, sidep = 2 * rpix + 1, MoreArgs = list(img = img,
 ##########################
 ##The following function calculates lacunarity for a box with side lengths 2*bX+1 and 2*bY+1 (in pixels). The RS version is automatically calculated by ignoring those boxes that have sums that includa NA values. 
 #eg lacgb0(img,5,5,5*0.8)
-#the W is only for the raw version and must be an owin object. 
+#the obswin is only for the raw version and must be an owin object. 
 #uses rcpproll
-lacgb0.rcpproll <- function(img, sidep, inclraw, W = Frame(img)){
+lacgb0.rcpproll <- function(img, sidep, inclraw, obswin = Frame(img)){
   mat <- as.matrix(img)
   if ( (sidep > nrow(mat)) | (sidep > ncol(mat))){
     mvlgb.rs <- NA
@@ -105,7 +105,7 @@ lacgb0.rcpproll <- function(img, sidep, inclraw, W = Frame(img)){
     movline.overrows <- RcppRoll::roll_sum(matpad, sidep)
     movline.overrowthencols <- RcppRoll::roll_sum(t(movline.overrows), sidep)
 
-    numpixelsinwindow <- area.owin(W) / (img$xstep * img$ystep)
+    numpixelsinwindow <- area.owin(obswin) / (img$xstep * img$ystep)
     sampmean.raw <- sum(movline.overrowthencols) * img$xstep * img$ystep / numpixelsinwindow #note this isn't simply the mean of areafracs because the areafracs image is larger than the input image
     samp2ndmom.raw <- sum(movline.overrowthencols ^ 2) * (img$xstep * img$ystep) ^ 2 / numpixelsinwindow
     mvlgb.raw <- samp2ndmom.raw / (sampmean.raw ^ 2) - 1
