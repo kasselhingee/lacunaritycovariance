@@ -4,13 +4,13 @@
 \alias{covariance}
 \title{A spatial covariance, also known as `two-point probability', estimator for stationary RACS}
 \usage{
-covariance(xi, w = NULL, inclraw = FALSE, setcov_boundarythresh = 0.1 *
-  area.owin(w))
+covariance(xi, obswin = NULL, inclraw = FALSE, setcov_boundarythresh = 0.1
+  * area.owin(obswin))
 }
 \arguments{
 \item{xi}{An observation of the RACS of interest. It can be in \pkg{spatstat}'s \code{owin} or \code{im} format. If \code{xi} is in \code{im} format then it is assumed that the pixels will be valued 1 (for foreground), 0 (for background) and NA for unobserved.}
 
-\item{w}{The observation window in \code{owin} format. If it isn't included and \code{xi} is an \code{owin} object then \code{w} is taken to be the smallest rectangle enclosing \code{xi}. If \code{xi} is a \code{im} object than \code{w} is all the non-NA pixels in \code{xi}.}
+\item{obswin}{The observation window in \code{owin} format. If it isn't included and \code{xi} is an \code{owin} object then \code{obswin} is taken to be the smallest rectangle enclosing \code{xi}. If \code{xi} is a \code{im} object than \code{obswin} is all the non-NA pixels in \code{xi}.}
 
 \item{inclraw}{If TRUE the output will be two \code{im} objects one for the standard estimator and one raw estimate.}
 

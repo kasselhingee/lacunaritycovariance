@@ -10,7 +10,7 @@
 
 
 #' @param xi An observation of the RACS of interest. It can be in \pkg{spatstat}'s \code{owin} or \code{im} format. If \code{xi} is in \code{im} format then it is assumed that the pixels will be valued 1 (for foreground), 0 (for background) and NA for unobserved.
-#' @param w The observation window in \code{owin} format. If it isn't included and \code{xi} is an \code{owin} object then \code{w} is taken to be the smallest rectangle enclosing \code{xi}. If \code{xi} is a \code{im} object than \code{w} is all the non-NA pixels in \code{xi}.
+#' @param obswin The observation window in \code{owin} format. If it isn't included and \code{xi} is an \code{owin} object then \code{obswin} is taken to be the smallest rectangle enclosing \code{xi}. If \code{xi} is a \code{im} object than \code{obswin} is all the non-NA pixels in \code{xi}.
 #' @param setcov_boundarythresh Any vector \eqn{v} such that set covariance of the observation window is smaller than this threshold is given a covariance of NA to avoid instabilities caused by dividing by very small areas, 
 #' @param inclraw If TRUE the output will be two \code{im} objects one for the standard estimator and one raw estimate.
 
@@ -38,17 +38,17 @@
 #' @references [1] Serra, J.P. (1982) Image Analysis and Mathematical Morphology. London; New York: Academic Press.
 
 covariance <- function(xi,
-        w = NULL,
+        obswin = NULL,
         inclraw =FALSE,
-        setcov_boundarythresh = 0.1 * area.owin(w)) {
+        setcov_boundarythresh = 0.1 * area.owin(obswin)) {
   if (is.owin(xi)) {
-    if (!is.null(w)) {xi <- intersect.owin(xi, w)}
-    else {w <- Frame(xi)}
+    if (!is.null(obswin)) {xi <- intersect.owin(xi, obswin)}
+    else {obswin <- Frame(xi)}
     setcovxi <- setcov(xi)
-    setcovwindow <- setcov(w)
+    setcovwindow <- setcov(obswin)
   } else if (is.im(xi)) {
-    if (!is.null(w)) {
-        winim <- as.im(w, xy = xi)
+    if (!is.null(obswin)) {
+        winim <- as.im(obswin, xy = xi)
         xi <- eval.im(xi * winim)
     }
     #check that xi is only 1s, 0s and NAs
@@ -57,11 +57,11 @@ covariance <- function(xi,
         print("ERROR: input xi has values other than 0, 1 or NA")
         return(NULL)
     } else {
-        w <- as.owin(xi) #only the non-NA pixels will be in the window
+        obswin <- as.owin(xi) #only the non-NA pixels will be in the window
         xi[is.na(as.matrix(xi))] <- 0 #turn all NA's in xi to 0s
     }
     setcovxi <- imcov(xi)
-    setcovwindow <- setcov(w)
+    setcovwindow <- setcov(obswin)
   }
   else {
     print("ERROR: Input xi is not an image or owin object")
@@ -73,7 +73,7 @@ covariance <- function(xi,
   if (!inclraw) {return(covar)}
   if (inclraw) {
     return(list(rs = covar,
-               raw = setcovxi / area(w)))
+               raw = setcovxi / area(obswin)))
    }
 }
 
