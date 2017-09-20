@@ -52,30 +52,30 @@
 #'  The window information is not contained in this object.
 #'  If the simulated set is empy then an empty \code{owin} object is returned.
 #' The point process of germs is generated using spatstat's \code{\link[spatstat]{rpoispp}}.
-rbdd <- function(lambda,discr,window,seed=NULL){
-  grainlib <- solist(disc(radius=discr))
-  bufferdist <- 1.1*discr
-  
+rbdd <- function(lambda, discr, window, seed = NULL){
+  grainlib <- solist(disc(radius = discr))
+  bufferdist <- 1.1 * discr
+
   if (!missing(seed)){set.seed(seed)}
-  pp <- rpoispp(lambda=lambda,win=dilation(window,bufferdist),nsim=1,drop=TRUE)#lambda from B\"{o}m (2002) - chosen to make coverage probability very close to 0.5
-  if (pp$n ==0 ){return(complement.owin(window))}
-  xibuffer <- placegrainsfromlib(pp,grainlib)
-  xi <- intersect.owin(xibuffer,window)
+  pp <- rpoispp(lambda = lambda, win = dilation(window, bufferdist), nsim = 1, drop = TRUE) #lambda from B\"{o}m (2002) - chosen to make coverage probability very close to 0.5
+  if (pp$n == 0 ){return(complement.owin(window))}
+  xibuffer <- placegrainsfromlib(pp, grainlib)
+  xi <- intersect.owin(xibuffer, window)
   return(xi)
 }
 
 #' @describeIn rbdd Returns the true coverage probability given the intensity and disc radius.
 bdd.coverageprob  <- function(lambda, discr){
-  return (1-exp(-pi*discr^2*lambda))
+  return (1 - exp(-pi * discr ^ 2 * lambda))
 }
 
 #theoretical set covariance of a disc
 # @param r is the radius to calculate set covariance
 # @param discr is the radius of disc
-setcovdisc <- function(r,discr){
-  if (r>=2*discr){setcovariance <- 0}
+setcovdisc <- function(r, discr){
+  if (r >= 2 * discr){setcovariance <- 0}
   else {
-    setcovariance <- 2*discr^2*acos(r/(2*discr)) - (r/2)*sqrt(4*discr^2-r^2)
+    setcovariance <- 2 * discr ^ 2 * acos(r / (2 * discr)) - (r / 2) * sqrt(4 * discr ^ 2 - r ^ 2)
   }
   return(setcovariance)
 }
@@ -84,18 +84,18 @@ setcovdisc <- function(r,discr){
 # @param r is the radius to calculate covariance
 # @param lambda is the intensity of the germ process (Poisson point process)
 # @param discr is the radius of the discs.
-isotropiccovarianceDeterministicDiscs <- function(r,lambda,discr){
-  expectedsetcovariance <- setcovdisc(r,discr)
-  p <- 1-exp(-pi*discr^2*lambda)
-  covariance <- 2*p-1+(1-p)^2*exp(lambda*expectedsetcovariance)
+isotropiccovarianceDeterministicDiscs <- function(r, lambda, discr){
+  expectedsetcovariance <- setcovdisc(r, discr)
+  p <- 1 - exp(-pi * discr ^ 2 * lambda)
+  covariance <- 2 * p - 1 + (1 - p ) ^ 2 * exp(lambda * expectedsetcovariance)
   return(covariance)
 }
 # covariance as a function of vectors given in X, Y columns.
-bdd.covar_vec <- function(X,Y,lambda,discr){
-  rlist <- sqrt(X^2+Y^2)
-  covar <- vector(length(rlist),mode="numeric")
+bdd.covar_vec <- function(X, Y, lambda, discr){
+  rlist <- sqrt(X ^ 2 + Y ^ 2)
+  covar <- vector(length(rlist), mode = "numeric")
   for (i in 1:length(rlist)){
-    covar[i] <- isotropiccovarianceDeterministicDiscs(rlist[i],lambda=lambda,discr=discr)
+    covar[i] <- isotropiccovarianceDeterministicDiscs(rlist[i], lambda = lambda, discr = discr)
   }
   return(covar)
 }
@@ -104,16 +104,16 @@ bdd.covar_vec <- function(X,Y,lambda,discr){
 #' @param xrange range of x values for \code{bdd.covar}
 #' @param yrange range of y values for \code{bdd.covar}
 #' @param eps list of length 2 of the steps between samples points in x and y respectively for \code{bdd.covar}.
-bdd.covar <- function(xrange,yrange,eps,lambda,discr){
+bdd.covar <- function(xrange, yrange, eps, lambda, discr){
   xpts <- seq(from = xrange[1], to = xrange[2], by = eps[1])
   ypts <- seq(from = yrange[1], to = yrange[2], by = eps[2])
-  mat <- outer(xpts,ypts,FUN="bdd.covar_vec",lambda=lambda,discr=discr) #rows correspond to xstep - just a quirk of outer!
+  mat <- outer(xpts, ypts, FUN = "bdd.covar_vec", lambda = lambda, discr = discr) #rows correspond to xstep - just a quirk of outer!
   mat <- t(mat) #now columns correspond to x vals.
-  return(im(mat,xcol = xpts, yrow=ypts))
+  return(im(mat, xcol = xpts, yrow = ypts))
 }
 
 #' @describeIn rbdd  Computes the spectral density using the theoretical covariance and FFT
-bdd.specdens <- function(lambda,discr){
+bdd.specdens <- function(lambda, discr){
   xpts <- 0:(20 * discr) / 4
   ypts <- 0:(20 * discr) / 4
   mat <- outer(xpts, ypts, FUN = "bdd.covar_vec", lambda = lambda, discr = discr) #rows correspond to xstep - just a quirk of outer!
