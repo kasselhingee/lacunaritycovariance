@@ -5,14 +5,14 @@
 \alias{coveragefrac}
 \title{Estimate the coverage probability of a stationary RACS}
 \usage{
-coverageprob(xi, w)
+coverageprob(xi, obswin)
 
-coveragefrac(xi, w)
+coveragefrac(xi, obswin)
 }
 \arguments{
 \item{xi}{An observation of a RACS in \pkg{spatstat}'s \code{owin} format.}
 
-\item{w}{The window of observation (not necessarily rectangular) also in \code{owin} format.}
+\item{obswin}{The window of observation (not necessarily rectangular) also in \code{owin} format.}
 }
 \value{
 An estimate of the coverage probability

@@ -10,7 +10,7 @@
  
 #' 
 #' @param xi An observation of a RACS in \pkg{spatstat}'s \code{owin} format.
-#' @param w The window of observation (not necessarily rectangular) also in \code{owin} format.
+#' @param obswin The window of observation (not necessarily rectangular) also in \code{owin} format.
 #' @return An estimate of the coverage probability
 #' @author Kassel Hingee 
 #' @import spatstat
@@ -21,12 +21,12 @@
 #' cp <- coverageprob(xi,obswindow)
 
 #' @keywords spatial nonparametric
-coverageprob <- function(xi,w){
+coverageprob <- function(xi,obswin){
   stopifnot(is.owin(xi))
-  stopifnot(is.owin(w))
-  xinw <- intersect.owin(xi, w)
+  stopifnot(is.owin(obswin))
+  xinw <- intersect.owin(xi, obswin)
   xiinw_area <- area.owin(xinw)
-  w_area <- area.owin(w)
+  w_area <- area.owin(obswin)
 
   coverprobest <- xiinw_area / w_area
   return(coverprobest)
