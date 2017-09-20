@@ -114,67 +114,60 @@ bdd.covar <- function(xrange,yrange,eps,lambda,discr){
 
 #' @describeIn rbdd  Computes the spectral density using the theoretical covariance and FFT
 bdd.specdens <- function(lambda,discr){
-  xptsLR <- 0:(20*discr)/4
-  yptsLR <- 0:(20*discr)/4
-  mat <- outer(xptsLR,yptsLR,FUN="bdd.covar_vec",lambda=lambda,discr=discr) #rows correspond to xstep - just a quirk of outer!
+  xpts <- 0:(20 * discr) / 4
+  ypts <- 0:(20 * discr) / 4
+  mat <- outer(xpts, ypts, FUN = "bdd.covar_vec", lambda = lambda, discr = discr) #rows correspond to xstep - just a quirk of outer!
   #reflect out to all corners
-  mat <- mat[,c((ncol(mat)):2,1:ncol(mat))]
-  mat <- mat[c((nrow(mat)):2,1:nrow(mat)),]
-  #theoretical p value 
-  p <- 1-exp(-pi*discr^2*lambda)
-  
-  M <- mat-p^2
+  mat <- mat[, c( (ncol(mat)):2, 1:ncol(mat))]
+  mat <- mat[c( (nrow(mat)):2, 1:nrow(mat)), ]
+  #theoretical p value
+  p <- 1 - exp(-pi * discr ^ 2 * lambda)
+
+  M <- mat - p ^ 2
   nr <- nrow(M)
   nc <- ncol(M)
   #pad with lots of 0!
-  thcovpad <- matrix(0, ncol=8*nc, nrow=8*nr)
+  thcovpad <- matrix(0, ncol = 8 * nc, nrow = 8 * nr)
   thcovpad[1:nr, 1:nc] <- M
-  scalefactorX <- (xptsLR[2]-xptsLR[1])
-  scalefactorY <- (yptsLR[2]-yptsLR[1]) 
-  specdens <- scalefactorX*scalefactorY*fft(thcovpad)
+  scalefactorx <- (xpts[2] - xpts[1])
+  scalefactory <- (ypts[2] - ypts[1])
+  specdens <- scalefactorx * scalefactory * fft(thcovpad)
   specdens <- abs(specdens)
   nr <- nrow(specdens) #can use these because specdens has same dimensions as start
   nc <- ncol(specdens)
   if (nr %% 2 == 0){
-    specdens <- specdens[ ((-nr/2):(nr/2)) %% (nr) + 1,]
-    yrow <- ((-nr/2):(nr/2)) * 2*pi/(scalefactorY*nr)
+    specdens <- specdens[ ( (-nr / 2):(nr / 2)) %% (nr) + 1, ]
+    yrow <- ( (-nr / 2):(nr / 2)) * 2 * pi / (scalefactory * nr)
   } else {
-    specdens <- specdens[ ((-(nr-1)/2):((nr-1)/2)) %% (nr) + 1,]
-    yrow <- ((-(nr-1)/2):((nr-1)/2)) * 2*pi/(scalefactorY*nr)
-  } 
-  if (nc %% 2 == 0){
-    specdens <- specdens[, ((-nc/2):(nc/2)) %% (nc) + 1]
-    xcol <- ((-nc/2):(nc/2)) * 2*pi/(scalefactorX*nc)
-  } else {
-    specdens <- specdens[, ((-(nc-1)/2):(nc/2)) %% (nc) + 1]  
-    xcol <- ((-(nc-1)/2):(nc/2)) * 2*pi/(scalefactorX*nc)
+    specdens <- specdens[ ( ( -(nr - 1) / 2):( (nr - 1) / 2)) %% (nr) + 1, ]
+    yrow <- ( ( -(nr - 1) / 2):( (nr - 1) / 2)) * 2 * pi / (scalefactory * nr)
   }
-  
-  specdens <- im(specdens,xcol = xcol, yrow = yrow)
+  if (nc %% 2 == 0){
+    specdens <- specdens[, ( (-nc / 2):(nc / 2)) %% (nc) + 1]
+    xcol <- ( (-nc / 2):(nc / 2)) * 2 * pi / (scalefactorx * nc)
+  } else {
+    specdens <- specdens[, ( ( -(nc - 1) / 2):(nc / 2)) %% (nc) + 1]
+    xcol <- ( ( -(nc - 1) / 2):(nc / 2))  *  2 * pi / (scalefactorx * nc)
+  }
+
+  specdens <- im(specdens, xcol = xcol, yrow = yrow)
   return(specdens)
 }
 
 #' @describeIn rbdd Calculates spectral density at at the origin using the theoretical covariance.
-#'  It is the integral of the (covariance - (coverage probability)^2) over all space.
-#now calculate spectral density at origin using integral of covariance -p^2
-bdd.specdensAtOrigin <- function(lambda,discr){
-  xptsLR <- 0:(80*discr)/20
-  yptsLR <- 0:(80*discr)/20
-  mat <- outer(xptsLR,yptsLR,FUN="bdd.covar_vec",lambda=lambda,discr=discr) #rows correspond to xstep - just a quirk of outer!
+#' It is the integral of the (covariance - (coverage probability)^2) over all space.
+bdd.specdensAtOrigin <- function(lambda, discr){
+  xpts <- 0:(80 * discr) / 20
+  ypts <- 0:(80 * discr) / 20
+  mat <- outer(xpts, ypts, FUN = "bdd.covar_vec", lambda = lambda, discr = discr) #rows correspond to xstep - just a quirk of outer!
   #reflect out to all corners
-  mat <- mat[,c((ncol(mat)):2,1:ncol(mat))]
-  mat <- mat[c((nrow(mat)):2,1:nrow(mat)),]
-  #theoretical p value 
-  p <- 1-exp(-pi*discr^2*lambda)
-  
-  M <- mat-p^2
-  nr <- nrow(M)
-  nc <- ncol(M)
-  scalefactorX <- (xptsLR[2]-xptsLR[1])
-  scalefactorY <- (yptsLR[2]-yptsLR[1]) 
-  return(sum(M)*scalefactorY*scalefactorX)
+  mat <- mat[, c( (ncol(mat)):2, 1:ncol(mat))]
+  mat <- mat[c( (nrow(mat)):2, 1:nrow(mat)), ]
+  #theoretical p value
+  p <- 1 - exp(-pi * discr ^ 2 * lambda)
+
+  M <- mat - p ^ 2
+  scalefactorx <- (xpts[2] - xpts[1])
+  scalefactory <- (ypts[2] - ypts[1])
+  return(sum(M) * scalefactory * scalefactorx)
 }
-
-
-
- 
