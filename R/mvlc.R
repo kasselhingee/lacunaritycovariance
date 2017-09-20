@@ -29,46 +29,46 @@
 #' 
 #' @keywords spatial nonparametric 
 mvlc <- function(boxes, covariance = NULL, p = NULL, xiim = NULL){
-   if (!(is.null(covariance) | is.null(p))){
-      if (!is.null(xiim)){cat("WARNING: covariance, p and observation image, xiim, given. Only the covariance and p will be used\n")}
-      lacv <- lac.cov(boxes, covariance, p)
-      unitname <- unitname(covariance)
-   } else if (!is.null(xiim)){
-      if (is.null(covariance) & is.null(p) != TRUE){ cat("WARNING: xiim supplied and only one of covariance or p supplied so using xiim\n")}
-      p <- sum(xiim) / sum(is.finite(xiim$v))
-      w <- as.owin(xiim) #w is observation window - only the non NA values end up in window
-      xiim[is.na(xiim$v)] <- 0
-      covar <- covariance(xiim, w = w)
-      lacv <- lac.cov(boxes, covar, p)
-      unitname <- unitname(xiim)
-   } else {
-      stop("Input requires specification of xiim or covariance and p\n")
-   }
+  if (!(is.null(covariance) | is.null(p))){
+    if (!is.null(xiim)){cat("WARNING: covariance, p and observation image, xiim, given. Only the covariance and p will be used\n")}
+    lacv <- lac.cov(boxes, covariance, p)
+    unitname <- unitname(covariance)
+  } else if (!is.null(xiim)){
+    if (is.null(covariance) & is.null(p) != TRUE){ cat("WARNING: xiim supplied and only one of covariance or p supplied so using xiim\n")}
+    p <- sum(xiim) / sum(is.finite(xiim$v))
+    w <- as.owin(xiim) #w is observation window - only the non NA values end up in window
+    xiim[is.na(xiim$v)] <- 0
+    covar <- covariance(xiim, w = w)
+    lacv <- lac.cov(boxes, covar, p)
+    unitname <- unitname(xiim)
+  } else {
+    stop("Input requires specification of xiim or covariance and p\n")
+  }
 
-   if (mode(boxes) %in% c("integer", "numeric")){
-      lacfv <- fv(data.frame(s = boxes, MVL = lacv),
-                  argu = "s",
-		  valu = "MVL",
-		  ylab = expression(MVL),
-		  unitname = unitname,
-		  labl = c("Box Side Length", "MVL"),
-		  desc = c("Side length of boxes", "MVL derived from covariance")
-		  )
-       return(lacfv)
-   } else (return(lacv))
+  if (mode(boxes) %in% c("integer", "numeric")){
+    lacfv <- fv(data.frame(s = boxes, MVL = lacv),
+                argu = "s",
+                valu = "MVL",
+                ylab = expression(MVL),
+                unitname = unitname,
+                labl = c("Box Side Length", "MVL"),
+                desc = c("Side length of boxes", "MVL derived from covariance")
+               )
+    return(lacfv)
+  } else (return(lacv))
 }
 
 lac.cov <- function(boxes, covariance, p){
   if (mode(boxes) %in% c("integer", "numeric")){
-     squares <- lapply(boxes, square) #make into owin rectangles
-     boxcov <- lapply(squares, setcov) #setcov is analytic for squares according to help, couldn't see it in code though.
-                                      #regardless - it produces much better plots then my own function setcovsquare did
-     boxarea <- boxes ^ 2
+    squares <- lapply(boxes, square) #make into owin rectangles
+    boxcov <- lapply(squares, setcov) #setcov is analytic for squares according to help, couldn't see it in code though.
+                                     #regardless - it produces much better plots then my own function setcovsquare did
+    boxarea <- boxes ^ 2
   }
   else { #box must be a list of owin objects
-     boxcov <- lapply(boxes, setcov) #numerical
-     boxarea <- lapply(boxes, area.owin)
-     boxarea <- unlist(boxarea)
+    boxcov <- lapply(boxes, setcov) #numerical
+    boxarea <- lapply(boxes, area.owin)
+    boxarea <- unlist(boxarea)
   }
 
   integrationresults <- mapply(innerprod.im, boxcov, list(covariance), na.rm = FALSE, SIMPLIFY = FALSE) # the list around the covariance is necessary to stop mapply unlisting the image itself
@@ -79,8 +79,8 @@ lac.cov <- function(boxes, covariance, p){
 
 
 innerprod.im <- function(A, B, na.rm = FALSE){
-   integrationregion <- intersect.owin(Frame(A), Frame(B))
-   #got to do the harmonisation manually so that NA values that the subsetting operation doesn't introduce NA values
+  integrationregion <- intersect.owin(Frame(A), Frame(B))
+  #got to do the harmonisation manually so that NA values that the subsetting operation doesn't introduce NA values
   harmgrid <- as.mask(integrationregion,
              eps = c(min(A$xstep, B$xstep), min(A$ystep, B$ystep)))
   A2 <- as.im(A, xy = harmgrid)
