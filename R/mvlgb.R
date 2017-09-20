@@ -87,37 +87,34 @@ else {
 lacgb0.rcpproll <- function(img,sidep,inclraw,W=Frame(img)){
   	mat <- as.matrix(img)
   if ((sidep > nrow(mat)) | (sidep > ncol(mat))){
-    lacRS <- NA
+    mvlgb.rs <- NA
   }
   else {
   	movline.overrows <- RcppRoll::roll_sum(mat, sidep)
   	movline.overrowthencols <- RcppRoll::roll_sum(t(movline.overrows),sidep)*img$xstep*img$ystep
-  	smRS <- mean(movline.overrowthencols, na.rm=TRUE) #sample mean
-  	ss2RS <- mean(movline.overrowthencols^2, na.rm=TRUE) #biased sample second moment
-  	lacRS <- ss2RS/(smRS^2) -1
+  	sampmean.rs <- mean(movline.overrowthencols, na.rm=TRUE) #sample mean
+  	samp2ndmom.rs <- mean(movline.overrowthencols^2, na.rm=TRUE) #biased sample second moment
+  	mvlgb.rs <- samp2ndmom.rs/(sampmean.rs^2) -1
   }
 	
 	if (inclraw){
 		#lacunarity if the box centeres can be everywhere (aka no boundary correction)
-		matPAD <- matrix(0,ncol=ncol(mat)+2*sidep, nrow=nrow(mat)+2*sidep)
-		matPAD[1*sidep+1:nrow(img),1*sidep+1:ncol(img)] <- mat
-		matPAD[is.na(matPAD)] <- 0
-		movline.overrows <- RcppRoll::roll_sum(matPAD, sidep)
+		matpad <- matrix(0,ncol=ncol(mat)+2*sidep, nrow=nrow(mat)+2*sidep)
+		matpad[1*sidep+1:nrow(img),1*sidep+1:ncol(img)] <- mat
+		matpad[is.na(matpad)] <- 0
+		movline.overrows <- RcppRoll::roll_sum(matpad, sidep)
 		movline.overrowthencols <- RcppRoll::roll_sum(t(movline.overrows),sidep)
 		
 
 		numpixelsinwindow <- area.owin(W)/(img$xstep*img$ystep)
-		smA <- sum(movline.overrowthencols)*img$xstep*img$ystep/numpixelsinwindow #note this isn't simply the mean of areafracs because the areafracs image is larger than the input image
-		ss2A <- sum(movline.overrowthencols^2)*(img$xstep*img$ystep)^2/numpixelsinwindow
-		lacA <- ss2A/(smA^2) -1
+		sampmean.raw <- sum(movline.overrowthencols)*img$xstep*img$ystep/numpixelsinwindow #note this isn't simply the mean of areafracs because the areafracs image is larger than the input image
+		samp2ndmom.raw <- sum(movline.overrowthencols^2)*(img$xstep*img$ystep)^2/numpixelsinwindow
+		mvlgb.raw <- samp2ndmom.raw/(sampmean.raw^2) -1
 	}
-  if (inclraw){ return(list(raw=lacA,RS=lacRS))}
-  else {return(RS=lacRS)}
+  if (inclraw) {return(list(raw = mvlgb.raw, RS = mvlgb.rs))}
+  else {return(RS = mvlgb.rs)}
 }
 
 #' @rdname mvlgb
 lacgb <- mvlgb
 
-#TO DO:
-## catch warnings about empty RS window and print something more understandble
-## get lidar data at some point
