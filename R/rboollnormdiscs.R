@@ -35,28 +35,23 @@
 
 
 #' @keywords spatial datagen
-rboollognormdiscs <- function(window,bufferdist,lambda,meanlog,sdlog,seed=NULL){
+rboollognormdiscs <- function(window, bufferdist, lambda, meanlog, sdlog, seed = NULL){
   #have to simulate in a much larger area than the observation window (because grains with centres outside the window should still be observed)
-  wsim <- Frame(dilation(window,bufferdist)) #i reckon faster to use rectangular region (the non-rectangular probably simulates in a rectangular region and then rejects anyway)
+  wsim <- Frame(dilation(window, bufferdist)) #i reckon faster to use rectangular region (the non-rectangular probably simulates in a rectangular region and then rejects anyway)
   if (!missing(seed)){set.seed(seed)}
-  pp <- rpoispp(lambda,win=wsim,nsim=1,drop=TRUE) #prepare a random radius for each point
- 
+  pp <- rpoispp(lambda, win = wsim, nsim = 1, drop = TRUE) #prepare a random radius for each point
+
   if (!missing(seed)){set.seed(seed)}
-  radius <- rlnorm(pp$n,meanlog=meanlog,sdlog=sdlog) #prepare a random radius for each point
-   
+  radius <- rlnorm(pp$n, meanlog = meanlog, sdlog = sdlog) #prepare a random radius for each point
+
   #calculating grains
-  pointlocations <- cbind(X=pp$x,Y=pp$y)
-  pointlocations <- split(cbind(pointlocations),row(pointlocations)) #split matrix into a list of the rows
-  grains <- mapply(disc,radius = radius,centre=pointlocations,SIMPLIFY=FALSE) #calculate grains with their locations
-  
+  pointlocations <- cbind(X = pp$x, Y = pp$y)
+  pointlocations <- split(cbind(pointlocations), row(pointlocations)) #split matrix into a list of the rows
+  grains <- mapply(disc, radius = radius, centre = pointlocations, SIMPLIFY = FALSE) #calculate grains with their locations
+
   #take union of all grains
   xisim <- union.owin(as.solist(grains))
-  
-  xi <- intersect.owin(xisim,window)
-  return(xi) 
+
+  xi <- intersect.owin(xisim, window)
+  return(xi)
 }
-
-##**feature request: a test that simulations correspond to theoretical values for the model.
-
-
-

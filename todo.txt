@@ -10,3 +10,6 @@ TO DO BEFORE PUBLISHING:
 - use testhat package
 
 - in mvlgb: catch warnings about empty RS window and print something more understandble
+
+##**feature request: a test that simulations rbllognorm correspond to theoretical values for the model.
+
