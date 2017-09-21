@@ -80,11 +80,11 @@ setcovdisc <- function(r, discr){
   return(setcovariance)
 }
 
-# Isotropic covariance of the Boolean model, given by distance r.
-# @param r is the radius to calculate covariance
+#' @describeIn rbdd Returns the true covariance of points separated by a distance \code{r} given the intensity, \code{lambda} and disc radius \code{discr} of the model.
+#' @param r is the radius to calculate covariance
 # @param lambda is the intensity of the germ process (Poisson point process)
 # @param discr is the radius of the discs.
-isotropiccovarianceDeterministicDiscs <- function(r, lambda, discr){
+bdd_covar.iso <- function(r, lambda, discr){
   expectedsetcovariance <- setcovdisc(r, discr)
   p <- 1 - exp(-pi * discr ^ 2 * lambda)
   covariance <- 2 * p - 1 + (1 - p ) ^ 2 * exp(lambda * expectedsetcovariance)
@@ -95,7 +95,7 @@ bdd.covar_vec <- function(X, Y, lambda, discr){
   rlist <- sqrt(X ^ 2 + Y ^ 2)
   covar <- vector(length(rlist), mode = "numeric")
   for (i in 1:length(rlist)){
-    covar[i] <- isotropiccovarianceDeterministicDiscs(rlist[i], lambda = lambda, discr = discr)
+    covar[i] <- bdd_covar.iso(rlist[i], lambda = lambda, discr = discr)
   }
   return(covar)
 }

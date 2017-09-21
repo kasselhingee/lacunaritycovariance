@@ -3,6 +3,7 @@
 \name{rbdd}
 \alias{rbdd}
 \alias{bdd.coverageprob}
+\alias{bdd_covar.iso}
 \alias{bdd.covar}
 \alias{bdd.specdens}
 \alias{bdd.specdensAtOrigin}
@@ -11,6 +12,8 @@
 rbdd(lambda, discr, window, seed = NULL)
 
 bdd.coverageprob(lambda, discr)
+
+bdd_covar.iso(r, lambda, discr)
 
 bdd.covar(xrange, yrange, eps, lambda, discr)
 
@@ -26,6 +29,8 @@ bdd.specdensAtOrigin(lambda, discr)
 \item{window}{The window to simulate in (an owin object)}
 
 \item{seed}{Optional input (default in NULL). Is an integer passed to \code{\link{base}{set.seed}}. Used to reproduce patterns exactly.}
+
+\item{r}{is the radius to calculate covariance}
 
 \item{xrange}{range of x values for \code{bdd.covar}}
 
@@ -51,6 +56,8 @@ Also described in this help file are functions for calculating from model parame
 The point process of germs is generated using spatstat's \code{\link[spatstat]{rpoispp}}.
 
 \item \code{bdd.coverageprob}: Returns the true coverage probability given the intensity and disc radius.
+
+\item \code{bdd_covar.iso}: Returns the true covariance of points separated by a distance \code{r} given the intensity, \code{lambda} and disc radius \code{discr} of the model.
 
 \item \code{bdd.covar}: Returns an image of the covariance as calculated from disc radius and intensity.
 
