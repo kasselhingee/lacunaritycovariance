@@ -1,5 +1,5 @@
 #' @title Simulation of Boolean Model of Deterministic Discs
-#' @export rbdd  bdd.coverageprob bdd.covar bdd.specdensAtOrigin bdd.specdens
+#' @export rbdd  bdd.coverageprob bdd_covar.iso bdd.covar bdd.specdensAtOrigin bdd.specdens
 #' @importFrom stats fft
 #' 
 #' @description Functions for simulating a Boolean model with grains that are discs of fixed constant radius (the abreviation bdd is short for Boolean model with Determinisitic Discs).
@@ -70,13 +70,12 @@ bdd.coverageprob  <- function(lambda, discr){
 }
 
 #theoretical set covariance of a disc
-# @param r is the radius to calculate set covariance
+# @param r is the radius to calculate set covariance (can be a vector)
 # @param discr is the radius of disc
 setcovdisc <- function(r, discr){
-  if (r >= 2 * discr){setcovariance <- 0}
-  else {
-    setcovariance <- 2 * discr ^ 2 * acos(r / (2 * discr)) - (r / 2) * sqrt(4 * discr ^ 2 - r ^ 2)
-  }
+  setcovariance <- r*0
+  rsubset <- r[r < 2 * discr]
+  setcovariance[r < 2 * discr] <- 2 * discr ^ 2 * acos(rsubset / (2 * discr)) - (rsubset / 2) * sqrt(4 * discr ^ 2 - rsubset ^ 2)
   return(setcovariance)
 }
 
