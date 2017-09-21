@@ -54,12 +54,12 @@ If \code{normalise} is \code{TRUE} then the result is divided by
 xi <- heather$coarse
 obswindow <- Frame(heather$coarse)
 p <- coverageprob(xi,Frame(xi))
-xi_H <- Hest(xi,W=obswindow) #Sph. Contact Distrution Estimate
-xic_H <- Hest(complement.owin(xi),W=obswindow) #Conditional Core Prob. Estimate
-plot(xi_H,type="l",col="red") 
-lines(xic_H,type="l",col="black") 
+xiH <- Hest(xi,W=obswindow) #Sph. Contact Distrution Estimate
+xicH <- Hest(complement.owin(xi),W=obswindow) #Conditional Core Prob. Estimate
+plot(xiH,type="l",col="red") 
+lines(xicH,type="l",col="black") 
 
-contagion <- scdcontagion(xi_H,xic_H,p)
+contagion <- scdcontagion(xiH,xicH,p)
 plot(contagion)
 
 }
