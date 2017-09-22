@@ -13,3 +13,5 @@ TO DO BEFORE PUBLISHING:
 
 ##**feature request: a test that simulations rbllognorm correspond to theoretical values for the model.
 
+- mvlgb and mvlc interface more matching!?
+
