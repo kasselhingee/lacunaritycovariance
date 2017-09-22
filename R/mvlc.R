@@ -38,7 +38,7 @@ mvlc <- function(boxes, covariance = NULL, p = NULL, xiim = NULL){
     p <- sum(xiim) / sum(is.finite(xiim$v))
     w <- as.owin(xiim) #w is observation window - only the non NA values end up in window
     xiim[is.na(xiim$v)] <- 0
-    covar <- covariance(xiim, w = w)
+    covar <- covariance(xiim, obswin = w)
     lacv <- lac.cov(boxes, covar, p)
     unitname <- unitname(xiim)
   } else {
