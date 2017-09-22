@@ -33,10 +33,11 @@ test_that("covariance() matches theoretical covariance for Boolean Model", {
   
   
   #expect that this residual is smaller than 10% of the true covariance
-  expect_lt(max(eval.fv(abs(isocovarresid.frim))[isocovarresid.frim$r < 3 * discr,]),
-            0.1)
-  expect_lt(max(eval.fv(abs(isocovarresid.frowin))[isocovarresid.frowin$r < 3 * discr,]),
-            0.1)
+  maxisocovarresid.frim <- max(eval.fv(abs(isocovarresid.frim))[isocovarresid.frim$r < 3 * discr,])
+  expect_lt(maxisocovarresid.frim,  0.1)
+  
+  maxisocovarresid.frowin <- max(eval.fv(abs(isocovarresid.frowin))[isocovarresid.frowin$r < 3 * discr,])
+  expect_lt(maxisocovarresid.frowin, 0.1)
   
   reset.spatstat.options()
 })
