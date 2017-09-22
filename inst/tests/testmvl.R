@@ -1,4 +1,4 @@
-context("MVL  estimation")
+context("MVL estimation")
 
 test_that("MVLc estimates are historically consistent", {
   covar <- covariance(heather$coarse)
