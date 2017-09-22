@@ -5,7 +5,7 @@ test_that("MVLc estimates are historically consistent", {
   p <- area(heather$coarse) / area(Frame(heather$coarse))
   sidelengths <- 2.2
   lac <- lac(sidelengths, covar, p)
-  expect_equal(lac$MVL, 0.06551107)
+  expect_equal(lac$MVL, 0.05777959)
 })
 
 test_that("MVLgb estimates are historically consistent", {
@@ -13,7 +13,7 @@ test_that("MVLgb estimates are historically consistent", {
   sidel <- c(2.2)
   lac.wraw <- lacgb(img,sidel,inclraw = TRUE)
   expect_equal(lac.wraw$MVL, 0.03253836)
-  expect_equal(lac.wraw$raw, -0.06768891)
+  expect_equal(lac.wraw$raw, -0.05775767)
 })
 
 test_that("MVLc estimates are consitent for input side lengths or owin squares", {
