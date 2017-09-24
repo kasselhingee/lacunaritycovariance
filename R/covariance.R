@@ -45,7 +45,7 @@ covariance <- function(xi,
     if (!is.null(obswin)) {xi <- intersect.owin(xi, obswin)}
     else {obswin <- Frame(xi)}
     setcovxi <- setcov(xi)
-    setcovwindow <- setcov(obswin)
+    setcovwindow <- setcov(obswin, eps = c(setcovxi$xstep, setcovxi$ystep))
   } else if (is.im(xi)) {
     if (!is.null(obswin)) {
         winim <- as.im(obswin, xy = xi)
@@ -61,7 +61,7 @@ covariance <- function(xi,
         xi[is.na(as.matrix(xi))] <- 0 #turn all NA's in xi to 0s
     }
     setcovxi <- imcov(xi)
-    setcovwindow <- setcov(obswin)
+    setcovwindow <- setcov(obswin, eps = c(setcovxi$xstep, setcovxi$ystep))
   }
   else {
     print("ERROR: Input xi is not an image or owin object")
