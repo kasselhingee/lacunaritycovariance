@@ -31,7 +31,7 @@ test_that("integration when covar is constant gives squared area", {
   lac <- lac(sidelengths, covar, p)
   expect_equal(lac$MVL, rep(0, length(sidelengths)), tolerance = 0.01)
   
-  expect_equal(lac(lapply(c(0.5, 1, 2, 3), disc), covar, p), rep(0, 3), tolerance = 0.01)
+  expect_equal(lac(lapply(c(0.5, 1, 2, 3), disc), covar, p), rep(0, 4), tolerance = 0.01)
 })
 
 test_that("MVLc and MVLgb produce similar results for large square observation windows", {
