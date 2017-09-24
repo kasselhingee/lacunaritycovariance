@@ -69,12 +69,8 @@ covariance <- function(xi,
   }
   #make NA any values that are too small and lead to division to close to 0
   setcovwindow[setcovwindow < setcov_boundarythresh] <- NA
-  tryCatch(covar <- eval.im(setcovxi / setcovwindow, harmonize = TRUE),
-            warning = function(w) {
-              if (!grepl("simpleWarning:  the images .setcovxi. and .setcovwindow. were not compatible\n", paste0(w))){
-                warning(w)
-              }
-            })
+  harmims <- harmonise.im(setcovxi, setcovwindow)
+  covar <- eval.im(A / B, envir = list(A = harmims[[1]], B = harmims[[2]]))
   if (!inclraw) {return(covar)}
   if (inclraw) {
     return(list(rs = covar,
