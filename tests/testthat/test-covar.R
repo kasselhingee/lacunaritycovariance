@@ -15,7 +15,7 @@ test_that("covariance() matches theoretical covariance for Boolean Model", {
   expect_is(covarest.frim, "im")
   expect_is(covarest.frowin, "im")
   
-  covarest.diffs <- covarest.frowin - covarest.frim
+  covarest.diffs <- eval.im(a - b, harmonise.im(a = covarest.frowin, b = covarest.frim))
   
   expect_lt(mean(covarest.diffs), 0.1 * max(abs(covarest.frim)))
   expect_lt(max(abs(covarest.diffs)), 0.1 * max(abs(covarest.frim)))
@@ -29,7 +29,7 @@ test_that("covariance() matches theoretical covariance for Boolean Model", {
   
   #residual to theoretical covariance
   isocovarresid.frim <- eval.fv((covarest.frim.iso - truecovar.iso) / truecovar.iso, equiv = c(f = "col1"))
-  isocovarresid.frowin <- eval.fv((covarest.frowin.iso - truecovar.iso) / truecovar.iso, equiv = c(f = "col1"))
+  isocovarresid.frowin <- eval.fv( (a - b)/b, envir = harmonise.fv(a = covarest.frowin.iso, b = truecovar.iso), equiv = c(f = "col1"))
   
   
   #expect that this residual is smaller than 10% of the true covariance
