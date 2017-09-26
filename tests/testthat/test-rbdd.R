@@ -16,7 +16,7 @@ test_that("rbdd produces simulations with the correct area fraction", {
   thcovariance <- bdd.covar(xrange=c(-100,100),yrange=c(-100,100),eps=c(1,1),lambda, discr)
   setcovB <- setcov(w, eps = c(thcovariance$xstep, thcovariance$ystep))
   harmims <- harmonise.im(thcovar = thcovariance, setcovwin = setcovB)
-  integrand <- eval.im((thcovariance-truecoveragefrac^2)*setcovB, envir = list(thcovariance = harmims[[thcovar]], setcovB = harmims[[setcovwin]]))
+  integrand <- eval.im((thcovariance-truecoveragefrac^2)*setcovB, envir = list(thcovariance = harmims$thcovar, setcovB = harmims$setcovwin))
   exactvariance <- (1/(area.owin(w))^2)*sum(integrand)*integrand$xstep*integrand$ystep
   ##assume that window large enough that distribution of estimator is Gaussian
   ##So half-width of 0.05 conf interval is
