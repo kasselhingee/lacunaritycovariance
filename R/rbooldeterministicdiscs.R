@@ -1,5 +1,5 @@
 #' @title Simulation of Boolean Model of Deterministic Discs
-#' @export rbdd  bddcoverageprob bddcovar.iso bddcovar bddspectraldensity.atorigin bdd.specdens
+#' @export rbdd  bddcoverageprob bddcovar.iso bddcovar bddspectraldensity.atorigin bddspectraldensity
 #' @importFrom stats fft
 #' 
 #' @description Functions for simulating a Boolean model with grains that are discs of fixed constant radius (the abreviation bdd is short for Boolean model with Determinisitic Discs).
@@ -33,7 +33,7 @@
 #' truecoverageprob <- bddcoverageprob(lambda,discr)
 #' truecovariance <- bddcovar(
 #'                    c(-10,10),c(-10,10),c(0.2,0.2),lambda,discr)
-#' thspecdens <- bdd.specdens(lambda,discr)
+#' thspecdens <- bddspectraldensity(lambda,discr)
 #' thspecdens_origin <- bddspectraldensity.atorigin(lambda,discr)
 #' thspecdens[round(dim(thspecdens)[2]/2),round(dim(thspecdens)[1]/2)]
 
@@ -112,7 +112,7 @@ bddcovar <- function(xrange, yrange, eps, lambda, discr){
 }
 
 #' @describeIn rbdd  Computes the spectral density using the theoretical covariance and FFT
-bdd.specdens <- function(lambda, discr){
+bddspectraldensity <- function(lambda, discr){
   xpts <- 0:(20 * discr) / 4
   ypts <- 0:(20 * discr) / 4
   mat <- outer(xpts, ypts, FUN = "bddcovar.vec", lambda = lambda, discr = discr) #rows correspond to xstep - just a quirk of outer!

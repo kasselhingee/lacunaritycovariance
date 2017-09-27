@@ -5,7 +5,7 @@
 \alias{bddcoverageprob}
 \alias{bddcovar.iso}
 \alias{bddcovar}
-\alias{bdd.specdens}
+\alias{bddspectraldensity}
 \alias{bddspectraldensity.atorigin}
 \title{Simulation of Boolean Model of Deterministic Discs}
 \usage{
@@ -17,7 +17,7 @@ bddcovar.iso(r, lambda, discr)
 
 bddcovar(xrange, yrange, eps, lambda, discr)
 
-bdd.specdens(lambda, discr)
+bddspectraldensity(lambda, discr)
 
 bddspectraldensity.atorigin(lambda, discr)
 }
@@ -61,7 +61,7 @@ The point process of germs is generated using spatstat's \code{\link[spatstat]{r
 
 \item \code{bddcovar}: Returns an image of the covariance as calculated from disc radius and intensity.
 
-\item \code{bdd.specdens}: Computes the spectral density using the theoretical covariance and FFT
+\item \code{bddspectraldensity}: Computes the spectral density using the theoretical covariance and FFT
 
 \item \code{bddspectraldensity.atorigin}: Calculates spectral density at at the origin using the theoretical covariance.
 It is the integral of the (covariance - (coverage probability)^2) over all space.
@@ -86,7 +86,7 @@ plot(w,add=TRUE)
 truecoverageprob <- bddcoverageprob(lambda,discr)
 truecovariance <- bddcovar(
                    c(-10,10),c(-10,10),c(0.2,0.2),lambda,discr)
-thspecdens <- bdd.specdens(lambda,discr)
+thspecdens <- bddspectraldensity(lambda,discr)
 thspecdens_origin <- bddspectraldensity.atorigin(lambda,discr)
 thspecdens[round(dim(thspecdens)[2]/2),round(dim(thspecdens)[1]/2)]
 }
