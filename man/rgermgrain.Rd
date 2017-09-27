@@ -56,5 +56,6 @@ plot(xi,hatch=TRUE,add=TRUE)
 \author{
 Kassel Hingee
 }
+\keyword{datagen}
 \keyword{nonparametric}
 \keyword{spatial}

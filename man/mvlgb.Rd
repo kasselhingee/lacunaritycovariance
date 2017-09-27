@@ -49,3 +49,5 @@ plot(lac, cbind(MVL,raw) ~ s)
 \references{
 [1] Allain, C. and Cloitre, M. (1991) Characterizing the lacunarity of random and deterministic fractal sets. Physical Review A, 44, 3552-3558.
 }
+\keyword{nonparametric}
+\keyword{spatial}

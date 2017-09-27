@@ -16,8 +16,8 @@ This is called the Conditional Core Probability in Hingee 2016.
 Typically this is an \code{fv} object but could also be a vector of values.
 In applications \code{XiH} would likely be estimated from an image using \code{\link{Hest}} in \pkg{spatstat}.}
 
-\item{p}{The coverage fraction of \eqn{\Xi}.
-In applications to images an estimate of the coverage fraction can be obtained using \code{\link{coveragefrac}}.}
+\item{p}{The coverage probability of \eqn{\Xi}.
+In applications to images an estimate of the coverage probability can be obtained using \code{\link{coverageprob}}.}
 
 \item{normalise}{Optional. If TRUE \code{contagSphCont} normalises the results so that all RACS return a value between 0 and 1. Default is FALSE.}
 }
@@ -53,7 +53,7 @@ If \code{normalise} is \code{TRUE} then the result is divided by
 \examples{
 xi <- heather$coarse
 obswindow <- Frame(heather$coarse)
-p <- coveragefrac(xi,Frame(xi))
+p <- coverageprob(xi,Frame(xi))
 XiH <- Hest(xi,W=obswindow) #Sph. Contact Distrution Estimate
 XiHc <- Hest(complement.owin(xi),W=obswindow) #Conditional Core Prob. Estimate
 plot(XiH,type="l",col="red") 
@@ -66,3 +66,5 @@ plot(contagion)
 \references{
 Hingee, K.L. (2016) Statistics for Patch Observations. ISPRS - International Archives of the Photogrammetry, Remote Sensing and Spatial Information Sciences pp. 235-242. ISPRS.
 }
+\keyword{nonparametric}
+\keyword{spatial}

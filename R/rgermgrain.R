@@ -47,7 +47,7 @@
 #' 
 #' 
 
-#' @keywords spatial nonparametric 
+#' @keywords spatial nonparametric datagen
 placegrainsfromlib <- function(pp,grainlib,replace=TRUE,prob=NULL){
   if (pp$n == 0){
     warning("there were no points in the point process - returning empty window")

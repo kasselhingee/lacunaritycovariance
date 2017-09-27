@@ -1,2 +1,0 @@
-ImportFromERMapperRaster     Demonstrates RACS inference on remote sensing data in ERMapper format. Uses \code{rgdal} and \code{raster} packages.
-ImportUMRaster               Demonstrates importing data from CSIRO's Urban Monitor project, and estimating various parameters using this data.

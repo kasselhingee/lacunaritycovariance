@@ -22,8 +22,8 @@
 #' This is called the Conditional Core Probability in Hingee 2016.
 #' Typically this is an \code{fv} object but could also be a vector of values.
 #' In applications \code{XiH} would likely be estimated from an image using \code{\link{Hest}} in \pkg{spatstat}.
-#' @param p  The coverage fraction of \eqn{\Xi}.
-#' In applications to images an estimate of the coverage fraction can be obtained using \code{\link{coveragefrac}}.
+#' @param p  The coverage probability of \eqn{\Xi}.
+#' In applications to images an estimate of the coverage probability can be obtained using \code{\link{coverageprob}}.
 #' @param normalise Optional. If TRUE \code{contagSphCont} normalises the results so that all RACS return a value between 0 and 1. Default is FALSE. 
 #' @details XiH should be a function of radius that gives (or estimates) the probability of a disc of radius \eqn{r} not intersecting \eqn{\Xi} if the disc's centre is not in \eqn{\Xi} 
 #' \deqn{\code{XiH}(r) = P(B_r(x) \subseteq \Xi^c | x \in \Xi^c).}
@@ -44,7 +44,7 @@
 #' @examples
 #' xi <- heather$coarse
 #' obswindow <- Frame(heather$coarse)
-#' p <- coveragefrac(xi,Frame(xi))
+#' p <- coverageprob(xi,Frame(xi))
 #' XiH <- Hest(xi,W=obswindow) #Sph. Contact Distrution Estimate
 #' XiHc <- Hest(complement.owin(xi),W=obswindow) #Conditional Core Prob. Estimate
 #' plot(XiH,type="l",col="red") 
@@ -53,7 +53,7 @@
 #' contagion <- contagSphCont(XiH,XiHc,p)
 #' plot(contagion)
 #' 
-
+#' @keywords spatial nonparametric 
 contagSphCont <- function(XiH, XiHc, p, normalise=FALSE){
   returnfv <- FALSE
   unitnames <- NULL

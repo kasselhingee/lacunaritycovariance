@@ -26,8 +26,8 @@
 #' discboxes <- lapply(sidelengths/2,disc)
 #' discmvls <- mvlc(discboxes,covar,p)
 #' points(sidelengths,discmvls)
-
-
+#' 
+#' @keywords spatial nonparametric 
 mvlc <- function(boxes, covariance=NULL, p=NULL, xiim=NULL){
    if (!(is.null(covariance) | is.null(p))){
       if (!is.null(xiim)){cat("WARNING: covariance, p and observation image, xiim, given. Only the covariance and p will be used\n")}

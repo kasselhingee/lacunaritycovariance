@@ -1,8 +1,8 @@
-#' @title Estimate the coverage fraction of a stationary RACS
+#' @title Estimate the coverage probability of a stationary RACS
 #' 
 #' @description 
-#' The coverage fraction of a stationary RACS is also known as the coverage probability and is the probability that an arbitrary point is covered by the RACS.
-#' Given a realisation, \eqn{X}, in window \eqn{W} of a stationary RACS the coverage fraction estimate that this function calculates is the fraction of \eqn{W} covered by \eqn{X}.
+#' The coverage probability of a stationary RACS is also known as the coverage fraction and is the probability that an arbitrary point is covered by the RACS.
+#' Given a realisation, \eqn{X}, in window \eqn{W} of a stationary RACS this function computes the fraction of \eqn{W} covered by \eqn{X}, which is an estimate of the coverage probability.
 #' This estimate relies on the window \eqn{W} being large compared to the spatial dependence of the RACS.
 #' See [1, section 6.4.2] for more theoretical details.
 #' 
@@ -14,14 +14,14 @@
 #' @return An estimate of the coverage probability
 #' @author Kassel Hingee 
 #' @import spatstat
-#' @export coveragefrac
+#' @export coveragefrac coverageprob
 #' @examples
 #' xi <- heather$coarse
 #' obswindow <- Frame(heather$coarse)
-#' coverageProb <- coveragefrac(xi,obswindow)
+#' cp <- coverageprob(xi,obswindow)
 
 #' @keywords spatial nonparametric
-coveragefrac <- function(xi,w){
+coverageprob <- function(xi,w){
   stopifnot(is.owin(xi))
   stopifnot(is.owin(w))   
   xiInsideW <- intersect.owin(xi,w)
@@ -32,3 +32,5 @@ coveragefrac <- function(xi,w){
   return(covProbEstimate)
 }
 
+#' @rdname coverageprob 
+coveragefrac <- coverageprob

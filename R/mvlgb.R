@@ -30,6 +30,7 @@
 #' lac <- mvlgb(img,sidelengths, inclraw=TRUE)
 #' plot(lac, cbind(MVL,raw) ~ s)
 #'
+#' @keywords spatial nonparametric 
 mvlgb <- function(img,sidelengths,inclraw=FALSE,W=Frame(img)){
   if(abs(img$xstep -img$ystep)>1E-2 * img$xstep){print("ERROR: image pixels must be square")}
 #convert sidelengths to odd pixel amounts, taking into account that want a distance to edge
