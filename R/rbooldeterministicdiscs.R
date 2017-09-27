@@ -1,5 +1,5 @@
 #' @title Simulation of Boolean Model of Deterministic Discs
-#' @export rbdd  bddcoverageprob bddcovar.iso bdd.covar bdd.specdensAtOrigin bdd.specdens
+#' @export rbdd  bddcoverageprob bddcovar.iso bddcovar bddspectraldensity.atorigin bdd.specdens
 #' @importFrom stats fft
 #' 
 #' @description Functions for simulating a Boolean model with grains that are discs of fixed constant radius (the abreviation bdd is short for Boolean model with Determinisitic Discs).
@@ -31,10 +31,10 @@
 #' 
 #' #calculate theoretical values of the model
 #' truecoverageprob <- bddcoverageprob(lambda,discr)
-#' truecovariance <- bdd.covar(
+#' truecovariance <- bddcovar(
 #'                    c(-10,10),c(-10,10),c(0.2,0.2),lambda,discr)
 #' thspecdens <- bdd.specdens(lambda,discr)
-#' thspecdens_origin <- bdd.specdensAtOrigin(lambda,discr)
+#' thspecdens_origin <- bddspectraldensity.atorigin(lambda,discr)
 #' thspecdens[round(dim(thspecdens)[2]/2),round(dim(thspecdens)[1]/2)]
 
 #' @references 
@@ -100,10 +100,10 @@ bddcovar.vec <- function(X, Y, lambda, discr){
 }
 
 #' @describeIn rbdd Returns an image of the covariance as calculated from disc radius and intensity.
-#' @param xrange range of x values for \code{bdd.covar}
-#' @param yrange range of y values for \code{bdd.covar}
-#' @param eps list of length 2 of the steps between samples points in x and y respectively for \code{bdd.covar}.
-bdd.covar <- function(xrange, yrange, eps, lambda, discr){
+#' @param xrange range of x values for \code{bddcovar}
+#' @param yrange range of y values for \code{bddcovar}
+#' @param eps list of length 2 of the steps between samples points in x and y respectively for \code{bddcovar}.
+bddcovar <- function(xrange, yrange, eps, lambda, discr){
   xpts <- seq(from = xrange[1], to = xrange[2], by = eps[1])
   ypts <- seq(from = yrange[1], to = yrange[2], by = eps[2])
   mat <- outer(xpts, ypts, FUN = "bddcovar.vec", lambda = lambda, discr = discr) #rows correspond to xstep - just a quirk of outer!
@@ -155,7 +155,7 @@ bdd.specdens <- function(lambda, discr){
 
 #' @describeIn rbdd Calculates spectral density at at the origin using the theoretical covariance.
 #' It is the integral of the (covariance - (coverage probability)^2) over all space.
-bdd.specdensAtOrigin <- function(lambda, discr){
+bddspectraldensity.atorigin <- function(lambda, discr){
   xpts <- 0:(80 * discr) / 20
   ypts <- 0:(80 * discr) / 20
   mat <- outer(xpts, ypts, FUN = "bddcovar.vec", lambda = lambda, discr = discr) #rows correspond to xstep - just a quirk of outer!
