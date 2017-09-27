@@ -3,23 +3,23 @@
 \name{rbdd}
 \alias{rbdd}
 \alias{bddcoverageprob}
-\alias{bdd_covar.iso}
-\alias{bdd.covar}
+\alias{bddcovar.iso}
+\alias{bddcovar}
 \alias{bdd.specdens}
-\alias{bdd.specdensAtOrigin}
+\alias{bddspectraldensity.atorigin}
 \title{Simulation of Boolean Model of Deterministic Discs}
 \usage{
 rbdd(lambda, discr, window, seed = NULL)
 
 bddcoverageprob(lambda, discr)
 
-bdd_covar.iso(r, lambda, discr)
+bddcovar.iso(r, lambda, discr)
 
-bdd.covar(xrange, yrange, eps, lambda, discr)
+bddcovar(xrange, yrange, eps, lambda, discr)
 
 bdd.specdens(lambda, discr)
 
-bdd.specdensAtOrigin(lambda, discr)
+bddspectraldensity.atorigin(lambda, discr)
 }
 \arguments{
 \item{lambda}{Intensity of the germ process (which is a Poisson point process)}
@@ -32,11 +32,11 @@ bdd.specdensAtOrigin(lambda, discr)
 
 \item{r}{is the radius to calculate covariance}
 
-\item{xrange}{range of x values for \code{bdd.covar}}
+\item{xrange}{range of x values for \code{bddcovar}}
 
-\item{yrange}{range of y values for \code{bdd.covar}}
+\item{yrange}{range of y values for \code{bddcovar}}
 
-\item{eps}{list of length 2 of the steps between samples points in x and y respectively for \code{bdd.covar}.}
+\item{eps}{list of length 2 of the steps between samples points in x and y respectively for \code{bddcovar}.}
 }
 \value{
 Depends on the function used (see Functions section).
@@ -57,13 +57,13 @@ The point process of germs is generated using spatstat's \code{\link[spatstat]{r
 
 \item \code{bddcoverageprob}: Returns the true coverage probability given the intensity and disc radius.
 
-\item \code{bdd_covar.iso}: Returns the true covariance of points separated by a distance \code{r} given the intensity, \code{lambda} and disc radius \code{discr} of the model.
+\item \code{bddcovar.iso}: Returns the true covariance of points separated by a distance \code{r} given the intensity, \code{lambda} and disc radius \code{discr} of the model.
 
-\item \code{bdd.covar}: Returns an image of the covariance as calculated from disc radius and intensity.
+\item \code{bddcovar}: Returns an image of the covariance as calculated from disc radius and intensity.
 
 \item \code{bdd.specdens}: Computes the spectral density using the theoretical covariance and FFT
 
-\item \code{bdd.specdensAtOrigin}: Calculates spectral density at at the origin using the theoretical covariance.
+\item \code{bddspectraldensity.atorigin}: Calculates spectral density at at the origin using the theoretical covariance.
 It is the integral of the (covariance - (coverage probability)^2) over all space.
 }}
 
@@ -84,10 +84,10 @@ plot(w,add=TRUE)
 
 #calculate theoretical values of the model
 truecoverageprob <- bddcoverageprob(lambda,discr)
-truecovariance <- bdd.covar(
+truecovariance <- bddcovar(
                    c(-10,10),c(-10,10),c(0.2,0.2),lambda,discr)
 thspecdens <- bdd.specdens(lambda,discr)
-thspecdens_origin <- bdd.specdensAtOrigin(lambda,discr)
+thspecdens_origin <- bddspectraldensity.atorigin(lambda,discr)
 thspecdens[round(dim(thspecdens)[2]/2),round(dim(thspecdens)[1]/2)]
 }
 \references{
