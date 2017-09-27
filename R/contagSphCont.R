@@ -1,83 +1,87 @@
 #' @title Disc State Contagion
 #' @export contagSphCont
 #' 
-#' @description Calculates the disc-state contagion as described in Hingee 2016. It is like the contagion LPI but is based on the spherical contact version of contagion. 
-#' It describes the entropy (mixing) between four possible states of disc
-#' (see Hingee 2016 for more details).
-#' It requires a mixing distance of interest to be chosen by the user
-#' (compared to classical contagion for which this distance is set by the image resolution).
+#' @description Calculates the disc-state contagion LPI as described in Hingee 2016.
+#' The disc-state contagion LPI describes the entropy (mixing) between four possible states of a disc:
+#' \enumerate{
+#'   \item the disc is completely contained in \eqn{\Xi}
+#'   \item the disc does not intersect \eqn{\Xi}
+#'   \item the centre of the disc is in \eqn{\Xi} but the disc is not contained in \eqn{\Xi}
+#'   \item the disc intersects \eqn{\Xi} but the centre is outside \eqn{\Xi}
+#' }
 #' 
-#' @param xiH Estimated conditional spherical contact distribution function for \eqn{\Xi}. 
-#' Typically as a \code{fv} object but could also be a vector of values.
-#' @param xiHc Estimate conditional spherical contact distribution for the complement of \eqn{\Xi}. 
+#' Dics-state contagion is a function of the disc radius.
+#' 
+#' The main difference to classical contagion is that disc-state contagion is based on the spherical contact distribution instead of pixel neighbours.
+#' One impact of this design is that the distance with which to quantify the mixing between \eqn{\Xi} and the background may be chosen by the user by choosing the disc radius (for classical contagion this distance is fixed by the image resolution).
+#' 
+#' @param XiH Conditional spherical contact distribution function for \eqn{\Xi}. 
+#' Typically this is an \code{fv} object but could also be a vector of values.
+#' In applications \code{XiH} would likely be estimated from an image using \code{\link{Hest}} in \pkg{spatstat}.
+#' @param XiHc Conditional spherical contact distribution for the complement of \eqn{\Xi}. 
 #' This is called the Conditional Core Probability in Hingee 2016.
-#' Typically is a \code{fv} object.
-#' @param p  An estimate of the coverage fraction of a RACS \eqn{\Xi}.
-#' Typically obtained using \code{coveragefrac}.
+#' Typically this is an \code{fv} object but could also be a vector of values.
+#' In applications \code{XiH} would likely be estimated from an image using \code{\link{Hest}} in \pkg{spatstat}.
+#' @param p  The coverage fraction of \eqn{\Xi}.
+#' In applications to images an estimate of the coverage fraction can be obtained using \code{\link{coveragefrac}}.
 #' @param normalise Optional. If TRUE \code{contagSphCont} normalises the results so that all RACS return a value between 0 and 1. Default is FALSE. 
-#' @details xiH should be a function of radius that estimates the probability 
-#' \deqn{xiH(r)\approx P(B_r(x) \subseteq \Xi^c | x \in \Xi^c)}
-#'  of a disc around an arbitrary point \eqn{x} is contained in \eqn{\Xi^c.}
-#' Similary xiHc should be an estimate of the probability of a disc being fully contained in \eqn{\Xi}
-#' \deqn{xiHc(r)\approx P(B_r(x) \subseteq \Xi | x \in \Xi).}
-#' These can both be obtained using \code{Hest} in \code{spatstat}.
+#' @details XiH should be a function of radius that gives (or estimates) the probability of a disc of radius \eqn{r} not intersecting \eqn{\Xi} if the disc's centre is not in \eqn{\Xi} 
+#' \deqn{\code{XiH}(r) = P(B_r(x) \subseteq \Xi^c | x \in \Xi^c).}
+#' Similarly \code{XiHc} should be an estimate of the probability of a disc being fully contained in \eqn{\Xi} given its centre is in \eqn{\Xi}
+#' \deqn{\code{XiHc}(r)\approx P(B_r(x) \subseteq \Xi | x \in \Xi).}
+#' These can both be obtained using \code{\link{Hest}} in \pkg{spatstat}.
+#' For \code{XiHc} take care to apply Hest to the complement of \eqn{\Xi} with the observation window \eqn{W}.
 #' 
-#' If xiH and xiHc are both fv objects then they must be generated using Hest because the function automatically uses the reduce-sample border correction estimates.
-#' In this case the return value is an fv object.
-#'
 #' If \code{normalise} is \code{TRUE} then the result is divided by 
-#' \eqn{\frac{-4}{e}ln(\frac{1}{e})} and added to 1 so that the normalised disc state contagion is between 0 and 1.
+#' \eqn{\frac{-4}{e}ln(\frac{1}{e})} and added to 1 so that the return value is between 0 and 1 for all possible \eqn{\Xi}.
 #'
-#' @return An \code{fv} object or a vector the same length as xiH corresponding to the contagion at each r value of xiH
+#' @return An \code{fv} object or a vector the same length as \code{XiH} corresponding to the contagion at each r value of \code{XiH}
 
 #' @references 
-#' Hingee, K.L. (2016) Statistics for Patch Observations. ISPRS Congress Proceedings p. IPSRS.
+#' Hingee, K.L. (2016) Statistics for Patch Observations. ISPRS - International Archives of the Photogrammetry, Remote Sensing and Spatial Information Sciences pp. 235-242. ISPRS.
 
 
 #' @examples
 #' xi <- heather$coarse
 #' obswindow <- Frame(heather$coarse)
 #' p <- coveragefrac(xi,Frame(xi))
-#' xiH <- Hest(xi,W=obswindow) #Sph. Contact Distrution Estimate
-#' xiHc <- Hest(complement.owin(xi),W=obswindow) #Conditional Core Prob. Estimate
-#' plot(xiH,type="l",col="red") 
-#' lines(xiHc,type="l",col="black") 
+#' XiH <- Hest(xi,W=obswindow) #Sph. Contact Distrution Estimate
+#' XiHc <- Hest(complement.owin(xi),W=obswindow) #Conditional Core Prob. Estimate
+#' plot(XiH,type="l",col="red") 
+#' lines(XiHc,type="l",col="black") 
 #' 
-#' contagion <- contagSphCont(xiH,xiHc,p)
+#' contagion <- contagSphCont(XiH,XiHc,p)
 #' plot(contagion)
 #' 
 
-contagSphCont <- function(xiH, xiHc, p, normalise=FALSE){
+contagSphCont <- function(XiH, XiHc, p, normalise=FALSE){
   returnfv <- FALSE
   unitnames <- NULL
-  if (is.fv(xiH) && is.fv(xiHc)) {#then new version of contagion
+  if (is.fv(XiH) && is.fv(XiHc)) {#then new version of contagion
     returnfv <- TRUE
-    unitnames <- unitname(xiH)
-    harmonisedSCDs <- harmonise(xiH,xiHc)
-    r <- harmonisedSCDs[[1]]$r
-    rharmleng <- length(r)
-    #the following if/else statements extends the harmonised values when its known that xiH==1 or xiHc==1
-    if (max(xiH$r)>r[rharmleng] & (harmonisedSCDs[[2]]$rs[rharmleng]>0.99)){
-      r <- c(r,xiH$r[xiH$r>r[rharmleng]])
-      xiH <- c(harmonisedSCDs[[1]]$rs,xiH$rs[xiH$r>r[rharmleng]])
-      xiHc <- c(harmonisedSCDs[[2]]$rs,rep(1,length(r)-rharmleng))
-    }
-    else if (max(xiHc$r)>r[rharmleng] & (harmonisedSCDs[[1]]$rs[rharmleng]>0.99)){
-      r <- c(r,xiHc$r[xiHc$r>r[rharmleng]])
-      xiHc <- c(harmonisedSCDs[[1]]$rs,xiHc$rs[xiHc$r>r[rharmleng]])
-      xiH <- c(harmonisedSCDs[[2]]$rs,rep(1,length(r)-rharmleng))
-    }
-    else {
-      xiH <- harmonisedSCDs[[1]]$rs
-      xiHc <- harmonisedSCDs[[2]]$rs
-    }
+    unitnames <- unitname(XiH)
+    fvin <- list(XiH=XiH,XiHc=XiHc)
+    XiHf <- as.function.fv(XiH,value=".y",extrapolate=TRUE)
+    XiHcf <- as.function.fv(XiHc,value=".y",extrapolate=TRUE)
+    argranges <- lapply(list(XiH=XiH,XiHc=XiHc),argumentrange)
+    ## determine finest resolution (from spatstat)
+    xsteps <- sapply(fvin, argumentstep)
+    finest <- which.min(xsteps)
+    ## extract argument values (from spatstat)
+    xvals <- with(fvin[[finest]], .x)
+    fvwlargestarg <- which.max(list(XiH=argranges$XiH[[2]],XiHc=argranges$XiHc[[2]]))
+    xvals <- c(xvals,with(fvin[[fvwlargestarg]], .x)[with(fvin[[fvwlargestarg]], .x)>max(xvals)])
+    ##
+
+    XiH <- XiHf(xvals)
+    XiHc <- XiHcf(xvals)
   }
-  Pstates <- matrix(NA,nrow=4,ncol=length(xiH))
+  Pstates <- matrix(NA,nrow=4,ncol=length(XiH))
   rownames(Pstates)=c("P11","P10","P01","P00")
-  Pstates["P11",] <- p* (1-xiHc)
-  Pstates["P10",] <- p*xiHc
-  Pstates["P00",] <- (1-p)*(1-xiH)
-  Pstates["P01",] <- (1-p)*(xiH)
+  Pstates["P11",] <- p* (1-XiHc)
+  Pstates["P10",] <- p*XiHc
+  Pstates["P00",] <- (1-p)*(1-XiH)
+  Pstates["P01",] <- (1-p)*(XiH)
   
   tempstates <- Pstates
   tempstates[Pstates<1E-8] <- 1
@@ -85,7 +89,7 @@ contagSphCont <- function(xiH, xiHc, p, normalise=FALSE){
   if (normalise) {contag <- 1+ contag/(-4/exp(1)*log(1/exp(1)))}
   if (returnfv){
     if (normalise) {
-      return(fv(data.frame(r= r,
+      return(fv(data.frame(r= xvals,
                            contag = contag),
                 valu = "contag",
                 desc=c("radius",
@@ -94,7 +98,7 @@ contagSphCont <- function(xiH, xiHc, p, normalise=FALSE){
       ))
     }
     else {
-      return(fv(data.frame(r= r,
+      return(fv(data.frame(r= xvals,
                            contag = contag),
                 valu = "contag",
                 desc=c("radius",
@@ -106,3 +110,6 @@ contagSphCont <- function(xiH, xiHc, p, normalise=FALSE){
   return(contag)
 }
 
+
+argumentrange <- function(f) { range(with(f, .x)) }  #copied from spatstat code
+argumentstep <- function(f) { mean(diff(with(f, .x))) }  #copied from spatstat code

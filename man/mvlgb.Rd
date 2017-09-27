@@ -3,42 +3,49 @@
 \name{mvlgb}
 \alias{mvlgb}
 \alias{lacgb}
-\title{Gliding Box lacunarity from a black and white image}
+\title{Gliding Box estimation of mass variance lacunarity}
 \usage{
-mvlgb(img, sidelengths, inclraw = FALSE, W = Frame(img), method = "")
+mvlgb(img, sidelengths, inclraw = FALSE, W = Frame(img))
 
-lacgb(img, sidelengths, inclraw = FALSE, W = Frame(img), method = "")
+lacgb(img, sidelengths, inclraw = FALSE, W = Frame(img))
 }
 \arguments{
-\item{img}{An image of 0's and 1's, and NA pixels are assumed to be outside the observation window.}
+\item{img}{An image of pixels valued either \code{0}, \code{1} or \code{NA}. \code{NA} valued pixels are assumed to be outside the observation window.}
 
-\item{sidelengths}{A list of suggested box side lengths in the dimensions of \code{img}. Note the actual side lengths used will be the closest multiple of an odd number of pixel widths.}
+\item{sidelengths}{A list of suggested box side lengths in the same units as \code{img}. Note the actual side lengths used will be the closest multiple of an odd number of pixel widths.}
 
-\item{inclraw}{If TRUE the function will also return a gliding box lacunarity that ignores edge effects. (Default is FALSE)}
+\item{inclraw}{If TRUE the function will also return a gliding box estimate that ignores edge effects. (Default is FALSE)}
 
-\item{W}{Optional observation window. The observation window used for the estimator will be the union of \code{W} and the NA pixles in \code{img}.}
-
-\item{method}{Obsolete.}
+\item{W}{Optional observation window. The observation window used for the estimator will be the intersection of \code{W} and the pixels that are not \code{NA} in \code{img}.}
 }
 \value{
-An fv object with columns for no edge correction (raw) and reduced sample border correction (RS). The side lengths (labelled \code{s}) are always odd multiples of pixel widths.
+An \code{fv} object with a column called \code{MVL} for the usual gliding box estimate described in [1]. 
+ The side lengths (labelled \code{s}) are always odd multiples of the pixel width.
+ 
+Another column, called \code{raw}, is included if \code{inclraw=TRUE}. 
+This column represents a version of the gliding box algorithm that pretends that the items/cover of interest are fully observed
+ (i.e. that the observation window is the entire plane).
 }
 \description{
-Calculates the gliding box lacunarity
+Calculates the gliding box estimate [1] of mass variance lacunarity from a bi-tonal image.
 }
 \details{
-Calculates the gliding box lacunarity for a given range of box sizes (`radius').
-The centres are given the pixels of \code{img}. If the package \code{raster} is available a moving window algorithm is may be used (via \code{focal()}), however for now the convolution method in spatstat appears to be faster and is default.
+Calculates the gliding box estimate [1] of mass variance lacunarity for a given range of square box sizes. 
+The algorithm uses the pixel locations in \code{img} as an array of box centre locations to compute
+ the mean and variance of the area in a random box of a given size.
+Locations where the box is not completely within the observation window are ignored.
+ 
+WARNING: This function needs the \code{roll_sum} function in \code{RcppRoll} to operate.
 
-Note: (1) The sidelengths are rounded such that they are an odd number of pixels across. (2) The reduced sample points are given by Minkowski subtraction
+Note: The side lengths are rounded such that they are an odd number of pixels across.
 }
 \examples{
 img <- as.im(heather$coarse,na.replace=0)
-sidelengths <- c(0.2,1,2.2,10) #in units of img
+sidelengths <- seq(0.2,14,by=0.2) #in units of img
 lac <- mvlgb(img,sidelengths, inclraw=TRUE)
-plot(lac, cbind(RS,raw) ~ s)
+plot(lac, cbind(MVL,raw) ~ s)
 
 }
 \references{
-The gliding box algorithm is described in Allain, C. and Cloitre, M. (1991) Characterizing the lacunarity of random and deterministic fractal sets. Physical Review A, 44, 3552-3558.
+[1] Allain, C. and Cloitre, M. (1991) Characterizing the lacunarity of random and deterministic fractal sets. Physical Review A, 44, 3552-3558.
 }

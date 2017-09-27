@@ -4,7 +4,7 @@
 \alias{mvlc}
 \alias{mvl}
 \alias{lac}
-\title{Covariance-based calculations of mass-variance lacunarity}
+\title{Covariance-based calculations of mass variance lacunarity}
 \usage{
 mvlc(boxes, covariance = NULL, p = NULL, xiim = NULL)
 
@@ -25,10 +25,10 @@ lac(boxes, covariance = NULL, p = NULL, xiim = NULL)
 Either an \code{fv} object containing the MVL values and box side lengths or if \code{boxes} is a list of owin objects then \code{lac} returns a list of corresponding MVL values. Note if NA or NaN values in the \code{covariance} object are used then function will return NA or NaN instead of an MVL value.
 }
 \description{
-Estimates the mass-variance lacunarity (MVL) of a stationary RACS from an image, or calculates the MVL from provided covariance (two-point probability) and coverage fraction.
+Estimates the mass variance lacunarity (MVL) of a stationary RACS from a bi-tonal image, or calculates the MVL from provided covariance (two-point probability) and coverage probability.
 }
 \details{
-Denoted the estimated covariance by \eqn{\hat{C}(v)} and coverage probability \eqn{\hat{p}} then the estimate lacunarity is
+If we denoted the estimated covariance by \eqn{\hat{C}(v)} and coverage probability \eqn{\hat{p}} then the estimate of MVL is
 \deqn{\frac{1}{\hat{p}^2 |B|^2}\int \gamma_B(v)\hat{C}(v)dv -1 }
 }
 \examples{

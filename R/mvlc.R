@@ -1,12 +1,12 @@
-#' @title Covariance-based calculations of mass-variance lacunarity
+#' @title Covariance-based calculations of mass variance lacunarity
 #' @export lac
 #' @export mvl
 #' @export mvlc
 #'
-#' @description Estimates the mass-variance lacunarity (MVL) of a stationary RACS from an image, or calculates the MVL from provided covariance (two-point probability) and coverage fraction.
+#' @description Estimates the mass variance lacunarity (MVL) of a stationary RACS from a bi-tonal image, or calculates the MVL from provided covariance (two-point probability) and coverage probability. 
 
 #' @details
-#' Denoted the estimated covariance by \eqn{\hat{C}(v)} and coverage probability \eqn{\hat{p}} then the estimate lacunarity is
+#' If we denoted the estimated covariance by \eqn{\hat{C}(v)} and coverage probability \eqn{\hat{p}} then the estimate of MVL is
 #' \deqn{\frac{1}{\hat{p}^2 |B|^2}\int \gamma_B(v)\hat{C}(v)dv -1 }
 
 #' @param boxes Either a list of sidelengths for square boxes or a list of \code{owin} objects of shape.

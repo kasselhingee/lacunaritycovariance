@@ -2,7 +2,7 @@
 % Please edit documentation in R/rboollnormdiscs.R
 \name{rboollognormdiscs}
 \alias{rboollognormdiscs}
-\title{Simulate a Boolean model of discs with log normal disc radii and Poisson germs}
+\title{Simulate a Boolean model of discs with log normal disc radii}
 \usage{
 rboollognormdiscs(window, bufferdist, lambda, meanlog, sdlog, seed = NULL)
 }
@@ -11,26 +11,31 @@ rboollognormdiscs(window, bufferdist, lambda, meanlog, sdlog, seed = NULL)
 
 \item{bufferdist}{A distance to expand \code{window} so that discs with centres near \code{window} are also simulated.}
 
-\item{lambda}{Intensity of the Poisson point process, passed to \code{\link{spatstat}{rpoispp}}.  It could be either a single positive number, a function (x,y,...) or a pixel image (they must be defined for the dilated window)}
+\item{lambda}{Intensity of the Poisson point process, passed to \link[spatstat]{rpoispp}.
+It could be either a single positive number, or any other object that \link[spatstat]{rpoispp} can understand.}
 
-\item{meanlog}{For the distribution of radii. The logarithm of the distribution has mean equal to \code{meanlog}.}
+\item{meanlog}{For the distribution of radii. The logarithm of the distribution is set to have mean \code{meanlog}.}
 
-\item{sdlog}{For the distribution of radii. The logarithm of the distribution has standard deviation equal to \code{sdlog}}
+\item{sdlog}{For the distribution of radii. The logarithm of the distribution is set to have standard deviation \code{sdlog}}
 
-\item{seed}{Optional input (default in NULL). Is an integer passed to \code{\link{base}{set.seed}}. Used to reproduce patterns exactly.
-@section Warning: A good choice of bufferdist is required and it probably depends on the distribution of radii.}
+\item{seed}{Optional input (default is \code{NULL}). Is an integer passed to \code{\link[base]{set.seed}}. Used to reproduce patterns exactly.}
 }
 \value{
 Returns an \code{owin} object cropped to \code{window}.
 }
 \description{
-Simulates a Poisson point process and places discs of random radii around each point.  The radii are generated using a log normal distribution.
+Simulates a Boolean model of discs with log normal radii by first simulating a Poisson point process and then placing discs
+ of random radii around each point (the radii are generated using a log normal distribution).
 }
 \details{
 The point process needs to be simulated in a larger region than the desired window to account for the possibility of discs that intersect the window, but have germs outside the window.
 
-The point process is generated using spatstat's \code{\link[spatstat]{rpoispp}}.
+The point process of germs is generated using spatstat's \code{\link[spatstat]{rpoispp}}.
 }
+\section{Warning}{
+ A good choice of bufferdist is required and it probably depends on the distribution of radii.
+}
+
 \examples{
 w <- owin(xrange=c(0,10),yrange=c(0,10))
 xi <- rboollognormdiscs(w,2,1,-1,0.5)
@@ -38,16 +43,11 @@ xi <- rboollognormdiscs(w,2,1,-1,0.5)
 plot(w)
 plot(xi,add=TRUE)
 
-#For repeating experiments
+#or with seed set
 w <- owin(xrange=c(0,10),yrange=c(0,10))
 xi <- rboollognormdiscs(w,2,1,-1,0.5,seed=36)
 
 plot(w)
 plot(xi,add=TRUE)
-}
-\references{
-[1] Molchanov, I. (1997) Statistics of the Boolean Model for Practitioners and Mathematicians. Wiley. (Chapter 8)
-
-[2] **seminal paper - haven't read** Bindrich U. and Stoyan D. (1991) Stereology for pores in white bread: statistical analyses for the Boolean model by serial sections. J. Microscopy 162:231-239
 }
 \keyword{spatial}

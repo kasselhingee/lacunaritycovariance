@@ -19,11 +19,15 @@ Type 'q()' to quit R.
 > 
 > img <- as.im(heather$coarse,eps=heather$coarse$xstep, na.replace=0)
 > sidel <- c(2.2)
-> lac <- lacgb(img,sidel)
-> lac$RS
+> lac.wraw <- lacgb(img,sidel,inclraw = TRUE)
+> lac.wraw$MVL
 [1] 0.03253836
-> lac$raw
+> lac.wraw$raw
 [1] -0.06768891
+> 
+> lac <- lacgb(img,sidel)
+> lac$MVL
+[1] 0.03253836
 > 
 > proc.time()
    user  system elapsed 
