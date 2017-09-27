@@ -31,7 +31,7 @@
 mvlc <- function(boxes, covariance = NULL, p = NULL, xiim = NULL){
   if (!(is.null(covariance) | is.null(p))){
     if (!is.null(xiim)){cat("WARNING: covariance, p and observation image, xiim, given. Only the covariance and p will be used\n")}
-    lacv <- lac.cov(boxes, covariance, p)
+    lacv <- mvlc.inputcovar(boxes, covariance, p)
     unitname <- unitname(covariance)
   } else if (!is.null(xiim)){
     if (is.null(covariance) & is.null(p) != TRUE){ cat("WARNING: xiim supplied and only one of covariance or p supplied so using xiim\n")}
@@ -39,7 +39,7 @@ mvlc <- function(boxes, covariance = NULL, p = NULL, xiim = NULL){
     w <- as.owin(xiim) #w is observation window - only the non NA values end up in window
     xiim[is.na(xiim$v)] <- 0
     covar <- racscovariance(xiim, obswin = w)
-    lacv <- lac.cov(boxes, covar, p)
+    lacv <- mvlc.inputcovar(boxes, covar, p)
     unitname <- unitname(xiim)
   } else {
     stop("Input requires specification of xiim or covariance and p\n")
@@ -58,7 +58,7 @@ mvlc <- function(boxes, covariance = NULL, p = NULL, xiim = NULL){
   } else (return(lacv))
 }
 
-lac.cov <- function(boxes, covariance, p){
+mvlc.inputcovar <- function(boxes, covariance, p){
   if (mode(boxes) %in% c("integer", "numeric")){
     squares <- lapply(boxes, square) #make into owin rectangles
     boxcov <- lapply(squares, setcov) #setcov is analytic for squares according to help, couldn't see it in code though.
