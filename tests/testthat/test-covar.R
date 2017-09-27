@@ -24,7 +24,7 @@ test_that("racscovariance() matches theoretical covariance for Boolean Model", {
   covarest.frim.iso <- rotmean(covarest.frim)
   covarest.frowin.iso <- rotmean(covarest.frowin)
 
-  truecovar.iso <- with.fv(covarest.frim.iso, bdd_covar.iso(.x, lambda, discr),
+  truecovar.iso <- with.fv(covarest.frim.iso, bddcovar.iso(.x, lambda, discr),
                                fun = TRUE)
   
   #residual to theoretical covariance

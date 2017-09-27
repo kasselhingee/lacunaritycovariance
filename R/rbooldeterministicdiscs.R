@@ -1,5 +1,5 @@
 #' @title Simulation of Boolean Model of Deterministic Discs
-#' @export rbdd  bddcoverageprob bdd_covar.iso bdd.covar bdd.specdensAtOrigin bdd.specdens
+#' @export rbdd  bddcoverageprob bddcovar.iso bdd.covar bdd.specdensAtOrigin bdd.specdens
 #' @importFrom stats fft
 #' 
 #' @description Functions for simulating a Boolean model with grains that are discs of fixed constant radius (the abreviation bdd is short for Boolean model with Determinisitic Discs).
@@ -83,7 +83,7 @@ setcovdisc <- function(r, discr){
 #' @param r is the radius to calculate covariance
 # @param lambda is the intensity of the germ process (Poisson point process)
 # @param discr is the radius of the discs.
-bdd_covar.iso <- function(r, lambda, discr){
+bddcovar.iso <- function(r, lambda, discr){
   expectedsetcovariance <- setcovdisc(r, discr)
   p <- 1 - exp(-pi * discr ^ 2 * lambda)
   covariance <- 2 * p - 1 + (1 - p ) ^ 2 * exp(lambda * expectedsetcovariance)
@@ -94,7 +94,7 @@ bdd.covar_vec <- function(X, Y, lambda, discr){
   rlist <- sqrt(X ^ 2 + Y ^ 2)
   covar <- vector(length(rlist), mode = "numeric")
   for (i in 1:length(rlist)){
-    covar[i] <- bdd_covar.iso(rlist[i], lambda = lambda, discr = discr)
+    covar[i] <- bddcovar.iso(rlist[i], lambda = lambda, discr = discr)
   }
   return(covar)
 }
