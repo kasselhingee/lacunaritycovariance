@@ -44,7 +44,7 @@ mvlgb <- function(img, sidelengths, inclraw = FALSE, obswin = Frame(img)){
   obsvd <- img
   obsvd[is.finite(img$v)] <- TRUE
   if (class(obswin) == "im"){obsvd <- eval.im(obswin * obsvd)}
-  obsvd <- as.owin(obsvd) #owin format needed for use of dilation lacgb0
+  obsvd <- as.owin(obsvd) #owin format may not be needed anymore
   if (class(obswin) == "owin"){obsvd <- intersect.owin(obsvd, obswin)}
 
   if (!("RcppRoll" %in% installed.packages()[, 1])){
@@ -52,7 +52,7 @@ mvlgb <- function(img, sidelengths, inclraw = FALSE, obswin = Frame(img)){
   }
 
 img[(complement.owin(intersect.owin(obswin, Frame(img)), frame = Frame(img)))] <- NA  #make sure the pixels outside obswin are set to NA so that reduce sampling happens naturally ##NOTE: this a time consuming operation that may never be needed
-lacs <- mapply(lacgb0.rcpproll, sidep = 2 * rpix + 1, MoreArgs = list(img = img, obswin = obsvd), SIMPLIFY = FALSE, inclraw)
+lacs <- mapply(mvlgb_intern.rcpproll, sidep = 2 * rpix + 1, MoreArgs = list(img = img, obswin = obsvd), SIMPLIFY = FALSE, inclraw)
 
   if (inclraw){
     nobord <- unlist(lapply(lacs, `[[`, 1) )
@@ -81,10 +81,10 @@ lacs <- mapply(lacgb0.rcpproll, sidep = 2 * rpix + 1, MoreArgs = list(img = img,
 
 ##########################
 ##The following function calculates lacunarity for a box with side lengths 2*bX+1 and 2*bY+1 (in pixels). The RS version is automatically calculated by ignoring those boxes that have sums that includa NA values. 
-#eg lacgb0(img,5,5,5*0.8)
+#eg mvlgb_intern.rcpproll(img,5,5,5*0.8)
 #the obswin is only for the raw version and must be an owin object. 
 #uses rcpproll
-lacgb0.rcpproll <- function(img, sidep, inclraw, obswin = Frame(img)){
+mvlgb_intern.rcpproll <- function(img, sidep, inclraw, obswin = Frame(img)){
   mat <- as.matrix(img)
   if ( (sidep > nrow(mat)) | (sidep > ncol(mat))){
     mvlgb.rs <- NA
