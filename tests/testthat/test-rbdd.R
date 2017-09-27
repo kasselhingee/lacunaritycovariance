@@ -10,7 +10,7 @@ test_that("rbdd produces simulations with the correct area fraction", {
   expect_equal(coveragefrac(xi, w), 0.4644903, tolerance = 1E-7)
   
   #theoretical coveragefrac
-  truecoveragefrac <- bdd.coverageprob(lambda,discr)
+  truecoveragefrac <- bddcoverageprob(lambda,discr)
   
   ## use covariance to form approximate confidence interval
   thcovariance <- bdd.covar(xrange=c(-100,100),yrange=c(-100,100),eps=c(1,1),lambda, discr)

@@ -15,7 +15,7 @@ lac(boxes, covariance = NULL, p = NULL, xiim = NULL)
 \arguments{
 \item{boxes}{Either a list of sidelengths for square boxes or a list of \code{owin} objects of shape.}
 
-\item{covariance}{A \code{im} object containing the covariance function (typically estimated by \code{covariance})}
+\item{covariance}{A \code{im} object containing the covariance function (typically estimated by the \link{\code{racscovariance}} function)}
 
 \item{p}{The coverage probability. Typically estimated by the fraction of the observation window covered by the set of interest.}
 

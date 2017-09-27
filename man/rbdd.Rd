@@ -2,7 +2,7 @@
 % Please edit documentation in R/rbooldeterministicdiscs.R
 \name{rbdd}
 \alias{rbdd}
-\alias{bdd.coverageprob}
+\alias{bddcoverageprob}
 \alias{bdd_covar.iso}
 \alias{bdd.covar}
 \alias{bdd.specdens}
@@ -11,7 +11,7 @@
 \usage{
 rbdd(lambda, discr, window, seed = NULL)
 
-bdd.coverageprob(lambda, discr)
+bddcoverageprob(lambda, discr)
 
 bdd_covar.iso(r, lambda, discr)
 
@@ -55,7 +55,7 @@ Also described in this help file are functions for calculating from model parame
  If the simulated set is empy then an empty \code{owin} object is returned.
 The point process of germs is generated using spatstat's \code{\link[spatstat]{rpoispp}}.
 
-\item \code{bdd.coverageprob}: Returns the true coverage probability given the intensity and disc radius.
+\item \code{bddcoverageprob}: Returns the true coverage probability given the intensity and disc radius.
 
 \item \code{bdd_covar.iso}: Returns the true covariance of points separated by a distance \code{r} given the intensity, \code{lambda} and disc radius \code{discr} of the model.
 
@@ -83,7 +83,7 @@ plot(xi)
 plot(w,add=TRUE)
 
 #calculate theoretical values of the model
-truecoverageprob <- bdd.coverageprob(lambda,discr)
+truecoverageprob <- bddcoverageprob(lambda,discr)
 truecovariance <- bdd.covar(
                    c(-10,10),c(-10,10),c(0.2,0.2),lambda,discr)
 thspecdens <- bdd.specdens(lambda,discr)
