@@ -4,3 +4,14 @@ TO DO BEFORE PUBLISHING:
 - Make it make sense to someone who isn't a spatial stats expert, to an ecologist, that I want to use it.
 
 - delete demo things?
+
+- covariance -- racscovariance
+
+- use testhat package
+
+- in mvlgb: catch warnings about empty RS window and print something more understandble
+
+##**feature request: a test that simulations rbllognorm correspond to theoretical values for the model.
+
+- mvlgb and mvlc interface more matching!?
+

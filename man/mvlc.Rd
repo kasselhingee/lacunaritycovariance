@@ -15,7 +15,7 @@ lac(boxes, covariance = NULL, p = NULL, xiim = NULL)
 \arguments{
 \item{boxes}{Either a list of sidelengths for square boxes or a list of \code{owin} objects of shape.}
 
-\item{covariance}{A \code{im} object containing the covariance function (typically estimated by \code{covariance})}
+\item{covariance}{A \code{im} object containing the covariance function (typically estimated by the \link{\code{racscovariance}} function)}
 
 \item{p}{The coverage probability. Typically estimated by the fraction of the observation window covered by the set of interest.}
 
@@ -33,14 +33,14 @@ If we denoted the estimated covariance by \eqn{\hat{C}(v)} and coverage probabil
 }
 \examples{
 xi <- heather$coarse
-covar <- covariance(xi,inclraw=FALSE)
-p <- area(xi)/area(Frame(xi))
-sidelengths <- seq(0.3,14,by=0.2)
-plot(lac(sidelengths,covar,p))
+covar <- racscovariance(xi, inclraw = FALSE)
+p <- area(xi) / area(Frame(xi))
+sidelengths <- seq(0.3, 14, by = 0.2)
+plot(lac(sidelengths, covar, p))
 # what is the MVL estimates for boxes that are discs?
-discboxes <- lapply(sidelengths/2,disc)
-discmvls <- mvlc(discboxes,covar,p)
-points(sidelengths,discmvls)
+discboxes <- lapply(sidelengths / 2, disc)
+discmvls <- mvlc(discboxes, covar, p)
+points(sidelengths, discmvls)
 
 }
 \keyword{nonparametric}

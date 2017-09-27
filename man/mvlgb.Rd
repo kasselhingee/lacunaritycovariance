@@ -5,9 +5,9 @@
 \alias{lacgb}
 \title{Gliding Box estimation of mass variance lacunarity}
 \usage{
-mvlgb(img, sidelengths, inclraw = FALSE, W = Frame(img))
+mvlgb(img, sidelengths, inclraw = FALSE, obswin = Frame(img))
 
-lacgb(img, sidelengths, inclraw = FALSE, W = Frame(img))
+lacgb(img, sidelengths, inclraw = FALSE, obswin = Frame(img))
 }
 \arguments{
 \item{img}{An image of pixels valued either \code{0}, \code{1} or \code{NA}. \code{NA} valued pixels are assumed to be outside the observation window.}
@@ -16,7 +16,7 @@ lacgb(img, sidelengths, inclraw = FALSE, W = Frame(img))
 
 \item{inclraw}{If TRUE the function will also return a gliding box estimate that ignores edge effects. (Default is FALSE)}
 
-\item{W}{Optional observation window. The observation window used for the estimator will be the intersection of \code{W} and the pixels that are not \code{NA} in \code{img}.}
+\item{obswin}{Optional observation window. The observation window used for the estimator will be the intersection of \code{obswin} and the pixels that are not \code{NA} in \code{img}.}
 }
 \value{
 An \code{fv} object with a column called \code{MVL} for the usual gliding box estimate described in [1]. 
