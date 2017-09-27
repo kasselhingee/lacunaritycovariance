@@ -1,11 +1,11 @@
 context("MVL estimation")
 
 test_that("MVLc estimates are historically consistent", {
-  covar <- covariance(heather$coarse)
+  covar <- racscovariance(heather$coarse)
   p <- area(heather$coarse) / area(Frame(heather$coarse))
   sidelengths <- 2.2
   lac <- lac(sidelengths, covar, p)
-  expect_equal(lac$MVL, 0.05777959)
+  expect_equal(lac$MVL, 0.05855459, tolerance = 1E-6)
 })
 
 test_that("MVLgb estimates are historically consistent", {
@@ -17,7 +17,7 @@ test_that("MVLgb estimates are historically consistent", {
 })
 
 test_that("MVLc estimates are consitent for input side lengths or owin squares", {
-  covar <- covariance(heather$coarse)
+  covar <- racscovariance(heather$coarse)
   p <- area(heather$coarse) / area(Frame(heather$coarse))
   sidelengths <- 2.2
   lac <- lac(sidelengths, covar, p)
@@ -36,7 +36,7 @@ test_that("integration when covar is constant gives squared area", {
 
 test_that("MVLc and MVLgb produce similar results for large square observation windows", {
   lambda <- 4 * 2.2064E-3
-  discr <- 5
+  discr <- 2
   w <- owin(xrange = c(0, 100) * 2, yrange = c(0, 100) * 2)
   xi <- rbdd(lambda, discr,w)
   xiimg <- as.im(xi, W = w, eps = c(0.1, 0.1), na.replace = 0)

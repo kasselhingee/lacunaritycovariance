@@ -33,7 +33,7 @@ If we denoted the estimated covariance by \eqn{\hat{C}(v)} and coverage probabil
 }
 \examples{
 xi <- heather$coarse
-covar <- covariance(xi, inclraw = FALSE)
+covar <- racscovariance(xi, inclraw = FALSE)
 p <- area(xi) / area(Frame(xi))
 sidelengths <- seq(0.3, 14, by = 0.2)
 plot(lac(sidelengths, covar, p))

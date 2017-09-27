@@ -10,7 +10,7 @@
 #' \deqn{\frac{1}{\hat{p}^2 |B|^2}\int \gamma_B(v)\hat{C}(v)dv -1 }
 
 #' @param boxes Either a list of sidelengths for square boxes or a list of \code{owin} objects of shape.
-#' @param covariance  A \code{im} object containing the covariance function (typically estimated by \code{covariance})
+#' @param covariance  A \code{im} object containing the covariance function (typically estimated by the \link{\code{racscovariance}} function)
 #' @param p The coverage probability. Typically estimated by the fraction of the observation window covered by the set of interest.
 #' @param xiim An observation of a stationary RACS in \code{im} format. \code{xiim} must have values of either 1, 0 or NA; 1 denotes inside the RACS, 0 denotes outside, and NA denotes unobserved.
 
@@ -18,7 +18,7 @@
 
 #' @examples
 #' xi <- heather$coarse
-#' covar <- covariance(xi, inclraw = FALSE)
+#' covar <- racscovariance(xi, inclraw = FALSE)
 #' p <- area(xi) / area(Frame(xi))
 #' sidelengths <- seq(0.3, 14, by = 0.2)
 #' plot(lac(sidelengths, covar, p))
@@ -38,7 +38,7 @@ mvlc <- function(boxes, covariance = NULL, p = NULL, xiim = NULL){
     p <- sum(xiim) / sum(is.finite(xiim$v))
     w <- as.owin(xiim) #w is observation window - only the non NA values end up in window
     xiim[is.na(xiim$v)] <- 0
-    covar <- covariance(xiim, obswin = w)
+    covar <- racscovariance(xiim, obswin = w)
     lacv <- lac.cov(boxes, covar, p)
     unitname <- unitname(xiim)
   } else {

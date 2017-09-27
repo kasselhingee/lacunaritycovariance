@@ -68,7 +68,7 @@ obswindow <- Frame(heather$coarse)
 coverageprob <- coverageprob(xi,obswindow)
 
 #estimate covariance from xi
-xi.covariance <- covariance(xi)
+xi.covariance <- racscovariance(xi)
 #estimate spherical contact distribution, core probability and disc-state contagion
 scdest <- Hest(xi,W=obswindow)   #Hest is from spatstat package
 coreprob <- Hest(complement.owin(xi),W=obswindow)

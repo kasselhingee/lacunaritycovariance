@@ -1,5 +1,5 @@
 #' @title A spatial covariance, also known as `two-point probability', estimator for stationary RACS
-#' @export covariance
+#' @export racscovariance
 #' @description 
 #' These functions estimate the covariance of a stationary RACS. 
 #' The covariance is also known as the two-point coverage probability, and very closely related to the semivariogram.
@@ -19,8 +19,8 @@
 
 #' @examples
 #' xi <- heather$coarse
-#' covar <- covariance(xi,inclraw=FALSE)
-#' covar <- covariance(as.im(heather$coarse,na.replace=0))
+#' covar <- racscovariance(xi, inclraw = FALSE)
+#' covar <- racscovariance(as.im(heather$coarse, na.replace = 0))
 
 #' @keywords spatial nonparametric
 
@@ -31,13 +31,13 @@
 #' \eqn{\gamma_{W\cap X}(v) = |W \cap X \cap ((W\cap X ) \oplus v)|}.
 #' The raw estimate (if requested) is
 #' \deqn{\hat{\tilde{C}}(v) = \frac{\gamma_{W\cap X}(v)}{|W|}.}
-#' \code{covariance} uses Fourier transforms to calculate set covariances (using the \code{\link{setcov}} function from \pkg{spatstat}). 
+#' \code{racscovariance} uses Fourier transforms to calculate set covariances (using the \code{\link{setcov}} function from \pkg{spatstat}). 
 #' Vectors with small \eqn{\gamma_W(v)} are eliminated using \code{setcov_boundarythresh} because they cause numerical instabilities.
 # I suspect this instabilities are because the fourier transforms are only approximately correct, and 0 is within the approximately correct range.
 
 #' @references [1] Serra, J.P. (1982) Image Analysis and Mathematical Morphology. London; New York: Academic Press.
 
-covariance <- function(xi,
+racscovariance <- function(xi,
         obswin = NULL,
         inclraw =FALSE,
         setcov_boundarythresh = 0.1 * area.owin(obswin)) {
