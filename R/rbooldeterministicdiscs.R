@@ -90,7 +90,7 @@ bddcovar.iso <- function(r, lambda, discr){
   return(covariance)
 }
 # covariance as a function of vectors given in X, Y columns.
-bdd.covar_vec <- function(X, Y, lambda, discr){
+bddcovar.vec <- function(X, Y, lambda, discr){
   rlist <- sqrt(X ^ 2 + Y ^ 2)
   covar <- vector(length(rlist), mode = "numeric")
   for (i in 1:length(rlist)){
@@ -106,7 +106,7 @@ bdd.covar_vec <- function(X, Y, lambda, discr){
 bdd.covar <- function(xrange, yrange, eps, lambda, discr){
   xpts <- seq(from = xrange[1], to = xrange[2], by = eps[1])
   ypts <- seq(from = yrange[1], to = yrange[2], by = eps[2])
-  mat <- outer(xpts, ypts, FUN = "bdd.covar_vec", lambda = lambda, discr = discr) #rows correspond to xstep - just a quirk of outer!
+  mat <- outer(xpts, ypts, FUN = "bddcovar.vec", lambda = lambda, discr = discr) #rows correspond to xstep - just a quirk of outer!
   mat <- t(mat) #now columns correspond to x vals.
   return(im(mat, xcol = xpts, yrow = ypts))
 }
@@ -115,7 +115,7 @@ bdd.covar <- function(xrange, yrange, eps, lambda, discr){
 bdd.specdens <- function(lambda, discr){
   xpts <- 0:(20 * discr) / 4
   ypts <- 0:(20 * discr) / 4
-  mat <- outer(xpts, ypts, FUN = "bdd.covar_vec", lambda = lambda, discr = discr) #rows correspond to xstep - just a quirk of outer!
+  mat <- outer(xpts, ypts, FUN = "bddcovar.vec", lambda = lambda, discr = discr) #rows correspond to xstep - just a quirk of outer!
   #reflect out to all corners
   mat <- mat[, c( (ncol(mat)):2, 1:ncol(mat))]
   mat <- mat[c( (nrow(mat)):2, 1:nrow(mat)), ]
@@ -158,7 +158,7 @@ bdd.specdens <- function(lambda, discr){
 bdd.specdensAtOrigin <- function(lambda, discr){
   xpts <- 0:(80 * discr) / 20
   ypts <- 0:(80 * discr) / 20
-  mat <- outer(xpts, ypts, FUN = "bdd.covar_vec", lambda = lambda, discr = discr) #rows correspond to xstep - just a quirk of outer!
+  mat <- outer(xpts, ypts, FUN = "bddcovar.vec", lambda = lambda, discr = discr) #rows correspond to xstep - just a quirk of outer!
   #reflect out to all corners
   mat <- mat[, c( (ncol(mat)):2, 1:ncol(mat))]
   mat <- mat[c( (nrow(mat)):2, 1:nrow(mat)), ]
