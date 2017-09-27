@@ -88,6 +88,22 @@ innerprod.im <- function(A, B, na.rm = FALSE){
   prdimg <- eval.im(A2 * B2, harmonize = FALSE)
   return(sum(prdimg[, ], na.rm = na.rm) * prdimg$xstep * prdimg$ystep)
 }
+#tests of innerprod.im:
+#innerprod.im(as.im(square(1)),as.im(square(1),value=1))
+#natest:
+#imna <- as.im(square(1.01),value=1)
+#imna[as.ppp(c(0.5,0.5),W=Frame(imna))] <- NA
+#innerprod.im(as.im(square(1)),imna, na.rm=FALSE)
+#innerprod.im(as.im(square(1)),imna, na.rm=TRUE)
+
+#innerprod.im(as.im(square(1)),as.im(square(0.25),value=1))
+
+#should be close to 0 (orthogonal):
+#innerprod.im(as.im(function(x,y) {sin(x)},W=square(7*pi),eps=0.01),as.im(function(x,y) {sin(2*x)},W=square(2*pi),eps=0.01))
+#should be very non-zero
+#innerprod.im(as.im(function(x,y) {sin(x)},W=square(7*pi),eps=0.01),as.im(function(x,y) {sin(x)},W=square(2*pi),eps=0.01))
+#it should be (and is) equal to this: sum(as.im(function(x,y){sin(x)*sin(x)},W=square(2*pi),eps=0.01))*0.01*0.01
+
 
 #' @rdname mvlc 
 mvl <- mvlc
