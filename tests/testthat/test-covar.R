@@ -41,3 +41,13 @@ test_that("racscovariance() matches theoretical covariance for Boolean Model", {
   
   reset.spatstat.options()
 })
+
+test_that("racscovariance() errors properly", {
+  lambda <- 4 * 2.2064E-3
+  discr <- 5
+  w <- owin(xrange = c(0, 100), yrange = c(0, 100))
+  xi <- rbdd(lambda, discr,w)
+  xiimg <- as.im(xi, W = w, eps = c(0.1, 0.1), na.replace = 0)
+  xiimg[10, 10] <- NA
+  expect_error(racscovariance(xiimg), regexp = "Input xi has values other than 0, 1 or NA")
+})
