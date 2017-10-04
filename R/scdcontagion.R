@@ -94,24 +94,14 @@ scdcontagion <- function(XiH, XicH, p, normalise=FALSE){
     contag <- 1 + contag / (-4 / exp(1) * log(1 / exp(1)))
   }
   if (returnfv) {
-    if (normalise) {
-      return(fv(data.frame(r = xvals,
-                           contag = contag),
-                valu = "contag",
-                desc = c("radius",
-                       "normalised SCD contagion estimate"),
-                unitname = unitnames
+  return(fv(data.frame(r = xvals,
+                       contag = contag),
+            valu = "contag",
+            desc = c("radius",
+                   paste(ifelse(normalise, "normalised", "unnormalised"),
+                         "SCD contagion estimate")),
+            unitname = unitnames
       ))
-    }
-    else {
-      return(fv(data.frame(r = xvals,
-                           contag = contag),
-                valu = "contag",
-                desc = c("radius",
-                       "unnormalised SCD contagion estimate"),
-                unitname = unitnames
-      ))
-    }
   }
   return(contag)
 }
