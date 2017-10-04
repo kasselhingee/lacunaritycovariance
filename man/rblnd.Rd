@@ -4,12 +4,12 @@
 \alias{rblnd}
 \title{Simulate a Boolean model of discs with log normal disc radii}
 \usage{
-rblnd(window, bufferdist, lambda, meanlog, sdlog, seed = NULL)
+rblnd(obswin, bufferdist, lambda, meanlog, sdlog, seed = NULL)
 }
 \arguments{
-\item{window}{An \code{owin} object specifying the desired simulation region}
+\item{obswin}{An \code{owin} object specifying the desired simulation region}
 
-\item{bufferdist}{A distance to expand \code{window} so that discs with centres near \code{window} are also simulated.}
+\item{bufferdist}{A distance to expand \code{obswin} so that discs with centres near \code{obswin} are also simulated.}
 
 \item{lambda}{Intensity of the Poisson point process, passed to \link[spatstat]{rpoispp}.
 It could be either a single positive number, or any other object that \link[spatstat]{rpoispp} can understand.}
@@ -21,14 +21,14 @@ It could be either a single positive number, or any other object that \link[spat
 \item{seed}{Optional input (default is \code{NULL}). Is an integer passed to \code{\link[base]{set.seed}}. Used to reproduce patterns exactly.}
 }
 \value{
-Returns an \code{owin} object cropped to \code{window}.
+Returns an \code{owin} object cropped to \code{obswin}.
 }
 \description{
 Simulates a Boolean model of discs with log normal radii by first simulating a Poisson point process and then placing discs
  of random radii around each point (the radii are generated using a log normal distribution).
 }
 \details{
-The point process needs to be simulated in a larger region than the desired window to account for the possibility of discs that intersect the window, but have germs outside the window.
+The point process needs to be simulated in a larger region than the desired observation window to account for the possibility of discs that intersect the observation window, but have germs outside the observation window.
 
 The point process of germs is generated using spatstat's \code{\link[spatstat]{rpoispp}}.
 }
