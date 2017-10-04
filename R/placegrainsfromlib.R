@@ -1,4 +1,4 @@
-#' @name rgermgrain
+#' @name placegrainsfromlib 
 
 #' @title A function to help simulate Boolean models with user-provided grains
 #' @aliases placegrainsfromlib
