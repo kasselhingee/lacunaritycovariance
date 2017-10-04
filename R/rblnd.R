@@ -1,5 +1,5 @@
 #' @title Simulate a Boolean model of discs with log normal disc radii
-#' @export rboollognormdiscs
+#' @export rblnd
 #' @importFrom stats rlnorm
 
 #' @description Simulates a Boolean model of discs with log normal radii by first simulating a Poisson point process and then placing discs
@@ -21,21 +21,21 @@
 
 #' @examples
 #' w <- owin(xrange = c(0, 10), yrange = c(0, 10))
-#' xi <- rboollognormdiscs(w, 2, 1, -1, 0.5)
+#' xi <- rblnd(w, 2, 1, -1, 0.5)
 #' 
 #' plot(w)
 #' plot(xi, add = TRUE)
 #' 
 #' #or with seed set
 #' w <- owin(xrange = c(0, 10), yrange = c(0, 10))
-#' xi <- rboollognormdiscs(w, 2, 1, -1, 0.5, seed = 36)
+#' xi <- rblnd(w, 2, 1, -1, 0.5, seed = 36)
 #' 
 #' plot(w)
 #' plot(xi, add = TRUE)
 
 
 #' @keywords spatial datagen
-rboollognormdiscs <- function(window, bufferdist, lambda, meanlog, sdlog, seed = NULL){
+rblnd <- function(window, bufferdist, lambda, meanlog, sdlog, seed = NULL){
   #have to simulate in a much larger area than the observation window (because grains with centres outside the window should still be observed)
   wsim <- Frame(dilation(window, bufferdist)) #i reckon faster to use rectangular region (the non-rectangular probably simulates in a rectangular region and then rejects anyway)
   if (!missing(seed)){set.seed(seed)}
