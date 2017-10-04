@@ -24,7 +24,7 @@
 #' @details \code{placegrainsfromlib} randomly samples from a library of grains (\code{grainlib}) and places these on the points in \code{pp}.
 
 #' @return Returns an \code{owin} object.
-#' @rdname rgermgrain
+#' @rdname placegrainsfromlib
 #' 
 #' @examples
 #' #Generate a germ-grain models where germs are a Poisson point process
