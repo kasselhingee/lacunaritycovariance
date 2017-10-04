@@ -65,16 +65,16 @@ xi <- heather$coarse    #an observation of Xi
 obswindow <- Frame(heather$coarse)
  
 #estimate coverage probability
-coverageprob <- coverageprob(xi,obswindow)
+coverageprob <- coverageprob(xi, obswindow)
 
 #estimate covariance from xi
 xi.covariance <- racscovariance(xi)
 #estimate spherical contact distribution, core probability and disc-state contagion
-scdest <- Hest(xi,W=obswindow)   #Hest is from spatstat package
-coreprob <- Hest(complement.owin(xi),W=obswindow)
-discstatecontag <- scdcontagion(scdest,coreprob,coverageprob)
+scdest <- Hest(xi, W = obswindow)   #Hest is from spatstat package
+coreprob <- Hest(complement.owin(xi), W = obswindow)
+discstatecontag <- scdcontagion(scdest, coreprob, coverageprob)
 
-plot(scdest, main="Conditional Spherical Contact Distribution Estimates\n
+plot(scdest, main = "Conditional Spherical Contact Distribution Estimates\n
  Showing Estimates Using Various Border Corrections")
 plot(coreprob, main = "Conditional Core Probability Estimates\n
  Showing Estimates using various Border Corrections")
@@ -83,12 +83,12 @@ plot(discstatecontag, main = "A Disc-State Contagion Estimate\n
 
 #Mass-Variance Lacunarity Estimates.
 #If RcppRoll is installed than the gliding box estimate can also be generated for comparison.
-xi.mvlc <- mvlc(c(1,2,3,4), covariance = xi.covariance, p = coverageprob)
+xi.mvlc <- mvlc(c(1, 2, 3, 4), covariance = xi.covariance, p = coverageprob)
 xi.im <- as.im(xi, na.replace = 0)
-xi.mvlgb <- mvlgb(xi.im, c(1,2,3,4))
+xi.mvlgb <- mvlgb(xi.im, c(1, 2, 3, 4))
 
 #Simulation of Boolean Models
-booldisc.rfixed.xi <- rbdd(2.2064E-1,0.5,obswindow)
-plot(obswindow, main="A Simulation of a Boolean Model")
-plot(add=TRUE, booldisc.rfixed.xi)
+booldisc.rfixed.xi <- rbdd(2.2064E-1, 0.5, obswindow)
+plot(obswindow, main = "A Simulation of a Boolean Model")
+plot(add = TRUE, booldisc.rfixed.xi)
 }

@@ -53,13 +53,13 @@ If \code{normalise} is \code{TRUE} then the result is divided by
 \examples{
 xi <- heather$coarse
 obswindow <- Frame(heather$coarse)
-p <- coverageprob(xi,Frame(xi))
-xiH <- Hest(xi,W=obswindow) #Sph. Contact Distrution Estimate
-xicH <- Hest(complement.owin(xi),W=obswindow) #Conditional Core Prob. Estimate
-plot(xiH,type="l",col="red") 
-lines(xicH,type="l",col="black") 
+p <- coverageprob(xi, Frame(xi))
+xiH <- Hest(xi, W = obswindow) #Sph. Contact Distrution Estimate
+xicH <- Hest(complement.owin(xi), W = obswindow) #Conditional Core Prob. Estimate
+plot(xiH, type = "l", col = "red") 
+lines(xicH, type = "l", col = "black") 
 
-contagion <- scdcontagion(xiH,xicH,p)
+contagion <- scdcontagion(xiH, xicH, p)
 plot(contagion)
 
 }

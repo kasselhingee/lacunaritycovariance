@@ -26,7 +26,7 @@ See [1, section 6.4.2] for more theoretical details.
 \examples{
 xi <- heather$coarse
 obswindow <- Frame(heather$coarse)
-cp <- coverageprob(xi,obswindow)
+cp <- coverageprob(xi, obswindow)
 }
 \references{
 [1] Chiu, S.N., Stoyan, D., Kendall, W.S. and Mecke, J. (2013) Stochastic Geometry and Its Applications, 3rd ed. Chichester, United Kingdom: John Wiley & Sons.

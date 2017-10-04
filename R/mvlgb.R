@@ -25,10 +25,10 @@
 #' @param inclraw If TRUE the function will also return a gliding box estimate that ignores edge effects. (Default is FALSE)
 #' @param obswin Optional observation window. The observation window used for the estimator will be the intersection of \code{obswin} and the pixels that are not \code{NA} in \code{img}.
 #' @examples
-#' img <- as.im(heather$coarse,na.replace=0)
-#' sidelengths <- seq(0.2,14,by=0.2) #in units of img
-#' lac <- mvlgb(img,sidelengths, inclraw=TRUE)
-#' plot(lac, cbind(MVL,raw) ~ s)
+#' img <- as.im(heather$coarse, na.replace = 0)
+#' sidelengths <- seq(0.2, 14, by = 0.2) #in units of img
+#' lac <- mvlgb(img, sidelengths, inclraw = TRUE)
+#' plot(lac, cbind(MVL, raw) ~ s)
 #'
 #' @keywords spatial nonparametric 
 mvlgb <- function(img, sidelengths, inclraw = FALSE, obswin = Frame(img)){

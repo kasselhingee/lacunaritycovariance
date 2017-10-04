@@ -40,10 +40,10 @@ WARNING: This function needs the \code{roll_sum} function in \code{RcppRoll} to 
 Note: The side lengths are rounded such that they are an odd number of pixels across.
 }
 \examples{
-img <- as.im(heather$coarse,na.replace=0)
-sidelengths <- seq(0.2,14,by=0.2) #in units of img
-lac <- mvlgb(img,sidelengths, inclraw=TRUE)
-plot(lac, cbind(MVL,raw) ~ s)
+img <- as.im(heather$coarse, na.replace = 0)
+sidelengths <- seq(0.2, 14, by = 0.2) #in units of img
+lac <- mvlgb(img, sidelengths, inclraw = TRUE)
+plot(lac, cbind(MVL, raw) ~ s)
 
 }
 \references{
