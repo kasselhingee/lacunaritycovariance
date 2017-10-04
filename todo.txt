@@ -15,3 +15,6 @@ TO DO BEFORE PUBLISHING:
 
 - mvlgb and mvlc interface more matching!?
 
+- make tests less computationally intensive somehow!?
+
+- apply lintr to tests

@@ -12,10 +12,6 @@ Use a period to separate a particular data format for an object (e.g. .im)
 
 
 using lintr to help do a bunch of other nice things, customising which styles to use involves something like:
-lint("contagSphCont.R",linters=list(commas_linter = commas_linter))
-with_defaults(camel_case_linter = camel_case_linter,
- snake_case_linter = snake_case_linter,
- closed_curly_linter = closed_curly_linter(allow_single_line = TRUE))
 
 kasslinters <- list(
   assignment_linter = assignment_linter,
