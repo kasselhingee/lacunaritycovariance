@@ -29,7 +29,7 @@
 #' 
 #' @keywords spatial nonparametric 
 mvlc <- function(boxes, covariance = NULL, p = NULL, xiim = NULL){
-  if (!(is.null(covariance) & is.null(p))){
+  if (!(is.null(covariance) && is.null(p))){
     if (!is.null(xiim)){stop("xiim (an observation image) and covariance or p were given. Either covariance and p must be supplied or xiim supplied.")}
     lacv <- mvlc.inputcovar(boxes, covariance, p)
     unitname <- unitname(covariance)
