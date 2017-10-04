@@ -1,5 +1,20 @@
 context("MVL estimation")
 
+test_that("mvlc() warns of unexpected inputs", {
+  covar <- racscovariance(heather$coarse)
+  p <- area(heather$coarse) / area(Frame(heather$coarse))
+  sidelengths <- 2.2
+  img <- as.im(heather$coarse,eps=heather$coarse$xstep, na.replace=0)
+  expect_error(lac(sidelengths, covariance = covar, p = p, xiim = img),
+                 regexp = "Either covariance and p must be supplied or xiim supplied.")
+  
+  expect_error(lac(sidelengths, covariance = covar, xiim = img),
+                 regexp = "Either covariance and p must be supplied or xiim supplied.")
+  
+  expect_error(lac(sidelengths, p = p, xiim = img),
+                 regexp = "Either covariance and p must be supplied or xiim supplied.")
+})
+
 test_that("MVLc estimates are historically consistent", {
   covar <- racscovariance(heather$coarse)
   p <- area(heather$coarse) / area(Frame(heather$coarse))
