@@ -10,7 +10,7 @@
 #' \deqn{\frac{1}{\hat{p}^2 |B|^2}\int \gamma_B(v)\hat{C}(v)dv -1 }
 
 #' @param boxes Either a list of sidelengths for square boxes or a list of \code{owin} objects of shape.
-#' @param covariance  A \code{im} object containing the covariance function (typically estimated by the \link{\code{racscovariance}} function)
+#' @param covariance  A \code{im} object containing the covariance function (typically estimated by the \code{\link{racscovariance}} function)
 #' @param p The coverage probability. Typically estimated by the fraction of the observation window covered by the set of interest.
 #' @param xiim An observation of a stationary RACS in \code{im} format. \code{xiim} must have values of either 1, 0 or NA; 1 denotes inside the RACS, 0 denotes outside, and NA denotes unobserved.
 
