@@ -5,10 +5,6 @@ TO DO BEFORE PUBLISHING:
 
 - delete demo things?
 
-- covariance -- racscovariance
-
-- use testhat package
-
 - in mvlgb: catch warnings about empty RS window and print something more understandble
 
 ##**feature request: a test that simulations rbllognorm correspond to theoretical values for the model.
@@ -17,4 +13,4 @@ TO DO BEFORE PUBLISHING:
 
 - make tests less computationally intensive somehow!?
 
-- apply lintr to tests
+- polish vignette?
