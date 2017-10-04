@@ -13,6 +13,20 @@ test_that("mvlc() warns of unexpected inputs", {
   
   expect_error(lac(sidelengths, p = p, xiim = img),
                  regexp = "Either covariance and p must be supplied or xiim supplied.")
+  
+  sidel <- c(2.2)
+  expectlac.wraw <- lacgb(img,sidel,inclraw = TRUE)
+})
+
+test_that("mvlgb() warns of unexpected inputs", {
+  sidel <- c(2.2)
+  img <- as.im(heather$coarse,eps=c(heather$coarse$xstep, 2*heather$coarse$xstep), na.replace=0)
+  expect_error(lacgb(img,sidel,inclraw = TRUE),
+                 regexp = "image pixels must be square")
+  
+  expect_error(lacgb(13,sidel,inclraw = TRUE),
+                 regexp = "input img must be of class im")
+  
 })
 
 test_that("MVLc estimates are historically consistent", {

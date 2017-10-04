@@ -32,7 +32,8 @@
 #'
 #' @keywords spatial nonparametric 
 mvlgb <- function(img, sidelengths, inclraw = FALSE, obswin = Frame(img)){
-  if (abs(img$xstep - img$ystep) > 1E-2 * img$xstep){print("ERROR: image pixels must be square")}
+  if (!is.im(img)){stop("input img must be of class im")}
+  if (abs(img$xstep - img$ystep) > 1E-2 * img$xstep){stop("image pixels must be square")}
 #convert sidelengths to odd pixel amounts, taking into account that want a distance to edge
   spix <- 1 + round( (sidelengths - img$xstep) / (2 * img$xstep)) * 2
   spix <- unique(spix)
@@ -40,7 +41,6 @@ mvlgb <- function(img, sidelengths, inclraw = FALSE, obswin = Frame(img)){
   sidel <- spix * img$xstep
 
 #compute observation mask
-  if (class(img) != "im"){print("ERROR: input img must be of class im")}
   obsvd <- img
   obsvd[is.finite(img$v)] <- TRUE
   if (class(obswin) == "im"){obsvd <- eval.im(obswin * obsvd)}
