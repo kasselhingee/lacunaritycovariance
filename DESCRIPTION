@@ -11,7 +11,8 @@ Suggests:
     sp,
     raster,
     maptools,
-    RcppRoll
+    RcppRoll,
+    testthat
 Description: Methods for non-parametric estimation of 2D RAndom Closed Sets (RACS)
     properties from observations. This class of properties have various names
 	depending on the field, including landscape pattern indices (from landscape
