@@ -1,8 +1,8 @@
 Package: racssummfuncs
 Type: Package
 Title: Estimating summary functions of RACS from a bi-tonal image
-Version: 0.2-9
-Date: 2017-09-06
+Version: 0.2-10
+Date: 2017-10-09
 Author: Kassel Liam Hingee
 Maintainer: <kassel.hingee@research.uwa.edu.au>
 Depends:
