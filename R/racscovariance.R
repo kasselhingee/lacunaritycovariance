@@ -53,7 +53,8 @@ racscovariance <- function(xi,
     }
     #check that xi is only 1s, 0s and NAs
     uvals <- unique(as.list(as.matrix(xi)))
-    if (!(all(uvals %in% c(0, 1)))){
+    if ( !all(  (uvals %in% c(0, 1)) | is.na(uvals))  && 
+             !all((uvals %in% c(FALSE, TRUE, NA)) | is.na(uvals)) ) {
         stop("Input xi has values other than 0, 1 or NA")
     } else {
         obswin <- as.owin(xi) #only the non-NA pixels will be in the window
