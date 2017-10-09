@@ -10,7 +10,7 @@
 #' \deqn{\frac{1}{\hat{p}^2 |B|^2}\int \gamma_B(v)\hat{C}(v)dv -1 }
 
 #' @param boxes Either a list of sidelengths for square boxes or a list of \code{owin} objects of shape.
-#' @param covariance  A \code{im} object containing the covariance function (typically estimated by the \link{\code{racscovariance}} function)
+#' @param covariance  A \code{im} object containing the covariance function (typically estimated by the \code{\link{racscovariance}} function)
 #' @param p The coverage probability. Typically estimated by the fraction of the observation window covered by the set of interest.
 #' @param xiim An observation of a stationary RACS in \code{im} format. \code{xiim} must have values of either 1, 0 or NA; 1 denotes inside the RACS, 0 denotes outside, and NA denotes unobserved.
 
@@ -29,12 +29,11 @@
 #' 
 #' @keywords spatial nonparametric 
 mvlc <- function(boxes, covariance = NULL, p = NULL, xiim = NULL){
-  if (!(is.null(covariance) | is.null(p))){
-    if (!is.null(xiim)){cat("WARNING: covariance, p and observation image, xiim, given. Only the covariance and p will be used\n")}
+  if (!(is.null(covariance) && is.null(p))){
+    if (!is.null(xiim)){stop("xiim (an observation image) and covariance or p were given. Either covariance and p must be supplied or xiim supplied.")}
     lacv <- mvlc.inputcovar(boxes, covariance, p)
     unitname <- unitname(covariance)
   } else if (!is.null(xiim)){
-    if (is.null(covariance) & is.null(p) != TRUE){ cat("WARNING: xiim supplied and only one of covariance or p supplied so using xiim\n")}
     p <- sum(xiim) / sum(is.finite(xiim$v))
     w <- as.owin(xiim) #w is observation window - only the non NA values end up in window
     xiim[is.na(xiim$v)] <- 0
@@ -42,7 +41,7 @@ mvlc <- function(boxes, covariance = NULL, p = NULL, xiim = NULL){
     lacv <- mvlc.inputcovar(boxes, covar, p)
     unitname <- unitname(xiim)
   } else {
-    stop("Input requires specification of xiim or covariance and p\n")
+    stop("Input requires specification of xiim or covariance and p")
   }
 
   if (mode(boxes) %in% c("integer", "numeric")){
@@ -59,6 +58,8 @@ mvlc <- function(boxes, covariance = NULL, p = NULL, xiim = NULL){
 }
 
 mvlc.inputcovar <- function(boxes, covariance, p){
+  stopifnot(is.im(covariance))
+  stopifnot(is.numeric(p))
   if (mode(boxes) %in% c("integer", "numeric")){
     squares <- lapply(boxes, square) #make into owin rectangles
     boxcov <- lapply(squares, setcov) #setcov is analytic for squares according to help, couldn't see it in code though.

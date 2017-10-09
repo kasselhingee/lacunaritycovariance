@@ -25,14 +25,15 @@
 #' @param inclraw If TRUE the function will also return a gliding box estimate that ignores edge effects. (Default is FALSE)
 #' @param obswin Optional observation window. The observation window used for the estimator will be the intersection of \code{obswin} and the pixels that are not \code{NA} in \code{img}.
 #' @examples
-#' img <- as.im(heather$coarse,na.replace=0)
-#' sidelengths <- seq(0.2,14,by=0.2) #in units of img
-#' lac <- mvlgb(img,sidelengths, inclraw=TRUE)
-#' plot(lac, cbind(MVL,raw) ~ s)
+#' img <- as.im(heather$coarse, na.replace = 0)
+#' sidelengths <- seq(0.2, 14, by = 0.2) #in units of img
+#' lac <- mvlgb(img, sidelengths, inclraw = TRUE)
+#' plot(lac, cbind(MVL, raw) ~ s)
 #'
 #' @keywords spatial nonparametric 
 mvlgb <- function(img, sidelengths, inclraw = FALSE, obswin = Frame(img)){
-  if (abs(img$xstep - img$ystep) > 1E-2 * img$xstep){print("ERROR: image pixels must be square")}
+  if (!is.im(img)){stop("input img must be of class im")}
+  if (abs(img$xstep - img$ystep) > 1E-2 * img$xstep){stop("image pixels must be square")}
 #convert sidelengths to odd pixel amounts, taking into account that want a distance to edge
   spix <- 1 + round( (sidelengths - img$xstep) / (2 * img$xstep)) * 2
   spix <- unique(spix)
@@ -40,7 +41,6 @@ mvlgb <- function(img, sidelengths, inclraw = FALSE, obswin = Frame(img)){
   sidel <- spix * img$xstep
 
 #compute observation mask
-  if (class(img) != "im"){print("ERROR: input img must be of class im")}
   obsvd <- img
   obsvd[is.finite(img$v)] <- TRUE
   if (class(obswin) == "im"){obsvd <- eval.im(obswin * obsvd)}

@@ -1,4 +1,4 @@
-#' @name rgermgrain
+#' @name placegrainsfromlib 
 
 #' @title A function to help simulate Boolean models with user-provided grains
 #' @aliases placegrainsfromlib
@@ -24,26 +24,26 @@
 #' @details \code{placegrainsfromlib} randomly samples from a library of grains (\code{grainlib}) and places these on the points in \code{pp}.
 
 #' @return Returns an \code{owin} object.
-#' @rdname rgermgrain
+#' @rdname placegrainsfromlib
 #' 
 #' @examples
 #' #Generate a germ-grain models where germs are a Poisson point process
 #' # and grains are 2 or 3 different disc sizes.
-#' grainlib <- solist(disc(radius=1),disc(radius=1.9),disc(radius=0.2))
+#' grainlib <- solist(disc(radius = 1), disc(radius = 1.9), disc(radius = 0.2))
 #' bufferdist <- 2 #chosen to be larger than the largest radius in library
 #' 
-#' w <- owin(xrange=c(0,10),yrange=c(0,10))
+#' w <- owin(xrange = c(0, 10), yrange = c(0, 10))
 #' 
 #' #simulate the germ process in an enlarged window
-#' pp <- rpoispp(lambda=0.1,win=dilation(w,bufferdist),nsim=1,drop=TRUE)
+#' pp <- rpoispp(lambda = 0.1, win = dilation(w, bufferdist), nsim = 1, drop = TRUE)
 #'
 #' plot(w)
-#' xibuffer <- placegrainsfromlib(pp,grainlib)
-#' plot(xibuffer,add=TRUE, lty="dashed")
+#' xibuffer <- placegrainsfromlib(pp, grainlib)
+#' plot(xibuffer, add = TRUE, lty = "dashed")
 #' 
 #' #get final simulation by intersection with desired window
-#' xi <- intersect.owin(xibuffer,w)
-#' plot(xi,hatch=TRUE,add=TRUE)
+#' xi <- intersect.owin(xibuffer, w)
+#' plot(xi, hatch = TRUE, add = TRUE)
 #' 
 #' 
 

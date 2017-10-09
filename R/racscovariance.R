@@ -53,9 +53,9 @@ racscovariance <- function(xi,
     }
     #check that xi is only 1s, 0s and NAs
     uvals <- unique(as.list(as.matrix(xi)))
-    if (sum(is.na(uvals), uvals %in% c(0, 1)) != length(uvals)){
-        print("ERROR: input xi has values other than 0, 1 or NA")
-        return(NULL)
+    if ( !all(  (uvals %in% c(0, 1)) | is.na(uvals))  && 
+             !all((uvals %in% c(FALSE, TRUE, NA)) | is.na(uvals)) ) {
+        stop("Input xi has values other than 0, 1 or NA")
     } else {
         obswin <- as.owin(xi) #only the non-NA pixels will be in the window
         xi[is.na(as.matrix(xi))] <- 0 #turn all NA's in xi to 0s
@@ -64,13 +64,12 @@ racscovariance <- function(xi,
     setcovwindow <- setcov(obswin, eps = c(setcovxi$xstep, setcovxi$ystep))
   }
   else {
-    print("ERROR: Input xi is not an image or owin object")
-    return(NULL)
+    stop("Input xi is not an image or owin object")
   }
   #make NA any values that are too small and lead to division to close to 0
   setcovwindow[setcovwindow < setcov_boundarythresh] <- NA
   harmims <- harmonise.im(setcovxi, setcovwindow)
-  covar <- eval.im(A / B, envir = list(A = harmims[[1]], B = harmims[[2]]))
+  covar <- harmims[[1]]/harmims[[2]]
   if (!inclraw) {return(covar)}
   if (inclraw) {
     return(list(rs = covar,

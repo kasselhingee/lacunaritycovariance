@@ -23,19 +23,19 @@
 #' #Boolean model with discs of radius 10.
 #' #The intensity has been chosen such that the true coverage probability is very close to 0.5.
 #' discr <- 10
-#' w <- owin(xrange=c(0,100),c(0,100))
+#' w <- owin(xrange = c(0, 100), c(0, 100))
 #' lambda <- 2.2064E-3
-#' xi <- rbdd(lambda,discr,w)
+#' xi <- rbdd(lambda, discr, w)
 #' plot(xi)
-#' plot(w,add=TRUE)
+#' plot(w, add = TRUE)
 #' 
 #' #calculate theoretical values of the model
-#' truecoverageprob <- bddcoverageprob(lambda,discr)
+#' truecoverageprob <- bddcoverageprob(lambda, discr)
 #' truecovariance <- bddcovar(
-#'                    c(-10,10),c(-10,10),c(0.2,0.2),lambda,discr)
-#' thspecdens <- bddspectraldensity(lambda,discr)
-#' thspecdens_origin <- bddspectraldensity.atorigin(lambda,discr)
-#' thspecdens[round(dim(thspecdens)[2]/2),round(dim(thspecdens)[1]/2)]
+#'                    c(-10, 10), c(-10, 10), c(0.2, 0.2), lambda, discr)
+#' thspecdens <- bddspectraldensity(lambda, discr)
+#' thspecdens_origin <- bddspectraldensity.atorigin(lambda, discr)
+#' thspecdens[round(dim(thspecdens)[2] / 2), round(dim(thspecdens)[1] / 2)]
 
 #' @references 
 #' [1] Koch, K., Ohser, J. and Schladitz, K. (2003) Spectral Theory for Random Closed Sets and Estimating the Covariance via Frequency Space. Advances in Applied Probability, 35, 603-613.

@@ -18,10 +18,10 @@
 #' @examples
 #' xi <- heather$coarse
 #' obswindow <- Frame(heather$coarse)
-#' cp <- coverageprob(xi,obswindow)
+#' cp <- coverageprob(xi, obswindow)
 
 #' @keywords spatial nonparametric
-coverageprob <- function(xi,obswin){
+coverageprob <- function(xi, obswin){
   stopifnot(is.owin(xi))
   stopifnot(is.owin(obswin))
   xinw <- intersect.owin(xi, obswin)
