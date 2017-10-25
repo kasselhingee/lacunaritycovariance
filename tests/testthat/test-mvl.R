@@ -80,5 +80,5 @@ test_that("MVLc and MVLgb produce similar results for large square observation w
   lac.mvlgbest <- mvlgb(xiimg, sidelengths)
 
   expect_equal(lac.mvlcest$s, lac.mvlgbest$s)
-  expect_equal(lac.mvlcest$MVL, lac.mvlgbest$MVL, tolerance = 1E-2)
+  expect_equal(lac.mvlcest$MVL, lac.mvlgbest$MVL, tolerance = 2E-2)
 })
