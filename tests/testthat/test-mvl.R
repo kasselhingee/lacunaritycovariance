@@ -53,6 +53,16 @@ test_that("MVLc estimates are consitent for input side lengths or owin squares",
   expect_equal(lac$MVL, mvlc(list(square(2.2)), covar, p))
 })
 
+test_that("MVLc estimates are the same from estimated covariance or original image", {
+  img <- as.im(heather$coarse, eps = heather$coarse$xstep, na.replace = 0)
+  covar <- racscovariance(img)
+  p <- sum(img) / sum(is.finite(img$v))
+  sidelengths <- seq(1, 5, by = heather$coarse$xstep*2)
+  mvlc.covar <- mvlc(sidelengths, covar, p)
+  mvlc.im <- mvlc(sidelengths, xiim = img)
+  expect_equal(mvlc.covar, mvlc.im)
+})
+
 test_that("integration when covar is constant gives squared area", {
   covar <- as.im(owin(c(-6, 6), c(-6, 6)), eps = 0.01)
   p <- 1
