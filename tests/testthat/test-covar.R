@@ -2,15 +2,9 @@
 #Test on a Boolean Model
 #takes a few minutes
 test_that("racscovariance() matches theoretical covariance for Boolean Model", {
-  lambda <- 4 * 2.2064E-3
-  discr <- 5
-  w <- owin(xrange = c(0, 100) * 2, yrange = c(0, 100) * 2)
-  xi <- rbdd(lambda, discr, w)
-  xiimg <- as.im(xi, W = w, eps = c(0.1, 0.1), na.replace = 0)
-  #estimate covariance
+  #estimate covariance of owin (covariance of image already estimated in help code)
   spatstat.options(npixel = 512) #to make default pixelisations higher resolution
   covarest.frowin <- racscovariance(xi, obswin = w)
-  covarest.frim <- racscovariance(xiimg)
 
   expect_is(covarest.frim, "im")
   expect_is(covarest.frowin, "im")
