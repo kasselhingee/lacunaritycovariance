@@ -21,8 +21,10 @@ test_that("racscovariance() matches theoretical covariance for Boolean Model", {
   expect_lt(max(abs(covarest.diffs)), 0.1 * max(abs(covarest.frim)))
 
   #isotropise above functions
-  covarest.frim.iso <- rotmean(covarest.frim)
-  covarest.frowin.iso <- rotmean(covarest.frowin)
+  covarest.frim <- covarest.frim[owin(xrange = c(-1, 1) * 3.5 * discr, yrange = c(-1, 1) * 3.5 * discr), drop = TRUE]
+  covarest.frowin <- covarest.frowin[owin(xrange = c(-1, 1) * 3.5 * discr, yrange = c(-1, 1) * 3.5 * discr), drop = TRUE]
+  covarest.frim.iso <- rotmean(covarest.frim, padzero = FALSE)
+  covarest.frowin.iso <- rotmean(covarest.frowin, padzero = FALSE)
 
   truecovar.iso <- with.fv(covarest.frim.iso, bddcovar.iso(.x, lambda, discr),
                                fun = TRUE)
