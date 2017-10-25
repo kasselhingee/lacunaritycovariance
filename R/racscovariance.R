@@ -61,7 +61,9 @@ racscovariance <- function(xi,
         xi[is.na(as.matrix(xi))] <- 0 #turn all NA's in xi to 0s
     }
     setcovxi <- imcov(xi)
+    unitname(setcovxi) <- unitname(xi)
     setcovwindow <- setcov(obswin, eps = c(setcovxi$xstep, setcovxi$ystep))
+    unitname(setcovwindow) <- unitname(obswin)
   }
   else {
     stop("Input xi is not an image or owin object")
