@@ -1,3 +1,4 @@
+context("Covariance Estimation")
 
 #Test on a Boolean Model
 #takes a few minutes
