@@ -15,17 +15,17 @@ test_that("mvlc() warns of unexpected inputs", {
                  regexp = "Either covariance and p must be supplied or xiim supplied.")
 
   sidel <- c(2.2)
-  expectlac.wraw <- lacgb(img, sidel, inclraw = TRUE)
+  expectlac.wraw <- mvlgb(sidel, img, inclraw = TRUE)
 })
 
 test_that("mvlgb() warns of unexpected inputs", {
   sidel <- c(2.2)
   img <- as.im(heather$coarse,eps=c(heather$coarse$xstep, 2 * heather$coarse$xstep), na.replace = 0)
-  expect_error(lacgb(img, sidel, inclraw = TRUE),
+  expect_error(mvlgb(sidel, img, inclraw = TRUE),
                  regexp = "image pixels must be square")
 
-  expect_error(lacgb(13, sidel, inclraw = TRUE),
-                 regexp = "input img must be of class im")
+  expect_error(mvlgb(sidel, 13, inclraw = TRUE),
+                 regexp = "input xiim must be of class im")
 
 })
 
@@ -40,7 +40,7 @@ test_that("MVLc estimates are historically consistent", {
 test_that("MVLgb estimates are historically consistent", {
   img <- as.im(heather$coarse, eps = heather$coarse$xstep, na.replace = 0)
   sidel <- c(2.2)
-  lac.wraw <- lacgb(img, sidel, inclraw = TRUE)
+  lac.wraw <- mvlgb(sidel, img, inclraw = TRUE)
   expect_equal(lac.wraw$MVL, 0.03253836)
   expect_equal(lac.wraw$raw, -0.05775767)
 })
@@ -77,7 +77,7 @@ test_that("MVLc and MVLgb produce similar results for large square observation w
   #xiimg and covarest.frim is pregenerated in helper-calccovar
   sidelengths <- seq(xiimg$xstep * 3, 15, by = xiimg$xstep * 2) #odd pixel widths!
   lac.mvlcest <- mvlc(sidelengths, covar = covarest.frim, p = xi.p)
-  lac.mvlgbest <- mvlgb(xiimg, sidelengths)
+  lac.mvlgbest <- mvlgb(sidelengths, xiimg)
 
   expect_equal(lac.mvlcest$s, lac.mvlgbest$s)
   expect_equal(lac.mvlcest$MVL, lac.mvlgbest$MVL, tolerance = 2E-2)

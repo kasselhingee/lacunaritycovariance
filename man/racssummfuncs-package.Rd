@@ -85,7 +85,7 @@ plot(discstatecontag, main = "A Disc-State Contagion Estimate\n
 #If RcppRoll is installed than the gliding box estimate can also be generated for comparison.
 xi.mvlc <- mvlc(c(1, 2, 3, 4), covariance = xi.covariance, p = coverageprob)
 xi.im <- as.im(xi, na.replace = 0)
-xi.mvlgb <- mvlgb(xi.im, c(1, 2, 3, 4))
+xi.mvlgb <- mvlgb(c(1, 2, 3, 4), xi.im)
 
 #Simulation of Boolean Models
 booldisc.rfixed.xi <- rbdd(2.2064E-1, 0.5, obswindow)
