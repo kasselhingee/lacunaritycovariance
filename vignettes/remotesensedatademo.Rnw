@@ -155,14 +155,20 @@ plot(discstatecontag, main = "A Disc-State Contagion Estimate\n
 <<estimatecovariance, fig = TRUE, include = FALSE>>=
 covar <- racscovariance(xiowin, obswin = rasterbdry)
 plot(covar, main = "RACS Covariance Estimate", axes = TRUE)
+paircorrest <- rotmean(covar, padzero = FALSE)/(coverp^2)
+plot(paircorrest)
 @
-\includegraphics[width=0.3\textwidth]{remotesensedatademo-racscovariance}
+\begin{center}
+\includegraphics[width=0.5\textwidth]{remotesensedatademo-estimatecovariance}
+\end{center}
 
 <<mvlestimation, fig = TRUE, include = FALSE>>=
 mvlest <- mvlc(seq(1, 300/4, by = 1), covariance = covar, p = coverp)
 plot(mvlest, main = "MVL Estimate")
 @
-\includegraphics[width=0.3\textwidth]{remotesensedatademo-mvlestimation}
+\begin{center}
+\includegraphics[width=0.5\textwidth]{remotesensedatademo-mvlestimation}
+\end{center}
 
 \section{References}
 Caccetta, P., Collings, S., Devereux, A., Hingee, K., McFarlane, D., Traylen, A., et al. (2015) \emph{Monitoring land surface and cover in urban and peri-urban environments using digital aerial photography.} International Journal of Digital Earth, 1-19.
