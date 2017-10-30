@@ -9,12 +9,7 @@ TO DO BEFORE PUBLISHING:
 
 ##**feature request: a test that simulations rbllognorm correspond to theoretical values for the model.
 
-- mvlgb and mvlc interface more matching!?
-
-- make tests less computationally intensive somehow!?
-
 - polish vignette?
 
 - setcov and imcov maintain units of input image - pass on to spatstat
 
-- mvlc test doesn't need to recalculate covariance when it is tested somewhere else
