@@ -10,6 +10,7 @@
 
 
 #' @param xi An observation of the RACS of interest. It can be in \pkg{spatstat}'s \code{owin} or \code{im} format. If \code{xi} is in \code{im} format then it is assumed that the pixels will be valued 1 (for foreground), 0 (for background) and NA for unobserved.
+#' If \code{xi} is in \code{owin} format take care to consider what exactly the observation window is (if none is supplied then it will be assumed that the observation window is the smallest rectangle enclosing \code{xi}).
 #' @param obswin The observation window in \code{owin} format. If it isn't included and \code{xi} is an \code{owin} object then \code{obswin} is taken to be the smallest rectangle enclosing \code{xi}. If \code{xi} is a \code{im} object than \code{obswin} is all the non-NA pixels in \code{xi}.
 #' @param setcov_boundarythresh Any vector \eqn{v} such that set covariance of the observation window is smaller than this threshold is given a covariance of NA to avoid instabilities caused by dividing by very small areas, 
 #' @param inclraw If TRUE the output will be two \code{im} objects one for the standard estimator and one raw estimate.
@@ -45,7 +46,9 @@ racscovariance <- function(xi,
     if (!is.null(obswin)) {xi <- intersect.owin(xi, obswin)}
     else {obswin <- Frame(xi)}
     setcovxi <- setcov(xi)
+    unitname(setcovxi) <- unitname(xi)
     setcovwindow <- setcov(obswin, eps = c(setcovxi$xstep, setcovxi$ystep))
+    unitname(setcovwindow) <- unitname(obswin)
   } else if (is.im(xi)) {
     if (!is.null(obswin)) {
         winim <- as.im(obswin, xy = xi)
