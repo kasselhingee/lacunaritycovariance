@@ -65,7 +65,7 @@ obspoly <- readOGR(regionfilepath, "aregionofinterest")
 crs(proj4string(obspoly))
 @
 
-Note that the above uses \code{rgdal} to read the shape file, \code{maptools} can also includes functions to read shapefiles however they do not automatically attach projection information to the object.
+Note that the above uses \code{rgdal} to read the shape file, \code{maptools} also includes functions to read shapefiles however the \code{maptools} functions do not automatically attach coordinate projection information to the object.
 
 A \code{spatstat owin} version of \code{obspoly} is needed for the summary function estimations.
  The following uses a conversion tool provided by \code{maptools}
@@ -97,11 +97,14 @@ plot(add = TRUE, obsbdry)
 @
 
 \code{xidataset} is a virtual data set (the data is still not in memory) covering the smallest rectangular region containing \code{obspoly}.
- The pixels in this data either \code{NA} or \code{1} where 1 is our class of interest (tree canopy).
-If your data is not in this form then additional transformations will be needed at this point because later \code{as.owin()} assumes \code{NA} values are outside the set and everything else is inside the class.
+ The pixels in this data are either \code{1} or \code{NA} and represent our class of interest (tree canopy) and everything else respectively.
+ 
+This is suitable for converting the observed set into an \code{owin} object using \code{as.owin()} (\code{as.owin()} assumes that \code{NA} values are outside the set whilst everything else is inside the set).
+ An \code{owin} object is necessary to estimate the spherical contact distribution (also known as core probability) using \code{spatstat}'s \code{Hest()} function.
+ 
+If you are only interest in estimating covariance and mass variance lacunarity (MVL) then \code{racscovariance}, \code{mvlc} and \code{mvlgb} can operate directly on images that have values \code{1}, \code{0} and \code{NA} corresponding to the set of interest, everything outside the set of interest and unobserved locations respectively.
 
-To use functions in \code{racssummfuncs} the observation must be converted into an \code{owin} object.
-This is a two step process that requires conversion into \code{spatstat} image object and then conversion into an \code{owin} object.
+The conversion from \code{xidataset} in \code{raster} format to \code{owin} requires two steps.
 <<conversiontoowin>>=
 xiimage <- as.im(xidataset)
 unitname(xiimage) <- c("metre", "metres")
@@ -118,8 +121,12 @@ plot(xiowin, main = "Class cover in the region of interest", axes = TRUE)
 @
 
 \section{Estimation of RACS Summary Functions}
-For now \code{racssummfuncs} only has functions for estimating coverage probability and disc-state contagion, with spherical contact distribution and conditional core probability estimated using \code{Hest} from \code{spatstat}.
- These are the only estimators described in Hingee (2016).
+For now \code{racssummfuncs} only has functions for estimating coverage probability, disc-state contagion, covariance and mass variance lacunarity, with the spherical contact distribution and conditional core probability estimated using \code{Hest} from \code{spatstat}.
+ Conditional core probability is defined in Hingee (2016) as the expected proportion of any window that is core area, and is equivalent to the spherical contact distribution of the complement of the set.
+ Coverage probability and disc-state contagion are also described in Hingee (2016), the former is a very common property that is also known as the coverage fraction.
+ Covariance and mass variance lacunarity estimation and theory is described in Hingee (2018).
+ 
+ Below we estimate the coverage probability, spherical contact distribution of the tree cover, the conditional core probability of the tree cover, disc-state contagion, covariance and mass variance lacunarity.
 
 <<estimationsummfcn,fig=TRUE,include=FALSE,width=12,height=6>>=
 #convert boundary to a raster
@@ -145,6 +152,17 @@ plot(discstatecontag, main = "A Disc-State Contagion Estimate\n
 @
 \includegraphics[width=\textwidth]{remotesensedatademo-estimationsummfcn}
 
+<<estimatecovariance, fig = TRUE, include = FALSE>>=
+covar <- racscovariance(xiowin, obswin = rasterbdry)
+plot(covar, main = "RACS Covariance Estimate", axes = TRUE)
+@
+\includegraphics[width=0.3\textwidth]{remotesensedatademo-racscovariance}
+
+<<mvlestimation, fig = TRUE, include = FALSE>>=
+mvlest <- mvlc(seq(1, 300/4, by = 1), covariance = covar, p = coverp)
+plot(mvlest, main = "MVL Estimate")
+@
+\includegraphics[width=0.3\textwidth]{remotesensedatademo-mvlestimation}
 
 \section{References}
 Caccetta, P., Collings, S., Devereux, A., Hingee, K., McFarlane, D., Traylen, A., et al. (2015) \emph{Monitoring land surface and cover in urban and peri-urban environments using digital aerial photography.} International Journal of Digital Earth, 1-19.
@@ -153,6 +171,12 @@ Caccetta, P., Collings, S., Devereux, A., Hingee, K., McFarlane, D., Traylen, A.
 
 \noindent
 Hingee, K.L. (2016) \emph{Statistics for Patch Observations.} ISPRS Congress Proceedings. ISPRS.
+
+\
+
+\noindent
+Hingee, K.L. (2018) \emph{Computation of Lacunarity from Covariance.} Submitted to JABES.
+
 
 
 \end{document}
