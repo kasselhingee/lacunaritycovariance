@@ -115,6 +115,4 @@ mvlgb_intern.rcpproll <- function(xiim, sidep, inclraw, obswin = Frame(xiim)){
 }
 
 #' @rdname mvlgb
-lacgb <- function(xiim, sidelengths, inclraw = FALSE, obswin = Frame(xiim)){
-   return(mvlgb(sidelengths, xiim, inclraw = FALSE, obswin = Frame(xiim)))
-}
+lacgb <- mvlgb

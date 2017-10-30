@@ -7,7 +7,7 @@
 \usage{
 mvlgb(sidelengths, xiim, inclraw = FALSE, obswin = Frame(xiim))
 
-lacgb(xiim, sidelengths, inclraw = FALSE, obswin = Frame(xiim))
+lacgb(sidelengths, xiim, inclraw = FALSE, obswin = Frame(xiim))
 }
 \arguments{
 \item{sidelengths}{A list of suggested box side lengths in the same units as \code{xiim}. Note the actual side lengths used will be the closest multiple of an odd number of pixel widths.}
