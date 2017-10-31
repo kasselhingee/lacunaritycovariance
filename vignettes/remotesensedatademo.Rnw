@@ -138,7 +138,8 @@ For now \code{racssummfuncs} only has functions for estimating coverage probabil
  Below we estimate the coverage probability, spherical contact distribution, conditional core probability, disc-state contagion, covariance and mass variance lacunarity of the tree cover.
   The isotropic covariance function standardised by coverage probability, which is also known as the isotropic pair-correlation function is shown alongside the covariance estimate.
   
-  Note that it is advisable to only use covariance estimates for distances less than 1/4 of the shortest width of the observation window; in estimating other summary functions the maximum reliable length is suggested to be 1/4 of the shortest width of the observation window (Foroutan-pour 1999).
+  Note that it is advisable to only use covariance estimates for distances less than 1/4 of the shortest width of the observation window; in estimating other summary functions the maximum reliable length is suggested to be 1/4 of the shortest width of the observation window (Foroutan-pour 1999). 
+  Beware that other factors influence to validity of the estimates shorter distances may still produce erroneous results (e.g. if the observation window is much smaller than the spatial dependence)
 
 <<estimationsummfcn,fig=TRUE,include=FALSE,width=12,height=6>>=
 #convert boundary to a raster
