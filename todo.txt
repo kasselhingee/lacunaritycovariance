@@ -1,5 +1,5 @@
 TO DO BEFORE PUBLISHING:
-- Discussion on when to use the functions?
+- Discussion on when to use the functions? Take 50% from thesis intro on pros and cons of summary functions.
 
 - Make it make sense to someone who isn't a spatial stats expert, to an ecologist, that I want to use it.
 

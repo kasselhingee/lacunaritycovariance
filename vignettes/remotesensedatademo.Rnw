@@ -18,7 +18,7 @@ The format used as an example here is ERMapper raster format (extension .ers) wi
 
 \tableofcontents
 
-\section{Installation of Packages}
+\section{Installation of packages}
 It is necessary to install the following packages to read remote sensing data and convert it into the formats used by \code{racssummfuncs}:
 \begin{itemize}
 \item sp
@@ -52,7 +52,7 @@ The data used in this demonstration is a small subset of a tree canopy map deriv
 \end{itemize}
   See Caccetta 2015 for more details on capture and processing of this data.
 
-\section{Set up the Observation Window}
+\section{Set up the observation window}
 Usually it is not desired (nor computationally feasible) to analyse an entire remote sensing dataset.
  Here we specify the region of interest (which will become our observation window) using a polygon in a saved shapefile.
  It is also possible to specify extents using coordinates (see help for \code{extent()} from the raster package).
@@ -77,7 +77,7 @@ plot(obsbdry,
      main = "A Region of Interest / Observation Window", axes = TRUE)
 @
 
-\section{Open raster data set and crop to region of interest}
+\section{Open raster data set and crop to observation window}
 The \code{raster} package is able to open and perform virtual operations on raster data.
 The data is not actually loaded into memory (RAM) until it is converted into a \code{spatstat im} object.
 
@@ -120,7 +120,7 @@ xiowin <- intersect.owin(xiowin, obsbdry)
 plot(xiowin, main = "Class cover in the region of interest", axes = TRUE)
 @
 
-\section{Estimation of RACS Summary Functions}
+\section{Estimate RACS summary functions}
 For now \code{racssummfuncs} only has functions for estimating coverage probability, disc-state contagion, covariance and mass variance lacunarity, with the spherical contact distribution and conditional core probability estimated using \code{Hest} from \code{spatstat}.
  Conditional core probability is defined in Hingee (2016) as the expected proportion of any window that is core area, and is equivalent to the spherical contact distribution of the complement of the set.
  Coverage probability and disc-state contagion are also described in Hingee (2016), the former is a very common property that is also known as the coverage fraction.
