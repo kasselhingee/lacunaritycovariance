@@ -5,36 +5,51 @@
 
 
 
-#' @param xi An observation of the RACS of interest.
-#' @param obswin 
+#' @param xi An observation of the RACS of interest in 1, 0, or NA valued pixels.
+#' Pixels must be square.
+#' @param obswin Observation window
+#' @param corrrad Radius of the step function in the correlation
+#' @param corrstepheight Height of the step in the correlation
+#' @param p01 Probability of an randomly chosen fallibly-classified
+#'  tree pixel is not in the true tree canopy
+#' @param p10 Probability that a falliblty classified non-tree pixel is 
+#' in the tree canopy.
 
 #' @examples
 #' xi <- as.im(heather$coarse, na.replace = 0)
 #' obswin <- Frame(xi)
 #' corrrad <- 10 #10 pixels
 #' corrstepheight <- 0.9
-#' ommrate <- 0.05
-#' commrate <- 0.01
+#' p01 <- 0.05
+#' p10 <- 0.01
 #' xi.sum <- sum(xi)
-#' exparea <- xi.sum - xi.sum * ommrate + (sum(1 - xi) * commrate)
-#' varguess <- varofobsarea.v1(xi, obswin, corrrad, corrstepheight, ommrate, commrate)
+#' exparea <- expectedarea(xi, obswin, p01 = p01, p10 = p10)
+#' varguess <- varofobsarea.v1(xi, obswin, corrrad, corrstepheight, p01, p10)
 
 
 #' @details 
 #' To install OpenImageR had to install libtiff5-dev on my ubuntu machine
 #' @references 
 
-varofobsarea.v1 <- function(xi, obswin, corrrad, corrstepheight, ommrate, commrate){
+expectedarea <- function(xi, obswin, p01=NA, p10=NA){
+  xi[complement.owin(obswin, frame = Frame(xi))] <- 0
+  xic <- 1-xi
+  xic[complement.owin(obswin, frame = Frame(xi))] <- 0  
+  
+  return(sum(xi) * (1 - p01) + sum(xic) * p10)
+}
+
+varofobsarea.v1 <- function(xi, obswin, corrrad, corrstepheight, p01, p10){
   xi[complement.owin(obswin, frame = Frame(xi))] <- 0
   #radius filter of the cover type of interest
   xiconvsum <- convandintersectsum(xi, corrrad)
-  varfromomm <- ommrate * (1 - ommrate) * ( (1 - corrstepheight) * sum(xi) + corrstepheight * xiconvsum)
+  varfromomm <- p01 * (1 - p01) * ( (1 - corrstepheight) * sum(xi) + corrstepheight * xiconvsum)
   
   #radius filter of the alternate cover type
   xic <- 1-xi
   xic[complement.owin(obswin, frame = Frame(xi))] <- 0  
   xicconvsum <- convandintersectsum(xic, corrrad)
-  varfromcomm <- commrate * (1 - commrate) * ( (1 - corrstepheight) * sum(xic) + corrstepheight * xicconvsum)
+  varfromcomm <- p10 * (1 - p10) * ( (1 - corrstepheight) * sum(xic) + corrstepheight * xicconvsum)
   
   return(varfromomm + varfromcomm)
 }
