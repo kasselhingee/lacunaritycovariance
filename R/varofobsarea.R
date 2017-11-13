@@ -25,6 +25,7 @@
 #' xi.sum <- sum(xi)
 #' exparea <- expectedarea(xi, obswin, p01 = p01, p10 = p10)
 #' varguess <- varofobsarea.v1(xi, obswin, corrrad, corrstepheight, p01, p10)
+#' stdofareaest <- sqrt(varguess)
 
 
 #' @details 
@@ -36,7 +37,7 @@ expectedarea <- function(xi, obswin, p01=NA, p10=NA){
   xic <- 1-xi
   xic[complement.owin(obswin, frame = Frame(xi))] <- 0  
   
-  return(sum(xi) * (1 - p01) + sum(xic) * p10)
+  return((sum(xi) * (1 - p01) + sum(xic) * p10) * xi$xstep * xi$ystep)
 }
 
 varofobsarea.v1 <- function(xi, obswin, corrrad, corrstepheight, p01, p10){
@@ -51,7 +52,7 @@ varofobsarea.v1 <- function(xi, obswin, corrrad, corrstepheight, p01, p10){
   xicconvsum <- convandintersectsum(xic, corrrad)
   varfromcomm <- p10 * (1 - p10) * ( (1 - corrstepheight) * sum(xic) + corrstepheight * xicconvsum)
   
-  return(varfromomm + varfromcomm)
+  return((varfromomm + varfromcomm) * xi$xstep^2 * xi$ystep^2)
 }
 
 convandintersectsum <- function(xi, corrrad){
