@@ -10,3 +10,5 @@ TO DO BEFORE PUBLISHING:
 - setcov and imcov maintain units of input image - pass on to spatstat
 
 - improve on title
+
+- check that the conditional SCD is calculated correctly by multiplying by (1-p)
