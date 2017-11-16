@@ -42,14 +42,15 @@ expectedarea <- function(xi, obswin, p01=NA, p10=NA){
 
 #' @describeIn expectedarea The variance of the expected area.
 varofobsarea.v1 <- function(xi, obswin, corrrad, corrstepheight, p01, p10){
-  xi[complement.owin(obswin, frame = Frame(xi))] <- 0
+  xi <- xi[as.rectangle(obswin), drop=FALSE]
+  xi[complement.owin(obswin)] <- 0
   #radius filter of the cover type of interest
   xiconvsum <- convandintersectsum(xi, corrrad)
   varfromomm <- p01 * (1 - p01) * ( (1 - corrstepheight) * sum(xi) + corrstepheight * xiconvsum)
   
   #radius filter of the alternate cover type
   xic <- 1-xi
-  xic[complement.owin(obswin, frame = Frame(xi))] <- 0  
+  xic[complement.owin(obswin)] <- 0  
   xicconvsum <- convandintersectsum(xic, corrrad)
   varfromcomm <- p10 * (1 - p10) * ( (1 - corrstepheight) * sum(xic) + corrstepheight * xicconvsum)
   
