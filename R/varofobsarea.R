@@ -32,7 +32,7 @@
 #' To install OpenImageR had to install libtiff5-dev on my ubuntu machine
  
 expectedarea <- function(xi, obswin, p01=NA, p10=NA){
-  xi <- xi[as.rectangle(obswin), drop=FALSE]
+  xi <- xi[as.rectangle(obswin), drop=TRUE]
   xi[complement.owin(obswin)] <- 0
   xic <- 1-xi
   xic[complement.owin(obswin)] <- 0  
@@ -42,7 +42,7 @@ expectedarea <- function(xi, obswin, p01=NA, p10=NA){
 
 #' @describeIn expectedarea The variance of the expected area.
 varofobsarea.v1 <- function(xi, obswin, corrrad, corrstepheight, p01, p10){
-  xi <- xi[as.rectangle(obswin), drop=FALSE]
+  xi <- xi[as.rectangle(obswin), drop=TRUE]
   xi[complement.owin(obswin)] <- 0
   #radius filter of the cover type of interest
   xiconvsum <- convandintersectsum(xi, corrrad)
