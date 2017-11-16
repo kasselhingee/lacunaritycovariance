@@ -1,5 +1,5 @@
 #' @title Variance Estimates for Observed Area
-#' @export varofobsarea.v1
+#' @export varofobsarea.v1 expectedarea
 #' @description Estimates the variance of the area of a cover type observed in a thematic map created using a fallible classifier from remote sensing.
 #' @author{Kassel Hingee}
 
@@ -30,8 +30,7 @@
 
 #' @details 
 #' To install OpenImageR had to install libtiff5-dev on my ubuntu machine
-#' @references 
-
+ 
 expectedarea <- function(xi, obswin, p01=NA, p10=NA){
   xi[complement.owin(obswin, frame = Frame(xi))] <- 0
   xic <- 1-xi
@@ -40,6 +39,7 @@ expectedarea <- function(xi, obswin, p01=NA, p10=NA){
   return((sum(xi) * (1 - p01) + sum(xic) * p10) * xi$xstep * xi$ystep)
 }
 
+#' @describeIn expectedarea The variance of the expected area.
 varofobsarea.v1 <- function(xi, obswin, corrrad, corrstepheight, p01, p10){
   xi[complement.owin(obswin, frame = Frame(xi))] <- 0
   #radius filter of the cover type of interest
