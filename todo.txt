@@ -12,3 +12,7 @@ TO DO BEFORE PUBLISHING:
 - improve on title
 
 - check that the conditional SCD is calculated correctly by multiplying by (1-p)
+
+- change description to use summary characteristics ACT 2h
+
+- change name to be racstools or something simpler ACT 2h
