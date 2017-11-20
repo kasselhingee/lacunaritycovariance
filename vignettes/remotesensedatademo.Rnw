@@ -19,7 +19,7 @@ The format used as an example here is ERMapper raster format (extension .ers) wi
 \tableofcontents
 
 \section{Installation of packages}
-It is necessary to install the following packages to read remote sensing data and convert it into the formats used by \code{racssummfuncs}:
+It is necessary to install the following packages to read remote sensing data and convert it into the formats used by \code{racstools}:
 \begin{itemize}
 \item sp
 \item rgdal
@@ -33,7 +33,7 @@ It is necessary to install the following packages to read remote sensing data an
 
 After installation load packages for use
 <<loadpackages,echo=TRUE>>=
-library("racssummfuncs")
+library("racstools")
 library("rgdal")
 library("maptools")
 library("raster")
@@ -53,13 +53,13 @@ The data used in this demonstration is a small subset of a tree canopy map deriv
   See Caccetta 2015 for more details on capture and processing of this data.
 
 \section{Set up the observation window}
-Usually it is not desired (nor computationally feasible) to analyse an entire remote sensing dataset.
+Usually it is not desired to analyse an entire remote sensing data file.
  Here we specify the region of interest (which will become our observation window) using a polygon in a saved shapefile.
  It is also possible to specify extents using coordinates (see help for \code{extent()} from the raster package).
 
 
 <<readpolygon>>=
-regionfilepath <- system.file("extdata", package = "racssummfuncs")
+regionfilepath <- system.file("extdata", package = "racstools")
 obspoly <- readOGR(regionfilepath, "aregionofinterest")
 #print the coordinate projection of the polygon data for sanity
 crs(proj4string(obspoly))
@@ -88,7 +88,7 @@ The data is not actually loaded into memory (RAM) until it is converted into a \
 #First unzip raster data
 #(raster data was compressed in a zip to save space)
 rsdatafilepath <- system.file("extdata/demorsraster.zip",
-                              package = "racssummfuncs")
+                              package = "racstools")
 rsfiles <- unzip(rsdatafilepath, exdir = tempdir())
 xidataset <- raster(rsfiles[[2]])
 # if this doesn't load you may need to try opening rsfiles[[1]]
@@ -130,7 +130,7 @@ plot(xiowin, main = "Class cover in the region of interest", axes = TRUE)
 \end{center}
 
 \section{Estimate RACS summary functions}
-For now \code{racssummfuncs} only has functions for estimating coverage probability, disc-state contagion, covariance and mass variance lacunarity, with the spherical contact distribution and conditional core probability estimated using \code{Hest} from \code{spatstat}.
+For now \code{racstools} only has functions for estimating coverage probability, disc-state contagion, covariance and mass variance lacunarity, with the spherical contact distribution and conditional core probability estimated using \code{Hest} from \code{spatstat}.
  Conditional core probability is defined in Hingee (2016) is the probability that a point in the foreground (tree canopy) is in the core of the foreground, and is equivalent to the spherical contact distribution of the complement of the set.
  Coverage probability and disc-state contagion are also described in Hingee (2016), the former is a very common property that is also known as the coverage fraction.
  A simple estimator of covariance, and theory and estimation of mass variance lacunarity described in Hingee (2018).
@@ -139,7 +139,7 @@ For now \code{racssummfuncs} only has functions for estimating coverage probabil
   The isotropic covariance function standardised by coverage probability, which is also known as the isotropic pair-correlation function is shown alongside the covariance estimate.
   
   Note that it is advisable to only use covariance estimates for distances less than 1/4 of the shortest width of the observation window; in estimating other summary functions the maximum reliable length is suggested to be 1/4 of the shortest width of the observation window (Foroutan-pour 1999). 
-  Beware that other factors influence to validity of the estimates shorter distances may still produce erroneous results (e.g. if the observation window is much smaller than the spatial dependence)
+  Beware that other factors influence to validity of the estimates and estimates for shorter distances may still be erroneous (e.g. if the observation window is much smaller than the range of dependence between locations).
 
 <<estimationsummfcn,fig=TRUE,include=FALSE,width=12,height=6>>=
 #convert boundary to a raster
@@ -172,8 +172,12 @@ par(mfrow = c(1,2))
 covar <- racscovariance(xiowin, obswin = rasterbdry)
 plot(covar, main = "Estimated RACS Covariance", axes = TRUE)
 paircorrest <- eval.fv(y / coverp ^ 2,
-                       envir = list(y = rotmean(covar, padzero = FALSE, result = "fv")))
-plot(paircorrest, main = "Estimated Isotropic Pair Correlation", xlim = c(0, 50))
+                       envir = list(y = rotmean(covar,
+                                                padzero = FALSE,
+                                                result = "fv")))
+plot(paircorrest,
+     main = "Estimated Isotropic Pair Correlation",
+     xlim = c(0, 50))
 @
 \begin{center}
 \includegraphics[width=0.9\textwidth]{remotesensedatademo-estimatecovariance}
@@ -187,8 +191,12 @@ plot(mvlest, main = "MVL Estimate")
 \includegraphics[width=0.5\textwidth]{remotesensedatademo-mvlestimation}
 \end{center}
 
+\section{Summary}
+In this vignette we have used an observed set of tree canopy locations that were saved in ERMapper raster format and an observation window provided as an ESRI Shapefile.
+ We have estimated the spherical contact distribution, conditional core probability, disc-state contagion, covariance, isotropic pair-correlation function and mass variance lacunarity for a stationary RACS model of the tree canopy pattern.
+
 \section{References}
-Caccetta, P., Collings, S., Devereux, A., Hingee, K., McFarlane, D., Traylen, A., et al. (2015) \emph{Monitoring land surface and cover in urban and peri-urban environments using digital aerial photography.} International Journal of Digital Earth, 1-19.
+Caccetta, P., Collings, S., Devereux, A., Hingee, K., McFarlane, D., Traylen, A., Wu, X., Zhou, Z. (2015) \emph{Monitoring land surface and cover in urban and peri-urban environments using digital aerial photography.} International Journal of Digital Earth, 1-19.
 
 \
 
