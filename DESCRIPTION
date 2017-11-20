@@ -1,4 +1,4 @@
-Package: racssummfuncs
+Package: racstools
 Type: Package
 Title: Summary characteristics of RACS estimated from a bi-tonal image
 Version: 0.2-10

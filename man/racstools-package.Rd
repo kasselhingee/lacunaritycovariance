@@ -1,29 +1,29 @@
 \name{An overview of this package}
-\alias{racssummfuncs-package}
-\alias{racssummfuncs}
+\alias{racstools-package}
+\alias{racstools}
 \docType{package}
 \title{
-\packageTitle{racssummfuncs}: An Overview
+\packageTitle{racstools}: An Overview
 }
 \description{
-\packageDescription{racssummfuncs}
+\packageDescription{racstools}
 }
 \details{
 This package contains functions that estimate various parameters/properties of random closed sets (RACS) from single 2D bi-tonal digital images.
  It enables description of spatial patterns from a rigorous RACS foundation.
  The theoretical background and motivation for these tools can be found in \cite{Hingee (2016)}, \cite{Chiu et. al. (2013)} and forthcoming papers.
  An introduction to using these tools on remotely sensed data is included in  the vignette \emph{remotesensedatademo}. 
- This can be accessed by starting \R and typing \kbd{library(racssummfuncs)} and \kbd{vignette("remotesensedatademo")}.
+ This can be accessed by starting \R and typing \kbd{library(racstools)} and \kbd{vignette("remotesensedatademo")}.
  Specific help for each function can be accessed by \kbd{help(fun)} where \kbd{fun} is replaced by the name of the function.
 
 The functions accept observations in raster \code{owin} format provided by the \pkg{spatstat} package, or for \command{mvlc} and \code{mvlgb} the observation can be provided as an \code{im} object (also provided by \pkg{spatstat}) with pixel values of only \eqn{1}s, \eqn{0}s and \code{NA}s.
- \pkg{spatstat} has many tools that ease the statistical analysis of spatial data, and many of the functions in \pkg{racssummfuncs} take advantage of these. 
+ \pkg{spatstat} has many tools that ease the statistical analysis of spatial data, and many of the functions in \pkg{racstools} take advantage of these. 
  Conversion from other raster formats to \code{im} is quite easy using either \code{\link[spatstat]{im}} or \code{\link[spatstat]{as.im}}.
  The function \code{\link[spatstat]{as.owin}} can then be used to obtain an \code{owin} object; note that for the \code{owin} object to correspond to all the \eqn{1}s in the \code{im} object, every non-\eqn{1} pixel must be first set to \code{NA}. 
  
 Typically the functions will also require passing an \code{owin} object that specifies the observation window.
 
-The summary functions that this package can estimate include:
+The summary characteristics that this package can estimate include:
 \enumerate{
 \item coverage probability (coverage fraction)
 \item covariance (two-point probability function)
@@ -46,9 +46,9 @@ Through out this manual an observation (a bi-tonal \code{im} object, or \code{ow
 }
 
 \author{
-\packageAuthor{racssummfuncs}
+\packageAuthor{racstools}
 
-Maintainer: \packageMaintainer{racssummfuncs}
+Maintainer: \packageMaintainer{racstools}
 }
 \references{
 Chiu, S.N., Stoyan, D., Kendall, W.S. and Mecke, J. (2013) Stochastic Geometry and Its Applications, 3rd ed. Chichester, United Kingdom: John Wiley & Sons.
@@ -69,6 +69,7 @@ coverageprob <- coverageprob(xi, obswindow)
 
 #estimate covariance from xi
 xi.covariance <- racscovariance(xi)
+
 #estimate spherical contact distribution, core probability and disc-state contagion
 scdest <- Hest(xi, W = obswindow)   #Hest is from spatstat package
 coreprob <- Hest(complement.owin(xi), W = obswindow)
