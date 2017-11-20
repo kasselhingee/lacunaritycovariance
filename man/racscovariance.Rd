@@ -21,9 +21,9 @@ If \code{xi} is in \code{owin} format take care to consider what exactly the obs
 A \pkg{SpatStat} \code{im} object containing the estimated covariance. The grey scale values in this image represent the covariance for an array of vectors. If the raw version is requested then a list of \code{im} objects is returned.
 }
 \description{
-These functions estimate the covariance of a stationary RACS. 
+This function estimate the covariance of a stationary RACS. 
 The covariance is also known as the two-point coverage probability, and very closely related to the semivariogram.
- The covariance of a vector \eqn{v} is the probability of two points separated by a \eqn{v} being covered by the random set \eqn{\Xi}
+ The covariance of a vector \eqn{v} is the probability of two points separated by a vector \eqn{v} being covered by the random set \eqn{\Xi}
 \deqn{C(v) = P(\{x,x+v\}\subseteq \Xi).}
 }
 \details{

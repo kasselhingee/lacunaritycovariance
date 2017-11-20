@@ -28,7 +28,7 @@ The summary characteristics that this package can estimate include:
 \item coverage probability (coverage fraction)
 \item covariance (two-point probability function)
 \item mass variance lacunarity
-\item spherical contact contagion.
+\item disc state contagion.
 }
 Another important summary function, spherical contact distribution (used heavily in \cite{Hingee (2016)}), can be estimated using \pkg{spatstat}'s \code{\link[spatstat]{Hest}} function.
  The estimated spherical contact distribution is closely related to the core area pattern metric and the Bouligand-Minkowski method for estimating the box-counting fractal dimension.

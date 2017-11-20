@@ -1,9 +1,9 @@
 #' @title A spatial covariance, also known as `two-point probability', estimator for stationary RACS
 #' @export racscovariance
 #' @description 
-#' These functions estimate the covariance of a stationary RACS. 
+#' This function estimate the covariance of a stationary RACS. 
 #' The covariance is also known as the two-point coverage probability, and very closely related to the semivariogram.
-#'  The covariance of a vector \eqn{v} is the probability of two points separated by a \eqn{v} being covered by the random set \eqn{\Xi}
+#'  The covariance of a vector \eqn{v} is the probability of two points separated by a vector \eqn{v} being covered by the random set \eqn{\Xi}
 #' \deqn{C(v) = P(\{x,x+v\}\subseteq \Xi).}
 #' @author{Kassel Hingee}
 

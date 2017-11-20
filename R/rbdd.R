@@ -3,9 +3,9 @@
 #' @importFrom stats fft
 #' 
 #' @description Functions for simulating a Boolean model with grains that are discs of fixed constant radius (the abreviation bdd is short for Boolean model with Determinisitic Discs).
-#' A Boolean model is a two stage model, first the locations of grains, the germs are randomly distributed according to a Poisson point process, then a random grain is placed on each germ independently.
+#' A Boolean model is a two stage model, first the locations (called germs) of grains are randomly distributed according to a Poisson point process, then a random grain is placed on each germ independently.
 #' A thorough introduction can be found in [3].
-#' Also described in this help file are functions for calculating from model parameters the true coverage probability, covariance, and spectral density [1,2].
+#' Also described in this help file are functions for calculating the true coverage probability, covariance, and spectral density from model parameters [1,2].
 #' 
 #' @param lambda Intensity of the germ process (which is a Poisson point process)
 #' @param discr Radius of the discs
