@@ -1,8 +1,8 @@
 Package: racssummfuncs
 Type: Package
-Title: Estimating summary characteristics of RACS from a bi-tonal image
+Title: Summary characteristics of RACS estimated from a bi-tonal image
 Version: 0.2-10
-Date: 2017-10-09
+Date: 2017-11-20
 Author: Kassel Liam Hingee
 Maintainer: <kassel.hingee@research.uwa.edu.au>
 Depends:
@@ -21,7 +21,7 @@ Description: This package augments the package spatstat with some additional
 	images, such as two-class land cover maps derived from remotely sensed data.
     Currently all estimators assume that the RACS is stationary and mixing, and that
 	the observation window is much larger than the range of dependence between
-	spatial locations. The package also includes methods for calculating summary
+	spatial locations. The package also includes methods for computing summary
     characteristics of Boolean models and simulating Boolean models.
 License: GNU General Public License
 RoxygenNote: 6.0.1
