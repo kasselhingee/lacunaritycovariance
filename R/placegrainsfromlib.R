@@ -3,7 +3,7 @@
 #' @title A function to help simulate Boolean models with user-provided grains
 #' @aliases placegrainsfromlib
 #' @export placegrainsfromlib
-#' @author Kassel Hingee
+#' @author Kassel Liam Hingee
 
 #' @description
 #' A Boolean model has two components, a point process (called germs) and a process that creates

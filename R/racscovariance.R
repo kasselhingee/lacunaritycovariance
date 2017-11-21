@@ -5,7 +5,7 @@
 #' The covariance is also known as the two-point coverage probability, and very closely related to the semivariogram.
 #'  The covariance of a vector \eqn{v} is the probability of two points separated by a vector \eqn{v} being covered by the random set \eqn{\Xi}
 #' \deqn{C(v) = P(\{x,x+v\}\subseteq \Xi).}
-#' @author{Kassel Hingee}
+#' @author{Kassel Liam Hingee}
 
 
 
