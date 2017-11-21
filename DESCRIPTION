@@ -7,11 +7,12 @@ Author: Kassel Liam Hingee
 Maintainer: <kassel.hingee@research.uwa.edu.au>
 Depends:
     spatstat
+Imports:
+    RcppRoll
 Suggests:
     sp,
     raster,
     maptools,
-    RcppRoll,
     testthat
 Description: This package augments the package spatstat with some additional
     functions that estimate summary characteristics of 2D RAndom Closed Sets (RACS).
