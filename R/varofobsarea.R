@@ -1,5 +1,5 @@
 #' @title Variance Estimates for Observed Area
-#' @export varofobsarea.v1 expectedarea
+#' @export varofobsarea.v3 expectedarea
 #' @description Estimates the variance of the area of a cover type observed in a thematic map created using a fallible classifier from remote sensing.
 #' @author{Kassel Hingee}
 
@@ -24,7 +24,7 @@
 #' p10 <- 0.01
 #' xi.sum <- sum(xi)
 #' exparea <- expectedarea(xi, obswin, p01 = p01, p10 = p10)
-#' varguess <- varofobsarea.v1(xi, obswin, corrrad, corrstepheight, p01, p10)
+#' varguess <- varofobsarea.v3(xi, obswin, corrrad, corrstepheight, p01, p10)
 #' stdofareaest <- sqrt(varguess)
 
 
@@ -40,8 +40,9 @@ expectedarea <- function(xi, obswin, p01=NA, p10=NA){
   return((sum(xi) * (1 - p01) + sum(xic) * p10) * xi$xstep * xi$ystep)
 }
 
-#' @describeIn expectedarea The variance of the expected area.
-varofobsarea.v1 <- function(xi, obswin, corrrad, corrstepheight, p01, p10){
+#' @describeIn expectedarea The variance of the expected area using Small Area Estimation Method - Version 3. 
+#' This methods assumes that the omission and comission errors are independent and different processes and that the correlation between errors (within each of theses processes) is a step function with radius \code{corrrad}.
+varofobsarea.v3 <- function(xi, obswin, corrrad, corrstepheight, p01, p10){
   xi <- xi[as.rectangle(obswin), drop=TRUE]
   xi[complement.owin(obswin)] <- 0
   #radius filter of the cover type of interest
