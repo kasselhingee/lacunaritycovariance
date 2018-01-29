@@ -9,3 +9,16 @@ xi.p <- sum(xiimg) / sum(is.finite(xiimg$v))
 spatstat.options(npixel = 512) #to make default pixelisations higher resolution
 covarest.frim <- racscovariance(xiimg)
 reset.spatstat.options()
+
+# # # saved calculation of true coverage fraction variance
+# true.covar <- bddcovar(covarest.frowin$xrange,
+#         covarest.frowin$yrange,
+#         eps = c(covarest.frowin$xstep/2, covarest.frowin$ystep/2),
+#         lambda = lambda,
+#         discr = discr)
+# true.p <- bddcoverageprob(lambda, discr)
+# 
+# setcovB <- setcov(w)
+# integrand <- eval.im((thcovar-(true.p^2))*setcovB, harmonize = TRUE)
+# true.var.p <- ((1/(area.owin(w))^2)*sum(integrand)*integrand$xstep*integrand$ystep)
+# saveRDS(true.var.p, "true.var.p.RDS")
