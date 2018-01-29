@@ -2,15 +2,31 @@ Package: stationaryracsinference
 Type: Package
 Title: Some inference tools for remotely sensed random closed sets in 2D
 Version: 0.2-14
-Date: 2017-09-27
+Date: 2018-01-29
 Author: Kassel Liam Hingee
 Maintainer: <kassel.hingee@research.uwa.edu.au>
 Depends:
     spatstat
 Imports:
     maptools
+    RcppRoll
 Suggests:
-    sp, raster, datadr, rgdal, RcppRoll
-Description: Functions for non-parametric estimation of 2D RACS properties from observations of the Earth.  The aim is to develop methods that apply to remote sensing products (such as tree canopy maps).  Consequently the methods focus on RACS that are observed only once.  The package is very dependent on spatstat for many of the functions.
+    sp,
+    raster,
+    maptools,
+    RcppRoll,
+    testthat,
+    datadr,
+	rgdal
+Description: This package augments the package spatstat with some additional
+    functions that estimate summary characteristics of 2D RAndom Closed Sets (RACS).
+    Summary characteristics of RACS are used in landscape ecology (as landscape
+	pattern indices), fractal analysis (to estimate dimension), stereology and many
+	other fields. The methods within this package are designed to apply to bi-tonal
+	images, such as two-class land cover maps derived from remotely sensed data.
+    Currently all estimators assume that the RACS is stationary and mixing, and that
+	the observation window is much larger than the range of dependence between
+	spatial locations. The package also includes methods for computing summary
+    characteristics of Boolean models and simulating Boolean models.
 License: GNU General Public License
 RoxygenNote: 6.0.1

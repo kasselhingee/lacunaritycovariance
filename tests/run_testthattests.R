@@ -1,3 +1,3 @@
 library(testthat)
-library(racssummfuncs)
-test_check("racssummfuncs")
+library(racstools)
+test_check("racstools")

@@ -5,18 +5,18 @@
 \alias{lacgb}
 \title{Gliding Box estimation of mass variance lacunarity}
 \usage{
-mvlgb(img, sidelengths, inclraw = FALSE, obswin = Frame(img))
+mvlgb(sidelengths, xiim, inclraw = FALSE, obswin = Frame(xiim))
 
-lacgb(img, sidelengths, inclraw = FALSE, obswin = Frame(img))
+lacgb(sidelengths, xiim, inclraw = FALSE, obswin = Frame(xiim))
 }
 \arguments{
-\item{img}{An image of pixels valued either \code{0}, \code{1} or \code{NA}. \code{NA} valued pixels are assumed to be outside the observation window.}
+\item{sidelengths}{A list of suggested box side lengths in the same units as \code{xiim}. Note the actual side lengths used will be the closest multiple of an odd number of pixel widths.}
 
-\item{sidelengths}{A list of suggested box side lengths in the same units as \code{img}. Note the actual side lengths used will be the closest multiple of an odd number of pixel widths.}
+\item{xiim}{An image of pixels valued either \code{0}, \code{1} or \code{NA}. \code{NA} valued pixels are assumed to be outside the observation window.}
 
 \item{inclraw}{If TRUE the function will also return a gliding box estimate that ignores edge effects. (Default is FALSE)}
 
-\item{obswin}{Optional observation window. The observation window used for the estimator will be the intersection of \code{obswin} and the pixels that are not \code{NA} in \code{img}.}
+\item{obswin}{Optional observation window. The observation window used for the estimator will be the intersection of \code{obswin} and the pixels that are not \code{NA} in \code{xiim}.}
 }
 \value{
 An \code{fv} object with a column called \code{MVL} for the usual gliding box estimate described in [1]. 
@@ -31,7 +31,7 @@ Calculates the gliding box estimate [1] of mass variance lacunarity from a bi-to
 }
 \details{
 Calculates the gliding box estimate [1] of mass variance lacunarity for a given range of square box sizes. 
-The algorithm uses the pixel locations in \code{img} as an array of box centre locations to compute
+The algorithm uses the pixel locations in \code{xiim} as an array of box centre locations to compute
  the mean and variance of the area in a random box of a given size.
 Locations where the box is not completely within the observation window are ignored.
  
@@ -40,9 +40,9 @@ WARNING: This function needs the \code{roll_sum} function in \code{RcppRoll} to 
 Note: The side lengths are rounded such that they are an odd number of pixels across.
 }
 \examples{
-img <- as.im(heather$coarse, na.replace = 0)
-sidelengths <- seq(0.2, 14, by = 0.2) #in units of img
-lac <- mvlgb(img, sidelengths, inclraw = TRUE)
+xiim <- as.im(heather$coarse, na.replace = 0)
+sidelengths <- seq(0.2, 14, by = 0.2) #in units of xiim
+lac <- mvlgb(sidelengths, xiim, inclraw = TRUE)
 plot(lac, cbind(MVL, raw) ~ s)
 
 }

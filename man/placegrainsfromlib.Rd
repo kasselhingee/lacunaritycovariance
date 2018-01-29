@@ -53,7 +53,7 @@ plot(xi, hatch = TRUE, add = TRUE)
 
 }
 \author{
-Kassel Hingee
+Kassel Liam Hingee
 }
 \keyword{datagen}
 \keyword{nonparametric}

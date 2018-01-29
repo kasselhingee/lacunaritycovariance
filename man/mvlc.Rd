@@ -13,21 +13,24 @@ mvl(boxes, covariance = NULL, p = NULL, xiim = NULL)
 lac(boxes, covariance = NULL, p = NULL, xiim = NULL)
 }
 \arguments{
-\item{boxes}{Either a list of sidelengths for square boxes or a list of \code{owin} objects of shape.}
+\item{boxes}{Either a list of sidelengths for square boxes or a list of \code{owin} objects of any shape.}
 
-\item{covariance}{A \code{im} object containing the covariance function (typically estimated by the \code{\link{racscovariance}} function)}
+\item{covariance}{A \code{im} object containing the covariance function}
 
 \item{p}{The coverage probability. Typically estimated by the fraction of the observation window covered by the set of interest.}
 
 \item{xiim}{An observation of a stationary RACS in \code{im} format. \code{xiim} must have values of either 1, 0 or NA; 1 denotes inside the RACS, 0 denotes outside, and NA denotes unobserved.}
 }
 \value{
-Either an \code{fv} object containing the MVL values and box side lengths or if \code{boxes} is a list of owin objects then \code{lac} returns a list of corresponding MVL values. Note if NA or NaN values in the \code{covariance} object are used then function will return NA or NaN instead of an MVL value.
+Either an \code{fv} object containing the MVL values and box side lengths or if \code{boxes} is a list of owin objects then \code{mvlc} returns a list of corresponding MVL values.
+ Note if NA or NaN values in the \code{covariance} object are used then \code{mvlc} will return NA or NaN instead of an MVL value.
 }
 \description{
-Estimates the mass variance lacunarity (MVL) of a stationary RACS from a bi-tonal image, or calculates the MVL from provided covariance (two-point probability) and coverage probability.
+Estimates the mass variance lacunarity (MVL) of a stationary RACS from a bi-tonal image using the covariance method.
+ It can also calculate the MVL of a RACS from a provided covariance (two-point probability) and coverage probability.
 }
 \details{
+\code{mvl} and \code{lac} are aliases of mvlc.
 If we denoted the estimated covariance by \eqn{\hat{C}(v)} and coverage probability \eqn{\hat{p}} then the estimate of MVL is
 \deqn{\frac{1}{\hat{p}^2 |B|^2}\int \gamma_B(v)\hat{C}(v)dv -1 }
 }

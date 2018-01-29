@@ -1,15 +1,16 @@
 #' @title A spatial covariance, also known as `two-point probability', estimator for stationary RACS
 #' @export racscovariance
 #' @description 
-#' These functions estimate the covariance of a stationary RACS. 
+#' This function estimate the covariance of a stationary RACS. 
 #' The covariance is also known as the two-point coverage probability, and very closely related to the semivariogram.
-#'  The covariance of a vector \eqn{v} is the probability of two points separated by a \eqn{v} being covered by the random set \eqn{\Xi}
+#'  The covariance of a vector \eqn{v} is the probability of two points separated by a vector \eqn{v} being covered by the random set \eqn{\Xi}
 #' \deqn{C(v) = P(\{x,x+v\}\subseteq \Xi).}
-#' @author{Kassel Hingee}
+#' @author{Kassel Liam Hingee}
 
 
 
 #' @param xi An observation of the RACS of interest. It can be in \pkg{spatstat}'s \code{owin} or \code{im} format. If \code{xi} is in \code{im} format then it is assumed that the pixels will be valued 1 (for foreground), 0 (for background) and NA for unobserved.
+#' If \code{xi} is in \code{owin} format take care to consider what exactly the observation window is (if none is supplied then it will be assumed that the observation window is the smallest rectangle enclosing \code{xi}).
 #' @param obswin The observation window in \code{owin} format. If it isn't included and \code{xi} is an \code{owin} object then \code{obswin} is taken to be the smallest rectangle enclosing \code{xi}. If \code{xi} is a \code{im} object than \code{obswin} is all the non-NA pixels in \code{xi}.
 #' @param setcov_boundarythresh Any vector \eqn{v} such that set covariance of the observation window is smaller than this threshold is given a covariance of NA to avoid instabilities caused by dividing by very small areas, 
 #' @param inclraw If TRUE the output will be two \code{im} objects one for the standard estimator and one raw estimate.
@@ -45,7 +46,9 @@ racscovariance <- function(xi,
     if (!is.null(obswin)) {xi <- intersect.owin(xi, obswin)}
     else {obswin <- Frame(xi)}
     setcovxi <- setcov(xi)
+    unitname(setcovxi) <- unitname(xi)
     setcovwindow <- setcov(obswin, eps = c(setcovxi$xstep, setcovxi$ystep))
+    unitname(setcovwindow) <- unitname(obswin)
   } else if (is.im(xi)) {
     if (!is.null(obswin)) {
         winim <- as.im(obswin, xy = xi)
@@ -61,7 +64,9 @@ racscovariance <- function(xi,
         xi[is.na(as.matrix(xi))] <- 0 #turn all NA's in xi to 0s
     }
     setcovxi <- imcov(xi)
+    unitname(setcovxi) <- unitname(xi)
     setcovwindow <- setcov(obswin, eps = c(setcovxi$xstep, setcovxi$ystep))
+    unitname(setcovwindow) <- unitname(obswin)
   }
   else {
     stop("Input xi is not an image or owin object")

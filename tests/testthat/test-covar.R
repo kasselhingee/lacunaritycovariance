@@ -1,16 +1,11 @@
+context("Covariance Estimation")
 
 #Test on a Boolean Model
 #takes a few minutes
 test_that("racscovariance() matches theoretical covariance for Boolean Model", {
-  lambda <- 4 * 2.2064E-3
-  discr <- 5
-  w <- owin(xrange = c(0, 100) * 2, yrange = c(0, 100) * 2)
-  xi <- rbdd(lambda, discr, w)
-  xiimg <- as.im(xi, W = w, eps = c(0.1, 0.1), na.replace = 0)
-  #estimate covariance
+  #estimate covariance of owin (covariance of image already estimated in help code)
   spatstat.options(npixel = 512) #to make default pixelisations higher resolution
   covarest.frowin <- racscovariance(xi, obswin = w)
-  covarest.frim <- racscovariance(xiimg)
 
   expect_is(covarest.frim, "im")
   expect_is(covarest.frowin, "im")
@@ -21,8 +16,10 @@ test_that("racscovariance() matches theoretical covariance for Boolean Model", {
   expect_lt(max(abs(covarest.diffs)), 0.1 * max(abs(covarest.frim)))
 
   #isotropise above functions
-  covarest.frim.iso <- rotmean(covarest.frim)
-  covarest.frowin.iso <- rotmean(covarest.frowin)
+  covarest.frim <- covarest.frim[owin(xrange = c(-1, 1) * 3.5 * discr, yrange = c(-1, 1) * 3.5 * discr), drop = TRUE]
+  covarest.frowin <- covarest.frowin[owin(xrange = c(-1, 1) * 3.5 * discr, yrange = c(-1, 1) * 3.5 * discr), drop = TRUE]
+  covarest.frim.iso <- rotmean(covarest.frim, padzero = FALSE)
+  covarest.frowin.iso <- rotmean(covarest.frowin, padzero = FALSE)
 
   truecovar.iso <- with.fv(covarest.frim.iso, bddcovar.iso(.x, lambda, discr),
                                fun = TRUE)
@@ -48,6 +45,6 @@ test_that("racscovariance() errors properly", {
   w <- owin(xrange = c(0, 100), yrange = c(0, 100))
   xi <- rbdd(lambda, discr, w)
   xiimg <- as.im(xi, W = w, eps = c(0.1, 0.1), na.replace = 0)
-  xiimg[10, 10] <- NA
+  xiimg[10, 10] <- 1.1
   expect_error(racscovariance(xiimg), regexp = "Input xi has values other than 0, 1 or NA")
 })

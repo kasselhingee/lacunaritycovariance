@@ -8,7 +8,8 @@ racscovariance(xi, obswin = NULL, inclraw = FALSE,
   setcov_boundarythresh = 0.1 * area.owin(obswin))
 }
 \arguments{
-\item{xi}{An observation of the RACS of interest. It can be in \pkg{spatstat}'s \code{owin} or \code{im} format. If \code{xi} is in \code{im} format then it is assumed that the pixels will be valued 1 (for foreground), 0 (for background) and NA for unobserved.}
+\item{xi}{An observation of the RACS of interest. It can be in \pkg{spatstat}'s \code{owin} or \code{im} format. If \code{xi} is in \code{im} format then it is assumed that the pixels will be valued 1 (for foreground), 0 (for background) and NA for unobserved.
+If \code{xi} is in \code{owin} format take care to consider what exactly the observation window is (if none is supplied then it will be assumed that the observation window is the smallest rectangle enclosing \code{xi}).}
 
 \item{obswin}{The observation window in \code{owin} format. If it isn't included and \code{xi} is an \code{owin} object then \code{obswin} is taken to be the smallest rectangle enclosing \code{xi}. If \code{xi} is a \code{im} object than \code{obswin} is all the non-NA pixels in \code{xi}.}
 
@@ -20,9 +21,9 @@ racscovariance(xi, obswin = NULL, inclraw = FALSE,
 A \pkg{SpatStat} \code{im} object containing the estimated covariance. The grey scale values in this image represent the covariance for an array of vectors. If the raw version is requested then a list of \code{im} objects is returned.
 }
 \description{
-These functions estimate the covariance of a stationary RACS. 
+This function estimate the covariance of a stationary RACS. 
 The covariance is also known as the two-point coverage probability, and very closely related to the semivariogram.
- The covariance of a vector \eqn{v} is the probability of two points separated by a \eqn{v} being covered by the random set \eqn{\Xi}
+ The covariance of a vector \eqn{v} is the probability of two points separated by a vector \eqn{v} being covered by the random set \eqn{\Xi}
 \deqn{C(v) = P(\{x,x+v\}\subseteq \Xi).}
 }
 \details{
@@ -44,7 +45,7 @@ covar <- racscovariance(as.im(heather$coarse, na.replace = 0))
 [1] Serra, J.P. (1982) Image Analysis and Mathematical Morphology. London; New York: Academic Press.
 }
 \author{
-{Kassel Hingee}
+{Kassel Liam Hingee}
 }
 \keyword{nonparametric}
 \keyword{spatial}

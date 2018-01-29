@@ -25,7 +25,7 @@ In applications to images an estimate of the coverage probability can be obtaine
 An \code{fv} object or a vector the same length as \code{XiH} corresponding to the contagion at each r value of \code{XiH}
 }
 \description{
-Calculates the disc-state contagion LPI as described in Hingee 2016.
+Calculates the disc-state contagion LPI as described in [1].
 The disc-state contagion LPI describes the entropy (mixing) between four possible states of a disc:
 \enumerate{
   \item the disc is completely contained in \eqn{\Xi}
@@ -36,7 +36,7 @@ The disc-state contagion LPI describes the entropy (mixing) between four possibl
 
 Dics-state contagion is a function of the disc radius.
 
-The main difference to classical contagion is that disc-state contagion is based on the spherical contact distribution instead of pixel neighbours.
+The main difference to classical contagion [2] is that disc-state contagion is based on the spherical contact distribution instead of pixel neighbours.
 One impact of this design is that the distance with which to quantify the mixing between \eqn{\Xi} and the background may be chosen by the user by choosing the disc radius (for classical contagion this distance is fixed by the image resolution).
 }
 \details{
@@ -64,7 +64,9 @@ plot(contagion)
 
 }
 \references{
-Hingee, K.L. (2016) Statistics for Patch Observations. ISPRS - International Archives of the Photogrammetry, Remote Sensing and Spatial Information Sciences pp. 235-242. ISPRS.
+[1] Hingee, K.L. (2016) Statistics for Patch Observations. ISPRS - International Archives of the Photogrammetry, Remote Sensing and Spatial Information Sciences pp. 235-242. ISPRS.
+
+[2] McGarigal, K. (2015) FRAGSTATS Help. University of Massachusetts.
 }
 \keyword{nonparametric}
 \keyword{spatial}
