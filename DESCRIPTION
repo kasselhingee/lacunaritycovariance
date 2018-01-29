@@ -8,13 +8,12 @@ Maintainer: <kassel.hingee@research.uwa.edu.au>
 Depends:
     spatstat
 Imports:
-    maptools
+    maptools,
     RcppRoll
 Suggests:
     sp,
     raster,
     maptools,
-    RcppRoll,
     testthat,
     datadr,
 	rgdal
