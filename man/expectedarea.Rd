@@ -2,16 +2,16 @@
 % Please edit documentation in R/varofobsarea.R
 \name{expectedarea}
 \alias{expectedarea}
-\alias{varofobsarea.v1}
+\alias{varofobsarea.v3}
 \title{Variance Estimates for Observed Area}
 \usage{
 expectedarea(xi, obswin, p01 = NA, p10 = NA)
 
-varofobsarea.v1(xi, obswin, corrrad, corrstepheight, p01, p10)
+varofobsarea.v3(xi, obswin, corrrad, corrstepheight, p01, p10)
 }
 \arguments{
 \item{xi}{An observation of the RACS of interest in 1, 0, or NA valued pixels.
-Pixels must be square.}
+Pixels must be square. Must be a spatstat im object.}
 
 \item{obswin}{Observation window}
 
@@ -21,7 +21,7 @@ tree pixel is not in the true tree canopy}
 \item{p10}{Probability that a falliblty classified non-tree pixel is 
 in the tree canopy.}
 
-\item{corrrad}{Radius of the step function in the correlation}
+\item{corrrad}{Radius of the step function in the correlation (in the same units as xi)}
 
 \item{corrstepheight}{Height of the step in the correlation}
 }
@@ -33,19 +33,20 @@ To install OpenImageR had to install libtiff5-dev on my ubuntu machine
 }
 \section{Functions}{
 \itemize{
-\item \code{varofobsarea.v1}: The variance of the expected area.
+\item \code{varofobsarea.v3}: The variance of the expected area using Small Area Estimation Method - Version 3. 
+This methods assumes that the omission and comission errors are independent and different processes and that the correlation between errors (within each of theses processes) is a step function with radius \code{corrrad}.
 }}
 
 \examples{
 xi <- as.im(heather$coarse, na.replace = 0)
 obswin <- Frame(xi)
-corrrad <- 10 #10 pixels
+corrrad <- 5 #in units of image
 corrstepheight <- 0.9
 p01 <- 0.05
 p10 <- 0.01
 xi.sum <- sum(xi)
 exparea <- expectedarea(xi, obswin, p01 = p01, p10 = p10)
-varguess <- varofobsarea.v1(xi, obswin, corrrad, corrstepheight, p01, p10)
+varguess <- varofobsarea.v3(xi, obswin, corrrad, corrstepheight, p01, p10)
 stdofareaest <- sqrt(varguess)
 }
 \author{
