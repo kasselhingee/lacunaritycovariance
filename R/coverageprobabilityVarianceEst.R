@@ -28,13 +28,13 @@
    p <- area.owin(Xiinside)/area.owin(w)
    setcovXi <- setcov(Xiinside)
    setcovB <- setcov(w)
-   integrand <- eval.im(setcovXi-p^2*setcovB,harmonize = TRUE)
+   integrand <- eval.im(setcovXi-(p^2)*setcovB, harmonize = TRUE)
    #test that integrand reaches 0
    edgeValues = c(integrand[1,-1],integrand[-1,ncol(integrand)],
                   integrand[nrow(integrand),-ncol(integrand)],integrand[-nrow(integrand),1])
-   if (max(integrand,na.rm=TRUE) > diff(range(integrand,na.rm=TRUE))*1e-5){
-     warning("covariance isn't uniformly close to p^2 at boundary\n")
-     cat("max difference between C(v) and p^2 on boundary is ", max(integrand,na.rm=TRUE),sep="")
+   if (max(edgeValues,na.rm=TRUE) > diff(range(integrand,na.rm=TRUE))*1e-5){
+     warning("covariance weighted by set covariance of the window isn't uniformly close to p^2 at boundary\n")
+     cat("max size of (C(v) - p^2)*[Set Covariance of Window] on boundary is ", max(edgeValues,na.rm=TRUE),"\n",sep="")
    }
    return((1/(area.owin(w))^2)*sum(integrand)*integrand$xstep*integrand$ystep)
  }
