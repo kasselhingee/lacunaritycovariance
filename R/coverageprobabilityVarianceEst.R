@@ -25,9 +25,9 @@
 #' Molchanov, I. (1997) Statistics of the Boolean Model for Practitioners and Mathematicians. Wiley.
  varCovProb <- function(Xi,w){
    Xiinside <- intersect.owin(Xi,w)
-   p <- area.owin(Xiinside)/area.owin(w)
    setcovXi <- setcov(Xiinside)
    setcovB <- setcov(w)
+   p <- max(setcovXi)/max(setcov(w)) #using this instead of normal phat estimate seems to make positive values more likely at least? **I'd really like to know why!
    integrand <- eval.im(setcovXi-(p^2)*setcovB, harmonize = TRUE)
    #test that integrand reaches 0
    edgeValues = c(integrand[1,-1],integrand[-1,ncol(integrand)],
