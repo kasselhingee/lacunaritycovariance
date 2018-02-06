@@ -73,3 +73,5 @@ convandintersectsum <- function(xi, corrrad){
   convolved[!xi.m] <- 0
   return(sum(convolved))
 }
+
+
