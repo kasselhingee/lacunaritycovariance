@@ -27,13 +27,14 @@ Estimates the variance of the area of a cover type observed in a thematic map cr
 }
 \details{
 The model for the area in the class of interest is
-\deqn{|X_1| = |\hat{X}_1|-\Delta^2\text{Bin}(n_1,p_{21}) + \Delta^2\text{Bin}(n_2,p_{12})}
+\deqn{|X_1| = |\hat{X}_1|-\Delta^2$\pi r^2$\text{Bin}(n_1,p_{21}) + \Delta^2$\pi r^2$\text{Bin}(n_2,p_{12})}
 where $\Delta$ is the width of a pixel, 
 \eqn{p_{21}} and \eqn{p_{12}} are the probability of an arbitrary point classified into class 1 or 2 being misclassified respectively (class 1 is the class of interest, class 2 is everything else),
 and 
 \eqn{n_1 = \frac{|\hat{X}_1|}{\pi r^2}},
 \eqn{n_2 = \frac{|\hat{X}_2|}{\pi r^2}}
 where $r$ is a guess of the radius of dependence in the error process (e.g.~Pete chose $5m$) for $r$.
+This is like assuming the pixels are the size of $\pi r^2$, or that error process is random on a version of the image partitioned in cells of area $\pi r^2$.
 }
 \section{Functions}{
 \itemize{

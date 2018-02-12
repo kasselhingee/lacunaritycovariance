@@ -5,20 +5,22 @@
 \alias{sae.v1ab.var}
 \title{Variance Estimates for Observed Area - v1ab}
 \usage{
-sae.v1ab.mean(xi.area, window.area, delta, n11, n21, n12, n22)
+sae.v1ab.mean(xi.area, window.area, n11, n21, n12, n22)
 
-sae.v1ab.var(xi.area, window.area, delta, prob2gvnobs1, prob1gvnobs2)
+sae.v1ab.var(xi.area, window.area, n11, n21, n12, n22)
 }
 \arguments{
 \item{xi.area}{Observed area of the class of interest.}
 
 \item{window.area}{Area of the observation window (do not include NA pixels)}
 
-\item{delta}{Width of a pixel}
+\item{n11}{The number of samples that were truly class 1 and fallibly classified as class 1}
 
-\item{prob2gvnobs1}{Estimated probability that a location fallibly classified into the cover of interest is really outside the cover of interest}
+\item{n21}{The number of samples that were truly class 2 and fallibly classified as class 1}
 
-\item{prob1gvnobs2}{Estimated probability that a location fallibly classified into the non-interesting class is really the class of interest.}
+\item{n12}{The number of samples that were truly class 1 and fallibly classified as class 2}
+
+\item{n22}{The number of samples that were truly class 2 and fallibly classified as class 2}
 }
 \description{
 Estimates the variance of the area of a cover type observed in a thematic map created using a fallible classifier from remote sensing. 

@@ -8,9 +8,10 @@
 
 #' @param xi.area Observed area of the class of interest.
 #' @param window.area Area of the observation window (do not include NA pixels)
-#' @param delta Width of a pixel
-#' @param prob2gvnobs1 Estimated probability that a location fallibly classified into the cover of interest is really outside the cover of interest
-#' @param prob1gvnobs2 Estimated probability that a location fallibly classified into the non-interesting class is really the class of interest.
+#' @param n11 The number of samples that were truly class 1 and fallibly classified as class 1
+#' @param n21 The number of samples that were truly class 2 and fallibly classified as class 1
+#' @param n12 The number of samples that were truly class 1 and fallibly classified as class 2
+#' @param n22 The number of samples that were truly class 2 and fallibly classified as class 2
 
 #' @details 
 #' The model for the area in the class of interest is
@@ -30,16 +31,19 @@
 #' \quad \quad + |\hat{X}_2|^2\frac{1}{n_{.2} - 1} \left( n_{12} (1 - \hat{a}_{12})^2 + (n_{.2} - n_{12})(- \hat{a}_{12})^2 \right)
 #' }
 #'
-#'
+#' @section WARNING
+#' The confusion matrix for the 2009 data has an estimate of 
+#' proportion of non-tree that should be tree. This will
+#' not be respresented well by a t-distribution?
 
 
 # sampling error in the confusion matrix.
-sae.v1ab.mean <- function(xi.area, window.area, delta, n11, n21, n12, n22){
+sae.v1ab.mean <- function(xi.area, window.area, n11, n21, n12, n22){
   return(xi.area * (n11 / (n11 + n21)) + (window.area - xi.area) * (n12 / (n12 + n22)))
 }
 
 #' @describeIn sae.v1ab.mean  The variance estimate
-sae.v1ab.var <- function(xi.area, window.area, delta, prob2gvnobs1, prob1gvnobs2){
+sae.v1ab.var <- function(xi.area, window.area, n11, n21, n12, n22){
   ahat11 <- (n11 / (n11 + n21))
   ahat12 <- (n12 / (n12 + n22))
   ssq11 <- (1 / (n11 + n21 -1)) * ( n11 * (1 - ahat11)^2 + n21 * (ahat11^2)) #sample variances
