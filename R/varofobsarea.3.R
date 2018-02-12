@@ -10,10 +10,9 @@
 #' @param obswin Observation window
 #' @param corrrad Radius of the step function in the correlation (in the same units as xi)
 #' @param corrstepheight Height of the step in the correlation
-#' @param p21 Probability of an randomly chosen fallibly-classified
-#'  tree pixel is not in the true tree canopy
-#' @param p12 Probability that a falliblty classified non-tree pixel is 
-#' in the tree canopy.
+#' @param p21 Probability that a location fallibly classified into the cover of interest is really outside the cover of interest
+#' @param p12 Probability that a location fallibly classified into the non-interesting class is really the class of interest.
+
 
 #' @examples
 #' xi <- as.im(heather$coarse, na.replace = 0)
