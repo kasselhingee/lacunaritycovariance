@@ -27,8 +27,8 @@
 #'
 #' This model only accounts for the sampling error of the confusion matrix, and thus is kinda like assuming that the region of interest IS the population
 #' \deqn{
-#' \var\left[\hat{|X_1|}\right] \approx |\hat{X}_1|^2\frac{1}{n_{.1} - 1} \left( n_{11} (1 - \hat{a}_{11})^2 + (n_{.1} - n_{11})(- \hat{a}_{11})^2 \right)
-#' \quad \quad + |\hat{X}_2|^2\frac{1}{n_{.2} - 1} \left( n_{12} (1 - \hat{a}_{12})^2 + (n_{.2} - n_{12})(- \hat{a}_{12})^2 \right)
+#' \var\left[\hat{|X_1|}\right] \approx |\hat{X}_1|^2 \frac{1}{n_{.1}} \frac{1}{n_{.1} - 1} \left( n_{11} (1 - \hat{a}_{11})^2 + (n_{.1} - n_{11})(- \hat{a}_{11})^2 \right)
+#' \quad \quad + |\hat{X}_2|^2 \frac{1}{n_{.2}} \frac{1}{n_{.2} - 1} \left( n_{12} (1 - \hat{a}_{12})^2 + (n_{.2} - n_{12})(- \hat{a}_{12})^2 \right)
 #' }
 #'
 #' @section WARNING
@@ -46,7 +46,7 @@ sae.v1ab.mean <- function(xi.area, window.area, n11, n21, n12, n22){
 sae.v1ab.var <- function(xi.area, window.area, n11, n21, n12, n22){
   ahat11 <- (n11 / (n11 + n21))
   ahat12 <- (n12 / (n12 + n22))
-  ssq11 <- (1 / (n11 + n21 -1)) * ( n11 * (1 - ahat11)^2 + n21 * (ahat11^2)) #sample variances
-  ssq12 <- (1 / (n12 + n22 -1)) * ( n12 * (1 - ahat12)^2 + n22 * (ahat12^2)) #sample variances
+  ssq11 <- (1 / ((n11 + n21) * (n11 + n21 -1))) * ( n11 * (1 - ahat11)^2 + n21 * (ahat11^2)) #sample variances
+  ssq12 <- (1 / ((n12 + n22) * (n12 + n22 -1))) * ( n12 * (1 - ahat12)^2 + n22 * (ahat12^2)) #sample variances
   return( xi.area^2 * ssq11 + (window.area - xi.area)^2 * ssq12 )
 }
