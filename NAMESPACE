@@ -2,6 +2,7 @@
 
 export(addfvtomap)
 export(adjacency)
+export(allsae)
 export(as.Polygon.owin)
 export(as.Polygons.Polygon)
 export(as.SpatialPolygons.owin)
