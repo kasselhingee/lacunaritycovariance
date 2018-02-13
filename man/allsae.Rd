@@ -38,7 +38,7 @@ n22 <- 95
 n12 <- 5
 estimates <- allsae(xi, obswin, corrrad, corrstepheight, n11, n21, n12, n22)
 \dontrun{
-barplot(estimates$areahat, names.arg = row.names(estimates))
+plot.new()
 plot.window(ylim = c(min(estimates$areahat - 2*sqrt(estimates$varhat)),
                      max(estimates$areahat + 2*sqrt(estimates$varhat))),
            xlim = c(0, length(estimates$areahat) + 1))
