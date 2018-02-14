@@ -32,9 +32,9 @@
  
 sae.v3.mean <- function(xi, obswin, p21=NA, p12=NA){
   xi <- xi[as.rectangle(obswin), drop=TRUE]
-  xi[complement.owin(obswin)] <- 0
+  xi[complement.owin(obswin, frame = Frame(dilation.owin(obswin,1)))] <- 0
   xic <- 1-xi
-  xic[complement.owin(obswin)] <- 0  
+  xic[complement.owin(obswin, frame = Frame(dilation.owin(obswin,1)))] <- 0  
   
   return((sum(xi) * (1 - p21) + sum(xic) * p12) * xi$xstep * xi$ystep)
 }
@@ -43,16 +43,16 @@ sae.v3.mean <- function(xi, obswin, p21=NA, p12=NA){
 #' This methods assumes that the omission and comission errors are independent and different processes and that the correlation between errors (within each of theses processes) is a step function with radius \code{corrrad}.
 sae.v3.var <- function(xi, obswin, corrrad, corrstepheight, p21, p12){
   xi <- xi[as.rectangle(obswin), drop=TRUE]
-  xi[complement.owin(obswin)] <- 0
+  xi[complement.owin(obswin, frame = Frame(dilation.owin(obswin,1)))] <- 0
   #radius filter of the cover type of interest
   xiconvsum <- convandintersectsum(xi, corrrad)
-  varfromomm <- p21 * (1 - p21) * ( (1 - corrstepheight) * sum(xi) + corrstepheight * xiconvsum)
+  varfromcomm <- p21 * (1 - p21) * ( (1 - corrstepheight) * sum(xi) + corrstepheight * xiconvsum)
   
   #radius filter of the alternate cover type
   xic <- 1-xi
-  xic[complement.owin(obswin)] <- 0  
+  xic[complement.owin(obswin, frame = Frame(dilation.owin(obswin,1)))] <- 0  
   xicconvsum <- convandintersectsum(xic, corrrad)
-  varfromcomm <- p12 * (1 - p12) * ( (1 - corrstepheight) * sum(xic) + corrstepheight * xicconvsum)
+  varfromomm <- p12 * (1 - p12) * ( (1 - corrstepheight) * sum(xic) + corrstepheight * xicconvsum)
   
   return((varfromomm + varfromcomm) * xi$xstep^2 * xi$ystep^2)
 }
