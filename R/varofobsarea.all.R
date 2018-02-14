@@ -42,29 +42,30 @@ allsae <- function(xi, obswin, corrrad, corrstepheight, n11, n21, n12, n22){
   p21 <- n21 / (n11 + n21)
   #probability that a labelled non-tree is reall tree
   p12 <- n12 / (n22 + n12)
-  
+
   results <- data.frame(NULL)
   results["sae.v1ab", "areahat"] <- 
     sae.v1ab.mean(area.owin(xi), area.owin(obswin), n11, n21, n12, n22)
   results["sae.v1ab", "varhat"] <-
     sae.v1ab.var(area.owin(xi), area.owin(obswin), n11, n21, n12, n22)
-  
+
   results["sae.v1b", "areahat"] <- 
     sae.v1b.mean(area.owin(xi), area.owin(obswin), xi$xstep, p21, p12)
   results["sae.v1b", "varhat"] <- 
     sae.v1b.var(area.owin(xi), area.owin(obswin), xi$xstep, p21, p12)
-  
+
   results["sae.v2d", "areahat"] <-
     sae.v2d.mean(area.owin(xi), area.owin(obswin), xi$xstep, p21, p12, corrrad)
   results["sae.v2d", "varhat"] <-
     sae.v2d.var(area.owin(xi), area.owin(obswin), xi$xstep, p21, p12, corrrad)
-  
+
   results["sae.v3","areahat"] <- sae.v3.mean(
-             as.im(xi, na.replace = 0),
+             as.im(xi, na.replace = 0)[obswin, drop = FALSE],
              obswin,
              p21 = p21,
              p12 = p12)
-  results["sae.v3", "varhat"] <- sae.v3.var(as.im(xi, na.replace = 0),
+  results["sae.v3", "varhat"] <- sae.v3.var(
+                as.im(xi, na.replace = 0)[obswin, drop = FALSE],
                 obswin = obswin,
                 corrrad = corrrad,
                 corrstepheight = corrstepheight,
