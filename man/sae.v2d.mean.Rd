@@ -5,9 +5,9 @@
 \alias{sae.v2d.var}
 \title{Variance Estimates for Observed Area - v2d}
 \usage{
-sae.v2d.mean(xi.area, window.area, delta, prob2gvnobs1, prob1gvnobs2, radius)
+sae.v2d.mean(xi.area, window.area, delta, p21, p12, radius)
 
-sae.v2d.var(xi.area, window.area, delta, prob2gvnobs1, prob1gvnobs2, radius)
+sae.v2d.var(xi.area, window.area, delta, p21, p12, radius)
 }
 \arguments{
 \item{xi.area}{Observed area of the class of interest.}
@@ -16,9 +16,9 @@ sae.v2d.var(xi.area, window.area, delta, prob2gvnobs1, prob1gvnobs2, radius)
 
 \item{delta}{Width of a pixel}
 
-\item{prob2gvnobs1}{Probability that a location fallibly classified into the cover of interest is really outside the cover of interest}
+\item{p21}{Probability that a location fallibly classified into the cover of interest is really outside the cover of interest}
 
-\item{prob1gvnobs2}{Probability that a location fallibly classified into the non-interesting class is really the class of interest.}
+\item{p12}{Probability that a location fallibly classified into the non-interesting class is really the class of interest.}
 
 \item{radius}{A radius of dependence - see details for meaning.}
 }
@@ -27,13 +27,14 @@ Estimates the variance of the area of a cover type observed in a thematic map cr
 }
 \details{
 The model for the area in the class of interest is
-\deqn{|X_1| = |\hat{X}_1|-\Delta^2\text{Bin}(n_1,p_{21}) + \Delta^2\text{Bin}(n_2,p_{12})}
+\deqn{|X_1| = |\hat{X}_1|-\Delta^2$\pi r^2$\text{Bin}(n_1,p_{21}) + \Delta^2$\pi r^2$\text{Bin}(n_2,p_{12})}
 where $\Delta$ is the width of a pixel, 
 \eqn{p_{21}} and \eqn{p_{12}} are the probability of an arbitrary point classified into class 1 or 2 being misclassified respectively (class 1 is the class of interest, class 2 is everything else),
 and 
 \eqn{n_1 = \frac{|\hat{X}_1|}{\pi r^2}},
 \eqn{n_2 = \frac{|\hat{X}_2|}{\pi r^2}}
 where $r$ is a guess of the radius of dependence in the error process (e.g.~Pete chose $5m$) for $r$.
+This is like assuming the pixels are the size of $\pi r^2$, or that error process is random on a version of the image partitioned in cells of area $\pi r^2$.
 }
 \section{Functions}{
 \itemize{
