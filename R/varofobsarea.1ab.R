@@ -1,5 +1,5 @@
 #' @title Variance Estimates for Observed Area - v1ab
-#' @export sae.v1ab.mean sae.v1ab.var
+#' @export sae.v1ab.mean sae.v1ab.var ahat11 ahat12 ssq11 ssq12
 #' @description Estimates the variance of the area of a cover type observed in a thematic map created using a fallible classifier from remote sensing. 
 #' Sampling error in the confusion matrix, assume region is a good representation of population.
 #' @author{Kassel Hingee}
@@ -49,4 +49,27 @@ sae.v1ab.var <- function(xi.area, window.area, n11, n21, n12, n22){
   ssq11 <- (1 / ((n11 + n21) * (n11 + n21 -1))) * ( n11 * (1 - ahat11)^2 + n21 * (ahat11^2)) #sample variances
   ssq12 <- (1 / ((n12 + n22) * (n12 + n22 -1))) * ( n12 * (1 - ahat12)^2 + n22 * (ahat12^2)) #sample variances
   return( xi.area^2 * ssq11 + (window.area - xi.area)^2 * ssq12 )
+}
+
+#' @describeIn sae.v1ab.mean Mean estimate of probability of class 1 given fallibly classified as class 1
+ahat11 <- function(n11, n21){
+  return(n11 / (n11 + n21))
+}
+
+#' @describeIn sae.v1ab.mean Mean estimate of probability of class 1 given fallibly classified as class 2
+ahat12 <- function(n12, n22){
+  return(n12 / (n12 + n22))
+}
+
+#sample variances estimates of population divided to get variance estimate of sample mean. Probably could also use p (1 - p) because it is all binomial
+#' @describeIn sae.v1ab.mean Estimate of the variance of ahat11 induced by sampling assuming each sample is independent
+ssq11 <- function(n11, n21){
+  n.1 <- n11 + n21
+  return((1 / (n.1 * (n.1 -1))) * ( n11 * (1 - ahat11(n11, n21))^2 + n21 * (ahat11(n11, n21)^2)))
+}
+
+#' @describeIn sae.v1ab.mean Estimate of the variance of ahat12 induced by sampling, assuming each sample is independent
+ssq12 <- function(n12, n22){
+  n.2 <- n12 + n22
+  ssq12 <- (1 / (n.2 * (n.2 -1))) * ( n12 * (1 - ahat12)^2 + n22 * (ahat12^2))
 }
