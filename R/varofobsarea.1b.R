@@ -26,5 +26,5 @@ sae.v1b.mean <- function(xi.area, window.area, delta, p21, p12){
 
 #' @describeIn sae.v1b.mean  The variance estimate assuming confusion matrix, independent pixels error
 sae.v1b.var <- function(xi.area, window.area, delta, p21, p12){
-  return( delta^2 * p21 * (1 - p21) + delta^2 * (window.area - xi.area) * p12 * (1 - p12) )
+  return( delta^2 * xi.area * p21 * (1 - p21) + delta^2 * (window.area - xi.area) * p12 * (1 - p12) )
 }
