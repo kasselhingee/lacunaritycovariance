@@ -66,7 +66,7 @@ allsae <- function(xi, obswin, corrrad, corrstepheight, erosionrad, n11, n21, n1
   
   results["IID Regions + C Mat", "areahat"] <-
     sae.v2d.wsu.mean(area.owin(xi), area.owin(obswin), xi$xstep, n11, n21, n12, n22, corrrad)
-  results["IID Regions + C Mat"] <-
+  results["IID Regions + C Mat", "varhat"] <-
     sae.v2d.wsu.var(area.owin(xi), area.owin(obswin), xi$xstep, n11, n21, n12, n22, corrrad)
 
   results["Step Covariance","areahat"] <- sae.v3.mean(xi, obswin, p21 = p21, p12 = p12)
@@ -77,7 +77,6 @@ allsae <- function(xi, obswin, corrrad, corrstepheight, erosionrad, n11, n21, n1
 
   results["ErodeDilate", "areahat"] <- sae.v4.mean(xi, obswin)
   results["ErodeDilate", "varhat"] <- sae.v4.var(xi, obswin, erosionrad)
-  
   
   return(results)
 }
