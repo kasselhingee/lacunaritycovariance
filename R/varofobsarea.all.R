@@ -44,39 +44,39 @@ allsae <- function(xi, obswin, corrrad, corrstepheight, erosionrad, n11, n21, n1
   p12 <- n12 / (n22 + n12)
 
   results <- data.frame(NULL)
-  results["Sampling Uncertainty of Confusion Matrix", "areahat"] <- 
+  results["Confusion Matrix Only", "areahat"] <- 
     sae.v1ab.mean(area.owin(xi), area.owin(obswin), n11, n21, n12, n22)
-  results["Sampling Uncertainty of Confusion Matrix", "varhat"] <-
+  results["Confusion Matrix Only", "varhat"] <-
     sae.v1ab.var(area.owin(xi), area.owin(obswin), n11, n21, n12, n22)
 
-  results["v1b", "areahat"] <- 
+  results["IID Pixels", "areahat"] <- 
     sae.v1b.mean(area.owin(xi), area.owin(obswin), xi$xstep, p21, p12)
-  results["v1b", "varhat"] <- 
+  results["IID Pixels", "varhat"] <- 
     sae.v1b.var(area.owin(xi), area.owin(obswin), xi$xstep, p21, p12)
   
-  results["v1bb", "areahat"] <- 
+  results["IID Pixels + C Mat", "areahat"] <- 
     sae.v1b.wsu.mean(area.owin(xi), area.owin(obswin), xi$xstep, n11, n21, n12, n22)
-  results["v1bb", "varhat"] <- 
+  results["IID Pixels + C Mat", "varhat"] <- 
     sae.v1b.wsu.var(area.owin(xi), area.owin(obswin), xi$xstep, n11, n21, n12, n22)
 
-  results["v2d", "areahat"] <-
+  results["IID Regions", "areahat"] <-
     sae.v2d.mean(area.owin(xi), area.owin(obswin), xi$xstep, p21, p12, corrrad)
-  results["v2d", "varhat"] <-
+  results["IID Regions", "varhat"] <-
     sae.v2d.var(area.owin(xi), area.owin(obswin), xi$xstep, p21, p12, corrrad)
   
-  results["v2d.wsu", "areahat"] <-
+  results["IID Regions + C Mat", "areahat"] <-
     sae.v2d.wsu.mean(area.owin(xi), area.owin(obswin), xi$xstep, n11, n21, n12, n22, corrrad)
-  results["v2d.wsu", "varhat"] <-
+  results["IID Regions + C Mat"] <-
     sae.v2d.wsu.var(area.owin(xi), area.owin(obswin), xi$xstep, n11, n21, n12, n22, corrrad)
 
-  results["v3","areahat"] <- sae.v3.mean(xi, obswin, p21 = p21, p12 = p12)
-  results["v3", "varhat"] <- sae.v3.var(xi, obswin, corrrad, corrstepheight, p21 = p21, p12 = p12)
+  results["Step Covariance","areahat"] <- sae.v3.mean(xi, obswin, p21 = p21, p12 = p12)
+  results["Step Covariance", "varhat"] <- sae.v3.var(xi, obswin, corrrad, corrstepheight, p21 = p21, p12 = p12)
 
-  results["v3.wsu","areahat"] <- sae.v3.wsu.mean(xi, obswin, n11, n21, n12, n22)
-  results["v3.wsu", "varhat"] <- sae.v3.wsu.var(xi, obswin, corrrad, corrstepheight, n11, n21, n12, n22)
+  results["Step Cov + C Mat","areahat"] <- sae.v3.wsu.mean(xi, obswin, n11, n21, n12, n22)
+  results["Step Cov + C Mat", "varhat"] <- sae.v3.wsu.var(xi, obswin, corrrad, corrstepheight, n11, n21, n12, n22)
 
-  results["v4", "areahat"] <- sae.v4.mean(xi, obswin)
-  results["v4", "varhat"] <- sae.v4.var(xi, obswin, erosionrad)
+  results["ErodeDilate", "areahat"] <- sae.v4.mean(xi, obswin)
+  results["ErodeDilate", "varhat"] <- sae.v4.var(xi, obswin, erosionrad)
   
   
   return(results)
