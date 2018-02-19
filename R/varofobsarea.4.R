@@ -16,8 +16,7 @@
 #' @examples
 #' xi <- heather$coarse
 #' obswin <- Frame(xi)
-#' obswin <- disc(5, center = c(5,5))
-#' erosionrad <- 0.2 #in units of image
+#' erosionrad <- 0.1 #in units of image
 #' exparea <- sae.v4.mean(xi, obswin)
 #' varguess <- sae.v4.var(xi, obswin, erosionrad)
 #' stdofareaest <- sqrt(varguess)
@@ -30,7 +29,7 @@ sae.v4.mean <- function(xi, obswin){
   xi <- intersect.owin(xi, obswin)
   xi.area <- area.owin(xi)
   window.area <- area.owin(obswin)
-  return(xi.area / window.area)
+  return(xi.area)
 }
 
 #' @describeIn sae.v4.mean A `variance' estimated by adhoc selection of erosion and dilation distances corresponding to 2*standard deviation

@@ -37,16 +37,16 @@
 #' }
 
 
-allsae <- function(xi, obswin, corrrad, corrstepheight, n11, n21, n12, n22){
+allsae <- function(xi, obswin, corrrad, corrstepheight, erosionrad, n11, n21, n12, n22){
   #probability that a labelled tree is not really tree
   p21 <- n21 / (n11 + n21)
   #probability that a labelled non-tree is reall tree
   p12 <- n12 / (n22 + n12)
 
   results <- data.frame(NULL)
-  results["v1ab", "areahat"] <- 
+  results["Sampling Uncertainty of Confusion Matrix", "areahat"] <- 
     sae.v1ab.mean(area.owin(xi), area.owin(obswin), n11, n21, n12, n22)
-  results["v1ab", "varhat"] <-
+  results["Sampling Uncertainty of Confusion Matrix", "varhat"] <-
     sae.v1ab.var(area.owin(xi), area.owin(obswin), n11, n21, n12, n22)
 
   results["v1b", "areahat"] <- 
@@ -74,6 +74,9 @@ allsae <- function(xi, obswin, corrrad, corrstepheight, n11, n21, n12, n22){
 
   results["v3.wsu","areahat"] <- sae.v3.wsu.mean(xi, obswin, n11, n21, n12, n22)
   results["v3.wsu", "varhat"] <- sae.v3.wsu.var(xi, obswin, corrrad, corrstepheight, n11, n21, n12, n22)
+
+  results["v4", "areahat"] <- sae.v4.mean(xi, obswin)
+  results["v4", "varhat"] <- sae.v4.var(xi, obswin, erosionrad)
   
   
   return(results)
