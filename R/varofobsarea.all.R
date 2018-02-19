@@ -69,18 +69,12 @@ allsae <- function(xi, obswin, corrrad, corrstepheight, n11, n21, n12, n22){
   results["v2d.wsu", "varhat"] <-
     sae.v2d.wsu.var(area.owin(xi), area.owin(obswin), xi$xstep, n11, n21, n12, n22, corrrad)
 
-  results["v3","areahat"] <- sae.v3.mean(
-             as.im(xi, na.replace = 0)[obswin, drop = FALSE],
-             obswin,
-             p21 = p21,
-             p12 = p12)
-  results["v3", "varhat"] <- sae.v3.var(
-                as.im(xi, na.replace = 0)[obswin, drop = FALSE],
-                obswin = obswin,
-                corrrad = corrrad,
-                corrstepheight = corrstepheight,
-                p21 = p21,
-                p12 = p12)
+  results["v3","areahat"] <- sae.v3.mean(xi, obswin, p21 = p21, p12 = p12)
+  results["v3", "varhat"] <- sae.v3.var(xi, obswin, corrrad, corrstepheight, p21 = p21, p12 = p12)
+
+  results["v3.wsu","areahat"] <- sae.v3.wsu.mean(xi, obswin, n11, n21, n12, n22)
+  results["v3.wsu", "varhat"] <- sae.v3.wsu.var(xi, obswin, corrrad, corrstepheight, n11, n21, n12, n22)
+  
   
   return(results)
 }

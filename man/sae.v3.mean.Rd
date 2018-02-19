@@ -2,12 +2,18 @@
 % Please edit documentation in R/varofobsarea.3.R
 \name{sae.v3.mean}
 \alias{sae.v3.mean}
+\alias{sae.v3.wsu.mean}
 \alias{sae.v3.var}
+\alias{sae.v3.wsu.var}
 \title{Variance Estimates for Observed Area}
 \usage{
 sae.v3.mean(xi, obswin, p21 = NA, p12 = NA)
 
+sae.v3.wsu.mean(xi, obswin, n11, n21, n12, n22)
+
 sae.v3.var(xi, obswin, corrrad, corrstepheight, p21, p12)
+
+sae.v3.wsu.var(xi, obswin, corrrad, corrstepheight, n11, n21, n12, n22)
 }
 \arguments{
 \item{xi}{An observation of the RACS of interest in owin form.}
@@ -30,7 +36,12 @@ To install OpenImageR had to install libtiff5-dev on my ubuntu machine
 }
 \section{Functions}{
 \itemize{
+\item \code{sae.v3.wsu.mean}: Expected area including sampling uncertainty
+
 \item \code{sae.v3.var}: The variance of the expected area using Small Area Estimation Method - Version 3. 
+This methods assumes that the omission and comission errors are independent and different processes and that the correlation between errors (within each of theses processes) is a step function with radius \code{corrrad}.
+
+\item \code{sae.v3.wsu.var}: The variance of the expected area using Small Area Estimation Method - Version 3 and sampling uncertainty in conditional confusion matrix 
 This methods assumes that the omission and comission errors are independent and different processes and that the correlation between errors (within each of theses processes) is a step function with radius \code{corrrad}.
 }}
 
