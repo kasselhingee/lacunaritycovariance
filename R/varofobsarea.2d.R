@@ -1,5 +1,5 @@
 #' @title Variance Estimates for Observed Area - v2d
-#' @export sae.v2d.mean sae.v2d.var
+#' @export sae.v2d.mean sae.v2d.var  sae.v2d.wsu.mean  sae.v2d.wsu.var
 #' @description Estimates the variance of the area of a cover type observed in a thematic map created using a fallible classifier from remote sensing.
 #' @author{Kassel Hingee}
 
@@ -32,8 +32,23 @@ sae.v2d.mean <- function(xi.area, window.area, delta, p21, p12, radius){
 	)
 }
 
-#' @describeIn sae.v2d.mean  The variance estimate assuming confusion matrix, independent pixels error
+#' @describeIn sae.v2d.mean Expected cover area when including sampling uncertainty
+sae.v2d.wsu.mean <- function(xi.area, window.area, delta,  n11, n21, n12, n22, radius){
+  return(xi.area * ahat11(n11, n21) + ( (window.area - xi.area) * ahat12(n12, n22)))
+}
+
+#' @describeIn sae.v2d.mean  The variance estimate assuming confusion matrix, independent error on undefined sub regions
 sae.v2d.var <- function(xi.area, window.area, delta, p21, p12, radius){
   return( delta^2 * (pi * radius^2) * p21 * (1 - p21)
          + delta^2 * (pi * radius^2) * (window.area - xi.area) * p12 * (1 - p12) )
+}
+
+#' @describeIn sae.v1b.mean  The variance estimate assuming indepedendent sampling variation in conditional confusion matrix estimate and independent error on undefined subregions
+sae.v2d.wsu.var <- function(xi.area, window.area, delta,  n11, n21, n12, n22, radius){
+  a11 <- ahat11(n11, n21)
+  a12 <- ahat12(n12, n22)
+  expectofvar <-  delta^2 * (pi * radius^2) * (1 - a11) * a11
+          + delta^2 * (pi * radius^2) * (window.area - xi.area) * (1 - a11) * a11
+  varofexpect <- xi.area^2 * ssq11(n11, n21) + (window.area - xi.area)^2 * ssq12(n12, n22)
+  return(expectofvar + varofexpect)
 }

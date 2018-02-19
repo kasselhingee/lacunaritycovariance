@@ -44,32 +44,37 @@ allsae <- function(xi, obswin, corrrad, corrstepheight, n11, n21, n12, n22){
   p12 <- n12 / (n22 + n12)
 
   results <- data.frame(NULL)
-  results["sae.v1ab", "areahat"] <- 
+  results["v1ab", "areahat"] <- 
     sae.v1ab.mean(area.owin(xi), area.owin(obswin), n11, n21, n12, n22)
-  results["sae.v1ab", "varhat"] <-
+  results["v1ab", "varhat"] <-
     sae.v1ab.var(area.owin(xi), area.owin(obswin), n11, n21, n12, n22)
 
-  results["sae.v1b", "areahat"] <- 
+  results["v1b", "areahat"] <- 
     sae.v1b.mean(area.owin(xi), area.owin(obswin), xi$xstep, p21, p12)
-  results["sae.v1b", "varhat"] <- 
+  results["v1b", "varhat"] <- 
     sae.v1b.var(area.owin(xi), area.owin(obswin), xi$xstep, p21, p12)
   
-  results["sae.v1bb", "areahat"] <- 
+  results["v1bb", "areahat"] <- 
     sae.v1b.wsu.mean(area.owin(xi), area.owin(obswin), xi$xstep, n11, n21, n12, n22)
-  results["sae.v1bb", "varhat"] <- 
+  results["v1bb", "varhat"] <- 
     sae.v1b.wsu.var(area.owin(xi), area.owin(obswin), xi$xstep, n11, n21, n12, n22)
 
-  results["sae.v2d", "areahat"] <-
+  results["v2d", "areahat"] <-
     sae.v2d.mean(area.owin(xi), area.owin(obswin), xi$xstep, p21, p12, corrrad)
-  results["sae.v2d", "varhat"] <-
+  results["v2d", "varhat"] <-
     sae.v2d.var(area.owin(xi), area.owin(obswin), xi$xstep, p21, p12, corrrad)
+  
+  results["v2d.wsu", "areahat"] <-
+    sae.v2d.wsu.mean(area.owin(xi), area.owin(obswin), xi$xstep, n11, n21, n12, n22, corrrad)
+  results["v2d.wsu", "varhat"] <-
+    sae.v2d.wsu.var(area.owin(xi), area.owin(obswin), xi$xstep, n11, n21, n12, n22, corrrad)
 
-  results["sae.v3","areahat"] <- sae.v3.mean(
+  results["v3","areahat"] <- sae.v3.mean(
              as.im(xi, na.replace = 0)[obswin, drop = FALSE],
              obswin,
              p21 = p21,
              p12 = p12)
-  results["sae.v3", "varhat"] <- sae.v3.var(
+  results["v3", "varhat"] <- sae.v3.var(
                 as.im(xi, na.replace = 0)[obswin, drop = FALSE],
                 obswin = obswin,
                 corrrad = corrrad,
