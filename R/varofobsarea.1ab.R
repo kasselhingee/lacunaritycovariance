@@ -71,5 +71,5 @@ ssq11 <- function(n11, n21){
 #' @describeIn sae.v1ab.mean Estimate of the variance of ahat12 induced by sampling, assuming each sample is independent
 ssq12 <- function(n12, n22){
   n.2 <- n12 + n22
-  ssq12 <- (1 / (n.2 * (n.2 -1))) * ( n12 * (1 - ahat12)^2 + n22 * (ahat12^2))
+  ssq12 <- (1 / (n.2 * (n.2 -1))) * ( n12 * (1 - ahat12(n12, n22))^2 + n22 * (ahat12(n12, n22)^2))
 }

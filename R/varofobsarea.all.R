@@ -53,6 +53,11 @@ allsae <- function(xi, obswin, corrrad, corrstepheight, n11, n21, n12, n22){
     sae.v1b.mean(area.owin(xi), area.owin(obswin), xi$xstep, p21, p12)
   results["sae.v1b", "varhat"] <- 
     sae.v1b.var(area.owin(xi), area.owin(obswin), xi$xstep, p21, p12)
+  
+  results["sae.v1bb", "areahat"] <- 
+    sae.v1b.wsu.mean(area.owin(xi), area.owin(obswin), xi$xstep, n11, n21, n12, n22)
+  results["sae.v1bb", "varhat"] <- 
+    sae.v1b.wsu.var(area.owin(xi), area.owin(obswin), xi$xstep, n11, n21, n12, n22)
 
   results["sae.v2d", "areahat"] <-
     sae.v2d.mean(area.owin(xi), area.owin(obswin), xi$xstep, p21, p12, corrrad)

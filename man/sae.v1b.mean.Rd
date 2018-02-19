@@ -2,12 +2,18 @@
 % Please edit documentation in R/varofobsarea.1b.R
 \name{sae.v1b.mean}
 \alias{sae.v1b.mean}
+\alias{sae.v1b.wsu.mean}
 \alias{sae.v1b.var}
+\alias{sae.v1b.wsu.var}
 \title{Variance Estimates for Observed Area - v1b}
 \usage{
 sae.v1b.mean(xi.area, window.area, delta, p21, p12)
 
+sae.v1b.wsu.mean(xi.area, window.area, delta, n11, n21, n12, n22)
+
 sae.v1b.var(xi.area, window.area, delta, p21, p12)
+
+sae.v1b.wsu.var(xi.area, window.area, delta, n11, n21, n12, n22)
 }
 \arguments{
 \item{xi.area}{Observed area of the class of interest.}
@@ -31,7 +37,11 @@ where $\Delta$ is the width of a pixel, $n_1$ and $n_2$ are the number of pixels
 }
 \section{Functions}{
 \itemize{
+\item \code{sae.v1b.wsu.mean}: Expected cover area when including sampling uncertainty
+
 \item \code{sae.v1b.var}: The variance estimate assuming confusion matrix, independent pixels error
+
+\item \code{sae.v1b.wsu.var}: The variance estimate assuming indepedendent sampling variation in conditional confusion matrix estimate and independent pixels error
 }}
 
 \author{
