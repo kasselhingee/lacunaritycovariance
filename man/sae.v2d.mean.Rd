@@ -8,7 +8,7 @@
 \usage{
 sae.v2d.mean(xi.area, window.area, delta, p21, p12, radius)
 
-sae.v2d.wsu.mean(xi.area, window.area, delta, n11, n21, n12, n22)
+sae.v2d.wsu.mean(xi.area, window.area, delta, n11, n21, n12, n22, radius)
 
 sae.v2d.var(xi.area, window.area, delta, p21, p12, radius)
 }

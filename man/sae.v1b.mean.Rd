@@ -16,7 +16,7 @@ sae.v1b.var(xi.area, window.area, delta, p21, p12)
 
 sae.v1b.wsu.var(xi.area, window.area, delta, n11, n21, n12, n22)
 
-sae.v2d.wsu.var(xi.area, window.area, delta, n11, n21, n12, n22)
+sae.v2d.wsu.var(xi.area, window.area, delta, n11, n21, n12, n22, radius)
 }
 \arguments{
 \item{xi.area}{Observed area of the class of interest.}

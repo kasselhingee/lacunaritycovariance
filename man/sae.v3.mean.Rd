@@ -10,10 +10,9 @@ sae.v3.mean(xi, obswin, p21 = NA, p12 = NA)
 sae.v3.var(xi, obswin, corrrad, corrstepheight, p21, p12)
 }
 \arguments{
-\item{xi}{An observation of the RACS of interest in 1, 0, or NA valued pixels.
-Pixels must be square. Must be a spatstat im object.}
+\item{xi}{An observation of the RACS of interest in owin form.}
 
-\item{obswin}{Observation window}
+\item{obswin}{Observation window in owin format}
 
 \item{p21}{Probability that a location fallibly classified into the cover of interest is really outside the cover of interest}
 
@@ -36,7 +35,7 @@ This methods assumes that the omission and comission errors are independent and 
 }}
 
 \examples{
-xi <- as.im(heather$coarse, na.replace = 0)
+xi <- heather$coarse
 obswin <- Frame(xi)
 corrrad <- 5 #in units of image
 corrstepheight <- 0.9
