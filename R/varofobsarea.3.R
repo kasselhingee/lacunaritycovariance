@@ -68,10 +68,10 @@ sae.v3.wsu.var <- function(xi, obswin, corrrad, corrstepheight, n11, n21, n12, n
   warning("owin converted to image using default pixel amounts")
   xi.im <- xi.im[as.rectangle(obswin), drop=TRUE]
   #radius filter of the cover type of interest
-  xiconvsum <- convandintersectsum(xi, corrrad)
+  xiconvsum <- convandintersectsum(xi.im, corrrad)
   a11 <- ahat11(n11, n21)
   a12 <- ahat12(n12, n22)
-  expectvarfromcomm <- (1 - a11) * a11 ( (1 - corrstepheight) * sum(xi) + corrstepheight * xiconvsum) * xi$xstep^2 * xi$ystep^2
+  expectvarfromcomm <- (1 - a11) * a11 * ( (1 - corrstepheight) * sum(xi.im) + corrstepheight * xiconvsum) * xi.im$xstep^2 * xi.im$ystep^2
 
   #radius filter of the alternate cover type
   xi.c <- setminus.owin(obswin, xi) #I should do this instead of complement.owin.inwindow
@@ -79,7 +79,7 @@ sae.v3.wsu.var <- function(xi, obswin, corrrad, corrstepheight, n11, n21, n12, n
   warning("owin converted to image using default pixel amounts")
   xi.c.im <- xi.c.im[as.rectangle(obswin), drop=TRUE]
   xicconvsum <- convandintersectsum(xi.c.im, corrrad)
-  expectvarfromomm <- a12 * (1 - a12) * ( (1 - corrstepheight) * sum(xic) + corrstepheight * xicconvsum) * xi$xstep^2 * xi$ystep^2
+  expectvarfromomm <- a12 * (1 - a12) * ( (1 - corrstepheight) * sum(xi.c.im) + corrstepheight * xicconvsum) * xi.c.im$xstep^2 * xi.c.im$ystep^2
   
   xi.area <- area.owin(xi)
   window.area <- area.owin(obswin)
