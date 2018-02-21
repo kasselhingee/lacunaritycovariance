@@ -36,7 +36,6 @@
 #' the spatstat function requires a rectangular outer window.
 
 complement.owin.inwindow <- function( x, w){
-  xc <- complement.owin(intersect.owin(x, w), frame = as.rectangle(w)) 
-  xc <- intersect.owin(xc, w) #will fix things for non-rectangular window
+  xc <- setminus.owin(w, x)
   return(xc)
 }
