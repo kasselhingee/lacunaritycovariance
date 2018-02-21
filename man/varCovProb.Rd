@@ -3,9 +3,12 @@
 \name{varCovProb}
 \alias{varCovProb}
 \alias{asympvarP}
+\alias{varCovProb.covarsupplied}
 \title{Variances and Confidence Intervals for Coverage Fraction Estimates}
 \usage{
 varCovProb(Xi, w)
+
+varCovProb.covarsupplied(covar, w)
 }
 \arguments{
 \item{Xi}{is an observation (in owin) format of a RACS.}
@@ -25,6 +28,11 @@ Molchanov (1997 Ch3.1) notes that the variance of the estimator \code{\link[stat
 
 This function assumes that the probability of two points being in \eqn{\Xi} is independent \deqn{C(v) = p^2} outside the calculated window of covariance which is...
 }
+\section{Functions}{
+\itemize{
+\item \code{varCovProb.covarsupplied}: Variance estimate from a given covariance function
+}}
+
 \examples{
 #**To come later** 
 }

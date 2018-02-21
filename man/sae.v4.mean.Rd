@@ -36,8 +36,7 @@ To install OpenImageR had to install libtiff5-dev on my ubuntu machine
 \examples{
 xi <- heather$coarse
 obswin <- Frame(xi)
-obswin <- disc(5, center = c(5,5))
-erosionrad <- 0.2 #in units of image
+erosionrad <- 0.1 #in units of image
 exparea <- sae.v4.mean(xi, obswin)
 varguess <- sae.v4.var(xi, obswin, erosionrad)
 stdofareaest <- sqrt(varguess)

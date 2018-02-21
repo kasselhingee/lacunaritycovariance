@@ -4,7 +4,7 @@
 \alias{allsae}
 \title{Variance Estimates for Observed Area}
 \usage{
-allsae(xi, obswin, corrrad, corrstepheight, n11, n21, n12, n22)
+allsae(xi, obswin, corrrad, corrstepheight, erosionrad, n11, n21, n12, n22)
 }
 \arguments{
 \item{xi}{An observation of the RACS of interest in 1, 0, or NA valued pixels.
