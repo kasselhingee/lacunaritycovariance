@@ -23,7 +23,7 @@
 #' #**To come later** 
 #' @references 
 #' Molchanov, I. (1997) Statistics of the Boolean Model for Practitioners and Mathematicians. Wiley.
- varCovProb <- function(Xi,w){
+ varCovProb <- function(Xi, w){
    Xiinside <- intersect.owin(Xi,w)
    setcovXi <- setcov(Xiinside)
    setcovB <- setcov(w)
@@ -39,8 +39,21 @@
    return((1/(area.owin(w))^2)*sum(integrand)*integrand$xstep*integrand$ystep)
  }
   
- 
- 
+#a seperate function could be useful because the othe function will have less machine error
+#' @describeIn varCovProb Variance estimate from a given covariance function
+varCovProb.covarsupplied <- function(covar, w){
+  p <- covar[as.ppp(c(0,0), W = Frame(covar))]
+  setcovB <- setcov(w)
+  integrand <- eval.im((covar-(p^2))*setcovB, harmonize = TRUE)
+  #test that integrand reaches 0
+  edgeValues = c(integrand[1,-1],integrand[-1,ncol(integrand)],
+                integrand[nrow(integrand),-ncol(integrand)],integrand[-nrow(integrand),1])
+  if (max(edgeValues,na.rm=TRUE) > diff(range(integrand,na.rm=TRUE))*1e-5){
+   warning("covariance weighted by set covariance of the window isn't uniformly close to p^2 at boundary\n")
+   cat("max size of (C(v) - p^2)*[Set Covariance of Window] on boundary is ", max(edgeValues,na.rm=TRUE),"\n",sep="")
+  }
+  return((1/(area.owin(w))^2)*sum(integrand)*integrand$xstep*integrand$ystep)
+} 
 
 
  #from molchanov (and the limit of the above) as A(W)--> infy, var(p)-->0 which makes sense
