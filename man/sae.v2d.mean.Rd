@@ -2,10 +2,13 @@
 % Please edit documentation in R/varofobsarea.2d.R
 \name{sae.v2d.mean}
 \alias{sae.v2d.mean}
+\alias{sae.v2d.wsu.mean}
 \alias{sae.v2d.var}
 \title{Variance Estimates for Observed Area - v2d}
 \usage{
 sae.v2d.mean(xi.area, window.area, delta, p21, p12, radius)
+
+sae.v2d.wsu.mean(xi.area, window.area, delta, n11, n21, n12, n22, radius)
 
 sae.v2d.var(xi.area, window.area, delta, p21, p12, radius)
 }
@@ -38,7 +41,9 @@ This is like assuming the pixels are the size of $\pi r^2$, or that error proces
 }
 \section{Functions}{
 \itemize{
-\item \code{sae.v2d.var}: The variance estimate assuming confusion matrix, independent pixels error
+\item \code{sae.v2d.wsu.mean}: Expected cover area when including sampling uncertainty
+
+\item \code{sae.v2d.var}: The variance estimate assuming confusion matrix, independent error on undefined sub regions
 }}
 
 \author{

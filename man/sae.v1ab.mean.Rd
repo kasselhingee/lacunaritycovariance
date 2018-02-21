@@ -3,11 +3,23 @@
 \name{sae.v1ab.mean}
 \alias{sae.v1ab.mean}
 \alias{sae.v1ab.var}
+\alias{ahat11}
+\alias{ahat12}
+\alias{ssq11}
+\alias{ssq12}
 \title{Variance Estimates for Observed Area - v1ab}
 \usage{
 sae.v1ab.mean(xi.area, window.area, n11, n21, n12, n22)
 
 sae.v1ab.var(xi.area, window.area, n11, n21, n12, n22)
+
+ahat11(n11, n21)
+
+ahat12(n12, n22)
+
+ssq11(n11, n21)
+
+ssq12(n12, n22)
 }
 \arguments{
 \item{xi.area}{Observed area of the class of interest.}
@@ -47,6 +59,14 @@ This model only accounts for the sampling error of the confusion matrix, and thu
 \section{Functions}{
 \itemize{
 \item \code{sae.v1ab.var}: The variance estimate
+
+\item \code{ahat11}: Mean estimate of probability of class 1 given fallibly classified as class 1
+
+\item \code{ahat12}: Mean estimate of probability of class 1 given fallibly classified as class 2
+
+\item \code{ssq11}: Estimate of the variance of ahat11 induced by sampling assuming each sample is independent
+
+\item \code{ssq12}: Estimate of the variance of ahat12 induced by sampling, assuming each sample is independent
 }}
 
 \author{
