@@ -1,6 +1,6 @@
 #' @title Variances and Confidence Intervals for Coverage Fraction Estimates 
 #' @aliases asympvarP
-#' @export varCovProb
+#' @export varCovProb varCovProb.covarsupplied
 #' 
 #' @description Functions for estimating variance (and confidence intervals)  of the coverage fraction estimates
  
