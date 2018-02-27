@@ -103,7 +103,9 @@ bddcovar.vec <- function(X, Y, lambda, discr){
 #' @param xrange range of x values for \code{bddcovar}
 #' @param yrange range of y values for \code{bddcovar}
 #' @param eps list of length 2 of the steps between samples points in x and y respectively for \code{bddcovar}.
+#' If eps is of length 1 then the steps between sample points in the x and y directions will both be equal to eps.
 bddcovar <- function(xrange, yrange, eps, lambda, discr){
+  if (length(eps) == 1){ eps <- c(eps, eps) }
   xpts <- seq(from = xrange[1], to = xrange[2], by = eps[1])
   ypts <- seq(from = yrange[1], to = yrange[2], by = eps[2])
   mat <- outer(xpts, ypts, FUN = "bddcovar.vec", lambda = lambda, discr = discr) #rows correspond to xstep - just a quirk of outer!
