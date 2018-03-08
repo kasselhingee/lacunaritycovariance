@@ -36,7 +36,8 @@ bddspectraldensity.atorigin(lambda, discr)
 
 \item{yrange}{range of y values for \code{bddcovar}}
 
-\item{eps}{list of length 2 of the steps between samples points in x and y respectively for \code{bddcovar}.}
+\item{eps}{list of length 2 of the steps between samples points in x and y respectively for \code{bddcovar}.
+If eps is of length 1 then the steps between sample points in the x and y directions will both be equal to eps.}
 }
 \value{
 Depends on the function used (see Functions section).
