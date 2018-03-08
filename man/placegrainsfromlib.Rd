@@ -4,7 +4,7 @@
 \alias{placegrainsfromlib}
 \title{A function to help simulate Boolean models with user-provided grains}
 \usage{
-placegrainsfromlib(pp, grainlib, replace = TRUE, prob = NULL)
+placegrainsfromlib(pp, grainlib, replace = TRUE, prob = NULL, w = NULL)
 }
 \arguments{
 \item{pp}{A point pattern (in \code{ppp} format).}
@@ -15,6 +15,9 @@ placegrainsfromlib(pp, grainlib, replace = TRUE, prob = NULL)
 
 \item{prob}{A list of probability weights for each grain in the library. Passed directly to \code{\link[base]{sample}}.
 If NULL the grains are selected with equal probability.}
+
+\item{w}{Optional desired observation window. If this is non-null then any grains with Frame outside the Frame of \code{w} will be ignored.
+This reduces polygonal intersection calculations for very large buffer distances}
 }
 \value{
 Returns an \code{owin} object.

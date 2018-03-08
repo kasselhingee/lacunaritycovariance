@@ -20,6 +20,8 @@
 #' @param replace passed directly to \code{\link[base]{sample}}. When TRUE grains are chosen from library with replacement.
 #' @param prob A list of probability weights for each grain in the library. Passed directly to \code{\link[base]{sample}}.
 #'  If NULL the grains are selected with equal probability.
+#' @param w Optional desired observation window. If this is non-null then any grains with Frame outside the Frame of \code{w} will be ignored.
+#' This reduces polygonal intersection calculations for very large buffer distances
 
 #' @details \code{placegrainsfromlib} randomly samples from a library of grains (\code{grainlib}) and places these on the points in \code{pp}.
 
@@ -48,7 +50,7 @@
 #' 
 
 #' @keywords spatial nonparametric datagen
-placegrainsfromlib <- function(pp, grainlib, replace = TRUE, prob = NULL){
+placegrainsfromlib <- function(pp, grainlib, replace = TRUE, prob = NULL, w = NULL){
   if (pp$n == 0){
     warning("there were no points in the point process - returning empty window")
     return(NULL)
@@ -57,8 +59,15 @@ placegrainsfromlib <- function(pp, grainlib, replace = TRUE, prob = NULL){
   pointlocations <- cbind(X = pp$x, Y = pp$y)
   pointlocations <- split(cbind(pointlocations), row(pointlocations)) #split matrix into a list of the rows
   shiftedgrains <- as.solist(mapply(shift.owin, grains, vec = pointlocations, SIMPLIFY = FALSE))
+  if (!is.null(w)){shiftedgrains <- shiftedgrains[vapply(shiftedgrains, isinwindowbbox, FUN.VALUE = c(FALSE), w = w)]} #this line removes grains that aren't likely to intersect window
   placedgrains <- union.owin(shiftedgrains)
 # Note on union.owin: for pixel masks it uses inside.owin(xcol, yrow, A) | inside.owin(xcol,yrow,B) to determine union mask. It does this recursively.
 # Inside owin uses a lot of checking about polygons etc.
   return(placedgrains)
+}
+
+#tests if in window bounding box using rectangle arithmetic to avoid excessive computation
+isinwindowbbox <- function(grain, w){
+  intersection <- intersect.owin(Frame(w), Frame(grain), fatal = FALSE)
+  return(!is.null(intersection))
 }
