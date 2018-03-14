@@ -1,7 +1,7 @@
 #' @title Estimate the coverage probability of a stationary RACS
 #' @author Kassel Liam Hingee 
 #' @import spatstat
-#' @export coveragefrac coverageprob
+#' @export coveragefrac coverageprob cp
 #' 
 #' @description 
 #' The coverage probability of a stationary RACS is also known as the coverage fraction and is the probability that an arbitrary point is covered by the RACS.
@@ -45,3 +45,5 @@ coverageprob <- function(xi, obswin = NULL){
 #' @rdname coverageprob 
 coveragefrac <- coverageprob
 
+#' @rdname coverageprob 
+cp <- coverageprob
