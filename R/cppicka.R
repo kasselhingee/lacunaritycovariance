@@ -17,7 +17,10 @@
 #' @examples
 #' xi <- heather$coarse
 #' obswindow <- Frame(heather$coarse)
+#' cp <- coverageprob(xi, obswindow)
 #' cpp1 <- cppicka(xi, obswindow)
+#' cpp1[as.ppp(c(0,0), W = obswindow)]
+#' plot(cpp1[cpp1 < 2, drop = FALSE])
 
 #' @keywords spatial nonparametric
 cppicka <- function(xi, obswin = NULL){
