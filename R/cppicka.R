@@ -8,6 +8,9 @@
 #' The entity computed by this function corresponds to Picka's \eqn{\hat{m}_1[\check{0},v]}.
 #' @param xi An observation of a RACS in \pkg{spatstat}'s \code{owin} or \code{im} format.
 #' @param obswin The window of observation (not necessarily rectangular) also in \code{owin} format.
+#' @param setcov_boundarythresh Any vector \eqn{v} such that set covariance of the observation window is smaller than this threshold is given a value of NA to avoid instabilities caused by dividing by very small areas 
+
+
 #' @return An estimate of the coverage probability
 #' @details
 #' If \code{xi} is in \code{im} format then \code{xi} must be an image of 1s, 0s and NAs
@@ -23,7 +26,8 @@
 #' plot(cpp1[cpp1 < 2, drop = FALSE])
 
 #' @keywords spatial nonparametric
-cppicka <- function(xi, obswin = NULL){
+cppicka <- function(xi, obswin = NULL,
+        setcov_boundarythresh = NULL) {
   if (is.im(xi)){
     stopifnot(is.null(obswin))
     #check that xi is only 1s, 0s and NAs
@@ -46,10 +50,17 @@ cppicka <- function(xi, obswin = NULL){
   }
 
   #now xi and obswin should be of the same style regardless of input
+  if (is.null(setcov_boundarythresh)){
+    setcov_boundarythresh <- 0.1 * sum(obswin)*obswin$xstep*obswin$ystep
+  }
+
   #numerator
   top <- convolve.im(xi, obswin, reflectY = TRUE)  #u in (obswin + v) iff (u - v) in obswin. Thus Y needs to have argument reflected
   unitname(top) <- unitname(xi)
+
+  #denominator
   bot <- convolve.im(obswin, obswin, reflectY = TRUE)
+  bot[bot < setcov_boundarythresh] <- NA #to remove small denominators
   unitname(bot) <- unitname(obswin)
   return(eval.im( top / bot))
 }

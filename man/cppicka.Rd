@@ -4,12 +4,14 @@
 \alias{cppicka}
 \title{Picka's Modified Estimator of Coverage Probability}
 \usage{
-cppicka(xi, obswin = NULL)
+cppicka(xi, obswin = NULL, setcov_boundarythresh = NULL)
 }
 \arguments{
 \item{xi}{An observation of a RACS in \pkg{spatstat}'s \code{owin} or \code{im} format.}
 
 \item{obswin}{The window of observation (not necessarily rectangular) also in \code{owin} format.}
+
+\item{setcov_boundarythresh}{Any vector \eqn{v} such that set covariance of the observation window is smaller than this threshold is given a value of NA to avoid instabilities caused by dividing by very small areas}
 }
 \value{
 An estimate of the coverage probability
@@ -26,7 +28,10 @@ If \code{xi} is in \code{im} format then \code{xi} must be an image of 1s, 0s an
 \examples{
 xi <- heather$coarse
 obswindow <- Frame(heather$coarse)
+cp <- coverageprob(xi, obswindow)
 cpp1 <- cppicka(xi, obswindow)
+cpp1[as.ppp(c(0,0), W = obswindow)]
+plot(cpp1[cpp1 < 2, drop = FALSE])
 }
 \author{
 Kassel Liam Hingee
