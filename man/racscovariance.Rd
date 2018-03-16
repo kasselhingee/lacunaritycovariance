@@ -5,7 +5,7 @@
 \title{A spatial covariance, also known as `two-point probability', estimator for stationary RACS}
 \usage{
 racscovariance(xi, obswin = NULL, inclraw = FALSE,
-  setcov_boundarythresh = 0.1 * area.owin(obswin))
+  setcov_boundarythresh = NULL)
 }
 \arguments{
 \item{xi}{An observation of the RACS of interest. It can be in \pkg{spatstat}'s \code{owin} or \code{im} format. If \code{xi} is in \code{im} format then it is assumed that the pixels will be valued 1 (for foreground), 0 (for background) and NA for unobserved.
@@ -15,7 +15,8 @@ If \code{xi} is in \code{owin} format take care to consider what exactly the obs
 
 \item{inclraw}{If TRUE the output will be two \code{im} objects one for the standard estimator and one raw estimate.}
 
-\item{setcov_boundarythresh}{Any vector \eqn{v} such that set covariance of the observation window is smaller than this threshold is given a covariance of NA to avoid instabilities caused by dividing by very small areas,}
+\item{setcov_boundarythresh}{Any vector \eqn{v} such that set covariance of the observation window is smaller than this threshold is given a covariance of NA to avoid instabilities caused by dividing by very small areas.
+If NULL is supplied (default) then 0.1 * area.owin(obswin) is used}
 }
 \value{
 A \pkg{SpatStat} \code{im} object containing the estimated covariance. The grey scale values in this image represent the covariance for an array of vectors. If the raw version is requested then a list of \code{im} objects is returned.

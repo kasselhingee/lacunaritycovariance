@@ -1,5 +1,5 @@
 #' @title Balanced spatial covariance estimation, also known as `two-point probability', estimator for stationary RACS
-#' @export balancedracscovariance.cvchat  balancedracscovariances.cvchat
+#' @export balancedracscovariances balancedracscovariance.cvchat  balancedracscovariances.cvchat
 #' @description 
 #' This function estimate the covariance of a stationary RACS. 
 #' A variety of balanced, partially balanced and classical estimates are available.
@@ -31,8 +31,8 @@
 #' @keywords spatial nonparametric
 
 #' @details 
-#' Modifies the classical covariance estimator (passed into the function as \code{cvchat}).
-#' Many of the methods use Picka's coverage probability estimators in some way, which is why it is passed.
+#' Modifies the classical covariance estimator to based on balancing ideas for pair-correlation and centred covariance estimation.
+#' Many of the methods use Picka's coverage probability estimators in some way.
 #' Methods available are: 
 #' \itemize{
 #' \item \code{none} Returns cvchat
@@ -47,6 +47,9 @@
 
 #' @examples
 #' xi <- heather$coarse
+#' obswin <- Frame(xi)
+#' balancedcvchats <- balancedracscovariances(xi, obswin = Frame(xi), methods = "all")
+
 #' phat <- coverageprob(xi, obswin = Frame(xi))
 #' cvchat <- racscovariance(xi, inclraw = FALSE)
 #' cpp1 <- cppicka(xi, obswin = Frame(heather$coarse))
@@ -55,6 +58,7 @@
 #' cpp1 <- harmonised$cpp1
 #' 
 #' balancedcvchat <- balancedracscovariance.cvchat(cvchat, cpp1, phat, method = "pickaadd")
+#' balancedcvchats <- balancedracscovariances.cvchat(cvchat, cpp1, phat, methods = "all")
 #' methods <- c("none",
 #'  "symm",
 #'  "adrian",
@@ -65,11 +69,22 @@
 #'  "pickahajek", 
 #'  function(cvchat, cpp1, phat) cvchat)
 #' balancedcvchats <- balancedracscovariances.cvchat(cvchat, cpp1, phat, methods = methods)
-#' balancedcvchats <- balancedracscovariances.cvchat(cvchat, cpp1, phat, methods = "all")
 #' plot(as.solist(balancedcvchats), equal.ribbon = TRUE)
 #' 
 
 #' 
+balancedracscovariances <- function(xi, obswin = NULL,
+        setcov_boundarythresh = NULL,
+        methods = NULL){
+  cvchat <- racscovariance(xi, obswin, setcov_boundarythresh = setcov_boundarythresh)
+  cpp1 <- cppicka(xi, obswin, setcov_boundarythresh = setcov_boundarythresh)
+  phat <- coverageprob(xi, obswin)
+  
+  cvchats <- balancedracscovariances.cvchat(cvchat, cpp1, phat, methods = methods) 
+  return(cvchats)
+}
+
+#' @describeIn balancedracscovariances Applies covariance balancing modification to precomputed cvchat, cpp1 and phat
 balancedracscovariance.cvchat <- function(cvchat, cpp1 = NULL, phat = NULL, method = NULL){
   harmonised <- harmonise.im(cvchat = cvchat, cpp1 = cpp1)
   cvchat <- harmonised$cvchat
@@ -88,7 +103,7 @@ balancedracscovariance.cvchat <- function(cvchat, cpp1 = NULL, phat = NULL, meth
   return(balancedcvchat)
 }
 
-#' @describeIn balancedracscovariance.cvchat For applying multiple methods simultaneously
+#' @describeIn balancedracscovariances Applies multiple methods simultaneously from a precomputed cvchat, cpp1 and phat
 balancedracscovariances.cvchat <- function(cvchat, cpp1 = NULL, phat = NULL, methods = NULL){
   harmonised <- harmonise.im(cvchat = cvchat, cpp1 = cpp1)
   cvchat <- harmonised$cvchat

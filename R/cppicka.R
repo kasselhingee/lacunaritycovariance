@@ -29,7 +29,7 @@
 cppicka <- function(xi, obswin = NULL,
         setcov_boundarythresh = NULL) {
   if (is.im(xi)){
-    stopifnot(is.null(obswin))
+    if(!is.null(obswin)){xi[setminus.owin(Frame(xi), obswin)] <- 0}
     #check that xi is only 1s, 0s and NAs
     uvals <- unique(as.list(as.matrix(xi)))
     # convert to images of xi and obswin without NAs
@@ -37,8 +37,12 @@ cppicka <- function(xi, obswin = NULL,
              !all((uvals %in% c(FALSE, TRUE, NA)) | is.na(uvals)) ) {
         stop("Input xi has values other than 0, 1 or NA")
     } else {
-        obswin <- xi
-        obswin[as.matrix(xi) == 0] <- 1 #only all 0 or 1 valued pixels will be in obswin
+        if(!is.null(obswin)){obswin <- as.im(obswin, W = Frame(obswin), xy = xi) * xi}
+        else {obswin <- xi}
+        #saving all NAs as 0 and everything else as 1 in obswin
+        obswin[!is.na(as.matrix(obswin))] <- 1
+        obswin[is.na(as.matrix(obswin))] <- 0
+        #saving all NAs as 0 and everything else as 1 in xi
         xi[is.na(as.matrix(xi))] <- 0 #turn all NA's in xi to 0s
     }
   }

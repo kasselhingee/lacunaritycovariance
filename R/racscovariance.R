@@ -12,7 +12,8 @@
 #' @param xi An observation of the RACS of interest. It can be in \pkg{spatstat}'s \code{owin} or \code{im} format. If \code{xi} is in \code{im} format then it is assumed that the pixels will be valued 1 (for foreground), 0 (for background) and NA for unobserved.
 #' If \code{xi} is in \code{owin} format take care to consider what exactly the observation window is (if none is supplied then it will be assumed that the observation window is the smallest rectangle enclosing \code{xi}).
 #' @param obswin The observation window in \code{owin} format. If it isn't included and \code{xi} is an \code{owin} object then \code{obswin} is taken to be the smallest rectangle enclosing \code{xi}. If \code{xi} is a \code{im} object than \code{obswin} is all the non-NA pixels in \code{xi}.
-#' @param setcov_boundarythresh Any vector \eqn{v} such that set covariance of the observation window is smaller than this threshold is given a covariance of NA to avoid instabilities caused by dividing by very small areas, 
+#' @param setcov_boundarythresh Any vector \eqn{v} such that set covariance of the observation window is smaller than this threshold is given a covariance of NA to avoid instabilities caused by dividing by very small areas.
+#' If NULL is supplied (default) then 0.1 * area.owin(obswin) is used
 #' @param inclraw If TRUE the output will be two \code{im} objects one for the standard estimator and one raw estimate.
 
 #' @return A \pkg{SpatStat} \code{im} object containing the estimated covariance. The grey scale values in this image represent the covariance for an array of vectors. If the raw version is requested then a list of \code{im} objects is returned.
@@ -41,7 +42,7 @@
 racscovariance <- function(xi,
         obswin = NULL,
         inclraw =FALSE,
-        setcov_boundarythresh = 0.1 * area.owin(obswin)) {
+        setcov_boundarythresh = NULL) {
   if (is.owin(xi)) {
     if (!is.null(obswin)) {xi <- intersect.owin(xi, obswin)}
     else {obswin <- Frame(xi)}
@@ -72,6 +73,9 @@ racscovariance <- function(xi,
     stop("Input xi is not an image or owin object")
   }
   #make NA any values that are too small and lead to division to close to 0
+  if (is.null(setcov_boundarythresh)){
+    setcov_boundarythresh <- 0.1 * area.owin(obswin)
+  }
   setcovwindow[setcovwindow < setcov_boundarythresh] <- NA
   harmims <- harmonise.im(setcovxi, setcovwindow)
   covar <- harmims[[1]]/harmims[[2]]
