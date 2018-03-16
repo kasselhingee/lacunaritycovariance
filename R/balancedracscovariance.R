@@ -31,8 +31,17 @@
 #' cpp1 <- harmonised$cpp1
 #' 
 #' balancedcvchat <- balancedracscovariance.cvchat(cvchat, cpp1, phat, method = "symmt")
-#' methods <- c("none", "symm", "adrian", "mattfeldtadd", "mattfeldtmult", "pickaadd", "pickamult", "pickahajek", "bogus")
+#' methods <- c("none",
+#'  "symm",
+#'  "adrian",
+#'  "mattfeldtadd",
+#'  "mattfeldtmult",
+#'  "pickaadd",
+#'  "pickamult",
+#'  "pickahajek", 
+#'  function(cvchat, cpp1, phat) cvchat)
 #' balancedcvchats <- balancedracscovariances.cvchat(cvchat, cpp1, phat, methods = methods)
+#' plot(as.solist(balancedcvchats))
 #' 
 #' cvchat_symm <- balancedracscovariance_symm(cvchat)
 #' cvchat_adrian <- balancedracscovariance_adrian(cvchat, cpp1, phat)
@@ -86,9 +95,15 @@ balancedracscovariances.cvchat <- function(cvchat, cpp1 = NULL, phat = NULL, met
          pickamult = balancedracscovariance_picka_mult,
          pickahajek = balancedracscovariance_picka_hajek
   )
-  fcnstouse <- fcns[methods]
-  methods %in% names(fcns)
-  balancedcvchats <- lapply(fcns[methods], function(x) do.call(x, args = list(cvchat = cvchat, cpp1 = cpp1, phat = phat)))
+  fcnstouse <- fcns[methods %in% names(fcns)]
+  isfunction <- unlist(lapply(methods, function(x) "function" %in% class(x)))
+  methodsnotused <- methods[!( (methods %in% names(fcns)) | isfunction)]
+  
+  fcnstouse <- c(fcnstouse, methods[isfunction]) #add user specified method
+  
+  if(length(methodsnotused) > 0){stop(
+    paste("The following methods are not recognised as existing function names or as a function:", methodsnotused))}
+  balancedcvchats <- lapply(fcnstouse, function(x) do.call(x, args = list(cvchat = cvchat, cpp1 = cpp1, phat = phat)))
   return(balancedcvchats)
 }
 
