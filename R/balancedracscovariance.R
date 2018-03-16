@@ -1,5 +1,5 @@
 #' @title Balanced spatial covariance estimation, also known as `two-point probability', estimator for stationary RACS
-#' @export balancedracscovariance
+#' @export balancedracscovariance.cvchat  balancedracscovariances.cvchat
 #' @description 
 #' This function estimate the covariance of a stationary RACS. 
 #' A variety of balanced, partially balanced and classical estimates are available.
@@ -81,6 +81,7 @@ balancedracscovariance.cvchat <- function(cvchat, cpp1 = NULL, phat = NULL, meth
   return(balancedcvchat)
 }
 
+#' @describeIn balancedracscovariance.cvchat For applying multiple methods simultaneously
 balancedracscovariances.cvchat <- function(cvchat, cpp1 = NULL, phat = NULL, methods = NULL){
   harmonised <- harmonise.im(cvchat = cvchat, cpp1 = cpp1)
   cvchat <- harmonised$cvchat
