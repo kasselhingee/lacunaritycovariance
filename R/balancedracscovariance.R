@@ -119,7 +119,7 @@ balancedracscovariances.cvchat <- function(cvchat, cpp1 = NULL, phat = NULL, met
          pickahajek = balancedracscovariance_picka_hajek
   )
   if (methods == "all") {methods <- names(fcns)}
-  fcnstouse <- fcns[methods %in% names(fcns)]
+  fcnstouse <- fcns[names(fcns) %in% methods]
   isfunction <- unlist(lapply(methods, function(x) "function" %in% class(x)))
   methodsnotused <- methods[!( (methods %in% names(fcns)) | isfunction)]
   
