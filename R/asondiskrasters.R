@@ -4,6 +4,7 @@
 
 #' @details These functions are useful when experiments generate a large collection of \code[im} objects.
 #' The package \code{raster} has many useful tools for working with these images outside RAM.
+#' I think it is wise to garbage collect \code{gc()} just after overwriting the im objects.
 
 #' @param im A spatstat image object
 #' @param layername Optional layer name to give to the created rasterLayer
@@ -37,9 +38,9 @@ offram <- function(rasterobj, filenamesave = NULL){
 }
 
 #' @describeIn asondiskrasters Create a rasterLayer (or other Raster* object) that is saved on disk out of a \code{im} object.
-imtoondiskras <- function(im, layername = NULL, filenamesave = NULL, ...){
-  imras <- as.rasterlayer.im(im, layername = layername, ...)
-  imras <- offram(imras, filenamesave = filenamesave, ...)
+imtoondiskras <- function(im, layername = NULL, filenamesave = NULL){
+  imras <- as.rasterlayer.im(im, layername = layername)
+  imras <- offram(imras, filenamesave = filenamesave)
   return(imras)
 }
 
@@ -51,11 +52,11 @@ imtoondiskras <- function(im, layername = NULL, filenamesave = NULL, ...){
 imstoondiskras <- function(alist, basefilename = NULL, recursive = FALSE){
   if (is.null(basefilename)){basefilename <- tempfile()}
   noname <- vapply(names(alist), is.null, FALSE)
-  if(sum(noname) > 1) {names(alist)[noname] <- 1:sum(noname)}
+  if(sum(noname) > 0) {names(alist)[noname] <- 1:sum(noname)}
   if (recursive){
     arelist <- vapply(alist, function(x) "list" %in% class(x), FALSE) #ims should not have class list
     if (sum(arelist) > 0){
-      alist[arelist] <- mapply(imsinlistsoffram, alist[arelist],
+      alist[arelist] <- mapply(imstoondiskras, alist[arelist],
              basefilename = paste0(basefilename,"_",names(alist[arelist])),
              recursive = TRUE,
              SIMPLIFY = FALSE)
@@ -63,7 +64,7 @@ imstoondiskras <- function(alist, basefilename = NULL, recursive = FALSE){
   }
   areim <- vapply(alist, is.im, FALSE)
   if(sum(areim) == 0){return(alist)}
-  alist[areim] <- mapply(imtoofframras,
+  alist[areim] <- mapply(imtoondiskras,
                          im = alist[areim],
                          layername = names(alist[areim]),
                          filenamesave = paste0(basefilename, "_", names(alist[areim])),
@@ -77,7 +78,7 @@ rasterstoims <- function(alist, recursive = FALSE){
   if (recursive){
     arelist <- vapply(alist, function(x) "list" %in% class(x), FALSE) #ims should not have class list
     if (sum(arelist) > 0){
-      alist[arelist] <- mapply(offramtoimlists, alist[arelist],
+      alist[arelist] <- mapply(rasterstoims, alist[arelist],
              recursive = TRUE,
              SIMPLIFY = FALSE)
     }
