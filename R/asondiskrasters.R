@@ -85,6 +85,6 @@ rasterstoims <- function(alist, recursive = FALSE){
   }
   israsterlayer <- vapply(alist, function(x) "RasterLayer" %in% class(x), FALSE)
   if (sum(israsterlayer) == 0){return(alist)}
-  alist[israsterlayer] <- lapply(alist[israsterlayer], maptools::as.im)
+  alist[israsterlayer] <- lapply(alist[israsterlayer], maptools::as.im.RasterLayer)
   return(alist)
 }
