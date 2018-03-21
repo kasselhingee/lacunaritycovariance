@@ -1,3 +1,3 @@
 library(testthat)
-library(racstools)
-test_check("racstools")
+#library(stationaryracsinference)
+test_check("stationaryracsinference")
