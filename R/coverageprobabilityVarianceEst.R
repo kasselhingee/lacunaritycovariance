@@ -1,6 +1,6 @@
 #' @title Variances and Confidence Intervals for Coverage Fraction Estimates 
 #' @aliases asympvarP
-#' @export varCovProb varCovProb.covarsupplied
+#' @export varCovProb varCovProb_ests varCovProb.covarsupplied
 #' 
 #' @description Functions for estimating variance (and confidence intervals)  of the coverage fraction estimates
  
@@ -20,10 +20,12 @@
 #' @param w is the corresponding observation window.
 
 #' @examples 
-#' #**To come later** 
+#' xi <- heather$coarse
+#' obswin <- Frame(xi)
+#' varCovProb_ests(xi, obswin, methods = "all")
 #' @references 
 #' Molchanov, I. (1997) Statistics of the Boolean Model for Practitioners and Mathematicians. Wiley.
- varCovProb <- function(Xi, w){
+varCovProb <- function(Xi, w){
    Xiinside <- intersect.owin(Xi,w)
    setcovXi <- setcov(Xiinside)
    setcovB <- setcov(w)
@@ -60,5 +62,25 @@ varCovProb.covarsupplied <- function(covar, w){
  #however if we look psqrt(A(W)) then something different happens?? *ASK GOPAL
  asympvarP <- function(){}
 
+#' @describeIn varCovProb Use multiple balanced estimators of covariance to estimate variance of coverage probability
+varCovProb_ests <- function(xi, obswin = NULL,
+        setcov_boundarythresh = NULL,
+        methods = NULL){
+  cvchat <- racscovariance(xi, obswin, setcov_boundarythresh = setcov_boundarythresh)
+  cpp1 <- cppicka(xi, obswin, setcov_boundarythresh = setcov_boundarythresh)
+  phat <- cvchat[ppp(x = 0, y = 0, window = Frame(cvchat))]
+  #phat <- coverageprob(xi, obswin)
+  
+  cvchats <- balancedracscovariances.cvchat(cvchat, cpp1, phat, methods = methods) 
+  
+  if (is.mask(xi)){  setcovW <- setcov(obswin, xy = xi) 
+  } else { setcovW <- setcov(obswin, xy = cvchat) }
+  setcovW <- as.im(setcovW, xy = cvchat) #harmonise results
+
+  integrands <- solapply(cvchats, function(x) eval.im(A * (B - phat^2), envir = list(A = setcovW, B = x)))
+  varests <- vapply(integrands, integral.im, 0.13)/(area.owin(obswin)^2)
+   
+  return(varests)
+}
 
 
