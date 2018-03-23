@@ -50,6 +50,10 @@
 #' obswin <- Frame(xi)
 #' balancedcvchats <- balancedracscovariances(xi, obswin = Frame(xi), modifications = "all")
 
+#' xixi <- setcov(xi, xy = xi)
+#' winwin <- setcov(obswin, xy = xi)
+#' xiwin <- setcov(xi, obswin, xy = xi)
+
 #' phat <- coverageprob(xi, obswin = Frame(xi))
 #' cvchat <- racscovariance(xi, inclraw = FALSE)
 #' cpp1 <- cppicka(xi, obswin = Frame(heather$coarse))
@@ -130,6 +134,37 @@ balancedracscovariances.cvchat <- function(cvchat, cpp1 = NULL, phat = NULL, mod
   balancedcvchats <- lapply(fcnstouse, function(x) do.call(x, args = list(cvchat = cvchat, cpp1 = cpp1, phat = phat)))
   return(as.imlist(balancedcvchats))
 }
+
+#' @describeIn balancedracscovariances Applies multiple modifications simultaneously from a precomputed convolutions xi*xi, w*w, xi*w and phat
+balancedracscovariances.convolves <- function(xixi, winwin, xiwin = NULL, phat = NULL, modifications = NULL){
+  harmonised <- harmonise.im(xixi = xixi, winwin = winwin, xiwin = xiwin)
+  xixi <- harmonised$xixi
+  winwin <- harmonised$winwin
+  xiwin <- harmonised$xiwin
+  fcns <- list(
+         none = function(xixi, winwin, xiwin = NULLcvchat, cpp1 = NULL, phat = NULL) cvchat,
+         symm = balancedracscovariance_symm,
+         adrian = balancedracscovariance_adrian,
+         mattfeldtadd = balancedracscovariance_mattfeldt_add,
+         mattfeldtmult = balancedracscovariance_mattfeldt_mult,
+         pickaadd = balancedracscovariance_picka_add,
+         pickamult = balancedracscovariance_picka_mult,
+         pickahajek = balancedracscovariance_picka_hajek
+  )
+  if (modifications == "all") {modifications <- names(fcns)}
+  fcnstouse <- fcns[names(fcns) %in% modifications]
+  isfunction <- unlist(lapply(modifications, function(x) "function" %in% class(x)))
+  modificationsnotused <- modifications[!( (modifications %in% names(fcns)) | isfunction)]
+  
+  fcnstouse <- c(fcnstouse, modifications[isfunction]) #add user specified modification
+  
+  if(length(modificationsnotused) > 0){stop(
+    paste("The following modifications are not recognised as existing function names or as a function:", modificationsnotused))}
+  balancedcvchats <- lapply(fcnstouse, function(x) do.call(x, args = list(cvchat = cvchat, cpp1 = cpp1, phat = phat)))
+  return(as.imlist(balancedcvchats))
+}
+
+
 
 balancedracscovariance_symm <- function(cvchat, cpp1 = NULL, phat = NULL){
   return((cvchat + reflect.im(cvchat))/2) 
