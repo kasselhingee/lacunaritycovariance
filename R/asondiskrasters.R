@@ -11,7 +11,7 @@
 
 #' @examples
 #' xi <- heather$coarse
-#' cvchats <- balanacedcovariances(xi, Frame(xi), methods = "all")
+#' cvchats <- balanacedcovariances(xi, Frame(xi), modifications = "all")
 #' cvchatsondisk <- imstoondiskras(cvchats)
 #' cvchaatsbackasim <- rasterstoims(cvchatsondisk)
 

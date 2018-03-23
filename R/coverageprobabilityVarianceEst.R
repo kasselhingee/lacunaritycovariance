@@ -22,7 +22,7 @@
 #' @examples 
 #' xi <- heather$coarse
 #' obswin <- Frame(xi)
-#' varCovProb_ests(xi, obswin, methods = "all")
+#' varCovProb_ests(xi, obswin, modifications = "all")
 #' @references 
 #' Molchanov, I. (1997) Statistics of the Boolean Model for Practitioners and Mathematicians. Wiley.
 varCovProb <- function(Xi, w){
@@ -65,13 +65,13 @@ varCovProb.covarsupplied <- function(covar, w){
 #' @describeIn varCovProb Use multiple balanced estimators of covariance to estimate variance of coverage probability
 varCovProb_ests <- function(xi, obswin = NULL,
         setcov_boundarythresh = NULL,
-        methods = NULL){
+        modifications = NULL){
   cvchat <- racscovariance(xi, obswin, setcov_boundarythresh = setcov_boundarythresh)
   cpp1 <- cppicka(xi, obswin, setcov_boundarythresh = setcov_boundarythresh)
   phat <- cvchat[ppp(x = 0, y = 0, window = Frame(cvchat))]
   #phat <- coverageprob(xi, obswin)
   
-  cvchats <- balancedracscovariances.cvchat(cvchat, cpp1, phat, methods = methods) 
+  cvchats <- balancedracscovariances.cvchat(cvchat, cpp1, phat, modifications = modifications) 
   
   if (is.mask(xi)){  setcovW <- setcov(obswin, xy = xi) 
   } else { setcovW <- setcov(obswin, xy = cvchat) }

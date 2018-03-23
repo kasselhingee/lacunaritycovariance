@@ -7,13 +7,13 @@
 \title{Balanced spatial covariance estimation, also known as `two-point probability', estimator for stationary RACS}
 \usage{
 balancedracscovariances(xi, obswin = NULL, setcov_boundarythresh = NULL,
-  methods = NULL)
+  modifications = NULL)
 
 balancedracscovariance.cvchat(cvchat, cpp1 = NULL, phat = NULL,
   method = NULL)
 
 balancedracscovariances.cvchat(cvchat, cpp1 = NULL, phat = NULL,
-  methods = NULL)
+  modifications = NULL)
 }
 \arguments{
 \item{xi}{An observation of the RACS of interest. It can be in \pkg{spatstat}'s \code{owin} or \code{im} format. If \code{xi} is in \code{im} format then it is assumed that the pixels will be valued 1 (for foreground), 0 (for background) and NA for unobserved.
@@ -24,8 +24,8 @@ If \code{xi} is in \code{owin} format take care to consider what exactly the obs
 \item{setcov_boundarythresh}{Any vector \eqn{v} such that set covariance of the observation window
 is smaller than this threshold is given a covariance of NA to avoid instabilities caused by dividing by very small areas,}
 
-\item{methods}{A list of strings specifying desired methods or functions to apply to cvchat, cpp1 and phat.
-methods = "all" will select all inbuilt methods. See details.}
+\item{modifications}{A list of strings specifying desired modifications or functions to apply to cvchat, cpp1 and phat.
+modifications = "all" will select all inbuilt modifications. See details.}
 
 \item{cvchat}{The classical estimate of covariance in \code{im} format. Typically created with \code{racscovariance}.}
 
@@ -40,7 +40,7 @@ See \code{coverageprob} for more information.}
 \value{
 \code{racscovariance.cvchat} returns a \pkg{SpatStat} \code{im} object containing the modified estimated covariance.
  The grey scale values in this image represent the covariance for an array of vectors. 
- \code{racscovariances.cvchat} is a named imlist of such image objects for each of the methods requested.
+ \code{racscovariances.cvchat} is a named imlist of such image objects for each of the modifications requested.
 }
 \description{
 This function estimate the covariance of a stationary RACS. 
@@ -48,7 +48,7 @@ A variety of balanced, partially balanced and classical estimates are available.
 }
 \details{
 Modifies the classical covariance estimator to based on balancing ideas for pair-correlation and centred covariance estimation.
-Many of the methods use Picka's coverage probability estimators in some way.
+Many of the modifications use Picka's coverage probability estimators in some way.
 Methods available are: 
 \itemize{
 \item \code{none} Returns cvchat
@@ -65,13 +65,13 @@ Methods available are:
 \itemize{
 \item \code{balancedracscovariance.cvchat}: Applies covariance balancing modification to precomputed cvchat, cpp1 and phat
 
-\item \code{balancedracscovariances.cvchat}: Applies multiple methods simultaneously from a precomputed cvchat, cpp1 and phat
+\item \code{balancedracscovariances.cvchat}: Applies multiple modifications simultaneously from a precomputed cvchat, cpp1 and phat
 }}
 
 \examples{
 xi <- heather$coarse
 obswin <- Frame(xi)
-balancedcvchats <- balancedracscovariances(xi, obswin = Frame(xi), methods = "all")
+balancedcvchats <- balancedracscovariances(xi, obswin = Frame(xi), modifications = "all")
 phat <- coverageprob(xi, obswin = Frame(xi))
 cvchat <- racscovariance(xi, inclraw = FALSE)
 cpp1 <- cppicka(xi, obswin = Frame(heather$coarse))
@@ -80,8 +80,8 @@ cvchat <- harmonised$cvchat
 cpp1 <- harmonised$cpp1
 
 balancedcvchat <- balancedracscovariance.cvchat(cvchat, cpp1, phat, method = "pickaadd")
-balancedcvchats <- balancedracscovariances.cvchat(cvchat, cpp1, phat, methods = "all")
-methods <- c("none",
+balancedcvchats <- balancedracscovariances.cvchat(cvchat, cpp1, phat, modifications = "all")
+modifications <- c("none",
  "symm",
  "adrian",
  "mattfeldtadd",
@@ -90,7 +90,7 @@ methods <- c("none",
  "pickamult",
  "pickahajek", 
  function(cvchat, cpp1, phat) cvchat)
-balancedcvchats <- balancedracscovariances.cvchat(cvchat, cpp1, phat, methods = methods)
+balancedcvchats <- balancedracscovariances.cvchat(cvchat, cpp1, phat, modifications = modifications)
 plot(as.solist(balancedcvchats), equal.ribbon = TRUE)
 
 

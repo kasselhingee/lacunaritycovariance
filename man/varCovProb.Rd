@@ -4,11 +4,15 @@
 \alias{varCovProb}
 \alias{asympvarP}
 \alias{varCovProb.covarsupplied}
+\alias{varCovProb_ests}
 \title{Variances and Confidence Intervals for Coverage Fraction Estimates}
 \usage{
 varCovProb(Xi, w)
 
 varCovProb.covarsupplied(covar, w)
+
+varCovProb_ests(xi, obswin = NULL, setcov_boundarythresh = NULL,
+  modifications = NULL)
 }
 \arguments{
 \item{Xi}{is an observation (in owin) format of a RACS.}
@@ -31,10 +35,14 @@ This function assumes that the probability of two points being in \eqn{\Xi} is i
 \section{Functions}{
 \itemize{
 \item \code{varCovProb.covarsupplied}: Variance estimate from a given covariance function
+
+\item \code{varCovProb_ests}: Use multiple balanced estimators of covariance to estimate variance of coverage probability
 }}
 
 \examples{
-#**To come later** 
+xi <- heather$coarse
+obswin <- Frame(xi)
+varCovProb_ests(xi, obswin, modifications = "all")
 }
 \references{
 Molchanov, I. (1997) Statistics of the Boolean Model for Practitioners and Mathematicians. Wiley.
