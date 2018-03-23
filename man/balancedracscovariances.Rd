@@ -10,7 +10,7 @@ balancedracscovariances(xi, obswin = NULL, setcov_boundarythresh = NULL,
   modifications = NULL)
 
 balancedracscovariance.cvchat(cvchat, cpp1 = NULL, phat = NULL,
-  method = NULL)
+  modification = NULL)
 
 balancedracscovariances.cvchat(cvchat, cpp1 = NULL, phat = NULL,
   modifications = NULL)
@@ -35,7 +35,7 @@ modifications = "all" will select all inbuilt modifications. See details.}
 which is the observed area in \code{xi} divided by the total area of the observation window.
 See \code{coverageprob} for more information.}
 
-\item{method}{A string specifying the desired method. See details.}
+\item{modification}{A string specifying the desired modification. See details.}
 }
 \value{
 \code{racscovariance.cvchat} returns a \pkg{SpatStat} \code{im} object containing the modified estimated covariance.
@@ -49,14 +49,14 @@ A variety of balanced, partially balanced and classical estimates are available.
 \details{
 Modifies the classical covariance estimator to based on balancing ideas for pair-correlation and centred covariance estimation.
 Many of the modifications use Picka's coverage probability estimators in some way.
-Methods available are: 
+Modifications available are: 
 \itemize{
 \item \code{none} Returns cvchat
 \item symm Returns the estimated average of cvchat at -v and +v
 \item adrian  Similar to Picka additive but uses \code{cpp1} twice and not the refelction of \code{cpp1}
 \item mattfeldadd
 \item mattfeldmult
-\item pickaadd The only method supplied that provides estimates that satisfy C(v) = 2phat - 1 + Ccomplment(v)
+\item pickaadd The only modification supplied that provides estimates that satisfy C(v) = 2phat - 1 + Ccomplment(v)
 \item pickamult
 \item pickahajek
 }
@@ -79,7 +79,7 @@ harmonised <- harmonise.im(cvchat = cvchat, cpp1 = cpp1)
 cvchat <- harmonised$cvchat
 cpp1 <- harmonised$cpp1
 
-balancedcvchat <- balancedracscovariance.cvchat(cvchat, cpp1, phat, method = "pickaadd")
+balancedcvchat <- balancedracscovariance.cvchat(cvchat, cpp1, phat, modification = "pickaadd")
 balancedcvchats <- balancedracscovariances.cvchat(cvchat, cpp1, phat, modifications = "all")
 modifications <- c("none",
  "symm",
