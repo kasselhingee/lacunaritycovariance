@@ -1,5 +1,5 @@
 #' @title Balanced spatial covariance estimation, also known as `two-point probability', estimator for stationary RACS
-#' @export balancedracscovariances balancedracscovariance.cvchat  balancedracscovariances.cvchat
+#' @export balancedracscovariances balancedracscovariance.cvchat  balancedracscovariances.cvchat cvchats.convolves  byconv.cvchats
 #' @description 
 #' This function estimate the covariance of a stationary RACS. 
 #' A variety of balanced, partially balanced and classical estimates are available.
@@ -49,7 +49,12 @@
 #' xi <- heather$coarse
 #' obswin <- Frame(xi)
 #' balancedcvchats <- balancedracscovariances(xi, obswin = Frame(xi), modifications = "all")
-
+#' balancedcvchats2 <- byconv.cvchats(xi, obswin = Frame(xi), modifications = "all")
+#' 
+#' plot.solist(c(balancedcvchats, balancedcvchats2), ncols = 8)
+#' diff <- mapply(function(x, y) x - y, balancedcvchats, balancedcvchats2, SIMPLIFY = FALSE)
+#' plot.solist(diff)
+#' 
 #' xixi <- setcov(xi, xy = xi)
 #' winwin <- setcov(obswin, xy = xi)
 #' xiwin <- setcov(xi, obswin, xy = xi)
@@ -85,6 +90,31 @@ balancedracscovariances <- function(xi, obswin = NULL,
   phat <- coverageprob(xi, obswin)
   
   cvchats <- balancedracscovariances.cvchat(cvchat, cpp1, phat, modifications = modifications) 
+  return(cvchats)
+}
+
+byconv.cvchats <- function(xi, obswin,
+        xy = NULL,
+        setcov_boundarythresh = NULL,
+        modifications = NULL){
+  if (is.null(setcov_boundarythresh)){
+    setcov_boundarythresh <- 0.1 * area.owin(obswin)
+  }
+  if (is.null(xy)){
+    if(is.mask(xi)){
+      xy <- xi
+    }  else {
+      stop("xy must be supplied")
+    }
+  }
+  xixi <- setcov(xi, xy = xy)
+  winwin <- setcov(obswin, xy = xy)
+  winwin[winwin < setcov_boundarythresh] <- NA #to remove small denominators
+  xiwin <- setcov(xi, obswin, xy = xy)
+  xiwin[winwin < setcov_boundarythresh] <- NA #to remove small denominators
+  phat <- area.owin(xi) / area.owin(obswin)
+  
+  cvchats <- cvchats.convolves(xixi, winwin, xiwin, phat, modifications = modifications) 
   return(cvchats)
 }
 
@@ -136,20 +166,20 @@ balancedracscovariances.cvchat <- function(cvchat, cpp1 = NULL, phat = NULL, mod
 }
 
 #' @describeIn balancedracscovariances Applies multiple modifications simultaneously from a precomputed convolutions xi*xi, w*w, xi*w and phat
-balancedracscovariances.convolves <- function(xixi, winwin, xiwin = NULL, phat = NULL, modifications = NULL){
+cvchats.convolves <- function(xixi, winwin, xiwin = NULL, phat = NULL, modifications = NULL){
   harmonised <- harmonise.im(xixi = xixi, winwin = winwin, xiwin = xiwin)
   xixi <- harmonised$xixi
   winwin <- harmonised$winwin
   xiwin <- harmonised$xiwin
   fcns <- list(
-         none = function(xixi, winwin, xiwin = NULLcvchat, cpp1 = NULL, phat = NULL) cvchat,
-         symm = balancedracscovariance_symm,
-         adrian = balancedracscovariance_adrian,
-         mattfeldtadd = balancedracscovariance_mattfeldt_add,
-         mattfeldtmult = balancedracscovariance_mattfeldt_mult,
-         pickaadd = balancedracscovariance_picka_add,
-         pickamult = balancedracscovariance_picka_mult,
-         pickahajek = balancedracscovariance_picka_hajek
+         none = cvchat_none,
+         symm = cvchat_symm,
+         adrian = cvchat_adrian,
+         mattfeldtadd = cvchat_mattfeldt_add,
+         mattfeldtmult = cvchat_mattfeldt_mult,
+         pickaadd = cvchat_picka_add,
+         pickamult = cvchat_picka_mult,
+         pickahajek = cvchat_picka_hajek
   )
   if (modifications == "all") {modifications <- names(fcns)}
   fcnstouse <- fcns[names(fcns) %in% modifications]
@@ -160,38 +190,69 @@ balancedracscovariances.convolves <- function(xixi, winwin, xiwin = NULL, phat =
   
   if(length(modificationsnotused) > 0){stop(
     paste("The following modifications are not recognised as existing function names or as a function:", modificationsnotused))}
-  balancedcvchats <- lapply(fcnstouse, function(x) do.call(x, args = list(cvchat = cvchat, cpp1 = cpp1, phat = phat)))
+  balancedcvchats <- lapply(fcnstouse, function(x) do.call(x, args = list(xixi = xixi, winwin = winwin, xiwin = xiwin, phat = phat)))
   return(as.imlist(balancedcvchats))
 }
 
-
+cvchat_none <- function(xixi, winwin, xiwin = NULL, phat = NULL){
+  return(xixi / winwin)
+}
 
 balancedracscovariance_symm <- function(cvchat, cpp1 = NULL, phat = NULL){
   return((cvchat + reflect.im(cvchat))/2) 
+}
+
+cvchat_symm <- function(xixi, winwin, xiwin = NULL, phat = NULL){
+  return((xixi + reflect.im(xixi))/ (2 * winwin))
 }
 
 balancedracscovariance_adrian <- function(cvchat, cpp1, phat){
   return(cvchat - cpp1*cpp1 + phat^2) 
 }
 
+cvchat_adrian <- function(xixi, winwin, xiwin = NULL, phat = NULL){
+  return((xixi - (xiwin * xiwin / winwin)) / winwin + phat^2)
+}
+
+
 balancedracscovariance_mattfeldt_add <- function(cvchat, cpp1, phat){
   return(cvchat - ( (cpp1 + reflect.im(cpp1))/2 )^2 + phat^2) 
+}
+
+cvchat_mattfeldt_add <- function(xixi, winwin, xiwin = NULL, phat = NULL){
+  return((xixi - (0.5 * (xiwin + reflect.im(xiwin)))^2 / winwin ) / winwin  +  phat^2)
 }
 
 balancedracscovariance_mattfeldt_mult <- function(cvchat, cpp1, phat){
   return(cvchat * phat^2/ ( ( (cpp1 + reflect.im(cpp1))/2 )^2) ) 
 }
 
+cvchat_mattfeldt_mult <- function(xixi, winwin, xiwin = NULL, phat = NULL){
+  mattfeldtnum <- 0.5 * (xiwin + reflect.im(xiwin))
+  return((xixi * phat ^2 * winwin) / (mattfeldtnum^2))
+}
+
 balancedracscovariance_picka_add <- function(cvchat, cpp1, phat){
   return(cvchat - cpp1*reflect.im(cpp1) + phat^2) 
+}
+
+cvchat_picka_add <- function(xixi, winwin, xiwin = NULL, phat = NULL){
+  return((xixi - xiwin * reflect.im(xiwin) / winwin) / winwin + phat ^2 )
 }
 
 balancedracscovariance_picka_mult <- function(cvchat, cpp1, phat){
   return(cvchat * phat^2 / (cpp1*reflect.im(cpp1))) 
 }
 
+cvchat_picka_mult <- function(xixi, winwin, xiwin = NULL, phat = NULL){
+  return((xixi * phat^2 * winwin) / (xiwin * reflect.im(xiwin)))
+}
+
 balancedracscovariance_picka_hajek <- function(cvchat, cpp1, phat){
   return(cvchat - phat*(cpp1 + reflect.im(cpp1) - 2*phat)) 
 }
 
+cvchat_picka_hajek <- function(xixi, winwin, xiwin, phat){
+  return((xixi  - phat * xiwin - phat * reflect.im(xiwin)) / winwin  + 2* phat^2 )
+}
 

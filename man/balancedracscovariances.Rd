@@ -4,6 +4,7 @@
 \alias{balancedracscovariances}
 \alias{balancedracscovariance.cvchat}
 \alias{balancedracscovariances.cvchat}
+\alias{cvchats.convolves}
 \title{Balanced spatial covariance estimation, also known as `two-point probability', estimator for stationary RACS}
 \usage{
 balancedracscovariances(xi, obswin = NULL, setcov_boundarythresh = NULL,
@@ -13,6 +14,9 @@ balancedracscovariance.cvchat(cvchat, cpp1 = NULL, phat = NULL,
   modification = NULL)
 
 balancedracscovariances.cvchat(cvchat, cpp1 = NULL, phat = NULL,
+  modifications = NULL)
+
+cvchats.convolves(xixi, winwin, xiwin = NULL, phat = NULL,
   modifications = NULL)
 }
 \arguments{
@@ -66,12 +70,23 @@ Modifications available are:
 \item \code{balancedracscovariance.cvchat}: Applies covariance balancing modification to precomputed cvchat, cpp1 and phat
 
 \item \code{balancedracscovariances.cvchat}: Applies multiple modifications simultaneously from a precomputed cvchat, cpp1 and phat
+
+\item \code{cvchats.convolves}: Applies multiple modifications simultaneously from a precomputed convolutions xi*xi, w*w, xi*w and phat
 }}
 
 \examples{
 xi <- heather$coarse
 obswin <- Frame(xi)
 balancedcvchats <- balancedracscovariances(xi, obswin = Frame(xi), modifications = "all")
+balancedcvchats2 <- byconv.cvchats(xi, obswin = Frame(xi), modifications = "all")
+
+plot.solist(c(balancedcvchats, balancedcvchats2), ncols = 8)
+diff <- mapply(function(x, y) x - y, balancedcvchats, balancedcvchats2, SIMPLIFY = FALSE)
+plot.solist(diff)
+
+xixi <- setcov(xi, xy = xi)
+winwin <- setcov(obswin, xy = xi)
+xiwin <- setcov(xi, obswin, xy = xi)
 phat <- coverageprob(xi, obswin = Frame(xi))
 cvchat <- racscovariance(xi, inclraw = FALSE)
 cpp1 <- cppicka(xi, obswin = Frame(heather$coarse))
