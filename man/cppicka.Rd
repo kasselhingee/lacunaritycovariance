@@ -19,6 +19,8 @@ An estimate of the coverage probability
 \description{
 Picka2000va modifies coverage probability and covariance estimators to develop estimators of centered covariance and pair-correlation function that are balanced.
 The entity computed by this function corresponds to Picka's \eqn{\hat{m}_1[\check{0},v]}.
+The result should be 
+\deqn{\frac{|\Xi \cap W \cap (W \oplus v)|} {|W \cap (W\oplus v)|} }
 }
 \details{
 If \code{xi} is in \code{im} format then \code{xi} must be an image of 1s, 0s and NAs
@@ -32,6 +34,14 @@ cp <- coverageprob(xi, obswindow)
 cpp1 <- cppicka(xi, obswindow)
 cpp1[as.ppp(c(0,0), W = obswindow)]
 plot(cpp1[cpp1 < 2, drop = FALSE])
+
+#test that it is doing what we expect for a single vector
+xi <- shift.owin(square(r = 1), vec = c(2, 2))
+win <- square(r = 4)
+#expect cppicka at v = c(2,2) to return 1/(2*2)
+#expect cppicka at v = c(-2, -2) to return 0
+cpp1 <- cppicka(xi, obswin = win)
+cpp1[ppp(x = c(2, -2), y = c(2, -2), window = Frame(cpp1))]
 }
 \author{
 Kassel Liam Hingee

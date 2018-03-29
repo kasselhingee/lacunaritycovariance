@@ -6,6 +6,8 @@
 #' @description 
 #' Picka2000va modifies coverage probability and covariance estimators to develop estimators of centered covariance and pair-correlation function that are balanced.
 #' The entity computed by this function corresponds to Picka's \eqn{\hat{m}_1[\check{0},v]}.
+#' The result should be 
+#' \deqn{\frac{|\Xi \cap W \cap (W \oplus v)|} {|W \cap (W\oplus v)|} }
 #' @param xi An observation of a RACS in \pkg{spatstat}'s \code{owin} or \code{im} format.
 #' @param obswin The window of observation (not necessarily rectangular) also in \code{owin} format.
 #' @param setcov_boundarythresh Any vector \eqn{v} such that set covariance of the observation window is smaller than this threshold is given a value of NA to avoid instabilities caused by dividing by very small areas 
@@ -24,6 +26,14 @@
 #' cpp1 <- cppicka(xi, obswindow)
 #' cpp1[as.ppp(c(0,0), W = obswindow)]
 #' plot(cpp1[cpp1 < 2, drop = FALSE])
+#' 
+#' #test that it is doing what we expect for a single vector
+#' xi <- shift.owin(square(r = 1), vec = c(2, 2))
+#' win <- square(r = 4)
+#' #expect cppicka at v = c(2,2) to return 1/(2*2)
+#' #expect cppicka at v = c(-2, -2) to return 0
+#' cpp1 <- cppicka(xi, obswin = win)
+#' cpp1[ppp(x = c(2, -2), y = c(2, -2), window = Frame(cpp1))]
 
 #' @keywords spatial nonparametric
 cppicka <- function(xi, obswin = NULL,
@@ -49,7 +59,8 @@ cppicka <- function(xi, obswin = NULL,
   
   if (is.owin(xi)){
     stopifnot(is.owin(obswin))
-    xi <- as.im(xi, na.replace = 0)
+    Frame(xi) <- Frame(obswin)
+    xi <- as.im(xi, W = obswin, na.replace = 0)
     obswin <- as.im(obswin, na.replace = 0, xy = xi)
   }
 
