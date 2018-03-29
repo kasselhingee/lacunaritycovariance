@@ -46,6 +46,7 @@ racscovariance <- function(xi,
   if (is.owin(xi)) {
     if (!is.null(obswin)) {xi <- intersect.owin(xi, obswin)}
     else {obswin <- Frame(xi)}
+    Frame(xi) <- Frame(obswin)
     setcovxi <- setcov(xi)
     unitname(setcovxi) <- unitname(xi)
     setcovwindow <- setcov(obswin, eps = c(setcovxi$xstep, setcovxi$ystep))
