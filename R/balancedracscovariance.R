@@ -152,7 +152,7 @@ balancedracscovariances.cvchat <- function(cvchat, cpp1 = NULL, phat = NULL, mod
          pickamult = balancedracscovariance_picka_mult,
          pickahajek = balancedracscovariance_picka_hajek
   )
-  if (modifications == "all") {modifications <- names(fcns)}
+  if ((modifications == "all")[[1]]) {modifications <- names(fcns)}
   fcnstouse <- fcns[names(fcns) %in% modifications]
   isfunction <- unlist(lapply(modifications, function(x) "function" %in% class(x)))
   modificationsnotused <- modifications[!( (modifications %in% names(fcns)) | isfunction)]
