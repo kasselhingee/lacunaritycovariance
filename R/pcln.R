@@ -1,5 +1,5 @@
 #' @title Balanced estimation of centred spatial covariance for stationary RACS
-#' @export pcln  pcln.cvchat
+#' @export pclns  pclns.cvchat
 #' @description 
 #' Estimates the pair-correlation function of a stationary RACS. 
 #' A variety of balanced, partially balanced and classical estimates are available.
@@ -42,22 +42,23 @@
 #' cvchat <- racscovariance(xi, inclraw = FALSE)
 #' cpp1 <- cppicka(xi, obswin = Frame(heather$coarse))
 #' 
-#' pclns <- pcln.cvchat(cvchat, cpp1, phat, modifications = "all")
-#' 
-pcln <- function(xi, obswin,
+#' pclnsfrcvc <- pclns.cvchat(cvchat, cpp1, phat, modifications = "all")
+#' pclnsdir <- pclns(as.im(xi, na.replace = 0), modifications = "all")
+#' ###SHOULD TEST ON BOOLEAN MODEL###
+pclns <- function(xi, obswin = NULL,
                   setcov_boundarythresh = NULL,
-                  modifications = NULL){
+                  modifications = "all"){
   cvchat <- racscovariance(xi, obswin, setcov_boundarythresh = setcov_boundarythresh)
   cpp1 <- cppicka(xi, obswin, setcov_boundarythresh = setcov_boundarythresh)
   phat <- coverageprob(xi, obswin)
   
   pclns <- pclns.cvchat(cvchat, cpp1, phat, modifications = modifications) 
   
-  return(cvchats)
+  return(pclns)
 }
 
-#' @describeIn pcln Applies multiple modifications simultaneously from a precomputed cvchat, cpp1 and phat
-pcln.cvchat <- function(cvchat, cpp1 = NULL, phat = NULL, modifications = NULL){
+#' @describeIn pclns Applies multiple modifications simultaneously from a precomputed cvchat, cpp1 and phat
+pclns.cvchat <- function(cvchat, cpp1 = NULL, phat = NULL, modifications = "all"){
   harmonised <- harmonise.im(cvchat = cvchat, cpp1 = cpp1)
   cvchat <- harmonised$cvchat
   cpp1 <- harmonised$cpp1
@@ -102,3 +103,4 @@ pcln_picka_hajek <- function(cvchat, cpp1, phat){
   hajek <- phat * (cpp1 + reflect.im(cpp1) - 2 * phat )
   return((cvchat - hajek) / (phat^2))
 }
+
