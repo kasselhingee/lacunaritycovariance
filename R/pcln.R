@@ -92,7 +92,7 @@ pcln_symm <- function(cvchat, cpp1 = NULL, phat = NULL){
 }
 
 pcln_mattfeldt <- function(cvchat, cpp1, phat = NULL){
-  return(2 * cvchat /(cpp1 + reflect.im(cpp1)) )  
+  return(4 * cvchat /((cpp1 + reflect.im(cpp1))^2) )  
 }
 
 pcln_picka_intr <- function(cvchat, cpp1, phat = NULL){
