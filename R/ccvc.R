@@ -41,9 +41,9 @@ ccvcs <- function(xi, obswin = NULL,
   cpp1 <- cppicka(xi, obswin, setcov_boundarythresh = setcov_boundarythresh)
   phat <- coverageprob(xi, obswin)
   
-  cvchats <- ccvcs.cvchat(cvchat, cpp1, phat, modifications = modifications) 
+  ccvchats <- ccvcs.cvchat(cvchat, cpp1, phat, modifications = modifications) 
   
-  return(cvchats - phat^2)
+  return(ccvchats)
 }
 
 #' @describeIn ccvcs Estimates centred covariance using supplied classical covariance estimate (from \code{racscovariance}),
