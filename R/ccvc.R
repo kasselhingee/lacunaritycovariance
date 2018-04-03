@@ -36,7 +36,7 @@
 
 ccvcs <- function(xi, obswin = NULL,
         setcov_boundarythresh = NULL,
-        modifications = NULL){
+        modifications = "all"){
   cvchat <- racscovariance(xi, obswin, setcov_boundarythresh = setcov_boundarythresh)
   cpp1 <- cppicka(xi, obswin, setcov_boundarythresh = setcov_boundarythresh)
   phat <- coverageprob(xi, obswin)
@@ -50,7 +50,7 @@ ccvcs <- function(xi, obswin = NULL,
 #'  Picka's coverage probability estimator and coverage probability.
 ccvcs.cvchat <- function(cvchat, cpp1 = NULL, phat = NULL,
         setcov_boundarythresh = NULL,
-        modifications = NULL){
+        modifications = "all"){
   
   cvchats <- balancedracscovariances.cvchat(cvchat, cpp1, phat, modifications = modifications) 
   

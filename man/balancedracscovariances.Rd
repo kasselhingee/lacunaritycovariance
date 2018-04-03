@@ -8,16 +8,16 @@
 \title{Balanced spatial covariance estimation, also known as `two-point probability', estimator for stationary RACS}
 \usage{
 balancedracscovariances(xi, obswin = NULL, setcov_boundarythresh = NULL,
-  modifications = NULL)
+  modifications = "all")
 
 balancedracscovariance.cvchat(cvchat, cpp1 = NULL, phat = NULL,
-  modification = NULL)
+  modification = "pickahajek")
 
 balancedracscovariances.cvchat(cvchat, cpp1 = NULL, phat = NULL,
-  modifications = NULL)
+  modifications = "all")
 
 cvchats.convolves(xixi, winwin, xiwin = NULL, phat = NULL,
-  modifications = NULL)
+  modifications = "all")
 }
 \arguments{
 \item{xi}{An observation of the RACS of interest. It can be in \pkg{spatstat}'s \code{owin} or \code{im} format. If \code{xi} is in \code{im} format then it is assumed that the pixels will be valued 1 (for foreground), 0 (for background) and NA for unobserved.

@@ -67,7 +67,7 @@ varCovProb.covarsupplied <- function(covar, w){
 #' @describeIn varCovProb Use multiple balanced estimators of covariance to estimate variance of coverage probability
 varCovProb_ests <- function(xi, obswin = NULL,
         setcov_boundarythresh = NULL,
-        modifications = NULL){
+        modifications = "all"){
   cvchat <- racscovariance(xi, obswin, setcov_boundarythresh = setcov_boundarythresh)
   cpp1 <- cppicka(xi, obswin, setcov_boundarythresh = setcov_boundarythresh)
   phat <- cvchat[ppp(x = 0, y = 0, window = Frame(cvchat))]

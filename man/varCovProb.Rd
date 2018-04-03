@@ -12,7 +12,7 @@ varCovProb(Xi, w)
 varCovProb.covarsupplied(covar, w)
 
 varCovProb_ests(xi, obswin = NULL, setcov_boundarythresh = NULL,
-  modifications = NULL)
+  modifications = "all")
 }
 \arguments{
 \item{Xi}{is an observation (in owin) format of a RACS.}

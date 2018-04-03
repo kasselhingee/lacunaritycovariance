@@ -84,7 +84,7 @@
 #' 
 balancedracscovariances <- function(xi, obswin = NULL,
         setcov_boundarythresh = NULL,
-        modifications = NULL){
+        modifications = "all"){
   cvchat <- racscovariance(xi, obswin, setcov_boundarythresh = setcov_boundarythresh)
   cpp1 <- cppicka(xi, obswin, setcov_boundarythresh = setcov_boundarythresh)
   phat <- coverageprob(xi, obswin)
@@ -96,7 +96,7 @@ balancedracscovariances <- function(xi, obswin = NULL,
 byconv.cvchats <- function(xi, obswin,
         xy = NULL,
         setcov_boundarythresh = NULL,
-        modifications = NULL){
+        modifications = "all"){
   if (is.null(setcov_boundarythresh)){
     setcov_boundarythresh <- 0.1 * area.owin(obswin)
   }
@@ -119,7 +119,7 @@ byconv.cvchats <- function(xi, obswin,
 }
 
 #' @describeIn balancedracscovariances Applies covariance balancing modification to precomputed cvchat, cpp1 and phat
-balancedracscovariance.cvchat <- function(cvchat, cpp1 = NULL, phat = NULL, modification = NULL){
+balancedracscovariance.cvchat <- function(cvchat, cpp1 = NULL, phat = NULL, modification = "pickahajek"){
   harmonised <- harmonise.im(cvchat = cvchat, cpp1 = cpp1)
   cvchat <- harmonised$cvchat
   cpp1 <- harmonised$cpp1
@@ -138,7 +138,7 @@ balancedracscovariance.cvchat <- function(cvchat, cpp1 = NULL, phat = NULL, modi
 }
 
 #' @describeIn balancedracscovariances Applies multiple modifications simultaneously from a precomputed cvchat, cpp1 and phat
-balancedracscovariances.cvchat <- function(cvchat, cpp1 = NULL, phat = NULL, modifications = NULL){
+balancedracscovariances.cvchat <- function(cvchat, cpp1 = NULL, phat = NULL, modifications = "all"){
   harmonised <- harmonise.im(cvchat = cvchat, cpp1 = cpp1)
   cvchat <- harmonised$cvchat
   cpp1 <- harmonised$cpp1
@@ -166,7 +166,7 @@ balancedracscovariances.cvchat <- function(cvchat, cpp1 = NULL, phat = NULL, mod
 }
 
 #' @describeIn balancedracscovariances Applies multiple modifications simultaneously from a precomputed convolutions xi*xi, w*w, xi*w and phat
-cvchats.convolves <- function(xixi, winwin, xiwin = NULL, phat = NULL, modifications = NULL){
+cvchats.convolves <- function(xixi, winwin, xiwin = NULL, phat = NULL, modifications = "all"){
   harmonised <- harmonise.im(xixi = xixi, winwin = winwin, xiwin = xiwin)
   xixi <- harmonised$xixi
   winwin <- harmonised$winwin

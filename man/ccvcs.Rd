@@ -6,10 +6,10 @@
 \title{Balanced estimation of centred spatial covariance for stationary RACS}
 \usage{
 ccvcs(xi, obswin = NULL, setcov_boundarythresh = NULL,
-  modifications = NULL)
+  modifications = "all")
 
 ccvcs.cvchat(cvchat, cpp1 = NULL, phat = NULL,
-  setcov_boundarythresh = NULL, modifications = NULL)
+  setcov_boundarythresh = NULL, modifications = "all")
 }
 \arguments{
 \item{xi}{An observation of the RACS of interest. It can be in \pkg{spatstat}'s \code{owin} or \code{im} format. If \code{xi} is in \code{im} format then it is assumed that the pixels will be valued 1 (for foreground), 0 (for background) and NA for unobserved.
