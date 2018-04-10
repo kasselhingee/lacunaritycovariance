@@ -7,17 +7,17 @@
 \alias{varCovProb_ests}
 \title{Variances and Confidence Intervals for Coverage Fraction Estimates}
 \usage{
-varCovProb(Xi, w)
+varCovProb(Xi, obswin)
 
-varCovProb.covarsupplied(covar, w)
+varCovProb.covarsupplied(covar, obswin)
 
 varCovProb_ests(xi, obswin = NULL, setcov_boundarythresh = NULL,
   modifications = "all")
 }
 \arguments{
-\item{Xi}{is an observation (in owin) format of a RACS.}
+\item{Xi}{is an observation (in owin) format of a RACS or an image of 0, 1 and NA values.}
 
-\item{w}{is the corresponding observation window.}
+\item{obswin}{is the corresponding observation window.}
 }
 \value{
 varcovProb returns a variance estimate using the covariance function and an estimate of area fraction). This will not be as good as the spectral density based estimate**.

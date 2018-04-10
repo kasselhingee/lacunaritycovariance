@@ -16,8 +16,8 @@
 
 #' @return varcovProb returns a variance estimate using the covariance function and an estimate of area fraction). This will not be as good as the spectral density based estimate**.
 #' asympvarP() isn't constructed yet but will estimate a variance assuming that things are close to Gaussian distributions.
-#' @param Xi is an observation (in owin) format of a RACS.
-#' @param w is the corresponding observation window.
+#' @param Xi is an observation (in owin) format of a RACS or an image of 0, 1 and NA values.
+#' @param obswin is the corresponding observation window. 
 
 #' @examples 
 #' xi <- heather$coarse
@@ -25,11 +25,11 @@
 #' varCovProb_ests(xi, obswin, modifications = "all")
 #' @references 
 #' Molchanov, I. (1997) Statistics of the Boolean Model for Practitioners and Mathematicians. Wiley.
-varCovProb <- function(Xi, w){
-   Xiinside <- intersect.owin(Xi,w)
+varCovProb <- function(Xi, obswin){
+   Xiinside <- intersect.owin(Xi,obswin)
    setcovXi <- setcov(Xiinside)
-   setcovB <- setcov(w)
-   p <- max(setcovXi)/max(setcov(w)) #using this instead of normal phat estimate seems to make positive values more likely at least? **I'd really like to know why!
+   setcovB <- setcov(obswin)
+   p <- max(setcovXi)/max(setcov(obswin)) #using this instead of normal phat estimate seems to make positive values more likely at least? **I'd really like to know why!
    integrand <- eval.im(setcovXi-(p^2)*setcovB, harmonize = TRUE)
    #test that integrand reaches 0
    edgeValues = c(integrand[1,-1],integrand[-1,ncol(integrand)],
@@ -38,16 +38,16 @@ varCovProb <- function(Xi, w){
      warning("covariance weighted by set covariance of the window isn't uniformly close to p^2 at boundary\n")
      cat("max size of (C(v) - p^2)*[Set Covariance of Window] on boundary is ", max(edgeValues,na.rm=TRUE),"\n",sep="")
    }
-   return((1/(area.owin(w))^2)*sum(integrand)*integrand$xstep*integrand$ystep)
+   return((1/(area.owin(obswin))^2)*sum(integrand)*integrand$xstep*integrand$ystep)
  }
 
 
 
 #a seperate function could be useful because the othe function will have less machine error
 #' @describeIn varCovProb Variance estimate from a given covariance function
-varCovProb.covarsupplied <- function(covar, w){
+varCovProb.covarsupplied <- function(covar, obswin){
   p <- covar[as.ppp(c(0,0), W = Frame(covar))]
-  setcovB <- setcov(w)
+  setcovB <- setcov(obswin)
   integrand <- eval.im((covar-(p^2))*setcovB, harmonize = TRUE)
   #test that integrand reaches 0
   edgeValues = c(integrand[1,-1],integrand[-1,ncol(integrand)],
@@ -56,7 +56,7 @@ varCovProb.covarsupplied <- function(covar, w){
    warning("covariance weighted by set covariance of the window isn't uniformly close to p^2 at boundary\n")
    cat("max size of (C(v) - p^2)*[Set Covariance of Window] on boundary is ", max(edgeValues,na.rm=TRUE),"\n",sep="")
   }
-  return((1/(area.owin(w))^2)*sum(integrand)*integrand$xstep*integrand$ystep)
+  return((1/(area.owin(obswin))^2)*sum(integrand)*integrand$xstep*integrand$ystep)
 } 
 
 
@@ -75,7 +75,10 @@ varCovProb_ests <- function(xi, obswin = NULL,
   
   cvchats <- balancedracscovariances.cvchat(cvchat, cpp1, phat, modifications = modifications) 
   
-  if (is.mask(xi)){  setcovW <- setcov(obswin, xy = xi) 
+  if (is.null(obswin) && is.im(xi)){
+    obswin <- as.owin(xi) #only excludes NA values in xi
+  }
+  if (is.mask(xi) || is.im(xi)){  setcovW <- setcov(obswin, xy = xi) 
   } else { setcovW <- setcov(obswin, xy = cvchat) }
   setcovW <- as.im(setcovW, xy = cvchat) #harmonise results
 
@@ -86,11 +89,11 @@ varCovProb_ests <- function(xi, obswin = NULL,
 }
 
 
-varCovProb.none <- function(Xi, w){
-   Xiinside <- intersect.owin(Xi,w)
+varCovProb.none <- function(Xi, obswin){
+   Xiinside <- intersect.owin(Xi,obswin)
    setcovXi <- setcov(Xiinside)
-   setcovB <- setcov(w)
-   p <- max(setcovXi)/max(setcov(w)) #using this instead of normal phat estimate seems to make positive values more likely at least? **I'd really like to know why!
+   setcovB <- setcov(obswin)
+   p <- max(setcovXi)/max(setcov(obswin)) #using this instead of normal phat estimate seems to make positive values more likely at least? **I'd really like to know why!
    integrand <- eval.im(setcovXi-(p^2)*setcovB, harmonize = TRUE)
    #test that integrand reaches 0
    edgeValues = c(integrand[1,-1],integrand[-1,ncol(integrand)],
@@ -99,5 +102,5 @@ varCovProb.none <- function(Xi, w){
      warning("covariance weighted by set covariance of the window isn't uniformly close to p^2 at boundary\n")
      cat("max size of (C(v) - p^2)*[Set Covariance of Window] on boundary is ", max(edgeValues,na.rm=TRUE),"\n",sep="")
    }
-   return((1/(area.owin(w))^2)*sum(integrand)*integrand$xstep*integrand$ystep)
+   return((1/(area.owin(obswin))^2)*sum(integrand)*integrand$xstep*integrand$ystep)
  }
