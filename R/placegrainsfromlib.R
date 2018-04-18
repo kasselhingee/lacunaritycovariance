@@ -50,14 +50,15 @@
 #' 
 
 #' @keywords spatial nonparametric datagen
-placegrainsfromlib <- function(pp, grainlib, replace = TRUE, prob = NULL, w = NULL){
+placegrainsfromlib <- function(pp, grainlib,
+                               replace = TRUE, prob = NULL, w = NULL, xy = NULL){
   if (pp$n == 0){
     warning("there were no points in the point process - returning empty window")
     return(NULL)
   }
   grains <- sample(grainlib, size = pp$n, replace = replace, prob = prob)
-  pointlocations <- cbind(X = pp$x, Y = pp$y)
-  pointlocations <- split(cbind(pointlocations), row(pointlocations)) #split matrix into a list of the rows
+  pointlocations <- coords(pp)
+  pointlocations <- split(pointlocations, 1:nrow(pointlocations)) #split matrix into a list of the rows
   shiftedgrains <- as.solist(mapply(shift.owin, grains, vec = pointlocations, SIMPLIFY = FALSE))
   if (!is.null(w)){shiftedgrains <- shiftedgrains[vapply(shiftedgrains, isinwindowbbox, FUN.VALUE = c(FALSE), w = w)]} #this line removes grains that aren't likely to intersect window
   placedgrains <- union.owin(shiftedgrains)
