@@ -1,5 +1,5 @@
 #' @title Simulation of Boolean Model of Grains Scaled According to a Pareto Distribution
-#' @export rbpto
+#' @export rbpto bpto.coverageprob
 #' 
 #' @param lambda Intensity of the germ process (which is a Poisson point process)
 #' @param grain A single owin object that gives the shape and size of the grain at scale 1
@@ -18,11 +18,18 @@
 
 
 #' @examples
-#' lambda <- 2
+#' lambda <- 1
 #' win <- square(r = 10)
-#' grain <- owin(xrange = c(-0.2, 0.2), yrange = c(-0.2, 0.2))
-#' xm <- 1
+#' #grain <- owin(xrange = c(-0.2, 0.2), yrange = c(-0.2, 0.2))
+#' grain <- disc(r = 0.2)
+#' xm <- 0.01
 #' alpha <- 2
+#' 
+#' #system.time(xi <- rbpto(lambda, grain, win, xm, alpha, lengthscales = 1:100, xy = as.mask(win, eps = 0.1)))
+#' system.time(xi <- rbpto(lambda, grain, win, xm, alpha, lengthscales = 1:100))
+#' plot(xi)
+#' 
+#' bpto.coverageprob(lambda, grain, xm, alpha, lengthscales = 1:100)
 
 rbpto <- function(lambda, grain, win, xm, alpha,
                   seed = NULL, xy = NULL, lengthscales = 1:500){
@@ -46,11 +53,25 @@ rbpto <- function(lambda, grain, win, xm, alpha,
   
   #place grains
   set.seed(seed) #this is not best way, must be a way to continue using sequence of pseudo-independent random numbers in already selected seed.
-  xibuffer  <- placegrainsfromlib(pp, grainlib, prob = weights, w = win)
+  xibuffer  <- placegrainsfromlib(pp, grainlib, prob = weights, w = win, xy = xy)
   #plot(w)
   #plot(xibuffer, add = TRUE, col = "black")
   #plot(xibuffer[square(r = 50)], col = "black")
   xi <- intersect.owin(xibuffer, win)
-return(xi)
+  return(xi)
 }
 
+#' #describeIn rbpto  The coverage probability of the Boolean model with scaled grains distributed according to Pareto distribution. Uses approximation of truncated length scales.
+bpto.coverageprob <- function(lambda, grain, xm, alpha,
+                              lengthscales = 1:500){
+  #first get mean area. Need weight for each discrete grain.
+  #check that smallest scale is larger than xm
+  stopifnot(lengthscales[1] >= xm)
+  
+  #get weights of grain sizes from pmf
+  weights <- alpha * xm ^ alpha / (lengthscales ^ (alpha + 1) )
+  weights <- weights / sum(weights) #standardise
+  
+  meangrainarea <- sum(lengthscales * lengthscales * area.owin(grain) * weights)
+  return(1 - exp(- lambda * meangrainarea))
+}

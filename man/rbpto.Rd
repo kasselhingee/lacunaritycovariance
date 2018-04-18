@@ -28,9 +28,16 @@ The parameters xm and alpha are such that the CDF of the Pareto distribuion is \
 Approximates the grain distribution using the scales given by \code{lengthscales} and weighted by the probability distribution function of the Pareto distribution.
 }
 \examples{
-lambda <- 2
+lambda <- 1
 win <- square(r = 10)
-grain <- owin(xrange = c(-0.2, 0.2), yrange = c(-0.2, 0.2))
-xm <- 1
+#grain <- owin(xrange = c(-0.2, 0.2), yrange = c(-0.2, 0.2))
+grain <- disc(r = 0.2)
+xm <- 0.01
 alpha <- 2
+
+#system.time(xi <- rbpto(lambda, grain, win, xm, alpha, lengthscales = 1:100, xy = as.mask(win, eps = 0.1)))
+system.time(xi <- rbpto(lambda, grain, win, xm, alpha, lengthscales = 1:100))
+plot(xi)
+
+bpto.coverageprob(lambda, grain, xm, alpha, lengthscales = 1:100)
 }
