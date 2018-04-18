@@ -18,42 +18,39 @@
 
 
 #' @examples
-lambda <- 2
-win <- square(r = 10)
-grain <- owin(xrange = c(-0.2, 0.2), yrange = c(-0.2, 0.2))
-xm <- 1
-alpha <- 2
+#' lambda <- 2
+#' win <- square(r = 10)
+#' grain <- owin(xrange = c(-0.2, 0.2), yrange = c(-0.2, 0.2))
+#' xm <- 1
+#' alpha <- 2
 
 rbpto <- function(lambda, grain, win, xm, alpha,
                   seed = NULL, xy = NULL, lengthscales = 1:500){
-
-#check that smallest scale is larger than xm
-stopifnot(lengthscales[1] >= xm)
-
-#get scaled versions of grain
-grainlib <- mapply(scalardilate, X = list(grain), f = lengthscales, SIMPLIFY = FALSE)
-grainlib <- as.solist(grainlib)
-
-#get weights of these grains from pmf
-weights <- alpha * xm ^ alpha / (lengthscales ^ (alpha + 1) )
-weights <- weights / sum(weights) #standardise
-
-#now simulate Boolean model!
-bufferdist <- diameter.owin(grain) * max(lengthscales)
-set.seed(seed)
-pp <- rpoispp(lambda, win = dilation.owin(win, bufferdist), nsim = 1, drop = TRUE)
-#plot(pp)
-#plot(add = TRUE, w)
-
-#place grains
-set.seed(seed) #this is not best way, must be a way to continue using sequence of pseudo-independent random numbers in already selected seed.
-xibuffer  <- placegrainsfromlib(pp, grainlib, prob = weights, w = win)
-#plot(w)
-#plot(xibuffer, add = TRUE, col = "black")
-#plot(xibuffer[square(r = 50)], col = "black")
-xi <- intersect.owin(xibuffer, win)
-plot(w, axes = TRUE)
-plot(xi, add = TRUE)
+  #check that smallest scale is larger than xm
+  stopifnot(lengthscales[1] >= xm)
+  
+  #get scaled versions of grain
+  grainlib <- mapply(scalardilate, X = list(grain), f = lengthscales, SIMPLIFY = FALSE)
+  grainlib <- as.solist(grainlib)
+  
+  #get weights of these grains from pmf
+  weights <- alpha * xm ^ alpha / (lengthscales ^ (alpha + 1) )
+  weights <- weights / sum(weights) #standardise
+  
+  #now simulate Boolean model!
+  bufferdist <- diameter.owin(grain) * max(lengthscales)
+  set.seed(seed)
+  pp <- rpoispp(lambda, win = dilation.owin(win, bufferdist), nsim = 1, drop = TRUE)
+  #plot(pp)
+  #plot(add = TRUE, w)
+  
+  #place grains
+  set.seed(seed) #this is not best way, must be a way to continue using sequence of pseudo-independent random numbers in already selected seed.
+  xibuffer  <- placegrainsfromlib(pp, grainlib, prob = weights, w = win)
+  #plot(w)
+  #plot(xibuffer, add = TRUE, col = "black")
+  #plot(xibuffer[square(r = 50)], col = "black")
+  xi <- intersect.owin(xibuffer, win)
 return(xi)
 }
 
