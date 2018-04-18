@@ -4,7 +4,8 @@
 \alias{placegrainsfromlib}
 \title{A function to help simulate Boolean models with user-provided grains}
 \usage{
-placegrainsfromlib(pp, grainlib, replace = TRUE, prob = NULL, w = NULL)
+placegrainsfromlib(pp, grainlib, replace = TRUE, prob = NULL, w = NULL,
+  xy = NULL)
 }
 \arguments{
 \item{pp}{A point pattern (in \code{ppp} format).}
@@ -52,6 +53,11 @@ plot(xibuffer, add = TRUE, lty = "dashed")
 #get final simulation by intersection with desired window
 xi <- intersect.owin(xibuffer, w)
 plot(xi, hatch = TRUE, add = TRUE)
+
+#demonstration that involves rasterisation.
+xibuffer <- placegrainsfromlib(pp, grainlib, xy = as.mask(w, eps = 0.1))
+plot(xibuffer)
+plot(w, add = TRUE)
 
 
 }

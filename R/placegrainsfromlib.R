@@ -47,6 +47,11 @@
 #' xi <- intersect.owin(xibuffer, w)
 #' plot(xi, hatch = TRUE, add = TRUE)
 #' 
+#' #demonstration that involves rasterisation.
+#' xibuffer <- placegrainsfromlib(pp, grainlib, xy = as.mask(w, eps = 0.1))
+#' plot(xibuffer)
+#' plot(w, add = TRUE)
+#' 
 #' 
 
 #' @keywords spatial nonparametric datagen
@@ -56,8 +61,15 @@ placegrainsfromlib <- function(pp, grainlib,
     warning("there were no points in the point process - returning empty window")
     return(NULL)
   }
+  if (!is.null(xy)){
+    grainlib <- solapply(grainlib, tocompatiblepixelarray, xy = xy)
+  }
   grains <- sample(grainlib, size = pp$n, replace = replace, prob = prob)
   pointlocations <- coords(pp)
+  if (!is.null(xy)){
+    pointlocations$x <- vapply(pointlocations$x, function(inx) xy$xcol[which.min(abs(inx - xy$xcol))], 0.00)
+    pointlocations$y <- vapply(pointlocations$y, function(inx) xy$yrow[which.min(abs(inx - xy$yrow))], 0.00)
+  }
   pointlocations <- split(pointlocations, 1:nrow(pointlocations)) #split matrix into a list of the rows
   shiftedgrains <- as.solist(mapply(shift.owin, grains, vec = pointlocations, SIMPLIFY = FALSE))
   if (!is.null(w)){shiftedgrains <- shiftedgrains[vapply(shiftedgrains, isinwindowbbox, FUN.VALUE = c(FALSE), w = w)]} #this line removes grains that aren't likely to intersect window
@@ -72,3 +84,16 @@ isinwindowbbox <- function(grain, w){
   intersection <- intersect.owin(Frame(w), Frame(grain), fatal = FALSE)
   return(!is.null(intersection))
 }
+
+
+#convert grain to raster on the same sized pixel grid and origin
+tocompatiblepixelarray <- function(grain, xy){
+  stopifnot(is.owin(grain))
+  grainw <- Frame(grain)
+  xcol <- seq(floor(grainw$xrange[[1]]/xy$xstep)*xy$xstep,
+              ceiling(grainw$xrange[[2]]/xy$xstep)*xy$xstep, by = xy$xstep)
+  yrow <- seq(floor(grainw$yrange[[1]]/xy$ystep)*xy$ystep,
+              ceiling(grainw$yrange[[2]]/xy$ystep)*xy$ystep, by = xy$ystep)
+  return(as.mask(grain, xy = list(x = xcol, y = yrow)))
+}
+
