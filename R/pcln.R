@@ -29,9 +29,10 @@
 #' Modifications available are: 
 #' \itemize{
 #' \item \code{none} Returns cvchat / (phat * phat)
-#' \item mattfeldt An anisotropic pair-correlation estimator from Mattfeldt's paper
+#' \item symm Returns the estimated average of cvchat at -v and +v, divided by (phat * phat)
+#' \item mattfeld The pair-correlation estimator from Mattfeldt's paper
 #' \item pickaint Picka's intrinsic modification which modifies the coverage probability estimators
-#' \item pickaadd Picka's Hajek-based modification which additively modifies the covariance estimate.
+#' \item pickahajek Picka's Hajek-based modification which additively modifies the covariance estimate.
 #' }
 
 #' @examples
@@ -63,9 +64,10 @@ pclns.cvchat <- function(cvchat, cpp1 = NULL, phat = NULL, modifications = "all"
   cpp1 <- harmonised$cpp1
   fcns <- list(
          none = pcln_none,
+         symm = pcln_symm,
          mattfeldt = pcln_mattfeldt,
-         pickaint = pcln_picka_int,
-         pickaadd = pcln_picka_add
+         pickaint = pcln_picka_intr,
+         pickahajek = pcln_picka_hajek
   )
   if ((modifications == "all")[[1]]) {modifications <- names(fcns)}
   fcnstouse <- fcns[names(fcns) %in% modifications]
@@ -85,15 +87,19 @@ pcln_none <- function(cvchat, cpp1 = NULL, phat = NULL){
   return(cvchat / (phat^2)) 
 }
 
+pcln_symm <- function(cvchat, cpp1 = NULL, phat = NULL){
+  return((cvchat + reflect.im(cvchat)) / (2 * phat^2)) 
+}
+
 pcln_mattfeldt <- function(cvchat, cpp1, phat = NULL){
   return(4 * cvchat /((cpp1 + reflect.im(cpp1))^2) )  
 }
 
-pcln_picka_int <- function(cvchat, cpp1, phat = NULL){
+pcln_picka_intr <- function(cvchat, cpp1, phat = NULL){
   return(cvchat / (cpp1*reflect.im(cpp1))) 
 }
 
-pcln_picka_add <- function(cvchat, cpp1, phat){
+pcln_picka_hajek <- function(cvchat, cpp1, phat){
   hajek <- phat * (cpp1 + reflect.im(cpp1) - 2 * phat )
   return((cvchat - hajek) / (phat^2))
 }
