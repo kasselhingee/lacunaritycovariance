@@ -32,7 +32,7 @@
 #' \item symm Returns the estimated average of cvchat at -v and +v, divided by (phat * phat)
 #' \item mattfeld The pair-correlation estimator from Mattfeldt's paper
 #' \item pickaint Picka's intrinsic modification which modifies the coverage probability estimators
-#' \item pickahajek Picka's Hajek-based modification which additively modifies the covariance estimate.
+#' \item pickaH Picka's Hajek-based modification which additively modifies the covariance estimate.
 #' }
 
 #' @examples
@@ -67,7 +67,7 @@ pclns.cvchat <- function(cvchat, cpp1 = NULL, phat = NULL, modifications = "all"
          symm = pcln_symm,
          mattfeldt = pcln_mattfeldt,
          pickaint = pcln_picka_intr,
-         pickahajek = pcln_picka_hajek
+         pickaH = pcln_picka_H
   )
   if ((modifications == "all")[[1]]) {modifications <- names(fcns)}
   fcnstouse <- fcns[names(fcns) %in% modifications]
@@ -99,7 +99,7 @@ pcln_picka_intr <- function(cvchat, cpp1, phat = NULL){
   return(cvchat / (cpp1*reflect.im(cpp1))) 
 }
 
-pcln_picka_hajek <- function(cvchat, cpp1, phat){
+pcln_picka_H <- function(cvchat, cpp1, phat){
   hajek <- phat * (cpp1 + reflect.im(cpp1) - 2 * phat )
   return((cvchat - hajek) / (phat^2))
 }

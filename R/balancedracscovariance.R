@@ -40,9 +40,9 @@
 #' \item adrian  Similar to Picka additive but uses \code{cpp1} twice and not the refelction of \code{cpp1}
 #' \item mattfeldadd
 #' \item mattfeldmult
-#' \item pickaadd The only modification supplied that provides estimates that satisfy C(v) = 2phat - 1 + Ccomplment(v)
-#' \item pickamult
-#' \item pickahajek
+#' \item pickaint The only modification supplied that provides estimates that satisfy C(v) = 2phat - 1 + Ccomplment(v)
+#' \item pickaintmult
+#' \item pickaH
 #' }
 
 #' @examples
@@ -66,16 +66,16 @@
 #' cvchat <- harmonised$cvchat
 #' cpp1 <- harmonised$cpp1
 #' 
-#' balancedcvchat <- balancedracscovariance.cvchat(cvchat, cpp1, phat, modification = "pickaadd")
+#' balancedcvchat <- balancedracscovariance.cvchat(cvchat, cpp1, phat, modification = "pickaint")
 #' balancedcvchats <- balancedracscovariances.cvchat(cvchat, cpp1, phat, modifications = "all")
 #' modifications <- c("none",
 #'  "symm",
 #'  "adrian",
 #'  "mattfeldtadd",
 #'  "mattfeldtmult",
-#'  "pickaadd",
-#'  "pickamult",
-#'  "pickahajek", 
+#'  "pickaint",
+#'  "pickaintmult",
+#'  "pickaH", 
 #'  function(cvchat, cpp1, phat) cvchat)
 #' balancedcvchats <- balancedracscovariances.cvchat(cvchat, cpp1, phat, modifications = modifications)
 #' plot(as.solist(balancedcvchats), equal.ribbon = TRUE)
@@ -119,7 +119,7 @@ byconv.cvchats <- function(xi, obswin,
 }
 
 #' @describeIn balancedracscovariances Applies covariance balancing modification to precomputed cvchat, cpp1 and phat
-balancedracscovariance.cvchat <- function(cvchat, cpp1 = NULL, phat = NULL, modification = "pickahajek"){
+balancedracscovariance.cvchat <- function(cvchat, cpp1 = NULL, phat = NULL, modification = "pickaH"){
   harmonised <- harmonise.im(cvchat = cvchat, cpp1 = cpp1)
   cvchat <- harmonised$cvchat
   cpp1 <- harmonised$cpp1
@@ -129,9 +129,9 @@ balancedracscovariance.cvchat <- function(cvchat, cpp1 = NULL, phat = NULL, modi
          adrian = balancedracscovariance_adrian(cvchat, cpp1, phat),
          mattfeldtadd = balancedracscovariance_mattfeldt_add(cvchat, cpp1, phat),
          mattfeldtmult = balancedracscovariance_mattfeldt_mult(cvchat, cpp1, phat),
-         pickaadd = balancedracscovariance_picka_add(cvchat, cpp1, phat),
-         pickamult = balancedracscovariance_picka_mult(cvchat, cpp1, phat),
-         pickahajek = balancedracscovariance_picka_hajek(cvchat, cpp1, phat),
+         pickaint = balancedracscovariance_picka_int(cvchat, cpp1, phat),
+         pickaintmult = balancedracscovariance_picka_intmult(cvchat, cpp1, phat),
+         pickaH = balancedracscovariance_picka_H(cvchat, cpp1, phat),
          stop(paste("Modification", modification, "not found.")) 
          )
   return(balancedcvchat)
@@ -148,9 +148,9 @@ balancedracscovariances.cvchat <- function(cvchat, cpp1 = NULL, phat = NULL, mod
          adrian = balancedracscovariance_adrian,
          mattfeldtadd = balancedracscovariance_mattfeldt_add,
          mattfeldtmult = balancedracscovariance_mattfeldt_mult,
-         pickaadd = balancedracscovariance_picka_add,
-         pickamult = balancedracscovariance_picka_mult,
-         pickahajek = balancedracscovariance_picka_hajek
+         pickaint = balancedracscovariance_picka_int,
+         pickaintmult = balancedracscovariance_picka_intmult,
+         pickaH = balancedracscovariance_picka_H
   )
   if ((modifications == "all")[[1]]) {modifications <- names(fcns)}
   fcnstouse <- fcns[names(fcns) %in% modifications]
@@ -177,9 +177,9 @@ cvchats.convolves <- function(xixi, winwin, xiwin = NULL, phat = NULL, modificat
          adrian = cvchat_adrian,
          mattfeldtadd = cvchat_mattfeldt_add,
          mattfeldtmult = cvchat_mattfeldt_mult,
-         pickaadd = cvchat_picka_add,
-         pickamult = cvchat_picka_mult,
-         pickahajek = cvchat_picka_hajek
+         pickaint = cvchat_picka_int,
+         pickaintmult = cvchat_picka_intmult,
+         pickaH = cvchat_picka_H
   )
   if ((modifications == "all")[[1]]) {modifications <- names(fcns)}
   fcnstouse <- fcns[names(fcns) %in% modifications]
@@ -232,27 +232,27 @@ cvchat_mattfeldt_mult <- function(xixi, winwin, xiwin = NULL, phat = NULL){
   return((xixi * phat ^2 * winwin) / (mattfeldtnum^2))
 }
 
-balancedracscovariance_picka_add <- function(cvchat, cpp1, phat){
+balancedracscovariance_picka_int <- function(cvchat, cpp1, phat){
   return(cvchat - cpp1*reflect.im(cpp1) + phat^2) 
 }
 
-cvchat_picka_add <- function(xixi, winwin, xiwin = NULL, phat = NULL){
+cvchat_picka_int <- function(xixi, winwin, xiwin = NULL, phat = NULL){
   return((xixi - xiwin * reflect.im(xiwin) / winwin) / winwin + phat ^2 )
 }
 
-balancedracscovariance_picka_mult <- function(cvchat, cpp1, phat){
+balancedracscovariance_picka_intmult <- function(cvchat, cpp1, phat){
   return(cvchat * phat^2 / (cpp1*reflect.im(cpp1))) 
 }
 
-cvchat_picka_mult <- function(xixi, winwin, xiwin = NULL, phat = NULL){
+cvchat_picka_intmult <- function(xixi, winwin, xiwin = NULL, phat = NULL){
   return((xixi * phat^2 * winwin) / (xiwin * reflect.im(xiwin)))
 }
 
-balancedracscovariance_picka_hajek <- function(cvchat, cpp1, phat){
+balancedracscovariance_picka_H <- function(cvchat, cpp1, phat){
   return(cvchat - phat*(cpp1 + reflect.im(cpp1) - 2*phat)) 
 }
 
-cvchat_picka_hajek <- function(xixi, winwin, xiwin, phat){
+cvchat_picka_H <- function(xixi, winwin, xiwin, phat){
   return((xixi  - phat * xiwin - phat * reflect.im(xiwin)) / winwin  + 2* phat^2 )
 }
 

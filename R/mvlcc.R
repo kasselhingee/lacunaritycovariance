@@ -20,7 +20,7 @@
 
 #' @examples
 #' xi <- heather$coarse
-#' cencovar <- ccvcs(xi, obswin = Frame(xi), modifications = c("pickahajek"))$pickahajek
+#' cencovar <- ccvcs(xi, obswin = Frame(xi), modifications = c("pickaH"))$pickaH
 #' p <- area(xi) / area(Frame(xi))
 #' sidelengths <- seq(0.3, 14, by = 0.2)
 #' plot(mvlcc(sidelengths, cencovar, p))
@@ -31,11 +31,11 @@
 #' 
 #' #direct to an image
 #' xiim <- as.im(xi, na.replace = 0)
-#' plot(mvlcc(sidelengths, xiim = xiim, modification = "pickahajek"))
+#' plot(mvlcc(sidelengths, xiim = xiim, modification = "pickaH"))
 #' plot(add = TRUE, mvlc(sidelengths, xiim = xiim), lty = "dashed", col = "red")
 #' 
 #' @keywords spatial nonparametric 
-mvlcc <- function(boxes, cencovar = NULL, p = NULL, xiim = NULL, modification = "pickahajek"){
+mvlcc <- function(boxes, cencovar = NULL, p = NULL, xiim = NULL, modification = "pickaH"){
   if (!(is.null(cencovar) && is.null(p))){
     if (!is.null(xiim)){stop("xiim (an observation image) and cencovar or p were given. Either cencovar and p must be supplied or xiim supplied.")}
     lacv <- mvlcc.inputcovar(boxes, cencovar, p)
