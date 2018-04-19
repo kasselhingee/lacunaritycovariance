@@ -11,7 +11,7 @@ balancedracscovariances(xi, obswin = NULL, setcov_boundarythresh = NULL,
   modifications = "all")
 
 balancedracscovariance.cvchat(cvchat, cpp1 = NULL, phat = NULL,
-  modification = "pickahajek")
+  modification = "pickaH")
 
 balancedracscovariances.cvchat(cvchat, cpp1 = NULL, phat = NULL,
   modifications = "all")
@@ -60,9 +60,9 @@ Modifications available are:
 \item adrian  Similar to Picka additive but uses \code{cpp1} twice and not the refelction of \code{cpp1}
 \item mattfeldadd
 \item mattfeldmult
-\item pickaadd The only modification supplied that provides estimates that satisfy C(v) = 2phat - 1 + Ccomplment(v)
-\item pickamult
-\item pickahajek
+\item pickaint The only modification supplied that provides estimates that satisfy C(v) = 2phat - 1 + Ccomplment(v)
+\item pickaintmult
+\item pickaH
 }
 }
 \section{Functions}{
@@ -94,16 +94,16 @@ harmonised <- harmonise.im(cvchat = cvchat, cpp1 = cpp1)
 cvchat <- harmonised$cvchat
 cpp1 <- harmonised$cpp1
 
-balancedcvchat <- balancedracscovariance.cvchat(cvchat, cpp1, phat, modification = "pickaadd")
+balancedcvchat <- balancedracscovariance.cvchat(cvchat, cpp1, phat, modification = "pickaint")
 balancedcvchats <- balancedracscovariances.cvchat(cvchat, cpp1, phat, modifications = "all")
 modifications <- c("none",
  "symm",
  "adrian",
- "mattfeldtadd",
+ "mattfeldt",
  "mattfeldtmult",
- "pickaadd",
- "pickamult",
- "pickahajek", 
+ "pickaint",
+ "pickaintmult",
+ "pickaH", 
  function(cvchat, cpp1, phat) cvchat)
 balancedcvchats <- balancedracscovariances.cvchat(cvchat, cpp1, phat, modifications = modifications)
 plot(as.solist(balancedcvchats), equal.ribbon = TRUE)

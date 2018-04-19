@@ -44,7 +44,7 @@ Modifications available are:
 \item symm Returns the estimated average of cvchat at -v and +v, divided by (phat * phat)
 \item mattfeld The pair-correlation estimator from Mattfeldt's paper
 \item pickaint Picka's intrinsic modification which modifies the coverage probability estimators
-\item pickahajek Picka's Hajek-based modification which additively modifies the covariance estimate.
+\item pickaH Picka's Hajek-based modification which additively modifies the covariance estimate.
 }
 }
 \section{Functions}{

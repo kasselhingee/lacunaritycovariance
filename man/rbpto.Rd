@@ -2,10 +2,16 @@
 % Please edit documentation in R/rbpto.R
 \name{rbpto}
 \alias{rbpto}
+\alias{bpto.coverageprob}
+\alias{bpto.covar}
 \title{Simulation of Boolean Model of Grains Scaled According to a Pareto Distribution}
 \usage{
 rbpto(lambda, grain, win, xm, alpha, seed = NULL, xy = NULL,
   lengthscales = 1:500)
+
+bpto.coverageprob(lambda, grain, xm, alpha, lengthscales = 1:500)
+
+bpto.covar(lambda, grain, xm, alpha, lengthscales = 1:500, xy)
 }
 \arguments{
 \item{lambda}{Intensity of the germ process (which is a Poisson point process)}
@@ -27,6 +33,15 @@ An owin object.
 The parameters xm and alpha are such that the CDF of the Pareto distribuion is \eqn{P(s <= x) = 1 - (xm / x)^{alpha}}.
 Approximates the grain distribution using the scales given by \code{lengthscales} and weighted by the probability distribution function of the Pareto distribution.
 }
+\section{Functions}{
+\itemize{
+\item \code{bpto.coverageprob}: The coverage probability of the Boolean model with scaled grains distributed according to Pareto distribution. Uses approximation of truncated length scales.
+
+\item \code{bpto.covar}: The racs covariance of the Boolean model with scaled grains distributed according to Pareto distribution. 
+Uses approximation of truncated length scales.
+xy is required to specify resolution and offset of pixel grid
+}}
+
 \examples{
 lambda <- 1
 win <- square(r = 10)
@@ -40,4 +55,5 @@ system.time(xi <- rbpto(lambda, grain, win, xm, alpha, lengthscales = 1:100))
 plot(xi)
 
 bpto.coverageprob(lambda, grain, xm, alpha, lengthscales = 1:100)
+bpto.covar(lambda, grain, xm, alpha, lengthscales = 1:100, xy = as.mask(win, eps = 0.1))
 }

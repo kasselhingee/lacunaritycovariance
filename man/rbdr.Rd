@@ -82,7 +82,7 @@ truecvc <- bdrcovar(lambda, grain, xy)
 #estimate values should be close for a large window
 phat <- coverageprob(xi, win)
 truep - phat
-cvchat <- balancedracscovariances(as.mask(xi, eps = c(0.1, 0.1)), obswin = win, modifications = list("pickaadd"))[[1]]
+cvchat <- balancedracscovariances(as.mask(xi, eps = c(0.1, 0.1)), obswin = win, modifications = list("pickaint"))[[1]]
 plot.solist(solist(
   True = truecvc,
   PickaEstimate = cvchat), equal.ribbon = TRUE, main = "Covariance: True and Estimate")

@@ -2,10 +2,20 @@
 % Please edit documentation in R/placegrainsfromlib.R
 \name{placegrainsfromlib}
 \alias{placegrainsfromlib}
+\alias{meangrainarea}
+\alias{meangrainsetcov}
+\alias{grainlib.covar}
 \title{A function to help simulate Boolean models with user-provided grains}
 \usage{
 placegrainsfromlib(pp, grainlib, replace = TRUE, prob = NULL, w = NULL,
   xy = NULL)
+
+meangrainarea(grainlib, weights = rep(1/length(grainlib), length(grainlib)))
+
+meangrainsetcov(grainlib, weights = rep(1/length(grainlib), length(grainlib)),
+  xy)
+
+grainlib.covar(lambda, grainlib, weights, xy)
 }
 \arguments{
 \item{pp}{A point pattern (in \code{ppp} format).}
@@ -35,6 +45,16 @@ The point process of germs can be easily simulated using a variety of \code{spat
 \details{
 \code{placegrainsfromlib} randomly samples from a library of grains (\code{grainlib}) and places these on the points in \code{pp}.
 }
+\section{Functions}{
+\itemize{
+\item \code{meangrainarea}: Compute mean area of a random grain given by the library
+
+\item \code{meangrainsetcov}: Compute the mean set covariance of the random grain given by the library.
+xy is required because the set covariance function must rasterise the owin objects
+
+\item \code{grainlib.covar}: Compute the covariance of a Boolean model with random grain given by the library
+}}
+
 \examples{
 #Generate a germ-grain models where germs are a Poisson point process
 # and grains are 2 or 3 different disc sizes.
@@ -59,7 +79,19 @@ xibuffer <- placegrainsfromlib(pp, grainlib, xy = as.mask(w, eps = 0.1))
 plot(xibuffer)
 plot(w, add = TRUE)
 
-
+#Demo of covariance and set covariance computations: test on Boolean model
+lambda <- 0.1
+discr <- 10
+weights <- c(0.9999, 0.0001)
+grainlib <- solist(disc(r = discr), disc(r = 2*discr))
+meangrainarea(grainlib, weights)
+plot(meangrainsetcov(grainlib, weights, xy = as.mask(w, eps = 0.1)))
+truecovartest <- grainlib.covar(lambda, grainlib, weights, xy = as.mask(w, eps = 0.1))
+truecovariance <- bddcovar(
+                   c(-10, 10), c(-10, 10), c(0.1, 0.1), lambda, discr)
+plot(solist(truecovartest, truecovariance), clipwin = disc(r = 3))
+plot(truecovartest - truecovariance, clipwin = disc(r = 3))
+range(truecovartest - truecovariance)
 }
 \author{
 Kassel Liam Hingee
