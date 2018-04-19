@@ -59,7 +59,11 @@ cppicka <- function(xi, obswin = NULL,
   
   if (is.owin(xi)){
     stopifnot(is.owin(obswin))
-    Frame(xi) <- Frame(obswin)
+    if (!is.subset.owin(boundingbox(xi), boundingbox(obswin))){
+      warning("Bounding box of xi is not inside bounding box of obswin. This can be caused by xi being a pixel mask, and obswin being a polygon that is not quite aligned with the pixels. The Frame(xi) will be enlarged")
+    }
+    #the following makes sure convolutions generated when the input frame of xi is much smaller than obswin
+    Frame(xi) <- boundingbox(obswin, Frame(xi)) #that obswin and xi are needed on right is when the binary grid in xi doesn't quite match with obswin
     xi <- as.im(xi, W = obswin, na.replace = 0)
     obswin <- as.im(obswin, na.replace = 0, xy = xi)
   }
