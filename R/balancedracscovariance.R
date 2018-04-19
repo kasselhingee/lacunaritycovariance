@@ -36,13 +36,12 @@
 #' Modifications available are: 
 #' \itemize{
 #' \item \code{none} Returns cvchat
-#' \item symm Returns the estimated average of cvchat at -v and +v
 #' \item adrian  Similar to Picka additive but uses \code{cpp1} twice and not the refelction of \code{cpp1}
-#' \item mattfeldadd
-#' \item mattfeldmult
-#' \item pickaadd The only modification supplied that provides estimates that satisfy C(v) = 2phat - 1 + Ccomplment(v)
-#' \item pickamult
-#' \item pickahajek
+#' \item mattfeldt
+#' \item mattfeldtmult
+#' \item pickaint The only modification supplied that provides estimates that satisfy C(v) = 2phat - 1 + Ccomplment(v)
+#' \item pickaintmult
+#' \item pickaadd
 #' }
 
 #' @examples
@@ -144,13 +143,12 @@ balancedracscovariances.cvchat <- function(cvchat, cpp1 = NULL, phat = NULL, mod
   cpp1 <- harmonised$cpp1
   fcns <- list(
          none = function(cvchat, cpp1 = NULL, phat = NULL) cvchat,
-         symm = balancedracscovariance_symm,
          adrian = balancedracscovariance_adrian,
-         mattfeldtadd = balancedracscovariance_mattfeldt_add,
+         mattfeldt = balancedracscovariance_mattfeldt,
          mattfeldtmult = balancedracscovariance_mattfeldt_mult,
-         pickaadd = balancedracscovariance_picka_add,
-         pickamult = balancedracscovariance_picka_mult,
-         pickahajek = balancedracscovariance_picka_hajek
+         pickaint = balancedracscovariance_picka_int,
+         pickaintmult = balancedracscovariance_picka_intmult,
+         pickaadd = balancedracscovariance_picka_add
   )
   if ((modifications == "all")[[1]]) {modifications <- names(fcns)}
   fcnstouse <- fcns[names(fcns) %in% modifications]
@@ -198,10 +196,6 @@ cvchat_none <- function(xixi, winwin, xiwin = NULL, phat = NULL){
   return(xixi / winwin)
 }
 
-balancedracscovariance_symm <- function(cvchat, cpp1 = NULL, phat = NULL){
-  return((cvchat + reflect.im(cvchat))/2) 
-}
-
 cvchat_symm <- function(xixi, winwin, xiwin = NULL, phat = NULL){
   return((xixi + reflect.im(xixi))/ (2 * winwin))
 }
@@ -215,7 +209,7 @@ cvchat_adrian <- function(xixi, winwin, xiwin = NULL, phat = NULL){
 }
 
 
-balancedracscovariance_mattfeldt_add <- function(cvchat, cpp1, phat){
+balancedracscovariance_mattfeldt <- function(cvchat, cpp1, phat){
   return(cvchat - ( (cpp1 + reflect.im(cpp1))/2 )^2 + phat^2) 
 }
 
@@ -232,7 +226,7 @@ cvchat_mattfeldt_mult <- function(xixi, winwin, xiwin = NULL, phat = NULL){
   return((xixi * phat ^2 * winwin) / (mattfeldtnum^2))
 }
 
-balancedracscovariance_picka_add <- function(cvchat, cpp1, phat){
+balancedracscovariance_picka_int <- function(cvchat, cpp1, phat){
   return(cvchat - cpp1*reflect.im(cpp1) + phat^2) 
 }
 
@@ -240,7 +234,7 @@ cvchat_picka_add <- function(xixi, winwin, xiwin = NULL, phat = NULL){
   return((xixi - xiwin * reflect.im(xiwin) / winwin) / winwin + phat ^2 )
 }
 
-balancedracscovariance_picka_mult <- function(cvchat, cpp1, phat){
+balancedracscovariance_picka_intmult <- function(cvchat, cpp1, phat){
   return(cvchat * phat^2 / (cpp1*reflect.im(cpp1))) 
 }
 
@@ -248,7 +242,7 @@ cvchat_picka_mult <- function(xixi, winwin, xiwin = NULL, phat = NULL){
   return((xixi * phat^2 * winwin) / (xiwin * reflect.im(xiwin)))
 }
 
-balancedracscovariance_picka_hajek <- function(cvchat, cpp1, phat){
+balancedracscovariance_picka_add <- function(cvchat, cpp1, phat){
   return(cvchat - phat*(cpp1 + reflect.im(cpp1) - 2*phat)) 
 }
 

@@ -56,13 +56,12 @@ Many of the modifications use Picka's coverage probability estimators in some wa
 Modifications available are: 
 \itemize{
 \item \code{none} Returns cvchat
-\item symm Returns the estimated average of cvchat at -v and +v
 \item adrian  Similar to Picka additive but uses \code{cpp1} twice and not the refelction of \code{cpp1}
-\item mattfeldadd
-\item mattfeldmult
-\item pickaadd The only modification supplied that provides estimates that satisfy C(v) = 2phat - 1 + Ccomplment(v)
-\item pickamult
-\item pickahajek
+\item mattfeldt
+\item mattfeldtmult
+\item pickaint The only modification supplied that provides estimates that satisfy C(v) = 2phat - 1 + Ccomplment(v)
+\item pickaintmult
+\item pickaadd
 }
 }
 \section{Functions}{
