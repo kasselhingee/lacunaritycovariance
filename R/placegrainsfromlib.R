@@ -52,7 +52,19 @@
 #' plot(xibuffer)
 #' plot(w, add = TRUE)
 #' 
-#' 
+#' #Demo of covariance and set covariance computations: test on Boolean model
+#' lambda <- 0.1
+#' discr <- 10
+#' weights <- c(0.9999, 0.0001)
+#' grainlib <- solist(disc(r = discr), disc(r = 2*discr))
+#' meangrainarea(grainlib, weights)
+#' plot(meangrainsetcov(grainlib, weights, xy = as.mask(w, eps = 0.1)))
+#' truecovartest <- grainlib.covar(lambda, grainlib, weights, xy = as.mask(w, eps = 0.1))
+#' truecovariance <- bddcovar(
+#'                    c(-10, 10), c(-10, 10), c(0.1, 0.1), lambda, discr)
+#' plot(solist(truecovartest, truecovariance), clipwin = disc(r = 3))
+#' plot(truecovartest - truecovariance, clipwin = disc(r = 3))
+#' range(truecovartest - truecovariance)
 
 #' @keywords spatial nonparametric datagen
 placegrainsfromlib <- function(pp, grainlib,
@@ -95,5 +107,34 @@ tocompatiblepixelarray <- function(grain, xy){
   yrow <- seq(floor(grainw$yrange[[1]]/xy$ystep)*xy$ystep,
               ceiling(grainw$yrange[[2]]/xy$ystep)*xy$ystep, by = xy$ystep)
   return(as.mask(grain, xy = list(x = xcol, y = yrow)))
+}
+
+#' @describeIn placegrainsfromlib Compute mean area of a random grain given by the library
+meangrainarea <- function(grainlib, weights = rep(1/length(grainlib), length(grainlib))){
+  grainareas <- vapply(grainlib, area.owin, 0.0)
+  return(sum(grainareas * as.vector(weights)))
+}
+
+#' @describeIn placegrainsfromlib Compute the mean set covariance of the random grain given by the library.
+#' xy is required because the set covariance function must rasterise the owin objects
+meangrainsetcov <- function(grainlib, weights = rep(1/length(grainlib), length(grainlib)), xy){
+  grainlib <- solapply(grainlib, tocompatiblepixelarray, xy = xy)
+  setcovagrain <- solapply(grainlib, setcov)
+  setcovagrain <- as.solist(mapply(function(x, y) x * y, setcovagrain, weights, SIMPLIFY = FALSE))
+  meansetcov <- 0 * as.im(tocompatiblepixelarray(do.call(union.owin,lapply(setcovagrain, Frame)), xy = xy)) #blank mean setcov
+  setcovagrain <- solapply(setcovagrain, as.im, xy = meansetcov, na.replace = 0) #pad with zeros
+  for (i in 1:length(grainlib)){
+    meansetcov <- meansetcov + setcovagrain[[i]]
+  }
+  return(meansetcov)
+}
+
+
+#' @describeIn placegrainsfromlib Compute the covariance of a Boolean model with random grain given by the library
+grainlib.covar <- function(lambda, grainlib, weights, xy){
+  p <- 1 - exp(- lambda * meangrainarea(grainlib, weights))
+  meangsetcov <- meangrainsetcov(grainlib, weights, xy)
+  racscov <- 2 * p - 1 + (1 - p)^2 * exp(lambda * meangsetcov) #this formula from 47 of Bohm 2004 Kernel Estimation of Stationary RACS paper
+  return(racscov)
 }
 
