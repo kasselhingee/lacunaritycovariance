@@ -2,7 +2,7 @@
 
 #' @title A function to help simulate Boolean models with user-provided grains
 #' @aliases placegrainsfromlib
-#' @export placegrainsfromlib
+#' @export placegrainsfromlib grainlib.covar 
 #' @author Kassel Liam Hingee
 
 #' @description

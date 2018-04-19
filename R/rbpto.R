@@ -1,5 +1,5 @@
 #' @title Simulation of Boolean Model of Grains Scaled According to a Pareto Distribution
-#' @export rbpto bpto.coverageprob
+#' @export rbpto bpto.coverageprob bpto.covar
 #' 
 #' @param lambda Intensity of the germ process (which is a Poisson point process)
 #' @param grain A single owin object that gives the shape and size of the grain at scale 1
@@ -30,6 +30,7 @@
 #' plot(xi)
 #' 
 #' bpto.coverageprob(lambda, grain, xm, alpha, lengthscales = 1:100)
+#' covar <- bpto.covar(lambda, grain, xm, alpha, lengthscales = 1:100, xy = as.mask(win, eps = 0.1))
 
 rbpto <- function(lambda, grain, win, xm, alpha,
                   seed = NULL, xy = NULL, lengthscales = 1:500){
@@ -61,7 +62,7 @@ rbpto <- function(lambda, grain, win, xm, alpha,
   return(xi)
 }
 
-#' #describeIn rbpto  The coverage probability of the Boolean model with scaled grains distributed according to Pareto distribution. Uses approximation of truncated length scales.
+#' @describeIn rbpto  The coverage probability of the Boolean model with scaled grains distributed according to Pareto distribution. Uses approximation of truncated length scales.
 bpto.coverageprob <- function(lambda, grain, xm, alpha,
                               lengthscales = 1:500){
   #first get mean area. Need weight for each discrete grain.
@@ -74,4 +75,24 @@ bpto.coverageprob <- function(lambda, grain, xm, alpha,
   
   meangrainarea <- sum(lengthscales * lengthscales * area.owin(grain) * weights)
   return(1 - exp(- lambda * meangrainarea))
+}
+
+#' @describeIn rbpto  The racs covariance of the Boolean model with scaled grains distributed according to Pareto distribution. 
+#' Uses approximation of truncated length scales.
+#' xy is required to specify resolution and offset of pixel grid
+bpto.covar <- function(lambda, grain, xm, alpha, lengthscales = 1:500, xy){
+  #check that smallest scale is larger than xm
+  stopifnot(lengthscales[1] >= xm)
+  
+  #first get grainlib with weights
+  #get scaled versions of grain
+  grainlib <- mapply(scalardilate, X = list(grain), f = lengthscales, SIMPLIFY = FALSE)
+  grainlib <- as.solist(grainlib)
+  
+  #get weights of these grains from pmf
+  weights <- alpha * xm ^ alpha / (lengthscales ^ (alpha + 1) )
+  weights <- weights / sum(weights) #standardise
+  
+  covar <- grainlib.covar(lambda, grainlib, weights, xy)
+  return(covar)
 }
