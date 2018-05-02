@@ -55,5 +55,5 @@ system.time(xi <- rbpto(lambda, grain, win, xm, alpha, lengthscales = 1:100))
 plot(xi)
 
 bpto.coverageprob(lambda, grain, xm, alpha, lengthscales = 1:100)
-bpto.covar(lambda, grain, xm, alpha, lengthscales = 1:100, xy = as.mask(win, eps = 0.1))
+covar <- bpto.covar(lambda, grain, xm, alpha, lengthscales = 1:100, xy = as.mask(win, eps = 0.1))
 }
