@@ -81,7 +81,10 @@ mvlc.inputcovar <- function(boxes, covariance, p){
   return(lac)
 }
 
-
+##  INNER PRODUCT FUNCTION ##
+#Parameters: A is an image, B is an image
+#outsideA and outsideB are the `value` of the image outside the image domain
+#na.ra are NA values skipped when summing up pixel values? (otherwise NA values stay as NA)
 innerprod.im <- function(A, B, outsideA = NA, outsideB = NA, na.rm = FALSE){
   ##assume that NA is unknown but finite so that mutliplying 0*NA gives 0
   integrationregion <- union.owin(Frame(A), Frame(B))
