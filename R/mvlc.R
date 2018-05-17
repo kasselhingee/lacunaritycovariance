@@ -75,7 +75,7 @@ mvlc.inputcovar <- function(boxes, covariance, p){
     boxarea <- unlist(boxarea)
   }
 
-  integrationresults <- mapply(innerprod.im, boxcov, list(covariance), na.rm = FALSE, SIMPLIFY = FALSE) # the list around the covariance is necessary to stop mapply unlisting the image itself
+  integrationresults <- mapply(innerprod.im, boxcov, list(covariance), outsideA = 0, outsideB = NA, na.rm = FALSE, SIMPLIFY = FALSE) # the list around the covariance is necessary to stop mapply unlisting the image itself
 
   lac <- unlist(integrationresults) / (p ^ 2 * boxarea ^ 2) - 1
   return(lac)

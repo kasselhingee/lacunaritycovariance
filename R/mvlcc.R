@@ -77,7 +77,7 @@ mvlcc.inputcovar <- function(boxes, cencovar, p){
     boxarea <- unlist(boxarea)
   }
 
-  integrationresults <- mapply(innerprod.im, boxcov, list(cencovar), na.rm = FALSE, SIMPLIFY = FALSE) # the list around the cencovar is necessary to stop mapply unlisting the image itself
+  integrationresults <- mapply(innerprod.im, boxcov, list(cencovar), outsideA = 0, outsideB = NA, na.rm = FALSE, SIMPLIFY = FALSE) # the list around the cencovar is necessary to stop mapply unlisting the image itself
 
   lac <- unlist(integrationresults) / (p ^ 2 * boxarea ^ 2)
   return(lac)

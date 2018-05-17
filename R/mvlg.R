@@ -66,7 +66,7 @@ mvlg.inputpaircor <- function(boxes, paircor){
     boxarea <- unlist(boxarea)
   }
 
-  integrationresults <- mapply(innerprod.im, boxcov, list(paircor), na.rm = FALSE, SIMPLIFY = FALSE) # the list around the paircor is necessary to stop mapply unlisting the image itself
+  integrationresults <- mapply(innerprod.im, boxcov, list(paircor), outsideA = 0, outsideB = NA, na.rm = FALSE, SIMPLIFY = FALSE) # the list around the paircor is necessary to stop mapply unlisting the image itself
 
   lac <- unlist(integrationresults) / (boxarea ^ 2) - 1
   return(lac)
