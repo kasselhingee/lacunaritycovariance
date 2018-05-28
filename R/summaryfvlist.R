@@ -17,13 +17,13 @@
 summary.fvlist <- function(fvs){
   fvs <- harmonise.fv(fvs)
   n <- length(fvs)
-  meanY <- Reduce(Add, fvs)
+  meanY <- Reduce(Add.fv, fvs)
   meanY <- eval.fv(meanY/n, dotonly = FALSE, relabel = FALSE)
-  sumY2 <- Reduce(Add, lapply(fvs, Square))
+  sumY2 <- Reduce(Add.fv, lapply(fvs, Square.fv))
   varY <- eval.fv( (sumY2 - n *( meanY^2))/(n - 1), dotonly = FALSE, relabel = FALSE)
   varY <- eval.fv(pmax.int(0, varY), dotonly = FALSE, relabel = FALSE)
-  maxY <- Reduce(Pmax, fvs)
-  minY <- Reduce(Pmin, fvs)
+  maxY <- Reduce(Pmax.fv, fvs)
+  minY <- Reduce(Pmin.fv, fvs)
   ## tweak labels of main estimate
   attributes(meanY) <- attributes(varY) <- attributes(maxY) <- attributes(minY) <- attributes(vanilla.fv(fvs[[1]]))
   attributes(minY) <- attributes(vanilla.fv(fvs[[1]]))
@@ -52,8 +52,8 @@ summary.fvlist <- function(fvs){
 }
 
 #Handy functions copied from spatstat
-Square <- function(A) { force(A); eval.fv(A^2, dotonly = FALSE, relabel=FALSE) }
-Add <- function(A,B){ force(A); force(B); eval.fv(A+B, dotonly = FALSE, relabel=FALSE) }
+Square.fv <- function(A) { force(A); eval.fv(A^2, dotonly = FALSE, relabel=FALSE) }
+Add.fv <- function(A,B){ force(A); force(B); eval.fv(A+B, dotonly = FALSE, relabel=FALSE) }
 
-Pmax <- function(A, B){force(A); force(B); eval.fv(pmax(A, B), dotonly = FALSE, relabel = FALSE)}
-Pmin <- function(A, B){force(A); force(B); eval.fv(pmin(A, B), dotonly = FALSE, relabel = FALSE)}
+Pmax.fv <- function(A, B){force(A); force(B); eval.fv(pmax(A, B), dotonly = FALSE, relabel = FALSE)}
+Pmin.fv <- function(A, B){force(A); force(B); eval.fv(pmin(A, B), dotonly = FALSE, relabel = FALSE)}

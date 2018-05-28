@@ -21,18 +21,18 @@ summary.imlist <- function(ims, harmonizeims = TRUE){
   }
   #class(ims) <- "list"
   n <- length(ims)
-  meanY <- Reduce(Add, ims)
+  meanY <- Reduce(Add.im, ims)
   meanY <- eval.im(meanY/n)
-  sumY2 <- Reduce(Add, lapply(ims, Square))
+  sumY2 <- Reduce(Add.im, lapply(ims, Square.im))
   varY <- eval.im( (sumY2 - n *( meanY^2))/(n - 1))
   varY <- eval.im(pmax.int(0, varY))
-  maxY <- Reduce(Pmax, ims)
-  minY <- Reduce(Pmin, ims)
+  maxY <- Reduce(Pmax.im, ims)
+  minY <- Reduce(Pmin.im, ims)
   return(solist(mean = meanY, var = varY, max = maxY, min = minY))
 }
 
-Square <- function(A) { force(A); eval.im(A^2) }
-Add <- function(A,B){ force(A); force(B); eval.im(A+B, harmonize = FALSE) }
+Square.im <- function(A) { force(A); eval.im(A^2) }
+Add.im <- function(A,B){ force(A); force(B); eval.im(A+B, harmonize = FALSE) }
 
-Pmax <- function(A, B){force(A); force(B); eval.im(pmax(A, B), harmonize = FALSE)}
-Pmin <- function(A, B){force(A); force(B); eval.im(pmin(A, B), harmonize = FALSE)}
+Pmax.im <- function(A, B){force(A); force(B); eval.im(pmax(A, B), harmonize = FALSE)}
+Pmin.im <- function(A, B){force(A); force(B); eval.im(pmin(A, B), harmonize = FALSE)}
