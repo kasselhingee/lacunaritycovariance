@@ -1,7 +1,7 @@
 #' @title unlist SpatialPolygonsDataFrame
 #' @export unlistSpatialPolygonsDataframe
 #' @description  Takes a SpatialPolygonsDataFrame object and splits it into individual SpatialPolygonsDataFrames. One for each polygon.
-#' I wish there was a nicer way than currently in this function.
+#' There is a nicer way: use split(, f = 1:SPDFlength).
 #' 
 #' @param spdf A SpatialPolygonsDataFrame
 #' @return a list of SpatialPolgyonsDataFrames, each data frame contains exactly one polygon.
