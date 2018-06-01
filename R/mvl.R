@@ -61,11 +61,8 @@ mvl <- function(xiim, boxwidths,
 
   mvl.ests <- c(mvlg = mvlgs, mvlcc = mvlccs, list(mvlc = mvlc.est), list(mvlgb = mvlgb.est))
   mvl.ests <- mvl.ests[!vapply(mvl.ests, is.null, FUN.VALUE = FALSE)]
-  mvl.ests.harm <- do.call(harmonise.fv, mvl.ests)
-  mvls.fv <- suppressWarnings(cbind.fv(mvl.ests.harm))
-  names(mvls.fv) <- c("s", names(mvl.ests))
-  fvlabels(mvls.fv) <-  c("Box Width", names(mvl.ests))
-  formula(mvls.fv) <- ". ~ s"
+  mvls.fv <- collapse.fv(mvl.ests, different = "MVL")
+  names(mvls.fv) <- c(fvnames(mvls.fv, ".x"), names(mvl.ests))
   return(mvls.fv)
 }
 
