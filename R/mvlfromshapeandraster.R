@@ -51,7 +51,7 @@ MVLest.multipleregions <- function(polysdf,
   lpolydf <- unlistSpatialPolygonsDataframe(polysdf)
   out <- lapply(lpolydf, MVLest.region, rasterlayer = rasterlayer,
          frange = frange, NArange = NArange, sidelengths = sidelengths, estimators = estimators)
-  if (display) {tmp <- lapply(out, plotoutput.MVLest.region.rasterlayer)}
+  if (display) {tmp <- lapply(out, plotoutput)}
   return(out)
 }
 
