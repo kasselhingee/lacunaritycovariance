@@ -48,7 +48,7 @@ MVLest.multipleregions <- function(polysdf,
                                              "MVLcc.mattfeldt", "MVLcc.pickaint", "MVLcc.pickaH",
                                              "MVLc", "MVLgb"),
                                        display = TRUE){
-  lpolydf <- split(polysdf, f = 1:nrow(polysdf))
+  lpolydf <- unlistSpatialPolygonsDataframe(polysdf)
   out <- lapply(lpolydf, MVLest.region, rasterlayer = rasterlayer,
          frange = frange, NArange = NArange, sidelengths = sidelengths, estimators = estimators)
   if (display) {tmp <- lapply(out, plotoutput.MVLest.region.rasterlayer)}
