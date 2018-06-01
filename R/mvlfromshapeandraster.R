@@ -60,7 +60,7 @@ MVLest.region <- function(polydf, rasterlayer,
                           frange, NArange, sidelengths, estimators = c("MVLg.mattfeldt", "MVLg.pickaint",
                                                                       "MVLcc.mattfeldt", "MVLcc.pickaint", "MVLcc.pickaH",
                                                                       "MVLc", "MVLgb")){
-  xiim <- xiimfrompolyrasterlayer(polydf, rasterlayer, frange, NArange)
+  xiim <- converttologicalim(polydf, rasterlayer, frange, NArange)
   mvl.ests <- mvl(xiim, sidelengths, estimators = estimators)
   return(list(classimage = xiim, polydata = polydf, mvl.est = mvl.ests))
 }
