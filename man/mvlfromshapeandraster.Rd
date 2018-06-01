@@ -5,25 +5,25 @@
 \alias{MVLest.multipleregions}
 \alias{MVLest.region}
 \alias{converttologicalim}
-\alias{plotoutput}
+\alias{plot_MVLest.region}
 \title{MVL estimates from shapefiles, SpatialPolygonDataFrames  and raster data}
 \usage{
-MVLests.files(shapefile, rasterfile, frange, NArange, sidelengths,
+MVLests.files(shapefile, rasterfile, frange, NArange, boxwidths,
   estimators = c("MVLg.mattfeldt", "MVLg.pickaint", "MVLcc.mattfeldt",
   "MVLcc.pickaint", "MVLcc.pickaH", "MVLc", "MVLgb"), display = TRUE)
 
-MVLest.multipleregions(polysdf, rasterlayer, frange, NArange, sidelengths,
+MVLest.multipleregions(polysdf, rasterlayer, frange, NArange, boxwidths,
   estimators = c("MVLg.mattfeldt", "MVLg.pickaint", "MVLcc.mattfeldt",
   "MVLcc.pickaint", "MVLcc.pickaH", "MVLc", "MVLgb"), display = TRUE)
 
-MVLest.region(polydf, rasterlayer, frange, NArange, sidelengths,
+MVLest.region(polydf, rasterlayer, frange, NArange, boxwidths,
   estimators = c("MVLg.mattfeldt", "MVLg.pickaint", "MVLcc.mattfeldt",
   "MVLcc.pickaint", "MVLcc.pickaH", "MVLc", "MVLgb"))
 
 converttologicalim(polydf, rasterlayer, frange, NArange)
 
-plotoutput(returnedlist, plot.im.args = list(main = "Class Image", axes =
-  TRUE), plot.mvl.args = NULL)
+plot_MVLest.region(returnedlist, plot.im.args = list(main = "Class Image",
+  axes = TRUE), plot.mvl.args = NULL)
 }
 \arguments{
 \item{shapefile}{The path to a shapefile}
@@ -34,7 +34,9 @@ plotoutput(returnedlist, plot.im.args = list(main = "Class Image", axes =
 
 \item{NArange}{is list of length 2 specifying the minimum and maximum pixel values to assign as NA values}
 
-\item{estimators}{A list of names of MVL estimators to use. See \code{mvl()} for available list and more information.}
+\item{estimators}{A list of names of MVL estimators to use. See \code{mvl()} for available list and more information}
+
+\item{display}{If TRUE then \code{plot_MVLest.region} is called so that the results are automatically plotted}
 
 \item{polysdf}{A SpatialPolygonsDataFrame with each feature corresponding to a different region.}
 
@@ -62,6 +64,6 @@ Returns a list of the three items (1) the logical image used, (2) the MVL estima
 
 \item \code{converttologicalim}: Converts data contained in \code{rasterlayer} into a \code{spatstat im} object with logical values of TRUE (for foreground), FALSE (for background) and NA.
 
-\item \code{plotoutput}: A special plotting function for the results of \code{MVLest.region}. Plots the image used, the MVL estimates and includes polygon attributed below plots.
+\item \code{plot_MVLest.region}: A special plotting function for the results of \code{MVLest.region}. Plots the image used, the MVL estimates and includes polygon attributed below plots.
 }}
 
