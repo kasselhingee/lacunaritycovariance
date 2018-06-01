@@ -22,6 +22,9 @@
 #'  If NULL the grains are selected with equal probability.
 #' @param w Optional desired observation window. If this is non-null then any grains with Frame outside the Frame of \code{w} will be ignored.
 #' This reduces polygonal intersection calculations for very large buffer distances
+#' @param xy An im or binary mask object that is used to specify the pixel array of objects.
+#' @param weights Probability of selecting each grain in the library
+#' @param lambda Intensity of germs of a Boolean model - for computing the covariance of a Boolean model that has grain distribution given by \code{grainlib} and \code{weights}.
 
 #' @details \code{placegrainsfromlib} randomly samples from a library of grains (\code{grainlib}) and places these on the points in \code{pp}.
 

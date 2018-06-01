@@ -3,6 +3,9 @@
 #' 
 #' @param lambda Intensity of the germ process (which is a Poisson point process)
 #' @param grain A single owin object that gives the shape and size of the grain at scale 1
+#' @param xm A parameter governing the shape of the Pareto distribution used - see details
+#' @param alpha A parameter governing the shape of the Pareto distribution used - see details
+#' @param lengthscales A list of scales of the \code{grain} for which to approximate the Pareto distribution: The grain for a germ is chosen by selecting a scaled version of \code{grain} where \code{lengthscales} specifies the possible scales and the Pareto distribution is used to specify the probability of selection of each scale.
 #' @param win The window to simulate in (an owin object)
 #' @param seed Optional input (default in NULL). Is an integer passed to \code{\link{base}{set.seed}}. Used to reproduce patterns exactly.
 #' @param xy A raster object that specifies pixel coordinates of the final simulated binary map.

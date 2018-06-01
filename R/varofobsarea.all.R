@@ -22,7 +22,7 @@
 #' n21 <- 10
 #' n22 <- 95
 #' n12 <- 5
-#' estimates <- allsae(xi, obswin, corrrad, corrstepheight, n11, n21, n12, n22)
+#' estimates <- allsae(xi, obswin, corrrad, corrstepheight, erosionrad = 5, n11, n21, n12, n22)
 #' \dontrun{
 #' plot.new()
 #' plot.window(ylim = c(min(estimates$areahat - 2*sqrt(estimates$varhat)),

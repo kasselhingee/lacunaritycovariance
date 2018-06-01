@@ -5,12 +5,13 @@
 
 
 
+#' @param n11 The number of samples that were truly class 1 and fallibly classified as class 1
+#' @param n21 The number of samples that were truly class 2 and fallibly classified as class 1
+#' @param n12 The number of samples that were truly class 1 and fallibly classified as class 2
+#' @param n22 The number of samples that were truly class 2 and fallibly classified as class 2
 #' @param xi An observation of the RACS of interest in owin form.
 #' @param obswin Observation window in owin format
-#' @param corrrad Radius of the step function in the correlation (in the same units as xi)
-#' @param corrstepheight Height of the step in the correlation
-#' @param p21 Probability that a location fallibly classified into the cover of interest is really outside the cover of interest
-#' @param p12 Probability that a location fallibly classified into the non-interesting class is really the class of interest.
+#' @param erosionrad The distance to erode the set of pixels in the class of interest (in the same units as xi).
 
 
 #' @examples

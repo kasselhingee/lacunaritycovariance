@@ -20,6 +20,9 @@
 #' @param modification A string specifying the desired modification. See details.
 #' @param modifications A list of strings specifying desired modifications or functions to apply to cvchat, cpp1 and phat.
 #'  modifications = "all" will select all inbuilt modifications. See details. 
+#' @param xixi The convolution of a set representing xi with itself
+#' @param winwin The convolution of the observation window with itself
+#' @param xiwin The convolution of the set xi with the observation window
 
 #' @return \code{racscovariance.cvchat} returns a \pkg{SpatStat} \code{im} object containing the modified estimated covariance.
 #'  The grey scale values in this image represent the covariance for an array of vectors. 

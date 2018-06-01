@@ -5,7 +5,7 @@
 
 #' @param xiim A \pkg{spatstat} \code{im} object with pixel values that are either TRUE, FALSE or NA. TRUE represents foreground, FALSE respresents background and NA represents unobserved locations.
 #' @param boxwidths A list of box boxwidths
-#' @param A list of estimator names - see details for possibilities.
+#' @param estimators A list of estimator names - see details for possibilities.
 
 #' @return An \code{fv} object.
 
