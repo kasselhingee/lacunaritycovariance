@@ -30,9 +30,9 @@ plot_MVLest.region(returnedlist, plot.im.args = list(main = "Class Image",
 
 \item{rasterfile}{The path to a single layer raster file readable to RGDAL}
 
-\item{frange}{is list of length 2 specifying the minimum and maximum pixel values to assign as foreground}
+\item{frange}{is list of length 2 specifying the minimum and maximum pixel values to assign as foreground. The range is inclusive.}
 
-\item{NArange}{is list of length 2 specifying the minimum and maximum pixel values to assign as NA values}
+\item{NArange}{is list of length 2 specifying the minimum and maximum pixel values to assign as NA values. The range is inclusive and overrides any assignment by frange.}
 
 \item{estimators}{A list of names of MVL estimators to use. See \code{mvl()} for available list and more information}
 

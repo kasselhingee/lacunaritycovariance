@@ -6,8 +6,8 @@
 #' @param shapefile The path to a shapefile
 #' @param polydf is a SpatialPolygonsDataFrame with a single region
 #' @param rasterlayer is a raster layer object
-#' @param frange is list of length 2 specifying the minimum and maximum pixel values to assign as foreground
-#' @param NArange is list of length 2 specifying the minimum and maximum pixel values to assign as NA values
+#' @param frange is list of length 2 specifying the minimum and maximum pixel values to assign as foreground. The range is inclusive.
+#' @param NArange is list of length 2 specifying the minimum and maximum pixel values to assign as NA values. The range is inclusive and overrides any assignment by frange.
 #' @param estimators A list of names of MVL estimators to use. See \code{mvl()} for available list and more information
 #' @param display If TRUE then \code{plot_MVLest.region} is called so that the results are automatically plotted
 #' @describeIn mvlfromshapeandraster  Returns MVL estimates from regions specified in shapefile using raster data given in rasterfile
@@ -22,7 +22,7 @@ MVLests.files <- function(
                  "MVLc", "MVLgb"),
   display = TRUE
 ){
-  polysdf <- readOGR(dirname(shapefile), sub(".shp", "", basename(shapefile)))
+  polysdf <- readOGR(dirname(shapefile), sub(".shp", "", basename(shapefile)), verbose = FALSE)
   rasterlayer <- raster(rasterfile)
   out <- MVLest.multipleregions(
     polysdf = polysdf,
