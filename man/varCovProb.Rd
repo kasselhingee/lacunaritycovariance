@@ -11,13 +11,19 @@ varCovProb(Xi, obswin)
 
 varCovProb.covarsupplied(covar, obswin)
 
-varCovProb_ests(xi, obswin = NULL, setcov_boundarythresh = NULL,
+varCovProb_ests(Xi, obswin = NULL, setcov_boundarythresh = NULL,
   modifications = "all")
 }
 \arguments{
 \item{Xi}{is an observation (in owin) format of a RACS or an image of 0, 1 and NA values.}
 
 \item{obswin}{is the corresponding observation window.}
+
+\item{covar}{A covariance image for the RACS (could be estimated from Xi)}
+
+\item{setcov_boundarythresh}{When estimating covariance the threshold at which the set covariance of the observation window is deemed too small and estimation doesn't occur. See \code{racscovariance()}.}
+
+\item{modifications}{A list of modifications of centred covariance estimation to use - see \code{ccvc()}.}
 }
 \value{
 varcovProb returns a variance estimate using the covariance function and an estimate of area fraction). This will not be as good as the spectral density based estimate**.
@@ -40,9 +46,9 @@ This function assumes that the probability of two points being in \eqn{\Xi} is i
 }}
 
 \examples{
-xi <- heather$coarse
-obswin <- Frame(xi)
-varCovProb_ests(xi, obswin, modifications = "all")
+Xi <- heather$coarse
+obswin <- Frame(Xi)
+varCovProb_ests(Xi, obswin, modifications = "all")
 }
 \references{
 Molchanov, I. (1997) Statistics of the Boolean Model for Practitioners and Mathematicians. Wiley.

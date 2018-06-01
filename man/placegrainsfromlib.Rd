@@ -29,6 +29,12 @@ If NULL the grains are selected with equal probability.}
 
 \item{w}{Optional desired observation window. If this is non-null then any grains with Frame outside the Frame of \code{w} will be ignored.
 This reduces polygonal intersection calculations for very large buffer distances}
+
+\item{xy}{An im or binary mask object that is used to specify the pixel array of objects.}
+
+\item{weights}{Probability of selecting each grain in the library}
+
+\item{lambda}{Intensity of germs of a Boolean model - for computing the covariance of a Boolean model that has grain distribution given by \code{grainlib} and \code{weights}.}
 }
 \value{
 Returns an \code{owin} object.

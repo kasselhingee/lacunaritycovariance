@@ -24,6 +24,14 @@ sae.v3.wsu.var(xi, obswin, corrrad, corrstepheight, n11, n21, n12, n22)
 
 \item{p12}{Probability that a location fallibly classified into the non-interesting class is really the class of interest.}
 
+\item{n11}{The number of samples that were truly class 1 and fallibly classified as class 1}
+
+\item{n21}{The number of samples that were truly class 2 and fallibly classified as class 1}
+
+\item{n12}{The number of samples that were truly class 1 and fallibly classified as class 2}
+
+\item{n22}{The number of samples that were truly class 2 and fallibly classified as class 2}
+
 \item{corrrad}{Radius of the step function in the correlation (in the same units as xi)}
 
 \item{corrstepheight}{Height of the step in the correlation}

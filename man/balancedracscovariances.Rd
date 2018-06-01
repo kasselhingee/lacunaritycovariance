@@ -40,6 +40,12 @@ which is the observed area in \code{xi} divided by the total area of the observa
 See \code{coverageprob} for more information.}
 
 \item{modification}{A string specifying the desired modification. See details.}
+
+\item{xixi}{The convolution of a set representing xi with itself}
+
+\item{winwin}{The convolution of the observation window with itself}
+
+\item{xiwin}{The convolution of the set xi with the observation window}
 }
 \value{
 \code{racscovariance.cvchat} returns a \pkg{SpatStat} \code{im} object containing the modified estimated covariance.

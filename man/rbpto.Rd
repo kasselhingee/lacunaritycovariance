@@ -20,11 +20,17 @@ bpto.covar(lambda, grain, xm, alpha, lengthscales = 1:500, xy)
 
 \item{win}{The window to simulate in (an owin object)}
 
+\item{xm}{A parameter governing the shape of the Pareto distribution used - see details}
+
+\item{alpha}{A parameter governing the shape of the Pareto distribution used - see details}
+
 \item{seed}{Optional input (default in NULL). Is an integer passed to \code{\link{base}{set.seed}}. Used to reproduce patterns exactly.}
 
 \item{xy}{A raster object that specifies pixel coordinates of the final simulated binary map.
 It is used the same way as \code{xy} is \code{\link{spatstat}{as.mask}} in spatstat.
 If non-null then the computations will be performed using rasters. Otherwise if \code{grain} and \code{win} are polygonal then computations may be all polygonal.}
+
+\item{lengthscales}{A list of scales of the \code{grain} for which to approximate the Pareto distribution: The grain for a germ is chosen by selecting a scaled version of \code{grain} where \code{lengthscales} specifies the possible scales and the Pareto distribution is used to specify the probability of selection of each scale.}
 }
 \value{
 An owin object.

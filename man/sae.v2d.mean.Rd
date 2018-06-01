@@ -24,6 +24,14 @@ sae.v2d.var(xi.area, window.area, delta, p21, p12, radius)
 \item{p12}{Probability that a location fallibly classified into the non-interesting class is really the class of interest.}
 
 \item{radius}{A radius of dependence - see details for meaning.}
+
+\item{n11}{The number of samples that were truly class 1 and fallibly classified as class 1}
+
+\item{n21}{The number of samples that were truly class 2 and fallibly classified as class 1}
+
+\item{n12}{The number of samples that were truly class 1 and fallibly classified as class 2}
+
+\item{n22}{The number of samples that were truly class 2 and fallibly classified as class 2}
 }
 \description{
 Estimates the variance of the area of a cover type observed in a thematic map created using a fallible classifier from remote sensing.

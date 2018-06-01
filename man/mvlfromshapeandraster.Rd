@@ -34,6 +34,8 @@ plot_MVLest.region(returnedlist, plot.im.args = list(main = "Class Image",
 
 \item{NArange}{is list of length 2 specifying the minimum and maximum pixel values to assign as NA values. The range is inclusive and overrides any assignment by frange.}
 
+\item{boxwidths}{The set of widths of square boxes to estimate MVL for.}
+
 \item{estimators}{A list of names of MVL estimators to use. See \code{mvl()} for available list and more information}
 
 \item{display}{If TRUE then \code{plot_MVLest.region} is called so that the results are automatically plotted}

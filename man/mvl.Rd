@@ -12,7 +12,7 @@ mvl(xiim, boxwidths, estimators = c("MVLg.mattfeldt", "MVLg.pickaint",
 
 \item{boxwidths}{A list of box boxwidths}
 
-\item{A}{list of estimator names - see details for possibilities.}
+\item{estimators}{A list of estimator names - see details for possibilities.}
 }
 \value{
 An \code{fv} object.
