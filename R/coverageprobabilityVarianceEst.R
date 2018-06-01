@@ -18,11 +18,13 @@
 #' asympvarP() isn't constructed yet but will estimate a variance assuming that things are close to Gaussian distributions.
 #' @param Xi is an observation (in owin) format of a RACS or an image of 0, 1 and NA values.
 #' @param obswin is the corresponding observation window. 
+#' @param covar A covariance image for the RACS (could be estimated from Xi)
+#' @param Xi 
 
 #' @examples 
-#' xi <- heather$coarse
-#' obswin <- Frame(xi)
-#' varCovProb_ests(xi, obswin, modifications = "all")
+#' Xi <- heather$coarse
+#' obswin <- Frame(Xi)
+#' varCovProb_ests(Xi, obswin, modifications = "all")
 #' @references 
 #' Molchanov, I. (1997) Statistics of the Boolean Model for Practitioners and Mathematicians. Wiley.
 varCovProb <- function(Xi, obswin){
@@ -65,20 +67,20 @@ varCovProb.covarsupplied <- function(covar, obswin){
  asympvarP <- function(){}
 
 #' @describeIn varCovProb Use multiple balanced estimators of covariance to estimate variance of coverage probability
-varCovProb_ests <- function(xi, obswin = NULL,
+varCovProb_ests <- function(Xi, obswin = NULL,
         setcov_boundarythresh = NULL,
         modifications = "all"){
-  cvchat <- racscovariance(xi, obswin, setcov_boundarythresh = setcov_boundarythresh)
-  cpp1 <- cppicka(xi, obswin, setcov_boundarythresh = setcov_boundarythresh)
+  cvchat <- racscovariance(Xi, obswin, setcov_boundarythresh = setcov_boundarythresh)
+  cpp1 <- cppicka(Xi, obswin, setcov_boundarythresh = setcov_boundarythresh)
   phat <- cvchat[ppp(x = 0, y = 0, window = Frame(cvchat))]
-  #phat <- coverageprob(xi, obswin)
+  #phat <- coverageprob(Xi, obswin)
   
   cvchats <- balancedracscovariances.cvchat(cvchat, cpp1, phat, modifications = modifications) 
   
-  if (is.null(obswin) && is.im(xi)){
-    obswin <- as.owin(xi) #only excludes NA values in xi
+  if (is.null(obswin) && is.im(Xi)){
+    obswin <- as.owin(Xi) #only excludes NA values in Xi
   }
-  if (is.mask(xi) || is.im(xi)){  setcovW <- setcov(obswin, xy = xi) 
+  if (is.mask(Xi) || is.im(Xi)){  setcovW <- setcov(obswin, xy = Xi) 
   } else { setcovW <- setcov(obswin, xy = cvchat) }
   setcovW <- as.im(setcovW, xy = cvchat) #harmonise results
 
