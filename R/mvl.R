@@ -61,6 +61,10 @@ mvl <- function(xiim, boxwidths,
 
   mvl.ests <- c(mvlg = mvlgs, mvlcc = mvlccs, list(mvlc = mvlc.est), list(mvlgb = mvlgb.est))
   mvl.ests <- mvl.ests[!vapply(mvl.ests, is.null, FUN.VALUE = FALSE)]
+  if (any(!vapply(mvl.ests[-1], function(x) compatible.fv(A = mvl.ests[[1]], B = x), FUN.VALUE = FALSE))){
+    warning("Some MVL estimates have differing argument values. These will be harmonised.")
+    mvl.ests <- harmonise.fv(mvl.ests)
+  }
   mvls.fv <- collapse.fv(mvl.ests, different = "MVL")
   names(mvls.fv) <- c(fvnames(mvls.fv, ".x"), names(mvl.ests))
   return(mvls.fv)
