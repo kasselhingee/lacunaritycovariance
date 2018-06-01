@@ -82,3 +82,20 @@ test_that("MVLc and MVLgb produce similar results for large square observation w
   expect_equal(lac.mvlcest$s, lac.mvlgbest$s)
   expect_equal(lac.mvlcest$MVL, lac.mvlgbest$MVL, tolerance = 2E-2)
 })
+
+test_that("mvl() fails nicely when MVLgb can't estimate anything", {
+  xiim <- as.im(heather$coarse, value = TRUE, na.replace = FALSE)
+  #fake lots of missing data
+  xiim[shift.owin(reflect(heather$coarse), vec = c(10, 20))] <- NA
+  expect_warning(mvl(xiim, seq(1, 10, by = 1), regexp("1 or fewer of the provided box widths")))
+})
+
+test_that("mvl() harmonises estimates to produce meaningful fv object", {
+  xiim <- as.im(heather$coarse, value = TRUE, na.replace = FALSE)
+  expect_warning(mvlest <- mvl(xiim, seq(0.2, 10, by = 1)), regexp = "harmon")
+})
+
+test_that("mvl() operates nicely when only one estimator requested", {
+  xiim <- as.im(heather$coarse, value = TRUE, na.replace = FALSE)
+  expect_silent(mvl(xiim, seq(0.1, 10, by = 1), estimators = "MVLc"))
+})
