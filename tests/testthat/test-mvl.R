@@ -87,7 +87,7 @@ test_that("mvl() fails nicely when MVLgb can't estimate anything", {
   xiim <- as.im(heather$coarse, value = TRUE, na.replace = FALSE)
   #fake lots of missing data
   xiim[shift.owin(reflect(heather$coarse), vec = c(10, 20))] <- NA
-  expect_warning(mvl(xiim, seq(1, 10, by = 1), regexp("1 or fewer of the provided box widths")))
+  expect_warning(mvl(xiim, seq(1, 10, by = 1)), regexp = "1 or fewer of the provided box widths")
 })
 
 test_that("mvl() harmonises estimates to produce meaningful fv object", {
