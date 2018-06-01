@@ -4,9 +4,11 @@
 #' It calls the functions \code{MVLc}, \code{MVLg}, \code{MVLcc} and \code{MVLgb}.
 
 #' @param xiim A \pkg{spatstat} \code{im} object with pixel values that are either TRUE, FALSE or NA. TRUE represents foreground, FALSE respresents background and NA represents unobserved locations.
-#' @param sidelengths A list of box sidelengths
+#' @param boxwidths A list of box boxwidths
 #' @param A list of estimator names - see details for possibilities.
+
 #' @return An \code{fv} object.
+
 #' @details
 #' The estimators available are
 #' \itemize{
@@ -20,8 +22,12 @@
 #' \item \code{"MVLcc.pickaH"} See help for \code{MVLcc()}
 #' }
 
+#' @examples 
+#' xi <- heather$coarse
+#' xiim <- as.im(xi, value = TRUE, na.replace = FALSE)
+#' mvlests <- mvl(xiim, seq(1, 10, by = 0.1))
 
-mvl <- function(xiim, sidelengths,
+mvl <- function(xiim, boxwidths,
                            estimators = c("MVLg.mattfeldt", "MVLg.pickaint", "MVLg.pickaH",
                                           "MVLcc.mattfeldt", "MVLcc.pickaint",
                                           "MVLc", "MVLgb") ){
@@ -35,18 +41,22 @@ mvl <- function(xiim, sidelengths,
     cpp1 <- cppicka(xiim, setcov_boundarythresh = 0.1 * area.owin(solutionset(is.na(xiim))))
     if (sum(mvlgestimaterequests) > 0){
       pcln.ests <- pclns.cvchat(cvchat, cpp1 = cpp1, phat = phat, modifications = gsub("MVLg.", "", estimators[mvlgestimaterequests]))
-      mvlgs <- lapply(pcln.ests, FUN = mvlg, boxes = sidelengths)
+      mvlgs <- lapply(pcln.ests, FUN = mvlg, boxes = boxwidths)
     }
     if (sum(mvlccestimaterequests) > 0){
       ccvc.ests <- ccvcs.cvchat(cvchat, cpp1, phat, modifications = gsub("MVLcc.", "", estimators[mvlccestimaterequests]))
-      mvlccs <- lapply(ccvc.ests, FUN = mvlcc, p = phat, boxes = sidelengths)
+      mvlccs <- lapply(ccvc.ests, FUN = mvlcc, p = phat, boxes = boxwidths)
     }
   }
   if ("MVLc" %in% estimators){
-    mvlc.est <- mvlc(boxes = sidelengths, covariance = cvchat, p = phat)
+    mvlc.est <- mvlc(boxes = boxwidths, covariance = cvchat, p = phat)
   }
   if ("MVLgb" %in% estimators){
-    mvlgb.est <- mvlgb(sidelengths = sidelengths, xiim = xiim)
+    mvlgb.est <- mvlgb(sidelengths = boxwidths, xiim = xiim)
+    if (sum(!vapply(mvlgb.est[,fvnames(mvlgb.est), drop = TRUE], is.na, FUN.VALUE = TRUE)) < 2){
+      warning("mvlgb() returns estimates for 1 or fewer of the provided box widths. Results from mvlgb() will be ignored from the final results.")
+      mvlgb.est <- NULL
+    }
   }
 
   mvl.ests <- c(mvlg = mvlgs, mvlcc = mvlccs, list(mvlc = mvlc.est), list(mvlgb = mvlgb.est))
@@ -54,7 +64,7 @@ mvl <- function(xiim, sidelengths,
   mvl.ests.harm <- do.call(harmonise.fv, mvl.ests)
   mvls.fv <- suppressWarnings(cbind.fv(mvl.ests.harm))
   names(mvls.fv) <- c("s", names(mvl.ests))
-  fvlabels(mvls.fv) <-  c("Sidelength", names(mvl.ests))
+  fvlabels(mvls.fv) <-  c("Box Width", names(mvl.ests))
   formula(mvls.fv) <- ". ~ s"
   return(mvls.fv)
 }
