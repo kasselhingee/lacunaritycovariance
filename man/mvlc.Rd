@@ -2,15 +2,9 @@
 % Please edit documentation in R/mvlc.R
 \name{mvlc}
 \alias{mvlc}
-\alias{mvl}
-\alias{lac}
 \title{Covariance-based calculations of mass variance lacunarity}
 \usage{
 mvlc(boxes, covariance = NULL, p = NULL, xiim = NULL)
-
-mvl(boxes, covariance = NULL, p = NULL, xiim = NULL)
-
-lac(boxes, covariance = NULL, p = NULL, xiim = NULL)
 }
 \arguments{
 \item{boxes}{Either a list of sidelengths for square boxes or a list of \code{owin} objects of any shape.}
@@ -30,7 +24,6 @@ Estimates the mass variance lacunarity (MVL) of a stationary RACS from a bi-tona
  It can also calculate the MVL of a RACS from a provided covariance (two-point probability) and coverage probability.
 }
 \details{
-\code{mvl} and \code{lac} are aliases of mvlc.
 If we denoted the estimated covariance by \eqn{\hat{C}(v)} and coverage probability \eqn{\hat{p}} then the estimate of MVL is
 \deqn{\frac{1}{\hat{p}^2 |B|^2}\int \gamma_B(v)\hat{C}(v)dv -1 }
 }
