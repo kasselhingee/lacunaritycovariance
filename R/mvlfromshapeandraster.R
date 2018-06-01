@@ -8,7 +8,8 @@
 #' @param rasterlayer is a raster layer object
 #' @param frange is list of length 2 specifying the minimum and maximum pixel values to assign as foreground
 #' @param NArange is list of length 2 specifying the minimum and maximum pixel values to assign as NA values
-#' @param estimators A list of names of MVL estimators to use. See \code{mvl()} for available list and more information.
+#' @param estimators A list of names of MVL estimators to use. See \code{mvl()} for available list and more information
+#' @param display If TRUE then \code{plotoutput} is called so that the results are automatically plotted
 #' @describeIn mvlfromshapeandraster  Returns MVL estimates from regions specified in shapefile using raster data given in rasterfile
 MVLests.files <- function(
   shapefile, 
@@ -47,7 +48,7 @@ MVLest.multipleregions <- function(polysdf,
                                              "MVLcc.mattfeldt", "MVLcc.pickaint", "MVLcc.pickaH",
                                              "MVLc", "MVLgb"),
                                        display = TRUE){
-  lpolydf <- split(polysdf, f = 1:length(polysdf))
+  lpolydf <- split(polysdf, f = 1:nrow(polysdf))
   out <- lapply(lpolydf, MVLest.region, rasterlayer = rasterlayer,
          frange = frange, NArange = NArange, sidelengths = sidelengths, estimators = estimators)
   if (display) {tmp <- lapply(out, plotoutput.MVLest.region.rasterlayer)}
