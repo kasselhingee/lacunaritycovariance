@@ -15,8 +15,8 @@
 #' fv2 <- Hest(complement.owin(heather$coarse))
 #' fvlist <- list(scdxi = fv1, scdnotxi = fv2) 
 #' manyfvevalat(fvlist,0.19)
-#' out <- manylines.fv(fvlist, fmla="km~r")
-#' abline(v=0.19)
+#' # out <- manylines.fv(fvlist, fmla="km~r")
+#' # abline(v=0.19)
 
 manyfvevalat <- function(fvlist, argval, value=".y", extrapolate=TRUE){
   stopifnot(length(value)==1)
