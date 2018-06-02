@@ -32,7 +32,7 @@ refer to Chiu et al 2013, and Molchanov**
 \keyword{ package }
 \keyword{ spatial }
 \examples{
-%coverage and covariance estimation
+#coverage and covariance estimation
 XiOWIN <- heather$coarse
 windowOWIN <- Frame(heather$coarse)
  
