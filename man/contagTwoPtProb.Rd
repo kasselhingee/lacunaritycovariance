@@ -55,5 +55,5 @@ contagTwoPtProb(covariance,p=p, v=c(5,15))
 
 }
 \seealso{
-\code{\link{contagSphCont}}
+\code{\link{scdcontagion}}
 }
