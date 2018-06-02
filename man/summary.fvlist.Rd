@@ -4,7 +4,7 @@
 \alias{summary.fvlist}
 \title{Summarise a list fv objects}
 \usage{
-summary.fvlist(fvs, ...)
+\method{summary}{fvlist}(fvs, ...)
 }
 \arguments{
 \item{fvs}{A list of fv objects}
