@@ -2,8 +2,9 @@
 #' @rdname asondiskrasters
 #' @export as.rasterlayer.im  offram imtoondiskras  imstoondiskras  rasterstoims
 #' @description Functions for saving spatstat's \code{im} objects as \code{raster} objects out of RAM. Useful when computer has limited RAM and a fast solid state disk to store the images off RAM.
+#' \code{as.rasterlayer.im} Converts a \code{spatstat} \code{im} into a \code{Raster} \code{rasterLayer}
 
-#' @details These functions are useful when experiments generate a large collection of \code[im} objects.
+#' @details These functions are useful when experiments generate a large collection of \code{im} objects.
 #' The package \code{raster} has many useful tools for working with these images outside RAM.
 #' I think it is wise to garbage collect \code{gc()} just after overwriting the im objects.
 
@@ -16,7 +17,6 @@
 #' cvchatsondisk <- imstoondiskras(cvchats)
 #' cvchaatsbackasim <- rasterstoims(cvchatsondisk)
 
-#' @describeIn asondiskrasters Converts a \code{spatstat} \code{im}} into a \code{Raster} \code{rasterLayer}
 as.rasterlayer.im <- function(im, layername = NULL){
   stopifnot(class(im) == "im")
   imras <- raster::raster(im)
@@ -49,7 +49,7 @@ imtoondiskras <- function(im, layername = NULL, filenamesave = NULL){
 #' @param basefilename The filename that is used as root of all filenames. 
 #' @param recursive If TRUE sublists of \code{alist} will also be modified.
 #' @describeIn asondiskrasters Replaces all \code{im} elements in a list with on-disk \code{rasterLayer} objects.
-#' Raster data is saved in basefilename_[listentryname]
+#' Raster data is saved in \code{basefilename_[listentryname]}
 imstoondiskras <- function(alist, basefilename = NULL, recursive = FALSE){
   if (is.null(basefilename)){basefilename <- tempfile()}
   noname <- vapply(names(alist), is.null, FALSE)

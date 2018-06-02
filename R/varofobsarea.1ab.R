@@ -31,7 +31,7 @@
 #' \quad \quad + |\hat{X}_2|^2 \frac{1}{n_{.2}} \frac{1}{n_{.2} - 1} \left( n_{12} (1 - \hat{a}_{12})^2 + (n_{.2} - n_{12})(- \hat{a}_{12})^2 \right)
 #' }
 #'
-#' @section WARNING
+#' @section WARNING:
 #' The confusion matrix for the 2009 data has an estimate of 
 #' proportion of non-tree that should be tree. This will
 #' not be respresented well by a t-distribution?

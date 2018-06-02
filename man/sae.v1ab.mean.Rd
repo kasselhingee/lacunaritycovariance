@@ -69,6 +69,13 @@ var\left[\hat{|X_1|}\right] \approx |\hat{X}_1|^2 \frac{1}{n_{.1}} \frac{1}{n_{.
 \item \code{ssq12}: Estimate of the variance of ahat12 induced by sampling, assuming each sample is independent
 }}
 
+\section{WARNING}{
+
+The confusion matrix for the 2009 data has an estimate of 
+proportion of non-tree that should be tree. This will
+not be respresented well by a t-distribution?
+}
+
 \author{
 {Kassel Hingee}
 }

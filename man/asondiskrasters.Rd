@@ -35,6 +35,12 @@ rasterstoims(alist, recursive = FALSE)
 }
 \description{
 Functions for saving spatstat's \code{im} objects as \code{raster} objects out of RAM. Useful when computer has limited RAM and a fast solid state disk to store the images off RAM.
+\code{as.rasterlayer.im} Converts a \code{spatstat} \code{im} into a \code{Raster} \code{rasterLayer}
+}
+\details{
+These functions are useful when experiments generate a large collection of \code{im} objects.
+The package \code{raster} has many useful tools for working with these images outside RAM.
+I think it is wise to garbage collect \code{gc()} just after overwriting the im objects.
 }
 \section{Functions}{
 \itemize{
@@ -44,7 +50,7 @@ If \code{filenamesave} is \code{NULL} then a temporary location is used.
 \item \code{imtoondiskras}: Create a rasterLayer (or other Raster* object) that is saved on disk out of a \code{im} object.
 
 \item \code{imstoondiskras}: Replaces all \code{im} elements in a list with on-disk \code{rasterLayer} objects.
-Raster data is saved in basefilename_[listentryname]
+Raster data is saved in \code{basefilename_[listentryname]}
 
 \item \code{rasterstoims}: Replaces all code{rasterLayer} objects in \code{alist} with spatstat \code{im} objects. Uses MAPTOOLS
 }}
