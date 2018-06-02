@@ -7,7 +7,7 @@ xiimg <- as.im(xi, W = w, eps = c(0.5, 0.5), na.replace = 0)
 xi.p <- sum(xiimg) / sum(is.finite(xiimg$v))
 #estimate covariance
 spatstat.options(npixel = 512) #to make default pixelisations higher resolution
-covarest.frim <- racscovariance(xiimg)
+covarest.frim <- balancedracscovariances(xiimg, modifications = "pickaH")[[1]]
 reset.spatstat.options()
 
 # # # saved calculation of true coverage fraction variance

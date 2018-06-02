@@ -5,7 +5,7 @@ context("Covariance Estimation")
 test_that("racscovariance() matches theoretical covariance for Boolean Model", {
   #estimate covariance of owin (covariance of image already estimated in help code)
   spatstat.options(npixel = 512) #to make default pixelisations higher resolution
-  covarest.frowin <- racscovariance(xi, obswin = w)
+  covarest.frowin <- balancedracscovariances(xi, obswin = w, modifications = "pickaH")[[1]]
 
   expect_is(covarest.frim, "im")
   expect_is(covarest.frowin, "im")
