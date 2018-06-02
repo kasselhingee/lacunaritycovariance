@@ -28,6 +28,6 @@ kfcn3.fun <- function(R){
    integrate(as.function.fv(with.fv(twptprob.iso,f*(2*pi*.x), fun=TRUE)),lower=0,upper=R)$value
 }
 Rvals <- seq(0.1,8,by=0.1)
-points(Rvals,lapply(Rvals,kfcn3.fun),col="green")
+# points(Rvals,lapply(Rvals,kfcn3.fun),col="green")
 
 }
