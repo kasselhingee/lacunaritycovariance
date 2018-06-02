@@ -51,6 +51,7 @@ imtoondiskras <- function(im, layername = NULL, filenamesave = NULL){
 #' @describeIn asondiskrasters Replaces all \code{im} elements in a list with on-disk \code{rasterLayer} objects.
 #' Raster data is saved in \code{basefilename_[listentryname]}
 imstoondiskras <- function(alist, basefilename = NULL, recursive = FALSE){
+  class(alist) <- "list" #removes all other class attributes - for example stops alist checking if entries are ims
   if (is.null(basefilename)){basefilename <- tempfile()}
   noname <- vapply(names(alist), is.null, FALSE)
   if(sum(noname) > 0) {names(alist)[noname] <- 1:sum(noname)}
@@ -65,7 +66,8 @@ imstoondiskras <- function(alist, basefilename = NULL, recursive = FALSE){
   }
   areim <- vapply(alist, is.im, FALSE)
   if(sum(areim) == 0){return(alist)}
-  alist[areim] <- mapply(imtoondiskras,
+  alist[areim] <- 
+    out <- mapply(imtoondiskras,
                          im = alist[areim],
                          layername = names(alist[areim]),
                          filenamesave = paste0(basefilename, "_", names(alist[areim])),
