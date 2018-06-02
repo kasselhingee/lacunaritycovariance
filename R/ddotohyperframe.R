@@ -16,7 +16,7 @@
   #' coveragefrac <- coveragefrac(obs,w)
   
   #' #covariance
-  #' covariances <- covariance(obs,w)
+  #' covariances <- racscovariance(obs,w)
   #' 
   #' #Sph Contact Functions. 
   #' sphContact <- list(xiHest = Hest(obs),
@@ -25,7 +25,7 @@
   #' #contagion estimates
   #' sphContactHarm <-  harmonise(xiHest = sphContact[[1]],notxiHest = sphContact[[2]])
   #' sphcontactcontag <- list(
-  #'   contagionEst = contagSphCont(sphContactHarm$xiHest$km,
+  #'   contagionEst = scdcontagion(sphContactHarm$xiHest$km,
   #'                                sphContactHarm$notxiHest$km,
   #'                                coveragefrac),
   #'   r = sphContactHarm$xiHest$r)

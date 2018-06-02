@@ -3,7 +3,7 @@
 #' @description 
 #' This function estimate the covariance of a stationary RACS. 
 #' A variety of balanced, partially balanced and classical estimates are available. 
-#' These functions differ to \code{\link{balancedracscovariance}} by computing separately with the convolutions used in the numerator and denominator until end.
+#' These functions differ to \code{\link{balancedracscovariances}} by computing separately with the convolutions used in the numerator and denominator until end.
 
  
 #' @param xi An observation of the RACS of interest. It can be in \pkg{spatstat}'s \code{owin} or \code{im} format. If \code{xi} is in \code{im} format then it is assumed that the pixels will be valued 1 (for foreground), 0 (for background) and NA for unobserved.
@@ -51,7 +51,7 @@ byconv_cvchats <- function(xi, obswin,
   xiwin[winwin < setcov_boundarythresh] <- NA #to remove small denominators
   phat <- area.owin(xi) / area.owin(obswin)
   
-  cvchats <- cvchats.convolves(xixi, winwin, xiwin, phat, modifications = modifications) 
+  cvchats <- cvchats_convolves(xixi, winwin, xiwin, phat, modifications = modifications) 
   return(cvchats)
 }
 
