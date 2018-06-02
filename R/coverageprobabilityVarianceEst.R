@@ -85,7 +85,7 @@ varCovProb_ests <- function(Xi, obswin = NULL,
   } else { setcovW <- setcov(obswin, xy = cvchat) }
   setcovW <- as.im(setcovW, xy = cvchat) #harmonise results
 
-  integrands <- solapply(cvchats, function(x) eval.im(A * (B - phat^2), envir = list(A = setcovW, B = x)))
+  integrands <- solapply(cvchats, function(x) eval.im(setcovW * (x - phat^2)))
   varests <- vapply(integrands, integral.im, 0.13)/(area.owin(obswin)^2)
    
   return(varests)
