@@ -26,8 +26,8 @@
 #' w <- owin(xrange = c(0, 100), c(0, 100))
 #' lambda <- 2.2064E-3
 #' xi <- rbdd(lambda, discr, w)
-#' plot(xi)
-#' plot(w, add = TRUE)
+#' # plot(xi)
+#' # plot(w, add = TRUE)
 #' 
 #' #calculate theoretical values of the model
 #' truecoverageprob <- bddcoverageprob(lambda, discr)

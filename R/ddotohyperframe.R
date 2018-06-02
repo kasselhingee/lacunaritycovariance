@@ -47,7 +47,7 @@
 #' 
 #' hframe <- ddotohyperframe(estimatesddo,slots = c("coveragefrac","sphcontactxi"))
 #' hframe <- ddotohyperframe(estimatesddo)
-#' plot(hframe[,"sphcontactxi",drop=TRUE], main = "Spherical Contact Distribution:\n Diggle's Heather Data")
+#' # plot(hframe[,"sphcontactxi",drop=TRUE], main = "Spherical Contact Distribution:\n Diggle's Heather Data")
 #' 
 ddotohyperframe <- function(inddo,slots="all"){
   if (length(slots)==1 && slots == "all"){

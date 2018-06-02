@@ -18,9 +18,9 @@ An fv object
 Estimates the integral of image values within a radius r from the centre.
 }
 \examples{
-twptprob <- covariance(heather$coarse,Frame(heather$coarse))
+twptprob <- racscovariance(heather$coarse,Frame(heather$coarse))
 kfcn <- integratebyradius(c(0,0),twptprob)
-plot(kfcn)
+# plot(kfcn)
 
 #duplicate with rotmean()
 twptprob.iso <- rotmean(twptprob,result="fv",Xname="radius")
@@ -29,6 +29,5 @@ kfcn3.fun <- function(R){
 }
 Rvals <- seq(0.1,8,by=0.1)
 points(Rvals,lapply(Rvals,kfcn3.fun),col="green")
-plot(add=TRUE,kfcn2,col="green")
 
 }

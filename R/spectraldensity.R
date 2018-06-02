@@ -35,12 +35,12 @@
 #' #apply to heather
 #' xi <- heather$coarse
 #' specdens <- spectraldensity(xi,Frame(xi),20)
-#' plot(specdens)
+#' # plot(specdens)
 #' 
 #' #See what unsmoothed version looks like
 #' unsmspecdens <- unsmoothedspectraldensity(xi,Frame(xi))
-#' plot(unsmspecdens)
-#' plot(solist(smoothed = specdens,unsmoothed = unsmspecdens),
+#' # plot(unsmspecdens)
+#' # plot(solist(smoothed = specdens,unsmoothed = unsmspecdens),
 #'        main = "Spectral Density Estimates",
 #'        equal.scales=TRUE)
 #' 

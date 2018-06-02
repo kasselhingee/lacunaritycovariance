@@ -51,9 +51,9 @@
 #' balancedcvchats <- balancedracscovariances(xi, obswin = Frame(xi), modifications = "all")
 #' balancedcvchats2 <- byconv_cvchats(xi, obswin = Frame(xi), modifications = "all")
 #' 
-#' plot.solist(c(balancedcvchats, balancedcvchats2), ncols = 8)
+#' # plot.solist(c(balancedcvchats, balancedcvchats2), ncols = 8)
 #' diff <- mapply(function(x, y) x - y, balancedcvchats, balancedcvchats2, SIMPLIFY = FALSE)
-#' plot.solist(diff)
+#' # plot.solist(diff)
 #' 
 
 #' phat <- coverageprob(xi, obswin = Frame(xi))
@@ -75,7 +75,7 @@
 #'  "pickaH", 
 #'  function(cvchat, cpp1, phat) cvchat)
 #' balancedcvchats <- balancedracscovariances.cvchat(cvchat, cpp1, phat, modifications = modifications)
-#' plot(as.solist(balancedcvchats), equal.ribbon = TRUE)
+#' # plot(as.solist(balancedcvchats), equal.ribbon = TRUE)
 #' 
 
 #' 

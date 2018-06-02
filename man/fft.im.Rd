@@ -26,7 +26,7 @@ A <- matrix(cos((1:1000)/10),nrow=10,ncol=1000,byrow=TRUE)
 Aim <- im(A,xcol = (1:1000)/10, yrow = (1:10),
 			unitname=c("metre","metres"))
 fftA <- fft.im(Aim,padfactor=c(1,1))
-plot(Re(fftA),axes=TRUE,clipwin=owin(xrange=c(-4,4),yrange=c(-5,5)))
+# plot(Re(fftA),axes=TRUE,clipwin=owin(xrange=c(-4,4),yrange=c(-5,5)))
 # The Fourier transform of cos(x) is infinite at theta = 1 (because integrating cos^2(x) out to infinity),
 # and 0 elsewhere. So result should be an image with units 1/m, with a single large peak at x=1 
 

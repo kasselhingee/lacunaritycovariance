@@ -25,7 +25,7 @@
 #' cp <- coverageprob(xi, obswindow)
 #' cpp1 <- cppicka(xi, obswindow)
 #' cpp1[as.ppp(c(0,0), W = obswindow)]
-#' plot(cpp1[cpp1 < 2, drop = FALSE])
+#' # plot(cpp1[cpp1 < 2, drop = FALSE])
 #' 
 #' #test that it is doing what we expect for a single vector
 #' xi <- shift.owin(square(r = 1), vec = c(2, 2))

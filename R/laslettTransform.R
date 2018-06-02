@@ -14,7 +14,7 @@
 #' 
 #' xi <- rotate.owin(heather$coarse)
 #' ltxi <- lasletttransform(xi)
-#' plot(ltxi)
+#' # plot(ltxi)
 #' 
 #' 
 #' #test on a true boolean model
@@ -22,7 +22,7 @@
 #' xim <- as.mask(xi,eps=c(1,1))
 #' ltxi <- lasletttransform(xi)
 #' Ks <- Kest(ltxi)
-#' plot(Ks)
+#' # plot(Ks)
 #' 
 lasletttransform <- function(xi){
   tangentpointslist <- findlowlefttangentpts(xi)

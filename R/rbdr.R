@@ -24,14 +24,14 @@
 #' win <- owin(xrange = c(0, 100), c(0, 100))
 #' lambda <- 4.2064E-3
 #' xi <- rbdr(lambda, grain, win)
-#' plot(xi, col = "black")
-#' plot(win, add = TRUE)
+#' # plot(xi, col = "black")
+#' # plot(win, add = TRUE)
 #' 
 #' #calculate theoretical values of the model
 #' truecoverageprob <- bdrcoverageprob(lambda, grain)
 #' xy <- as.mask(dilationAny(win, win), eps = c(1, 1))
 #' truecovariance <- bdrcovar(lambda, grain, xy)
-#' plot(truecovariance)
+#' # plot(truecovariance)
 #' 
 #' ######################
 #' #test
@@ -39,8 +39,8 @@
 #' win <- owin(xrange = c(0, 200), c(0, 200))
 #' lambda <- 4.2064E-3
 #' xi <- rbdr(lambda, grain, win)
-#' plot(xi, col = "black")
-#' plot(win, add = TRUE)
+#' # plot(xi, col = "black")
+#' # plot(win, add = TRUE)
 #' 
 #' #calculate theoretical values of the model
 #' truep <- bdrcoverageprob(lambda, grain)
@@ -52,16 +52,16 @@
 #' phat <- coverageprob(xi, win)
 #' truep - phat
 #' cvchat <- balancedracscovariances(as.mask(xi, eps = c(0.1, 0.1)), obswin = win, modifications = list("pickaint"))[[1]]
-#' plot.solist(solist(
+#' # plot.solist(solist(
 #'   True = truecvc,
 #'   PickaEstimate = cvchat), equal.ribbon = TRUE, main = "Covariance: True and Estimate")
-#' plot(eval.im(truecvc - cvchat), main = "Difference Between Estimate and True")
+#' # plot(eval.im(truecvc - cvchat), main = "Difference Between Estimate and True")
 #' truecvc.iso <- rotmean(truecvc[disc(radius = 50), drop = FALSE], padzero = FALSE)
 #' cvchat.iso <- rotmean(cvchat[disc(radius = 50)], padzero = FALSE)
-#' plot(truecvc.iso)
-#' plot(cvchat.iso, col = "red", add = TRUE)
-#' plot(truecvc.iso, xlim = c(0, 20))
-#' plot(cvchat.iso, col = "red", add = TRUE)
+#' # plot(truecvc.iso)
+#' # plot(cvchat.iso, col = "red", add = TRUE)
+#' # plot(truecvc.iso, xlim = c(0, 20))
+#' # plot(cvchat.iso, col = "red", add = TRUE)
 
 #' @references 
 #' [3] Chiu, S.N., Stoyan, D., Kendall, W.S. and Mecke, J. (2013) Stochastic Geometry and Its Applications, 3rd ed. Chichester, United Kingdom: John Wiley & Sons.

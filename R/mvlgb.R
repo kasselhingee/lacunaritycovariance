@@ -28,7 +28,7 @@
 #' xiim <- as.im(heather$coarse, na.replace = 0)
 #' sidelengths <- seq(0.2, 14, by = 0.2) #in units of xiim
 #' lac <- mvlgb(sidelengths, xiim, inclraw = TRUE)
-#' plot(lac, cbind(MVL, raw) ~ s)
+#' # plot(lac, cbind(MVL, raw) ~ s)
 #'
 #' @keywords spatial nonparametric 
 mvlgb <- function(sidelengths, xiim, inclraw = FALSE, obswin = Frame(xiim)){

@@ -36,7 +36,7 @@ xi <- heather$coarse
 cencovar <- ccvcs(xi, obswin = Frame(xi), modifications = c("pickaH"))$pickaH
 p <- area(xi) / area(Frame(xi))
 sidelengths <- seq(0.3, 14, by = 0.2)
-plot(mvlcc(sidelengths, cencovar, p))
+# plot(mvlcc(sidelengths, cencovar, p))
 # what is the MVL estimates for boxes that are discs?
 discboxes <- lapply(sidelengths / 2, disc)
 discmvls <- mvlcc(discboxes, cencovar, p)
@@ -44,8 +44,8 @@ points(sidelengths, discmvls)
 
 #direct to an image
 xiim <- as.im(xi, na.replace = 0)
-plot(mvlcc(sidelengths, xiim = xiim, modification = "pickaH"))
-plot(add = TRUE, mvlc(sidelengths, xiim = xiim), lty = "dashed", col = "red")
+# plot(mvlcc(sidelengths, xiim = xiim, modification = "pickaH"))
+# plot(add = TRUE, mvlc(sidelengths, xiim = xiim), lty = "dashed", col = "red")
 
 }
 \keyword{nonparametric}

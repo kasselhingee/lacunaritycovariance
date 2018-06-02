@@ -38,7 +38,7 @@ See \code{coverageprob} for more information.}
 \description{
 This function estimate the covariance of a stationary RACS. 
 A variety of balanced, partially balanced and classical estimates are available. 
-These functions differ to \code{\link{balancedracscovariance}} by computing separately with the convolutions used in the numerator and denominator until end.
+These functions differ to \code{\link{balancedracscovariances}} by computing separately with the convolutions used in the numerator and denominator until end.
 }
 \section{Functions}{
 \itemize{

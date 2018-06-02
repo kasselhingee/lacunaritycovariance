@@ -42,18 +42,18 @@
 #' #simulate the germ process in an enlarged window
 #' pp <- rpoispp(lambda = 0.1, win = dilation(w, bufferdist), nsim = 1, drop = TRUE)
 #'
-#' plot(w)
+#' # plot(w)
 #' xibuffer <- placegrainsfromlib(pp, grainlib)
-#' plot(xibuffer, add = TRUE, lty = "dashed")
+#' # plot(xibuffer, add = TRUE, lty = "dashed")
 #' 
 #' #get final simulation by intersection with desired window
 #' xi <- intersect.owin(xibuffer, w)
-#' plot(xi, hatch = TRUE, add = TRUE)
+#' # plot(xi, hatch = TRUE, add = TRUE)
 #' 
 #' #demonstration that involves rasterisation.
 #' xibuffer <- placegrainsfromlib(pp, grainlib, xy = as.mask(w, eps = 0.1))
-#' plot(xibuffer)
-#' plot(w, add = TRUE)
+#' # plot(xibuffer)
+#' # plot(w, add = TRUE)
 #' 
 #' #Demo of covariance and set covariance computations: test on Boolean model
 #' lambda <- 0.1
@@ -61,12 +61,12 @@
 #' weights <- c(0.9999, 0.0001)
 #' grainlib <- solist(disc(r = discr), disc(r = 2*discr))
 #' meangrainarea(grainlib, weights)
-#' plot(meangrainsetcov(grainlib, weights, xy = as.mask(w, eps = 0.1)))
+#' # plot(meangrainsetcov(grainlib, weights, xy = as.mask(w, eps = 0.1)))
 #' truecovartest <- grainlib.covar(lambda, grainlib, weights, xy = as.mask(w, eps = 0.1))
 #' truecovariance <- bddcovar(
 #'                    c(-10, 10), c(-10, 10), c(0.1, 0.1), lambda, discr)
-#' plot(solist(truecovartest, truecovariance), clipwin = disc(r = 3))
-#' plot(truecovartest - truecovariance, clipwin = disc(r = 3))
+#' # plot(solist(truecovartest, truecovariance), clipwin = disc(r = 3))
+#' # plot(truecovartest - truecovariance, clipwin = disc(r = 3))
 #' range(truecovartest - truecovariance)
 
 #' @keywords spatial nonparametric datagen

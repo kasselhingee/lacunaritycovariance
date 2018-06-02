@@ -19,7 +19,7 @@
 #' xi <- heather$coarse
 #' paircor <- pclns(as.im(xi, na.replace = 0), modifications = "pickaH")[[1]]
 #' sidelengths <- seq(0.3, 14, by = 0.2)
-#' plot(mvlg(sidelengths, paircor))
+#' # plot(mvlg(sidelengths, paircor))
 #' # what is the MVL estimates for boxes that are discs?
 #' discboxes <- lapply(sidelengths / 2, disc)
 #' discmvls <- mvlg(discboxes, paircor)
