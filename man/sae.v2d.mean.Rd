@@ -4,6 +4,7 @@
 \alias{sae.v2d.mean}
 \alias{sae.v2d.wsu.mean}
 \alias{sae.v2d.var}
+\alias{sae.v2d.wsu.var}
 \title{Variance Estimates for Observed Area - v2d}
 \usage{
 sae.v2d.mean(xi.area, window.area, delta, p21, p12, radius)
@@ -11,6 +12,8 @@ sae.v2d.mean(xi.area, window.area, delta, p21, p12, radius)
 sae.v2d.wsu.mean(xi.area, window.area, delta, n11, n21, n12, n22, radius)
 
 sae.v2d.var(xi.area, window.area, delta, p21, p12, radius)
+
+sae.v2d.wsu.var(xi.area, window.area, delta, n11, n21, n12, n22, radius)
 }
 \arguments{
 \item{xi.area}{Observed area of the class of interest.}
@@ -52,6 +55,8 @@ This is like assuming the pixels are the size of \eqn{\pi r^2}, or that error pr
 \item \code{sae.v2d.wsu.mean}: Expected cover area when including sampling uncertainty
 
 \item \code{sae.v2d.var}: The variance estimate assuming confusion matrix, independent error on undefined sub regions
+
+\item \code{sae.v2d.wsu.var}: The variance estimate assuming indepedendent sampling variation in conditional confusion matrix estimate and independent error on undefined subregions
 }}
 
 \author{

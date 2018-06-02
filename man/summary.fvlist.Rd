@@ -4,10 +4,10 @@
 \alias{summary.fvlist}
 \title{Summarise a list fv objects}
 \usage{
-\method{summary}{fvlist}(fvs, ...)
+\method{summary}{fvlist}(object, ...)
 }
 \arguments{
-\item{fvs}{A list of fv objects}
+\item{object}{A list of fv objects}
 
 \item{...}{Ignored.}
 }
@@ -20,8 +20,8 @@ It returns pointwise summaries such as observed sample mean and sample variance.
 }
 \examples{
 obspatterns <- rpoispp(10, nsim = 10)
-fvs <- lapply(obspatterns, Hest, W = Frame(obspatterns[[1]]), correction = "km" )
-summ <- summary.fvlist(fvs)
+object <- lapply(obspatterns, Hest, W = Frame(obspatterns[[1]]), correction = "km" )
+summ <- summary.fvlist(object)
 }
 \author{
 Kassel Hingee

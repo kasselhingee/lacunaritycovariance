@@ -17,6 +17,8 @@ If \code{xi} is in \code{owin} format take care to consider what exactly the obs
 
 \item{obswin}{The observation window in \code{owin} format. If it isn't included and \code{xi} is an \code{owin} object then \code{obswin} is taken to be the smallest rectangle enclosing \code{xi}. If \code{xi} is a \code{im} object than \code{obswin} is all the non-NA pixels in \code{xi}.}
 
+\item{xy}{A raster object that specifies the pixel coordinates of the desired covariance image. In the same vein and as.mask in spatstat.}
+
 \item{setcov_boundarythresh}{Any vector \eqn{v} such that set covariance of the observation window
 is smaller than this threshold is given a covariance of NA to avoid instabilities caused by dividing by very small areas,}
 
@@ -32,8 +34,6 @@ modifications = "all" will select all inbuilt modifications. See details.}
 \item{phat}{The classical estimate of coverage probability,
 which is the observed area in \code{xi} divided by the total area of the observation window.
 See \code{coverageprob} for more information.}
-
-\item{modification}{A string specifying the desired modification. See details.}
 }
 \description{
 This function estimate the covariance of a stationary RACS. 

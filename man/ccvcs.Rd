@@ -39,7 +39,7 @@ This function estimate the centred covariance of a stationary RACS.
 A variety of balanced, partially balanced and classical estimates are available.
 }
 \details{
-Computes centred covariance using \code{balancedcovariances}. See help file for \code{balancedcovariances} for available modifications.
+Computes centred covariance using \code{balancedracscovariances}. See help file for \code{balancedracscovariances} for available modifications.
 }
 \section{Functions}{
 \itemize{
