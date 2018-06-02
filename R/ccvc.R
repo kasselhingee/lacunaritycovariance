@@ -26,7 +26,7 @@
 #' @keywords spatial nonparametric
 
 #' @details 
-#' Computes centred covariance using \code{balancedcovariances}. See help file for \code{balancedcovariances} for available modifications.
+#' Computes centred covariance using \code{balancedracscovariances}. See help file for \code{balancedracscovariances} for available modifications.
 
 #' @examples
 #' xi <- heather$coarse

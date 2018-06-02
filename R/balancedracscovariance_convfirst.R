@@ -14,7 +14,7 @@
 #' @param phat The classical estimate of coverage probability,
 #'  which is the observed area in \code{xi} divided by the total area of the observation window.
 #'  See \code{coverageprob} for more information.
-#' @param modification A string specifying the desired modification. See details.
+#' @param xy A raster object that specifies the pixel coordinates of the desired covariance image. In the same vein and as.mask in spatstat.
 #' @param modifications A list of strings specifying desired modifications or functions to apply to cvchat, cpp1 and phat.
 #'  modifications = "all" will select all inbuilt modifications. See details. 
 #' @param xixi The convolution of a set representing xi with itself
