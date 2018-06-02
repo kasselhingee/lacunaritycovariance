@@ -23,8 +23,8 @@ MVLests.files <- function(
                  "MVLc", "MVLgb"),
   display = TRUE
 ){
-  polysdf <- readOGR(dirname(shapefile), sub(".shp", "", basename(shapefile)), verbose = FALSE)
-  rasterlayer <- raster(rasterfile)
+  polysdf <- rgdal::readOGR(dirname(shapefile), sub(".shp", "", basename(shapefile)), verbose = FALSE)
+  rasterlayer <- raster::raster(rasterfile)
   out <- MVLest.multipleregions(
     polysdf = polysdf,
     rasterlayer = rasterlayer, 
@@ -70,7 +70,7 @@ MVLest.region <- function(polydf, rasterlayer,
 #' @describeIn mvlfromshapeandraster Converts data contained in \code{rasterlayer} into a \code{spatstat im} object with logical values of TRUE (for foreground), FALSE (for background) and NA.
 converttologicalim <- function(polydf, rasterlayer, frange, NArange){
   obswin <- as.owin(polydf)
-  rast <- crop(rasterlayer, extent(polydf)) #crop the rasterlayer to the observation window
+  rast <- raster::crop(rasterlayer, raster::extent(polydf)) #crop the rasterlayer to the observation window
   imobj <- as.im(rast)
   imobj[setminus.owin(Frame(imobj), obswin)] <- NA
   fground <- solutionset( (frange[[1]] <= imobj) & (imobj <= frange[[2]]) )
@@ -87,9 +87,9 @@ converttologicalim <- function(polydf, rasterlayer, frange, NArange){
 #' @param plot.im.args A named list of arguments passed to \code{plot.im} for plotting the class image.
 #' @param plot.mvl.args A names list of argument passed to \code{plot.fv} for plotting the MVL estimates.
 plot_MVLest.region <- function(returnedlist, plot.im.args = list(main = "Class Image", axes = TRUE), plot.mvl.args = NULL){
-  par(mfrow = c(1, 2), oma = c(2, 0, 2, 0))
+  graphics::par(mfrow = c(1, 2), oma = c(2, 0, 2, 0))
   do.call(plot.im, args = c(list(x = returnedlist$classimage), plot.im.args))
   do.call(plot.fv, args = c(list(x = returnedlist$mvl.est), plot.mvl.args))
   attrchar <- paste("Region Attributes:", as.character(returnedlist$polydata@data))
-  mtext(text = attrchar, side = 1, outer = TRUE, line = 0)
+  graphics::mtext(text = attrchar, side = 1, outer = TRUE, line = 0)
 }

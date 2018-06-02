@@ -18,7 +18,7 @@
 #' @describeIn asondiskrasters Converts a \code{spatstat} \code{im}} into a \code{Raster} \code{rasterLayer}
 as.rasterlayer.im <- function(im, layername = NULL){
   stopifnot(class(im) == "im")
-  imras <- raster(im)
+  imras <- raster::raster(im)
   if (!is.null(layername)){names(imras) <- layername}
   return(imras)
 }
@@ -29,8 +29,8 @@ as.rasterlayer.im <- function(im, layername = NULL){
 #' If \code{filenamesave} is \code{NULL} then a temporary location is used.
 offram <- function(rasterobj, filenamesave = NULL){
   if (is.null(filenamesave)){filenamesave <- tempfile()}
-  offramrasterobj <- writeRaster(rasterobj, filename = filenamesave)
-  if (fromDisk(offramrasterobj)){
+  offramrasterobj <- raster::writeRaster(rasterobj, filename = filenamesave)
+  if (raster::fromDisk(offramrasterobj)){
     rm(rasterobj)
     gc()
     return(offramrasterobj)

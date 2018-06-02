@@ -29,8 +29,8 @@ addfvtomap <- function(fvobj, mapxlim, mapylim){
           ylim = mapylim,
           col = "green"
           )
-  arrows(mapxlim[[1]], mapylim[[1]], mapxlim[[2]], mapylim[[1]], lend = 1, angle = 90, length = 0)
-  arrows(mapxlim[[1]], mapylim[[1]], mapxlim[[1]], mapylim[[2]], lend = 1, angle = 90, length = 0)
-  text(mean(mapxlim), y = mapylim[[1]], pos = 1, labels = format(fvobj.xmax - fvobj.xmin, digits = 2))
-  text(mapxlim[[1]], y = mean(mapylim), pos = 2, labels = format(fvobj.ymax - fvobj.ymin, digits = 2))
+  graphics::arrows(mapxlim[[1]], mapylim[[1]], mapxlim[[2]], mapylim[[1]], lend = 1, angle = 90, length = 0)
+  graphics::arrows(mapxlim[[1]], mapylim[[1]], mapxlim[[1]], mapylim[[2]], lend = 1, angle = 90, length = 0)
+  graphics::text(mean(mapxlim), y = mapylim[[1]], pos = 1, labels = format(fvobj.xmax - fvobj.xmin, digits = 2))
+  graphics::text(mapxlim[[1]], y = mean(mapylim), pos = 2, labels = format(fvobj.ymax - fvobj.ymin, digits = 2))
 }
