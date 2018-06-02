@@ -7,28 +7,28 @@
 
 #' @author Kassel Hingee
 
-#' @param  fvs A list of fv objects
+#' @param  object A list of fv objects
 #' @param ...  Ignored.
 #' @return An fv object containing the pointwise mean, variance and maxima and minima.
 
 #' @examples
 #' obspatterns <- rpoispp(10, nsim = 10)
-#' fvs <- lapply(obspatterns, Hest, W = Frame(obspatterns[[1]]), correction = "km" )
-#' summ <- summary.fvlist(fvs)
+#' object <- lapply(obspatterns, Hest, W = Frame(obspatterns[[1]]), correction = "km" )
+#' summ <- summary.fvlist(object)
 
-summary.fvlist <- function(fvs, ...){
-  fvs <- harmonise.fv(fvs)
-  n <- length(fvs)
-  meanY <- Reduce(Add.fv, fvs)
+summary.fvlist <- function(object, ...){
+  object <- harmonise.fv(object)
+  n <- length(object)
+  meanY <- Reduce(Add.fv, object)
   meanY <- eval.fv(meanY/n, dotonly = FALSE, relabel = FALSE)
-  sumY2 <- Reduce(Add.fv, lapply(fvs, Square.fv))
+  sumY2 <- Reduce(Add.fv, lapply(object, Square.fv))
   varY <- eval.fv( (sumY2 - n *( meanY^2))/(n - 1), dotonly = FALSE, relabel = FALSE)
   varY <- eval.fv(pmax.int(0, varY), dotonly = FALSE, relabel = FALSE)
-  maxY <- Reduce(Pmax.fv, fvs)
-  minY <- Reduce(Pmin.fv, fvs)
+  maxY <- Reduce(Pmax.fv, object)
+  minY <- Reduce(Pmin.fv, object)
   ## tweak labels of main estimate
-  attributes(meanY) <- attributes(varY) <- attributes(maxY) <- attributes(minY) <- attributes(vanilla.fv(fvs[[1]]))
-  attributes(minY) <- attributes(vanilla.fv(fvs[[1]]))
+  attributes(meanY) <- attributes(varY) <- attributes(maxY) <- attributes(minY) <- attributes(vanilla.fv(object[[1]]))
+  attributes(minY) <- attributes(vanilla.fv(object[[1]]))
   meanY <- prefixfv(meanY,
                         tagprefix="mean",
                         descprefix="mean ",
