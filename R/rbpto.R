@@ -1,5 +1,6 @@
 #' @title Simulation of Boolean Model of Grains Scaled According to a Pareto Distribution
 #' @export rbpto bpto.coverageprob bpto.covar
+#' @description Functions for simulation and computing theoretical values of a Boolean model with identically shaped grains with size given by an approximate (in some cases a terrible approximation) Pareto distribution.
 #' 
 #' @param lambda Intensity of the germ process (which is a Poisson point process)
 #' @param grain A single owin object that gives the shape and size of the grain at scale 1

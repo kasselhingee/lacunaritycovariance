@@ -35,6 +35,9 @@ If non-null then the computations will be performed using rasters. Otherwise if 
 \value{
 An owin object.
 }
+\description{
+Functions for simulation and computing theoretical values of a Boolean model with identically shaped grains with size given by an approximate (in some cases a terrible approximation) Pareto distribution.
+}
 \details{
 The parameters xm and alpha are such that the CDF of the Pareto distribuion is \eqn{P(s <= x) = 1 - (xm / x)^{alpha}}.
 Approximates the grain distribution using the scales given by \code{lengthscales} and weighted by the probability distribution function of the Pareto distribution.
