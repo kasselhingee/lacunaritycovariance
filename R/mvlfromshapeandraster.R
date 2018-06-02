@@ -1,6 +1,6 @@
 #' @title MVL estimates from shapefiles, SpatialPolygonDataFrames  and raster data
 #' @description Functions for estimating MVL from regions specified in shapefiles or SpatialPolygonDataFrames given a raster file, or a \code{RasterLayer} object.
-#' @export MVLests.files MVLest.region  converttologicalim  plot_MVLest.region MVLest.multipleregions 
+#' @export MVLests.files MVLest_region  converttologicalim  plot_MVLest_region MVLest.multipleregions 
 
 #' @param rasterfile The path to a single layer raster file readable to RGDAL
 #' @param shapefile The path to a shapefile
@@ -10,7 +10,7 @@
 #' @param NArange is list of length 2 specifying the minimum and maximum pixel values to assign as NA values. The range is inclusive and overrides any assignment by frange.
 #' @param boxwidths The set of widths of square boxes to estimate MVL for.
 #' @param estimators A list of names of MVL estimators to use. See \code{mvl()} for available list and more information
-#' @param display If TRUE then \code{plot_MVLest.region} is called so that the results are automatically plotted
+#' @param display If TRUE then \code{plot_MVLest_region} is called so that the results are automatically plotted
 #' @describeIn mvlfromshapeandraster  Returns MVL estimates from regions specified in shapefile using raster data given in rasterfile
 MVLests.files <- function(
   shapefile, 
@@ -50,15 +50,15 @@ MVLest.multipleregions <- function(polysdf,
                                              "MVLc", "MVLgb"),
                                        display = TRUE){
   lpolydf <- unlistSpatialPolygonsDataframe(polysdf)
-  out <- lapply(lpolydf, MVLest.region, rasterlayer = rasterlayer,
+  out <- lapply(lpolydf, MVLest_region, rasterlayer = rasterlayer,
          frange = frange, NArange = NArange, boxwidths = boxwidths, estimators = estimators)
-  if (display) {tmp <- lapply(out, plot_MVLest.region)}
+  if (display) {tmp <- lapply(out, plot_MVLest_region)}
   return(out)
 }
 
 #' @describeIn mvlfromshapeandraster Computes MVL estimates assuming that SpatialPolygonsDataFrame (polydf) representing a single region. 
 #' Returns a list of the three items (1) the logical image used, (2) the MVL estimates and (3) the polydf used an input.
-MVLest.region <- function(polydf, rasterlayer,
+MVLest_region <- function(polydf, rasterlayer,
                           frange, NArange, boxwidths, estimators = c("MVLg.mattfeldt", "MVLg.pickaint",
                                                                       "MVLcc.mattfeldt", "MVLcc.pickaint", "MVLcc.pickaH",
                                                                       "MVLc", "MVLgb")){
@@ -82,11 +82,11 @@ converttologicalim <- function(polydf, rasterlayer, frange, NArange){
   return(imobj)
 }
 
-#' @describeIn mvlfromshapeandraster A special plotting function for the results of \code{MVLest.region}. Plots the image used, the MVL estimates and includes polygon attributed below plots.
-#' @param returnedlist The results of a call to \code{MVLest.region}
+#' @describeIn mvlfromshapeandraster A special plotting function for the results of \code{MVLest_region}. Plots the image used, the MVL estimates and includes polygon attributed below plots.
+#' @param returnedlist The results of a call to \code{MVLest_region}
 #' @param plot.im.args A named list of arguments passed to \code{plot.im} for plotting the class image.
 #' @param plot.mvl.args A names list of argument passed to \code{plot.fv} for plotting the MVL estimates.
-plot_MVLest.region <- function(returnedlist, plot.im.args = list(main = "Class Image", axes = TRUE), plot.mvl.args = NULL){
+plot_MVLest_region <- function(returnedlist, plot.im.args = list(main = "Class Image", axes = TRUE), plot.mvl.args = NULL){
   graphics::par(mfrow = c(1, 2), oma = c(2, 0, 2, 0))
   do.call(plot.im, args = c(list(x = returnedlist$classimage), plot.im.args))
   do.call(plot.fv, args = c(list(x = returnedlist$mvl.est), plot.mvl.args))

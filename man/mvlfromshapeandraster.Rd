@@ -3,9 +3,9 @@
 \name{MVLests.files}
 \alias{MVLests.files}
 \alias{MVLest.multipleregions}
-\alias{MVLest.region}
+\alias{MVLest_region}
 \alias{converttologicalim}
-\alias{plot_MVLest.region}
+\alias{plot_MVLest_region}
 \title{MVL estimates from shapefiles, SpatialPolygonDataFrames  and raster data}
 \usage{
 MVLests.files(shapefile, rasterfile, frange, NArange, boxwidths,
@@ -16,13 +16,13 @@ MVLest.multipleregions(polysdf, rasterlayer, frange, NArange, boxwidths,
   estimators = c("MVLg.mattfeldt", "MVLg.pickaint", "MVLcc.mattfeldt",
   "MVLcc.pickaint", "MVLcc.pickaH", "MVLc", "MVLgb"), display = TRUE)
 
-MVLest.region(polydf, rasterlayer, frange, NArange, boxwidths,
+MVLest_region(polydf, rasterlayer, frange, NArange, boxwidths,
   estimators = c("MVLg.mattfeldt", "MVLg.pickaint", "MVLcc.mattfeldt",
   "MVLcc.pickaint", "MVLcc.pickaH", "MVLc", "MVLgb"))
 
 converttologicalim(polydf, rasterlayer, frange, NArange)
 
-plot_MVLest.region(returnedlist, plot.im.args = list(main = "Class Image",
+plot_MVLest_region(returnedlist, plot.im.args = list(main = "Class Image",
   axes = TRUE), plot.mvl.args = NULL)
 }
 \arguments{
@@ -38,7 +38,7 @@ plot_MVLest.region(returnedlist, plot.im.args = list(main = "Class Image",
 
 \item{estimators}{A list of names of MVL estimators to use. See \code{mvl()} for available list and more information}
 
-\item{display}{If TRUE then \code{plot_MVLest.region} is called so that the results are automatically plotted}
+\item{display}{If TRUE then \code{plot_MVLest_region} is called so that the results are automatically plotted}
 
 \item{polysdf}{A SpatialPolygonsDataFrame with each feature corresponding to a different region.}
 
@@ -46,7 +46,7 @@ plot_MVLest.region(returnedlist, plot.im.args = list(main = "Class Image",
 
 \item{polydf}{is a SpatialPolygonsDataFrame with a single region}
 
-\item{returnedlist}{The results of a call to \code{MVLest.region}}
+\item{returnedlist}{The results of a call to \code{MVLest_region}}
 
 \item{plot.im.args}{A named list of arguments passed to \code{plot.im} for plotting the class image.}
 
@@ -61,11 +61,11 @@ Functions for estimating MVL from regions specified in shapefiles or SpatialPoly
 
 \item \code{MVLest.multipleregions}: Splits a SpatialPolygonDataFrame into component features and estimates MVL using \code{rasterlayer} data in each of these features.
 
-\item \code{MVLest.region}: Computes MVL estimates assuming that SpatialPolygonsDataFrame (polydf) representing a single region. 
+\item \code{MVLest_region}: Computes MVL estimates assuming that SpatialPolygonsDataFrame (polydf) representing a single region. 
 Returns a list of the three items (1) the logical image used, (2) the MVL estimates and (3) the polydf used an input.
 
 \item \code{converttologicalim}: Converts data contained in \code{rasterlayer} into a \code{spatstat im} object with logical values of TRUE (for foreground), FALSE (for background) and NA.
 
-\item \code{plot_MVLest.region}: A special plotting function for the results of \code{MVLest.region}. Plots the image used, the MVL estimates and includes polygon attributed below plots.
+\item \code{plot_MVLest_region}: A special plotting function for the results of \code{MVLest_region}. Plots the image used, the MVL estimates and includes polygon attributed below plots.
 }}
 
