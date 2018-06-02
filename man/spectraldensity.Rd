@@ -52,8 +52,8 @@ specdens <- spectraldensity(xi,Frame(xi),20)
 unsmspecdens <- unsmoothedspectraldensity(xi,Frame(xi))
 # plot(unsmspecdens)
 # plot(solist(smoothed = specdens,unsmoothed = unsmspecdens),
-       main = "Spectral Density Estimates",
-       equal.scales=TRUE)
+#      main = "Spectral Density Estimates",
+#      equal.scales=TRUE)
 
 }
 \references{

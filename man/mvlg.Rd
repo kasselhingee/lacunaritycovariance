@@ -33,7 +33,7 @@ sidelengths <- seq(0.3, 14, by = 0.2)
 # what is the MVL estimates for boxes that are discs?
 discboxes <- lapply(sidelengths / 2, disc)
 discmvls <- mvlg(discboxes, paircor)
-points(sidelengths, discmvls)
+# points(sidelengths, discmvls)
 
 }
 \keyword{nonparametric}

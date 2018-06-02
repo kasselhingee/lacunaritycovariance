@@ -34,9 +34,9 @@ hestm <- Hest(heather$medium, W =Frame(heather$medium))
 hestc <- Hest(heather$coarse, W =Frame(heather$coarse))
 fvlist <- list(hestf,hestm,hestc)
 names(fvlist) <- c("fine", "medium", "coarse")
-manylines.fv(fvlist, km~r)
+# manylines.fv(fvlist, km~r)
 
 ## Fancier plot
-out <- manylines.fv(fvlist,  
-main="Spherical Contact Distribution\\n from different resolutions", col=rainbow(length(fvlist)))
+# out <- manylines.fv(fvlist,  
+# main="Spherical Contact Distribution\\n from different resolutions", col=rainbow(length(fvlist)))
 }
