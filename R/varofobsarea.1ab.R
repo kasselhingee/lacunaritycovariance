@@ -20,14 +20,14 @@
 #' }
 #' Where \eqn{a_{ij}} are estimates of the entry of the confusion matrix calculated by
 #' \deqn{
-#' \hat{a}_{ij} &:= \frac{n_{ij}}{n_{.j}}
+#' \hat{a}_{ij} := \frac{n_{ij}}{n_{.j}}
 #' }
 #' where \eqn{n_{ij}} is the number of samples fallibly classed \eqn{j} and truly class \eqn{i}, and 
 #' \eqn{n_{.j}} denotes \eqn{\sum_i^g n_{ij}}.
 #'
 #' This model only accounts for the sampling error of the confusion matrix, and thus is kinda like assuming that the region of interest IS the population
 #' \deqn{
-#' \var\left[\hat{|X_1|}\right] \approx |\hat{X}_1|^2 \frac{1}{n_{.1}} \frac{1}{n_{.1} - 1} \left( n_{11} (1 - \hat{a}_{11})^2 + (n_{.1} - n_{11})(- \hat{a}_{11})^2 \right)
+#' var\left[\hat{|X_1|}\right] \approx |\hat{X}_1|^2 \frac{1}{n_{.1}} \frac{1}{n_{.1} - 1} \left( n_{11} (1 - \hat{a}_{11})^2 + (n_{.1} - n_{11})(- \hat{a}_{11})^2 \right)
 #' \quad \quad + |\hat{X}_2|^2 \frac{1}{n_{.2}} \frac{1}{n_{.2} - 1} \left( n_{12} (1 - \hat{a}_{12})^2 + (n_{.2} - n_{12})(- \hat{a}_{12})^2 \right)
 #' }
 #'
