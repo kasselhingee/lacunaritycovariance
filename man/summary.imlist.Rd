@@ -4,14 +4,14 @@
 \alias{summary.imlist}
 \title{Pointwise summary of a list of im objects}
 \usage{
-summary.imlist(ims, ..., harmonizeims = TRUE)
+\method{summary}{imlist}(object, ..., harmonizeobject = TRUE)
 }
 \arguments{
-\item{ims}{A list of im objects}
+\item{object}{A list of im objects}
 
 \item{...}{Ignored}
 
-\item{harmonizeims}{If TRUE (default) the pixel dimensions of the images will be harmonized. Otherwise the ims will be tested for compatibility.}
+\item{harmonizeobject}{If TRUE (default) the pixel dimensions of the images will be harmonized. Otherwise the object will be tested for compatibility.}
 }
 \value{
 A list im objects containing the pointwise mean, variance and maxima and minima.
@@ -22,8 +22,8 @@ It returns pointwise summaries such as observed sample mean and sample variance.
 }
 \examples{
 obspatterns <- replicate(5, rbdd(10, 0.05, window = square(1)), simplify = FALSE)
-ims <- solapply(obspatterns, function(x) balancedracscovariances(x, obswin = square(1), modifications = "pickaH")[[1]])
-summ <- summary.imlist(ims, harmonizeims = FALSE)
+object <- solapply(obspatterns, function(x) balancedracscovariances(x, obswin = square(1), modifications = "pickaH")[[1]])
+summ <- summary.imlist(object, harmonizeobject = FALSE)
 }
 \author{
 Kassel Hingee
