@@ -5,10 +5,6 @@
 
 
 
-#' @param n11 The number of samples that were truly class 1 and fallibly classified as class 1
-#' @param n21 The number of samples that were truly class 2 and fallibly classified as class 1
-#' @param n12 The number of samples that were truly class 1 and fallibly classified as class 2
-#' @param n22 The number of samples that were truly class 2 and fallibly classified as class 2
 #' @param xi An observation of the RACS of interest in owin form.
 #' @param obswin Observation window in owin format
 #' @param erosionrad The distance to erode the set of pixels in the class of interest (in the same units as xi).

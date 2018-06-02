@@ -9,7 +9,6 @@
 #' @param n21 The number of samples that were truly class 2 and fallibly classified as class 1
 #' @param n12 The number of samples that were truly class 1 and fallibly classified as class 2
 #' @param n22 The number of samples that were truly class 2 and fallibly classified as class 2
-#' @param radius
 #' @param xi.area Observed area of the class of interest.
 #' @param window.area Area of the observation window (do not include NA pixels)
 #' @param delta Width of a pixel

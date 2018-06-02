@@ -15,14 +15,6 @@ sae.v4.var(xi, obswin, erosionrad)
 \item{obswin}{Observation window in owin format}
 
 \item{erosionrad}{The distance to erode the set of pixels in the class of interest (in the same units as xi).}
-
-\item{n11}{The number of samples that were truly class 1 and fallibly classified as class 1}
-
-\item{n21}{The number of samples that were truly class 2 and fallibly classified as class 1}
-
-\item{n12}{The number of samples that were truly class 1 and fallibly classified as class 2}
-
-\item{n22}{The number of samples that were truly class 2 and fallibly classified as class 2}
 }
 \description{
 Estimates the variance of the area of a cover type observed in a thematic map created using a fallible classifier from remote sensing.

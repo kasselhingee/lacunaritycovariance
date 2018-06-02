@@ -16,6 +16,8 @@ Pixels must be square. Must be a spatstat im object.}
 
 \item{corrstepheight}{Height of the step in the correlation}
 
+\item{erosionrad}{Passed to sae.v4. The radius of erosion for giving sae.v4 error bars.}
+
 \item{n11}{The number of samples that were truly class 1 and fallibly classified as class 1}
 
 \item{n21}{The number of samples that were truly class 2 and fallibly classified as class 1}

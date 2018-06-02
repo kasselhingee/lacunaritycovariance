@@ -30,8 +30,6 @@ modifications = "all" will select all inbuilt modifications. See details.}
 \item{phat}{The classical estimate of coverage probability,
 which is the observed area in \code{xi} divided by the total area of the observation window.
 See \code{coverageprob} for more information.}
-
-\item{modification}{A string specifying the desired modification. See details.}
 }
 \value{
 A named imlist of \pkg{SpatStat} \code{im} objects containing the centred covariance estimates from the different modifications.
