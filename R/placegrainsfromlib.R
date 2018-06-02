@@ -2,7 +2,7 @@
 
 #' @title A function to help simulate Boolean models with user-provided grains
 #' @aliases placegrainsfromlib
-#' @export placegrainsfromlib grainlib.covar 
+#' @export placegrainsfromlib grainlib.covar meangrainarea
 #' @author Kassel Liam Hingee
 
 #' @description

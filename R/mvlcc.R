@@ -27,7 +27,7 @@
 #' # what is the MVL estimates for boxes that are discs?
 #' discboxes <- lapply(sidelengths / 2, disc)
 #' discmvls <- mvlcc(discboxes, cencovar, p)
-#' points(sidelengths, discmvls)
+#' # points(sidelengths, discmvls)
 #' 
 #' #direct to an image
 #' xiim <- as.im(xi, na.replace = 0)

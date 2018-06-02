@@ -23,7 +23,7 @@
 #' # what is the MVL estimates for boxes that are discs?
 #' discboxes <- lapply(sidelengths / 2, disc)
 #' discmvls <- mvlg(discboxes, paircor)
-#' points(sidelengths, discmvls)
+#' # points(sidelengths, discmvls)
 #' 
 #' @keywords spatial nonparametric 
 mvlg <- function(boxes, paircor = NULL, xiim = NULL){

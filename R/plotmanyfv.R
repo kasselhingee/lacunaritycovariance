@@ -19,10 +19,10 @@
 #' hestc <- Hest(heather$coarse, W =Frame(heather$coarse))
 #' fvlist <- list(hestf,hestm,hestc)
 #' names(fvlist) <- c("fine", "medium", "coarse")
-#' manylines.fv(fvlist, km~r)
+#' # manylines.fv(fvlist, km~r)
 #'
 #' ## Fancier plot
-#' out <- manylines.fv(fvlist,  
+#' # out <- manylines.fv(fvlist,  
 #' main="Spherical Contact Distribution\n from different resolutions", col=rainbow(length(fvlist)))
 manylines.fv <- function(fvlist, fmla=NULL, ..., add=FALSE, xlim=NULL, ylim=NULL){
   if (!add && (is.null(xlim) || is.null(ylim))){#if not add and xlim ylim are null then
