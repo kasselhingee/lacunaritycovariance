@@ -17,7 +17,7 @@
 
 #' @details 
 #' The model for the area in the class of interest is
-#' \deqn{|X_1| = |\hat{X}_1|-\Delta^2\text{Bin}(n_1,p_{21}) + \Delta^2\text{Bin}(n_2,p_{12})}
+#' \deqn{|X_1| = |\hat{X}_1|-\Delta^2Bin(n_1,p_{21}) + \Delta^2Bin(n_2,p_{12})}
 #' where \eqn{\Delta} is the width of a pixel, \eqn{n_1} and \eqn{n_2} are the number of pixels in \eqn{\hat{X}_1} and \eqn{\hat{X}_2} respectively, and
 #' \eqn{p_{21}} and \eqn{p_{12}} are the probability of an arbitrary point classified into class 1 or 2 being misclassified respectively (class 1 is the class of interest, class 2 is everything else).
 
