@@ -23,7 +23,7 @@
 #'
 #' ## Fancier plot
 #' # out <- manylines.fv(fvlist,  
-#' main="Spherical Contact Distribution\n from different resolutions", col=rainbow(length(fvlist)))
+#' # main="Spherical Contact Distribution\n from different resolutions", col=rainbow(length(fvlist)))
 manylines.fv <- function(fvlist, fmla=NULL, ..., add=FALSE, xlim=NULL, ylim=NULL){
   if (!add && (is.null(xlim) || is.null(ylim))){#if not add and xlim ylim are null then
       limits <- mapply(plot.fv,fvlist,MoreArgs=list(fmla = fmla, limitsonly=TRUE), SIMPLIFY=FALSE)

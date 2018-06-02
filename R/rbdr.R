@@ -53,8 +53,8 @@
 #' truep - phat
 #' cvchat <- balancedracscovariances(as.mask(xi, eps = c(0.1, 0.1)), obswin = win, modifications = list("pickaint"))[[1]]
 #' # plot.solist(solist(
-#'   True = truecvc,
-#'   PickaEstimate = cvchat), equal.ribbon = TRUE, main = "Covariance: True and Estimate")
+#' # True = truecvc,
+#' # PickaEstimate = cvchat), equal.ribbon = TRUE, main = "Covariance: True and Estimate")
 #' # plot(eval.im(truecvc - cvchat), main = "Difference Between Estimate and True")
 #' truecvc.iso <- rotmean(truecvc[disc(radius = 50), drop = FALSE], padzero = FALSE)
 #' cvchat.iso <- rotmean(cvchat[disc(radius = 50)], padzero = FALSE)
