@@ -8,6 +8,7 @@
 
 #' @param  ims A list of im objects
 #' @param  harmonizeims If TRUE (default) the pixel dimensions of the images will be harmonized. Otherwise the ims will be tested for compatibility.
+#' @param  ... Ignored
 #' @return A list im objects containing the pointwise mean, variance and maxima and minima.
 
 #' @examples
@@ -15,7 +16,7 @@
 #' ims <- solapply(obspatterns, function(x) balancedracscovariances(x, obswin = square(1), modifications = "pickaH")[[1]])
 #' summ <- summary.imlist(ims, harmonizeims = FALSE)
 
-summary.imlist <- function(ims, harmonizeims = TRUE){
+summary.imlist <- function(ims, ...,  harmonizeims = TRUE){
   if (harmonizeims) {ims <- do.call(harmonize.im, args = ims)} else { #for pointwise summaries the pixels must represent the same locations for each image.
     stopifnot(do.call(compatible.im, args = ims))
   }

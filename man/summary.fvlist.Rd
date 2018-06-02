@@ -4,10 +4,12 @@
 \alias{summary.fvlist}
 \title{Summarise a list fv objects}
 \usage{
-summary.fvlist(fvs)
+summary.fvlist(fvs, ...)
 }
 \arguments{
 \item{fvs}{A list of fv objects}
+
+\item{...}{Ignored.}
 }
 \value{
 An fv object containing the pointwise mean, variance and maxima and minima.

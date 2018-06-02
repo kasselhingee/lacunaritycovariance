@@ -7,6 +7,7 @@
 #' @author Kassel Hingee
 
 #' @param  fvs A list of fv objects
+#' @param ...  Ignored.
 #' @return An fv object containing the pointwise mean, variance and maxima and minima.
 
 #' @examples
@@ -14,7 +15,7 @@
 #' fvs <- lapply(obspatterns, Hest, W = Frame(obspatterns[[1]]), correction = "km" )
 #' summ <- summary.fvlist(fvs)
 
-summary.fvlist <- function(fvs){
+summary.fvlist <- function(fvs, ...){
   fvs <- harmonise.fv(fvs)
   n <- length(fvs)
   meanY <- Reduce(Add.fv, fvs)

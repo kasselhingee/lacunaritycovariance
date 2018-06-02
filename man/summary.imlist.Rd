@@ -4,10 +4,12 @@
 \alias{summary.imlist}
 \title{Pointwise summary of a list of im objects}
 \usage{
-summary.imlist(ims, harmonizeims = TRUE)
+summary.imlist(ims, ..., harmonizeims = TRUE)
 }
 \arguments{
 \item{ims}{A list of im objects}
+
+\item{...}{Ignored}
 
 \item{harmonizeims}{If TRUE (default) the pixel dimensions of the images will be harmonized. Otherwise the ims will be tested for compatibility.}
 }
