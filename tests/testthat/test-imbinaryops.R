@@ -1,4 +1,4 @@
-Context("Summarising Operations")
+context("Summarising Operations")
 
 test_that("im binary operations are performing correctly", {
   win <- as.im(square(10), eps = 0.25)
