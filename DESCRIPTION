@@ -16,7 +16,8 @@ Suggests:
     sp,
     testthat,
     datadr,
-    rgdal
+    rgdal,
+    OpenImageR
 Description: This package augments the package spatstat with some additional
     functions that estimate summary characteristics of 2D RAndom Closed Sets (RACS).
     Summary characteristics of RACS are used in landscape ecology (as landscape
