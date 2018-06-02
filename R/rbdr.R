@@ -57,7 +57,7 @@
 #' # PickaEstimate = cvchat), equal.ribbon = TRUE, main = "Covariance: True and Estimate")
 #' # plot(eval.im(truecvc - cvchat), main = "Difference Between Estimate and True")
 #' truecvc.iso <- rotmean(truecvc[disc(radius = 50), drop = FALSE], padzero = FALSE)
-#' cvchat.iso <- rotmean(cvchat[disc(radius = 50)], padzero = FALSE)
+#' cvchat.iso <- rotmean(cvchat[disc(radius = 50), drop = FALSE], padzero = FALSE)
 #' # plot(truecvc.iso)
 #' # plot(cvchat.iso, col = "red", add = TRUE)
 #' # plot(truecvc.iso, xlim = c(0, 20))
