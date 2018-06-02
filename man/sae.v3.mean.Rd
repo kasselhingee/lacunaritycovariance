@@ -60,7 +60,7 @@ corrrad <- 5 #in units of image
 corrstepheight <- 0.9
 p21 <- 0.05
 p12 <- 0.01
-xi.sum <- sum(xi)
+xi.sum <- area.owin(xi)
 exparea <- sae.v3.mean(xi, obswin, p21 = p21, p12 = p12)
 varguess <- sae.v3.var(xi, obswin, corrrad, corrstepheight, p21, p12)
 stdofareaest <- sqrt(varguess)
