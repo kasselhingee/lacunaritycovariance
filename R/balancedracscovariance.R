@@ -1,5 +1,5 @@
 #' @title Balanced spatial covariance estimation, also known as `two-point probability', estimator for stationary RACS
-#' @export balancedracscovariances balancedracscovariance.cvchat  balancedracscovariances.cvchat cvchats.convolves  byconv.cvchats
+#' @export balancedracscovariances balancedracscovariance.cvchat  balancedracscovariances.cvchat
 #' @description 
 #' This function estimate the covariance of a stationary RACS. 
 #' A variety of balanced, partially balanced and classical estimates are available.
@@ -20,9 +20,6 @@
 #' @param modification A string specifying the desired modification. See details.
 #' @param modifications A list of strings specifying desired modifications or functions to apply to cvchat, cpp1 and phat.
 #'  modifications = "all" will select all inbuilt modifications. See details. 
-#' @param xixi The convolution of a set representing xi with itself
-#' @param winwin The convolution of the observation window with itself
-#' @param xiwin The convolution of the set xi with the observation window
 
 #' @return \code{racscovariance.cvchat} returns a \pkg{SpatStat} \code{im} object containing the modified estimated covariance.
 #'  The grey scale values in this image represent the covariance for an array of vectors. 
@@ -52,15 +49,12 @@
 #' xi <- heather$coarse
 #' obswin <- Frame(xi)
 #' balancedcvchats <- balancedracscovariances(xi, obswin = Frame(xi), modifications = "all")
-#' balancedcvchats2 <- byconv.cvchats(xi, obswin = Frame(xi), modifications = "all")
+#' balancedcvchats2 <- byconv_cvchats(xi, obswin = Frame(xi), modifications = "all")
 #' 
 #' plot.solist(c(balancedcvchats, balancedcvchats2), ncols = 8)
 #' diff <- mapply(function(x, y) x - y, balancedcvchats, balancedcvchats2, SIMPLIFY = FALSE)
 #' plot.solist(diff)
 #' 
-#' xixi <- setcov(xi, xy = xi)
-#' winwin <- setcov(obswin, xy = xi)
-#' xiwin <- setcov(xi, obswin, xy = xi)
 
 #' phat <- coverageprob(xi, obswin = Frame(xi))
 #' cvchat <- racscovariance(xi, inclraw = FALSE)
@@ -96,30 +90,6 @@ balancedracscovariances <- function(xi, obswin = NULL,
   return(cvchats)
 }
 
-byconv.cvchats <- function(xi, obswin,
-        xy = NULL,
-        setcov_boundarythresh = NULL,
-        modifications = "all"){
-  if (is.null(setcov_boundarythresh)){
-    setcov_boundarythresh <- 0.1 * area.owin(obswin)
-  }
-  if (is.null(xy)){
-    if(is.mask(xi)){
-      xy <- xi
-    }  else {
-      stop("xy must be supplied")
-    }
-  }
-  xixi <- setcov(xi, xy = xy)
-  winwin <- setcov(obswin, xy = xy)
-  winwin[winwin < setcov_boundarythresh] <- NA #to remove small denominators
-  xiwin <- setcov(xi, obswin, xy = xy)
-  xiwin[winwin < setcov_boundarythresh] <- NA #to remove small denominators
-  phat <- area.owin(xi) / area.owin(obswin)
-  
-  cvchats <- cvchats.convolves(xixi, winwin, xiwin, phat, modifications = modifications) 
-  return(cvchats)
-}
 
 #' @describeIn balancedracscovariances Applies covariance balancing modification to precomputed cvchat, cpp1 and phat
 balancedracscovariance.cvchat <- function(cvchat, cpp1 = NULL, phat = NULL, modification = "pickaH"){
@@ -168,94 +138,32 @@ balancedracscovariances.cvchat <- function(cvchat, cpp1 = NULL, phat = NULL, mod
   return(as.imlist(balancedcvchats))
 }
 
-#' @describeIn balancedracscovariances Applies multiple modifications simultaneously from a precomputed convolutions xi*xi, w*w, xi*w and phat
-cvchats.convolves <- function(xixi, winwin, xiwin = NULL, phat = NULL, modifications = "all"){
-  harmonised <- harmonise.im(xixi = xixi, winwin = winwin, xiwin = xiwin)
-  xixi <- harmonised$xixi
-  winwin <- harmonised$winwin
-  xiwin <- harmonised$xiwin
-  fcns <- list(
-         none = cvchat_none,
-         symm = cvchat_symm,
-         adrian = cvchat_adrian,
-         mattfeldt = cvchat_mattfeldt_add,
-         mattfeldtmult = cvchat_mattfeldt_mult,
-         pickaint = cvchat_picka_int,
-         pickaintmult = cvchat_picka_intmult,
-         pickaH = cvchat_picka_H
-  )
-  if ((modifications == "all")[[1]]) {modifications <- names(fcns)}
-  fcnstouse <- fcns[names(fcns) %in% modifications]
-  isfunction <- unlist(lapply(modifications, function(x) "function" %in% class(x)))
-  modificationsnotused <- modifications[!( (modifications %in% names(fcns)) | isfunction)]
-  
-  fcnstouse <- c(fcnstouse, modifications[isfunction]) #add user specified modification
-  
-  if(length(modificationsnotused) > 0){stop(
-    paste("The following modifications are not recognised as existing function names or as a function:", modificationsnotused))}
-  balancedcvchats <- lapply(fcnstouse, function(x) do.call(x, args = list(xixi = xixi, winwin = winwin, xiwin = xiwin, phat = phat)))
-  return(as.imlist(balancedcvchats))
-}
-
-cvchat_none <- function(xixi, winwin, xiwin = NULL, phat = NULL){
-  return(xixi / winwin)
-}
 
 balancedracscovariance_symm <- function(cvchat, cpp1 = NULL, phat = NULL){
   return((cvchat + reflect.im(cvchat))/2) 
-}
-
-cvchat_symm <- function(xixi, winwin, xiwin = NULL, phat = NULL){
-  return((xixi + reflect.im(xixi))/ (2 * winwin))
 }
 
 balancedracscovariance_adrian <- function(cvchat, cpp1, phat){
   return(cvchat - cpp1*cpp1 + phat^2) 
 }
 
-cvchat_adrian <- function(xixi, winwin, xiwin = NULL, phat = NULL){
-  return((xixi - (xiwin * xiwin / winwin)) / winwin + phat^2)
-}
-
-
 balancedracscovariance_mattfeldt_add <- function(cvchat, cpp1, phat){
   return(cvchat - ( (cpp1 + reflect.im(cpp1))/2 )^2 + phat^2) 
-}
-
-cvchat_mattfeldt_add <- function(xixi, winwin, xiwin = NULL, phat = NULL){
-  return((xixi - (0.5 * (xiwin + reflect.im(xiwin)))^2 / winwin ) / winwin  +  phat^2)
 }
 
 balancedracscovariance_mattfeldt_mult <- function(cvchat, cpp1, phat){
   return(cvchat * phat^2/ ( ( (cpp1 + reflect.im(cpp1))/2 )^2) ) 
 }
 
-cvchat_mattfeldt_mult <- function(xixi, winwin, xiwin = NULL, phat = NULL){
-  mattfeldtnum <- 0.5 * (xiwin + reflect.im(xiwin))
-  return((xixi * phat ^2 * winwin) / (mattfeldtnum^2))
-}
-
 balancedracscovariance_picka_int <- function(cvchat, cpp1, phat){
   return(cvchat - cpp1*reflect.im(cpp1) + phat^2) 
-}
-
-cvchat_picka_int <- function(xixi, winwin, xiwin = NULL, phat = NULL){
-  return((xixi - xiwin * reflect.im(xiwin) / winwin) / winwin + phat ^2 )
 }
 
 balancedracscovariance_picka_intmult <- function(cvchat, cpp1, phat){
   return(cvchat * phat^2 / (cpp1*reflect.im(cpp1))) 
 }
 
-cvchat_picka_intmult <- function(xixi, winwin, xiwin = NULL, phat = NULL){
-  return((xixi * phat^2 * winwin) / (xiwin * reflect.im(xiwin)))
-}
-
 balancedracscovariance_picka_H <- function(cvchat, cpp1, phat){
   return(cvchat - phat*(cpp1 + reflect.im(cpp1) - 2*phat)) 
-}
-
-cvchat_picka_H <- function(xixi, winwin, xiwin, phat){
-  return((xixi  - phat * xiwin - phat * reflect.im(xiwin)) / winwin  + 2* phat^2 )
 }
 
