@@ -1,6 +1,7 @@
 #' @title Functions for converting lists of im Ojects to on-disk rasterLayer objects
 #' @rdname asondiskrasters
 #' @export as.rasterlayer.im  offram imtoondiskras  imstoondiskras  rasterstoims
+#' @description Functions for saving spatstat's \code{im} objects as \code{raster} objects out of RAM. Useful when computer has limited RAM and a fast solid state disk to store the images off RAM.
 
 #' @details These functions are useful when experiments generate a large collection of \code[im} objects.
 #' The package \code{raster} has many useful tools for working with these images outside RAM.

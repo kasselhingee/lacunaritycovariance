@@ -33,6 +33,9 @@ rasterstoims(alist, recursive = FALSE)
 
 \item{recursive}{If TRUE sublists of \code{alist} will also be modified.}
 }
+\description{
+Functions for saving spatstat's \code{im} objects as \code{raster} objects out of RAM. Useful when computer has limited RAM and a fast solid state disk to store the images off RAM.
+}
 \section{Functions}{
 \itemize{
 \item \code{offram}: Create a rasterLayer (or other Raster* object) that is saved on disk out of another raster object.
