@@ -47,7 +47,7 @@ sae.v2d.var <- function(xi.area, window.area, delta, p21, p12, radius){
          + delta^2 * (pi * radius^2) * (window.area - xi.area) * p12 * (1 - p12) )
 }
 
-#' @describeIn sae.v1b.mean  The variance estimate assuming indepedendent sampling variation in conditional confusion matrix estimate and independent error on undefined subregions
+#' @describeIn sae.v2d.mean  The variance estimate assuming indepedendent sampling variation in conditional confusion matrix estimate and independent error on undefined subregions
 sae.v2d.wsu.var <- function(xi.area, window.area, delta,  n11, n21, n12, n22, radius){
   a11 <- ahat11(n11, n21)
   a12 <- ahat12(n12, n22)
