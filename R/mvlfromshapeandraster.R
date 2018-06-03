@@ -1,6 +1,6 @@
 #' @title MVL estimates from shapefiles, SpatialPolygonDataFrames  and raster data
 #' @description Functions for estimating MVL from regions specified in shapefiles or SpatialPolygonDataFrames given a raster file, or a \code{RasterLayer} object.
-#' @export MVLests.files MVLest_region  converttologicalim  plot_MVLest_region MVLest.multipleregions 
+#' @export MVLests_files MVLest_region  converttologicalim  plot_MVLest_region MVLest_multipleregions 
 
 #' @param rasterfile The path to a single layer raster file readable to RGDAL
 #' @param shapefile The path to a shapefile
@@ -12,7 +12,7 @@
 #' @param estimators A list of names of MVL estimators to use. See \code{mvl()} for available list and more information
 #' @param display If TRUE then \code{plot_MVLest_region} is called so that the results are automatically plotted
 #' @describeIn mvlfromshapeandraster  Returns MVL estimates from regions specified in shapefile using raster data given in rasterfile
-MVLests.files <- function(
+MVLests_files <- function(
   shapefile, 
   rasterfile, 
   frange, 
@@ -25,7 +25,7 @@ MVLests.files <- function(
 ){
   polysdf <- rgdal::readOGR(dirname(shapefile), sub(".shp", "", basename(shapefile)), verbose = FALSE)
   rasterlayer <- raster::raster(rasterfile)
-  out <- MVLest.multipleregions(
+  out <- MVLest_multipleregions(
     polysdf = polysdf,
     rasterlayer = rasterlayer, 
     frange = frange, 
@@ -40,7 +40,7 @@ MVLests.files <- function(
 
 #' @param polysdf A SpatialPolygonsDataFrame with each feature corresponding to a different region.
 #' @describeIn mvlfromshapeandraster Splits a SpatialPolygonDataFrame into component features and estimates MVL using \code{rasterlayer} data in each of these features.
-MVLest.multipleregions <- function(polysdf, 
+MVLest_multipleregions <- function(polysdf, 
                                        rasterlayer, 
                                        frange, 
                                        NArange, 
