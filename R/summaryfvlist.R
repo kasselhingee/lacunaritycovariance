@@ -13,7 +13,7 @@
 
 #' @examples
 #' obspatterns <- rpoispp(10, nsim = 10)
-#' object <- lapply(obspatterns, Hest, W = Frame(obspatterns[[1]]), correction = "km" )
+#' object <- lapply(obspatterns, Hest, W = Frame(obspatterns[[1]]))
 #' summ <- summary.fvlist(object)
 
 summary.fvlist <- function(object, ...){
@@ -59,3 +59,34 @@ Add.fv <- function(A,B){ force(A); force(B); eval.fv(A+B, dotonly = FALSE, relab
 
 Pmax.fv <- function(A, B){force(A); force(B); eval.fv(pmax(A, B), dotonly = FALSE, relabel = FALSE)}
 Pmin.fv <- function(A, B){force(A); force(B); eval.fv(pmin(A, B), dotonly = FALSE, relabel = FALSE)}
+
+
+#this is a draft function - it doesn't operate for every function value in an fv object!
+summary_fvlist_fivenum <- function(object, ...){
+  object <- harmonise.fv(object)
+  #converting into data.frames
+  ynames <- fvnames(object[[1]], a = ".")
+  xname <- fvnames(object[[1]], a = ".x")
+  yvals <- lapply(object, function(x) as.matrix(x[, ynames[[1]], drop = TRUE]))
+  yvals.m <- do.call(cbind, args = yvals) #each column is an fv object, each row is a unique argument value
+  ptwisesum <- apply(yvals.m, MARGIN = 1, FUN = fivenum) #each column is a unique argument value, each row is a quartile thing
+  fvdata <- as.data.frame(cbind(object[[1]][, xname, drop = TRUE], t(ptwisesum)))
+  names(fvdata) <- c(xname, "min", "Q1", "median", "Q3", "max")
+  fivenumfv <- fv(fvdata,
+     argu = xname,
+     ylab = attr(object[[1]], "ylab", exact = TRUE), 
+     valu = "median",
+     fmla = ". ~ r",
+     alim = c(min(fvdata[, xname]), max(fvdata[, xname])),
+     labl = names(fvdata),
+     desc = c(attr(object[[1]], "desc", exact = TRUE)[[1]], 
+              "minimum",
+              "1st quartile",
+              "median",
+              "3rd quartile",
+              "maximum"),
+     unitname = unitname(object[[1]]),
+     fname = paste("Five Number Summary of", attr(object[[1]], "fname"))
+  )
+  return(fivenumfv)
+}
