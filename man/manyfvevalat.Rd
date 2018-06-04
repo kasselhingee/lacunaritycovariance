@@ -27,6 +27,6 @@ fv1 <- Hest(heather$coarse)
 fv2 <- Hest(complement.owin(heather$coarse))
 fvlist <- list(scdxi = fv1, scdnotxi = fv2) 
 manyfvevalat(fvlist,0.19)
-out <- manylines.fv(fvlist, fmla="km~r")
-abline(v=0.19)
+# out <- manylines.fv(fvlist, fmla="km~r")
+# abline(v=0.19)
 }
