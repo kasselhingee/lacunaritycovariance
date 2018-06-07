@@ -50,6 +50,7 @@ summary.fvlist <- function(object, ...){
     result <- Reduce(bind.fv, list(meanY, varY, maxY, minY))
     # set default plotting lines
     fvnames(result, ".") <- c(fvnames(meanY, "."), fvnames(maxY, "."), fvnames(minY, "."))
+    attr(result, "fmla") <- ". ~ .x"
   return(result)
 }
 
