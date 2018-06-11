@@ -42,8 +42,8 @@ Note: The side lengths are rounded such that they are an odd number of pixels ac
 \examples{
 xiim <- as.im(heather$coarse, na.replace = 0)
 sidelengths <- seq(0.2, 14, by = 0.2) #in units of xiim
-lac <- mvlgb(sidelengths, xiim, inclraw = TRUE)
-# plot(lac, cbind(MVL, raw) ~ s)
+lac <- mvlgb(sidelengths, xiim, inclraw = FALSE)
+# plot(lac)
 
 }
 \references{

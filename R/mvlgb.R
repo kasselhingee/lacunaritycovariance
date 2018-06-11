@@ -27,8 +27,8 @@
 #' @examples
 #' xiim <- as.im(heather$coarse, na.replace = 0)
 #' sidelengths <- seq(0.2, 14, by = 0.2) #in units of xiim
-#' lac <- mvlgb(sidelengths, xiim, inclraw = TRUE)
-#' # plot(lac, cbind(MVL, raw) ~ s)
+#' lac <- mvlgb(sidelengths, xiim, inclraw = FALSE)
+#' # plot(lac)
 #'
 #' @keywords spatial nonparametric 
 mvlgb <- function(sidelengths, xiim, inclraw = FALSE, obswin = Frame(xiim)){
@@ -54,6 +54,9 @@ mvlgb <- function(sidelengths, xiim, inclraw = FALSE, obswin = Frame(xiim)){
 xiim[(complement.owin(intersect.owin(obswin, Frame(xiim)), frame = Frame(xiim)))] <- NA  #make sure the pixels outside obswin are set to NA so that reduce sampling happens naturally ##NOTE: this a time consuming operation that may never be needed
 lacs <- mapply(mvlgb_intern.rcpproll, sidep = 2 * rpix + 1, MoreArgs = list(xiim = xiim, obswin = obsvd), SIMPLIFY = FALSE, inclraw)
 
+  #converting results in fv objects
+  
+  #extra terms if raw is exported
   if (inclraw){
     nobord <- unlist(lapply(lacs, `[[`, 1) )
     MVL <- unlist(lapply(lacs, `[[`, 2) )
@@ -66,14 +69,31 @@ lacs <- mapply(mvlgb_intern.rcpproll, sidep = 2 * rpix + 1, MoreArgs = list(xiim
            )
   }
   else {
+    valsdf <- matrix(unlist(lacs), ncol = length(lacs[[1]]), byrow = TRUE)
+    colnames(valsdf) <- names(lacs[[1]])
     MVL <- unlist(lapply(lacs, `[[`, 1) )
-    lacsdf <- data.frame(s = sidel, MVL = MVL)
-    lacfv <- fv(lacsdf, argu = "s", valu = "MVL",
+    lacsdf <- cbind(data.frame(s = sidel), valsdf)
+    #recommended xlim:
+    alim.min <- 1
+    alim.max <- min(which(vapply(lacsdf[, "MVL"], is.na, FUN.VALUE = TRUE)), nrow(lacsdf))
+    lacfv <- fv(lacsdf,
+           argu = "s",
+           valu = "MVL",
+           fmla = ".y ~ s",
+           alim = c(lacsdf[alim.min, "s"], lacsdf[alim.max, "s"]),
            ylab = expression(MVL[gb]),
            unitname = unitname(xiim),
-           labl = c("side length", "MVL"),
-           desc = c("side lengths of boxes", "Gliding Box Lacunarity that only uses boxes entirely within the observation")
+           labl = c("Box Width",
+                    "MVL",
+                    "Var(BoxMass)",
+                    "Avg[BoxMass]"),
+           desc = c("side lengths of boxes", 
+                    "Gliding box MVL estimate that only uses boxes entirely within the observation",
+                    "Variance of box mass - used in the gliding box estimate",
+                    "Average box mass - used in the gliding box estimate"
+                    )
            )
+    fvnames(lacfv, a = ".") <- "MVL"
   }
   return(lacfv)
 }
@@ -88,6 +108,8 @@ mvlgb_intern.rcpproll <- function(xiim, sidep, inclraw, obswin = Frame(xiim)){
   mat <- as.matrix(xiim)
   if ( (sidep > nrow(mat)) | (sidep > ncol(mat))){
     mvlgb.rs <- NA
+    sampmean.rs <- NA
+    samp2ndmom.rs <- NA
   }
   else {
     movline.overrows <- RcppRoll::roll_sum(mat, sidep)
@@ -111,7 +133,13 @@ mvlgb_intern.rcpproll <- function(xiim, sidep, inclraw, obswin = Frame(xiim)){
     mvlgb.raw <- samp2ndmom.raw / (sampmean.raw ^ 2) - 1
   }
   if (inclraw) {return(list(raw = mvlgb.raw, RS = mvlgb.rs))}
-  else {return(RS = mvlgb.rs)}
+  else {
+    return(list(
+      MVL = mvlgb.rs,
+      s2 = samp2ndmom.rs - sampmean.rs^2,
+      xbar = sampmean.rs
+      ))
+    }
 }
 
 #' @rdname mvlgb
