@@ -16,8 +16,11 @@ mvlc(boxes, covariance = NULL, p = NULL, xiim = NULL)
 \item{xiim}{An observation of a stationary RACS in \code{im} format. \code{xiim} must have values of either 1, 0 or NA; 1 denotes inside the RACS, 0 denotes outside, and NA denotes unobserved.}
 }
 \value{
-Either an \code{fv} object containing the MVL values and box side lengths or if \code{boxes} is a list of owin objects then \code{mvlc} returns a list of corresponding MVL values.
- Note if NA or NaN values in the \code{covariance} object are used then \code{mvlc} will return NA or NaN instead of an MVL value.
+If \code{boxes} is a list of numerical values then MVL is estimated for square boxes with side length given by \code{boxes}.
+ The returned object is then an \code{fv} object containing estimates of MVL, box mass variance and box mass mean.
+ If \code{boxes} is a list of owin objects then \code{mvlc} returns a dataframe of with columns corresponding to estimates of MVL, box mass variance and box mass mean.
+ Note if NA or NaN values in the \code{covariance} object are used then \code{mvlc} will return NA or NaN instead of an MVL value. 
+ If the true covariance function and coverage probability of a RACS are passed to \code{mvlc} then the results will be the true MVL, box mass variance and box mass mean for the RACS.
 }
 \description{
 Estimates the mass variance lacunarity (MVL) of a stationary RACS from a bi-tonal image using the covariance method.
@@ -37,7 +40,7 @@ mvlest <- mvlc(sidelengths, covar, p)
 # what is the MVL estimates for boxes that are discs?
 discboxes <- lapply(sidelengths / 2, disc)
 discmvls <- mvlc(discboxes, covar, p)
-# points(sidelengths, discmvls)
+# points(sidelengths, discmvls$MVL)
 
 }
 \keyword{nonparametric}

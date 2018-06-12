@@ -19,8 +19,11 @@ mvlcc(boxes, cencovar = NULL, p = NULL, xiim = NULL,
 \item{modification}{If an observation \code{xiim} is passed then \code{modification} will select the balancing method that \code{ccvc} uses to estimate the centred covariance.}
 }
 \value{
-Either an \code{fv} object containing the MVL values and box side lengths or if \code{boxes} is a list of owin objects then \code{mvlc} returns a list of corresponding MVL values.
- Note if NA or NaN values in the \code{cencovar} object are used then \code{mvlc} will return NA or NaN instead of an MVL value.
+If \code{boxes} is a list of numerical values then MVL is estimated for square boxes with side length given by \code{boxes}.
+ The returned object is then an \code{fv} object containing estimates of MVL, box mass variance and box mass mean.
+ If \code{boxes} is a list of owin objects then \code{mvlcc} returns a dataframe of with columns corresponding to estimates of MVL, box mass variance and box mass mean.
+ Note if NA or NaN values in the \code{covariance} object are used then \code{mvlc} will return NA or NaN instead of an MVL value. 
+ If the true covariance function and coverage probability of a RACS are passed to \code{mvlc} then the results will be the true MVL, box mass variance and box mass mean for the RACS.
 }
 \description{
 Estimates the mass variance lacunarity (MVL) of a stationary RACS from a bi-tonal image using centred covariance estimates.

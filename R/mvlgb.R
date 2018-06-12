@@ -14,7 +14,7 @@
 #' 
 #' @references [1] Allain, C. and Cloitre, M. (1991) Characterizing the lacunarity of random and deterministic fractal sets. Physical Review A, 44, 3552-3558.
 #'
-#' @return An \code{fv} object with a column called \code{MVL} for the usual gliding box estimate described in [1]. 
+#' @return An \code{fv} object containing estimates of MVL, box mass variance and box mass mean computed using the gliding box estimator described in [1]. 
 #'  The side lengths (labelled \code{s}) are always odd multiples of the pixel width.
 #'  
 #' @param xiim An image of pixels valued either \code{0}, \code{1} or \code{NA}. \code{NA} valued pixels are assumed to be outside the observation window.

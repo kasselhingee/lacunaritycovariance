@@ -14,8 +14,11 @@ mvlg(boxes, paircor = NULL, xiim = NULL)
 \item{xiim}{An observation of a stationary RACS in \code{im} format. \code{xiim} must have values of either 1, 0 or NA; 1 denotes inside the RACS, 0 denotes outside, and NA denotes unobserved.}
 }
 \value{
-Either an \code{fv} object containing the MVL values and box side lengths or if \code{boxes} is a list of owin objects then \code{mvlg} returns a list of corresponding MVL values.
- Note if NA or NaN values in the \code{paircor} object are used then \code{mvlg} will return NA or NaN instead of an MVL value.
+If \code{boxes} is a list of numerical values then MVL is estimated for square boxes with side length given by \code{boxes}.
+ The returned object is then an \code{fv} object containing estimates of MVL.
+ If \code{boxes} is a list of owin objects then \code{mvlg} returns a dataframe of with columns corresponding to estimates of MVL.
+ Note if NA or NaN values in the \code{paircor} object are used then \code{mvlg} will return NA or NaN instead of an MVL value. 
+ If the true pair-correlation function of a RACS is passed to \code{mvlg} then the result will be the true MVL of the RACS.
 }
 \description{
 Estimates the mass variance lacunarity (MVL) of a stationary RACS from a bi-tonal image by estimating pair-correlation.
@@ -29,7 +32,7 @@ If we denoted the estimated pair-correlation by \eqn{\hat{g}(v)} then the estima
 xi <- heather$coarse
 paircor <- pclns(as.im(xi, na.replace = 0), modifications = "pickaH")[[1]]
 sidelengths <- seq(0.3, 14, by = 0.2)
-# plot(mvlg(sidelengths, paircor))
+mvlgest <- mvlg(sidelengths, paircor))
 # what is the MVL estimates for boxes that are discs?
 discboxes <- lapply(sidelengths / 2, disc)
 discmvls <- mvlg(discboxes, paircor)

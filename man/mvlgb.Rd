@@ -17,7 +17,7 @@ lacgb(sidelengths, xiim, obswin = Frame(xiim))
 \item{obswin}{Optional observation window. The observation window used for the estimator will be the intersection of \code{obswin} and the pixels that are not \code{NA} in \code{xiim}.}
 }
 \value{
-An \code{fv} object with a column called \code{MVL} for the usual gliding box estimate described in [1]. 
+An \code{fv} object containing estimates of MVL, box mass variance and box mass mean computed using the gliding box estimator described in [1]. 
  The side lengths (labelled \code{s}) are always odd multiples of the pixel width.
 }
 \description{
