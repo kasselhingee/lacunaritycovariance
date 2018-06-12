@@ -5,26 +5,20 @@
 \alias{lacgb}
 \title{Gliding Box estimation of mass variance lacunarity}
 \usage{
-mvlgb(sidelengths, xiim, inclraw = FALSE, obswin = Frame(xiim))
+mvlgb(sidelengths, xiim, obswin = Frame(xiim))
 
-lacgb(sidelengths, xiim, inclraw = FALSE, obswin = Frame(xiim))
+lacgb(sidelengths, xiim, obswin = Frame(xiim))
 }
 \arguments{
 \item{sidelengths}{A list of suggested box side lengths in the same units as \code{xiim}. Note the actual side lengths used will be the closest multiple of an odd number of pixel widths.}
 
 \item{xiim}{An image of pixels valued either \code{0}, \code{1} or \code{NA}. \code{NA} valued pixels are assumed to be outside the observation window.}
 
-\item{inclraw}{If TRUE the function will also return a gliding box estimate that ignores edge effects. (Default is FALSE)}
-
 \item{obswin}{Optional observation window. The observation window used for the estimator will be the intersection of \code{obswin} and the pixels that are not \code{NA} in \code{xiim}.}
 }
 \value{
 An \code{fv} object with a column called \code{MVL} for the usual gliding box estimate described in [1]. 
  The side lengths (labelled \code{s}) are always odd multiples of the pixel width.
- 
-Another column, called \code{raw}, is included if \code{inclraw=TRUE}. 
-This column represents a version of the gliding box algorithm that pretends that the items/cover of interest are fully observed
- (i.e. that the observation window is the entire plane).
 }
 \description{
 Calculates the gliding box estimate [1] of mass variance lacunarity from a bi-tonal image.
@@ -42,7 +36,7 @@ Note: The side lengths are rounded such that they are an odd number of pixels ac
 \examples{
 xiim <- as.im(heather$coarse, na.replace = 0)
 sidelengths <- seq(0.2, 14, by = 0.2) #in units of xiim
-lac <- mvlgb(sidelengths, xiim, inclraw = FALSE)
+lac <- mvlgb(sidelengths, xiim)
 # plot(lac)
 
 }

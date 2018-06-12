@@ -17,21 +17,17 @@
 #' @return An \code{fv} object with a column called \code{MVL} for the usual gliding box estimate described in [1]. 
 #'  The side lengths (labelled \code{s}) are always odd multiples of the pixel width.
 #'  
-#' Another column, called \code{raw}, is included if \code{inclraw=TRUE}. 
-#' This column represents a version of the gliding box algorithm that pretends that the items/cover of interest are fully observed
-#'  (i.e. that the observation window is the entire plane).
 #' @param xiim An image of pixels valued either \code{0}, \code{1} or \code{NA}. \code{NA} valued pixels are assumed to be outside the observation window.
 #' @param sidelengths A list of suggested box side lengths in the same units as \code{xiim}. Note the actual side lengths used will be the closest multiple of an odd number of pixel widths.
-#' @param inclraw If TRUE the function will also return a gliding box estimate that ignores edge effects. (Default is FALSE)
 #' @param obswin Optional observation window. The observation window used for the estimator will be the intersection of \code{obswin} and the pixels that are not \code{NA} in \code{xiim}.
 #' @examples
 #' xiim <- as.im(heather$coarse, na.replace = 0)
 #' sidelengths <- seq(0.2, 14, by = 0.2) #in units of xiim
-#' lac <- mvlgb(sidelengths, xiim, inclraw = FALSE)
+#' lac <- mvlgb(sidelengths, xiim)
 #' # plot(lac)
 #'
 #' @keywords spatial nonparametric 
-mvlgb <- function(sidelengths, xiim, inclraw = FALSE, obswin = Frame(xiim)){
+mvlgb <- function(sidelengths, xiim, obswin = Frame(xiim)){
   if (!is.im(xiim)){stop("input xiim must be of class im")}
   if (abs(xiim$xstep - xiim$ystep) > 1E-2 * xiim$xstep){stop("image pixels must be square")}
 #convert sidelengths to odd pixel amounts, taking into account that want a distance to edge
@@ -52,23 +48,9 @@ mvlgb <- function(sidelengths, xiim, inclraw = FALSE, obswin = Frame(xiim)){
   }
 
 xiim[(complement.owin(intersect.owin(obswin, Frame(xiim)), frame = Frame(xiim)))] <- NA  #make sure the pixels outside obswin are set to NA so that reduce sampling happens naturally ##NOTE: this a time consuming operation that may never be needed
-lacs <- mapply(mvlgb_intern.rcpproll, sidep = 2 * rpix + 1, MoreArgs = list(xiim = xiim, obswin = obsvd), SIMPLIFY = FALSE, inclraw)
+lacs <- mapply(mvlgb_intern.rcpproll, sidep = 2 * rpix + 1, MoreArgs = list(xiim = xiim, obswin = obsvd), SIMPLIFY = FALSE)
 
   #converting results in fv objects
-  
-  #extra terms if raw is exported
-  if (inclraw){
-    nobord <- unlist(lapply(lacs, `[[`, 1) )
-    MVL <- unlist(lapply(lacs, `[[`, 2) )
-    lacsdf <- data.frame(s = sidel, raw = nobord, MVL = MVL)
-    lacfv <- fv(lacsdf, argu = "s", valu = "MVL",
-           ylab = expression(MVL[gb]),
-           unitname = unitname(xiim),
-           labl = c("side length", "raw", "MVL"),
-           desc = c("side lengths of boxes", "Gliding Box Lacunarity ignoring edge effects", "Gliding Box Lacunarity that only uses boxes entirely within the observation")
-           )
-  }
-  else {
     valsdf <- matrix(unlist(lacs), ncol = length(lacs[[1]]), byrow = TRUE)
     colnames(valsdf) <- names(lacs[[1]])
     lacsdf <- cbind(data.frame(s = sidel), valsdf)
@@ -93,7 +75,6 @@ lacs <- mapply(mvlgb_intern.rcpproll, sidep = 2 * rpix + 1, MoreArgs = list(xiim
                     )
            )
     fvnames(lacfv, a = ".") <- "MVL"
-  }
   return(lacfv)
 }
 
@@ -103,7 +84,7 @@ lacs <- mapply(mvlgb_intern.rcpproll, sidep = 2 * rpix + 1, MoreArgs = list(xiim
 #eg mvlgb_intern.rcpproll(xiim,5,5,5*0.8)
 #the obswin is only for the raw version and must be an owin object. 
 #uses rcpproll
-mvlgb_intern.rcpproll <- function(xiim, sidep, inclraw, obswin = Frame(xiim)){
+mvlgb_intern.rcpproll <- function(xiim, sidep, obswin = Frame(xiim)){
   mat <- as.matrix(xiim)
   if ( (sidep > nrow(mat)) | (sidep > ncol(mat))){
     mvlgb.rs <- NA
@@ -118,27 +99,11 @@ mvlgb_intern.rcpproll <- function(xiim, sidep, inclraw, obswin = Frame(xiim)){
     mvlgb.rs <- samp2ndmom.rs / (sampmean.rs ^ 2) - 1
   }
 
-  if (inclraw){
-    #lacunarity if the box centeres can be everywhere (aka no boundary correction)
-    matpad <- matrix(0, ncol = ncol(mat) + 2 * sidep, nrow = nrow(mat) + 2 * sidep)
-    matpad[1 * sidep + 1:nrow(xiim), 1 * sidep + 1:ncol(xiim)] <- mat
-    matpad[is.na(matpad)] <- 0
-    movline.overrows <- RcppRoll::roll_sum(matpad, sidep)
-    movline.overrowthencols <- RcppRoll::roll_sum(t(movline.overrows), sidep)
-
-    numpixelsinwindow <- area.owin(obswin) / (xiim$xstep * xiim$ystep)
-    sampmean.raw <- sum(movline.overrowthencols) * xiim$xstep * xiim$ystep / numpixelsinwindow #note this isn't simply the mean of areafracs because the areafracs image is larger than the input image
-    samp2ndmom.raw <- sum(movline.overrowthencols ^ 2) * (xiim$xstep * xiim$ystep) ^ 2 / numpixelsinwindow
-    mvlgb.raw <- samp2ndmom.raw / (sampmean.raw ^ 2) - 1
-  }
-  if (inclraw) {return(list(raw = mvlgb.raw, RS = mvlgb.rs))}
-  else {
     return(list(
       MVL = mvlgb.rs,
       s2 = samp2ndmom.rs - sampmean.rs^2,
       xbar = sampmean.rs
       ))
-    }
 }
 
 #' @rdname mvlgb
