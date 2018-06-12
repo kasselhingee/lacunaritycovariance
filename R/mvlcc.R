@@ -23,7 +23,7 @@
 #' cencovar <- ccvcs(xi, obswin = Frame(xi), modifications = c("pickaH"))$pickaH
 #' p <- area(xi) / area(Frame(xi))
 #' sidelengths <- seq(0.3, 14, by = 0.2)
-#' # plot(mvlcc(sidelengths, cencovar, p))
+#' mvlccest <- mvlcc(sidelengths, cencovar, p))
 #' # what is the MVL estimates for boxes that are discs?
 #' discboxes <- lapply(sidelengths / 2, disc)
 #' discmvls <- mvlcc(discboxes, cencovar, p)
@@ -31,8 +31,7 @@
 #' 
 #' #direct to an image
 #' xiim <- as.im(xi, na.replace = 0)
-#' # plot(mvlcc(sidelengths, xiim = xiim, modification = "pickaH"))
-#' # plot(add = TRUE, mvlc(sidelengths, xiim = xiim), lty = "dashed", col = "red")
+#' mvlccest <- mvlcc(sidelengths, xiim = xiim, modification = "pickaH")
 #' 
 #' @keywords spatial nonparametric 
 mvlcc <- function(boxes, cencovar = NULL, p = NULL, xiim = NULL, modification = "pickaH"){
@@ -49,17 +48,32 @@ mvlcc <- function(boxes, cencovar = NULL, p = NULL, xiim = NULL, modification = 
     stop("Input requires specification of xiim or cencovar and p")
   }
 
+  lacsdf <- as.data.frame(lacv)
   if (mode(boxes) %in% c("integer", "numeric")){
-    lacfv <- fv(data.frame(s = boxes, MVL = lacv),
+    lacsdf <- cbind(s = boxes, lacsdf)
+    #recommended xlim:
+    alim.min <- 1
+    alim.max <- min(which(vapply(lacsdf[, "MVL"], is.na, FUN.VALUE = TRUE)), nrow(lacsdf))
+    lacfv <- fv(lacsdf,
                 argu = "s",
                 valu = "MVL",
-                ylab = expression(MVL),
-                unitname = unitname,
-                labl = c("Box Side Length", "MVL"),
-                desc = c("Side length of boxes", "MVL derived from centred covariance")
-               )
+                fmla = ".y ~ s",
+                alim = c(lacsdf[alim.min, "s"], lacsdf[alim.max, "s"]),
+                ylab = quote(MVL[c]),
+                unitname = unitname(xiim),
+                labl = c("Box Width",
+                         "MVL",
+                         "Var(BoxMass)",
+                         "Mean[BoxMass]"),
+                desc = c("side lengths of boxes", 
+                         "MVL derived from covariance",
+                         "A covariance-based estimate of the variance in box mass",
+                         "An estimate of mean box mass using coverage probability"
+                )
+    )
+    fvnames(lacfv, a = ".") <- "MVL"
     return(lacfv)
-  } else (return(lacv))
+  } else (return(lacsdf))
 }
 
 mvlcc.inputcovar <- function(boxes, cencovar, p){
@@ -80,5 +94,9 @@ mvlcc.inputcovar <- function(boxes, cencovar, p){
   integrationresults <- mapply(innerprod.im, boxcov, list(cencovar), outsideA = 0, outsideB = NA, na.rm = FALSE, SIMPLIFY = FALSE) # the list around the cencovar is necessary to stop mapply unlisting the image itself
 
   lac <- unlist(integrationresults) / (p ^ 2 * boxarea ^ 2)
-  return(lac)
+  return(list(
+    MVL = lac,
+    s2 = unlist(integrationresults),
+    xbar = p * boxarea
+  ))
 }
