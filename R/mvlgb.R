@@ -71,7 +71,6 @@ lacs <- mapply(mvlgb_intern.rcpproll, sidep = 2 * rpix + 1, MoreArgs = list(xiim
   else {
     valsdf <- matrix(unlist(lacs), ncol = length(lacs[[1]]), byrow = TRUE)
     colnames(valsdf) <- names(lacs[[1]])
-    MVL <- unlist(lapply(lacs, `[[`, 1) )
     lacsdf <- cbind(data.frame(s = sidel), valsdf)
     #recommended xlim:
     alim.min <- 1
