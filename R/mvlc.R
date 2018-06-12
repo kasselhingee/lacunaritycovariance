@@ -70,7 +70,7 @@ mvlc <- function(boxes, covariance = NULL, p = NULL, xiim = NULL){
     )
     fvnames(lacfv, a = ".") <- "MVL"
     return(lacfv)
-  } else (return(lacv))
+  } else (return(lacsdf))
 }
 
 mvlc.inputcovar <- function(boxes, covariance, p){
