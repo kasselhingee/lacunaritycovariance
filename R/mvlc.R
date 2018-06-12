@@ -21,7 +21,8 @@
 #' covar <- racscovariance(xi, inclraw = FALSE)
 #' p <- area(xi) / area(Frame(xi))
 #' sidelengths <- seq(0.3, 14, by = 0.2)
-#' # plot(mvlc(sidelengths, covar, p))
+#' mvlest <- mvlc(sidelengths, covar, p)
+#' # plot(mvlest)
 #' # what is the MVL estimates for boxes that are discs?
 #' discboxes <- lapply(sidelengths / 2, disc)
 #' discmvls <- mvlc(discboxes, covar, p)
@@ -44,15 +45,30 @@ mvlc <- function(boxes, covariance = NULL, p = NULL, xiim = NULL){
     stop("Input requires specification of xiim or covariance and p")
   }
 
+  lacsdf <- as.data.frame(lacv)
   if (mode(boxes) %in% c("integer", "numeric")){
-    lacfv <- fv(data.frame(s = boxes, MVL = lacv),
+    lacsdf <- cbind(s = boxes, lacsdf)
+    #recommended xlim:
+    alim.min <- 1
+    alim.max <- min(which(vapply(lacsdf[, "MVL"], is.na, FUN.VALUE = TRUE)), nrow(lacsdf))
+    lacfv <- fv(lacsdf,
                 argu = "s",
                 valu = "MVL",
-                ylab = expression(MVL),
-                unitname = unitname,
-                labl = c("Box Side Length", "MVL"),
-                desc = c("Side length of boxes", "MVL derived from covariance")
-               )
+                fmla = ".y ~ s",
+                alim = c(lacsdf[alim.min, "s"], lacsdf[alim.max, "s"]),
+                ylab = quote(MVL[c]),
+                unitname = unitname(xiim),
+                labl = c("Box Width",
+                         "MVL",
+                         "Var(BoxMass)",
+                         "Mean[BoxMass]"),
+                desc = c("side lengths of boxes", 
+                         "MVL derived from covariance",
+                         "A covariance-based estimate of the variance in box mass",
+                         "An estimate of mean box mass using coverage probability"
+                )
+    )
+    fvnames(lacfv, a = ".") <- "MVL"
     return(lacfv)
   } else (return(lacv))
 }
@@ -75,7 +91,11 @@ mvlc.inputcovar <- function(boxes, covariance, p){
   integrationresults <- mapply(innerprod.im, boxcov, list(covariance), outsideA = 0, outsideB = NA, na.rm = FALSE, SIMPLIFY = FALSE) # the list around the covariance is necessary to stop mapply unlisting the image itself
 
   lac <- unlist(integrationresults) / (p ^ 2 * boxarea ^ 2) - 1
-  return(lac)
+  return(list(
+    MVL = lac,
+    s2 = unlist(integrationresults) -  (p ^ 2 * boxarea ^ 2),
+    xbar = p * boxarea
+  ))
 }
 
 ##  INNER PRODUCT FUNCTION ##

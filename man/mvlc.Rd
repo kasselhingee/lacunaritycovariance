@@ -32,7 +32,8 @@ xi <- heather$coarse
 covar <- racscovariance(xi, inclraw = FALSE)
 p <- area(xi) / area(Frame(xi))
 sidelengths <- seq(0.3, 14, by = 0.2)
-# plot(mvlc(sidelengths, covar, p))
+mvlest <- mvlc(sidelengths, covar, p)
+# plot(mvlest)
 # what is the MVL estimates for boxes that are discs?
 discboxes <- lapply(sidelengths / 2, disc)
 discmvls <- mvlc(discboxes, covar, p)
