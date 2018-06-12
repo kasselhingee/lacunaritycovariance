@@ -20,7 +20,7 @@ It returns pointwise summaries such as observed sample mean and sample variance.
 }
 \examples{
 obspatterns <- rpoispp(10, nsim = 10)
-object <- lapply(obspatterns, Hest, W = Frame(obspatterns[[1]]), correction = "km" )
+object <- lapply(obspatterns, Hest, W = Frame(obspatterns[[1]]))
 summ <- summary.fvlist(object)
 }
 \author{
