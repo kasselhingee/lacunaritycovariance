@@ -49,7 +49,8 @@ mvlg <- function(boxes, paircor = NULL, xiim = NULL){
                 ylab = expression(MVL),
                 unitname = unitname,
                 labl = c("Box Side Length", "MVL"),
-                desc = c("Side length of boxes", "MVL derived from pair-correlation")
+                desc = c("Side length of boxes", "MVL derived from pair-correlation"),
+                fname = "MVL"
                )
     return(lacfv)
   } else (return(lacv))

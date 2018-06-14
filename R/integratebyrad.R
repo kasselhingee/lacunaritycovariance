@@ -56,7 +56,8 @@ integratebyradius <- function(centre, values){
                valu = "y",
                desc=c("radius",
                       "Estimated integral of values within radius r"),
-               alim = range(rvals)
+               alim = range(rvals),
+               fname = "CumulInt"
                )
   return(cumint)
 }

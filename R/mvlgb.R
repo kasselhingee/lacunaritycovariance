@@ -72,7 +72,8 @@ lacs <- mapply(mvlgb_intern.rcpproll, sidep = 2 * rpix + 1, MoreArgs = list(xiim
                     "Gliding box MVL estimate that only uses boxes entirely within the observation",
                     "Variance of box mass - used in the gliding box estimate",
                     "Average box mass - used in the gliding box estimate"
-                    )
+                    ),
+           fname = "MVL"
            )
     fvnames(lacfv, a = ".") <- "MVL"
   return(lacfv)

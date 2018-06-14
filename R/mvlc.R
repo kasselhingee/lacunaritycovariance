@@ -69,7 +69,8 @@ mvlc <- function(boxes, covariance = NULL, p = NULL, xiim = NULL){
                          "MVL derived from covariance",
                          "A covariance-based estimate of the variance in box mass",
                          "An estimate of mean box mass using coverage probability"
-                )
+                ),
+                fname = "MVL"
     )
     fvnames(lacfv, a = ".") <- "MVL"
     return(lacfv)
