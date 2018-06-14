@@ -9,6 +9,8 @@
 
 #' @param  object A list of fv objects
 #' @param ...  Ignored.
+#' @param na.rm If TRUE NA values in the fv object will be ignored 
+#' (i.e. NA values will be removed from all summations and the population size will decrease by 1 for each NA value).
 #' @return An fv object containing the pointwise mean, variance and maxima and minima.
 
 #' @examples
@@ -18,23 +20,26 @@
 #' 
 #' #test with NA vals
 #' object[[1]]$km[1:46] <- NA
-#' summ <- summary.fvlist(object)
-#' plot(summ, "meankm ~ r")
+#' summ <- summary.fvlist(object, na.rm = TRUE)
 
-summary.fvlist <- function(object, na.rm = FALSE, ...){
+summary.fvlist <- function(object, ..., na.rm = FALSE){
   object <- harmonise.fv(object)
   n <- length(object)
-  #count number of NA values and replace NA with 0
-  nas <- Map(function(a) eval.fv(is.na(a), dotonly = FALSE, relabel = FALSE), object)
-  nacount <- Reduce(Add.fv, nas)
-  object_naremoved <- Map(function(a) replace(a, is.na(as.data.frame(a)), 0), object)
-  
+  nacount <- eval.fv(0 * is.na(A), envir = list(A = object[[1]]), dotonly = FALSE, relabel = FALSE)
+  if (na.rm){
+    #count number of NA values
+    nas <- Map(function(a) eval.fv(is.na(a), dotonly = FALSE, relabel = FALSE), object)
+    nacount <- Reduce(Add.fv, nas)
+    #remove NA vals from object
+    object <- Map(function(a) replace(a, is.na(as.data.frame(a)), 0), object)
+  }
+    
   #compute mean
-  meanY <- Reduce(Add.fv, object_naremoved) #compute sum using NA removed data
+  meanY <- Reduce(Add.fv, object) #compute sum
   meanY <- eval.fv(meanY/(n - nacount), dotonly = FALSE, relabel = FALSE) #divide by number of non-NA vals
   
   #compute variance
-  sumY2 <- Reduce(Add.fv, lapply(object, Square.fv))
+  sumY2 <- Reduce(Add.fv, lapply(object, Square.fv)) #use NA removed version
   varY <- eval.fv( (sumY2 - (n - nacount) *( meanY^2))/(n - nacount - 1), dotonly = FALSE, relabel = FALSE)
   varY <- eval.fv(pmax.int(0, varY), dotonly = FALSE, relabel = FALSE)
   maxY <- Reduce(Pmax.fv, object)

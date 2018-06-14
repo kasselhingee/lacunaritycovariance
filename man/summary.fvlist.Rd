@@ -4,12 +4,15 @@
 \alias{summary.fvlist}
 \title{Summarise a list fv objects}
 \usage{
-\method{summary}{fvlist}(object, ...)
+\method{summary}{fvlist}(object, ..., na.rm = FALSE)
 }
 \arguments{
 \item{object}{A list of fv objects}
 
 \item{...}{Ignored.}
+
+\item{na.rm}{If TRUE NA values in the fv object will be ignored 
+(i.e. NA values will be removed from all summations and the population size will decrease by 1 for each NA value).}
 }
 \value{
 An fv object containing the pointwise mean, variance and maxima and minima.
@@ -22,6 +25,10 @@ It returns pointwise summaries such as observed sample mean and sample variance.
 obspatterns <- rpoispp(10, nsim = 10)
 object <- lapply(obspatterns, Hest, W = Frame(obspatterns[[1]]))
 summ <- summary.fvlist(object)
+
+#test with NA vals
+object[[1]]$km[1:46] <- NA
+summ <- summary.fvlist(object, na.rm = TRUE)
 }
 \author{
 Kassel Hingee
