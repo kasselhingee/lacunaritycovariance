@@ -20,34 +20,22 @@
 #' object[[1]]$km[1:46] <- NA
 #' summ <- summary.fvlist(object)
 #' plot(summ, "meankm ~ r")
-#' A <- object[[1]]
-#counting NA numbers for each column and arg val
-nas <- Map(function(a) eval.fv(is.na(a)), object)
-nacount <- Reduce(Add.fv, nas)
-object_naremoved <- Map(function(a) replace(a, is.na(as.data.frame(a)), 0), object)
-meanY <- Reduce(Add.fv, object_naremoved)
-meanY <- eval.fv(meanY/(n - nacount), dotonly = FALSE, relabel = FALSE)
-#' B <- object[[2]]
-#' is.na(as.data.frame(A))
-#' out <- eval.fv(rowSums(A, B, na.rm = TRUE))
-#' out[1:5, "km", drop = TRUE]
 
-out <- replace(A, is.na(as.data.frame(A)), 0)
-
-
-
-summary.fvlist <- function(object, ...){
+summary.fvlist <- function(object, na.rm = FALSE, ...){
   object <- harmonise.fv(object)
   n <- length(object)
-  nas <- Map(function(a) eval.fv(is.na(a)), object)
+  #count number of NA values and replace NA with 0
+  nas <- Map(function(a) eval.fv(is.na(a), dotonly = FALSE, relabel = FALSE), object)
   nacount <- Reduce(Add.fv, nas)
   object_naremoved <- Map(function(a) replace(a, is.na(as.data.frame(a)), 0), object)
-  meanY <- Reduce(Add.fv, object_naremoved)
-  meanY <- eval.fv(meanY/(n - nacount), dotonly = FALSE, relabel = FALSE)
-  #meanY <- Reduce(Add.fv, object)
-  #meanY <- eval.fv(meanY/n, dotonly = FALSE, relabel = FALSE)
+  
+  #compute mean
+  meanY <- Reduce(Add.fv, object_naremoved) #compute sum using NA removed data
+  meanY <- eval.fv(meanY/(n - nacount), dotonly = FALSE, relabel = FALSE) #divide by number of non-NA vals
+  
+  #compute variance
   sumY2 <- Reduce(Add.fv, lapply(object, Square.fv))
-  varY <- eval.fv( (sumY2 - n *( meanY^2))/(n - 1), dotonly = FALSE, relabel = FALSE)
+  varY <- eval.fv( (sumY2 - (n - nacount) *( meanY^2))/(n - nacount - 1), dotonly = FALSE, relabel = FALSE)
   varY <- eval.fv(pmax.int(0, varY), dotonly = FALSE, relabel = FALSE)
   maxY <- Reduce(Pmax.fv, object)
   minY <- Reduce(Pmin.fv, object)
