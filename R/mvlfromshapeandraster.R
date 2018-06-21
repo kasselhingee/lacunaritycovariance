@@ -50,9 +50,12 @@ MVLest_multipleregions <- function(polysdf,
                                              "MVLc", "MVLgb"),
                                        display = TRUE){
   lpolydf <- unlistSpatialPolygonsDataframe(polysdf)
+  names(lpolydf) <- as.data.frame(polysdf)[,1]
   out <- lapply(lpolydf, MVLest_region, rasterlayer = rasterlayer,
          frange = frange, NArange = NArange, boxwidths = boxwidths, estimators = estimators)
-  if (display) {tmp <- lapply(out, plot_MVLest_region)}
+  if (display) {
+    plot_MVLest_allregions(out, estname = "mvlcc.pickaH", main = "Class images and PickaH MVL estimate")
+  }
   return(out)
 }
 
@@ -93,3 +96,30 @@ plot_MVLest_region <- function(returnedlist, plot.im.args = list(main = "Class I
   attrchar <- paste("Region Attributes:", as.character(returnedlist$polydata@data))
   graphics::mtext(text = attrchar, side = 1, outer = TRUE, line = 0)
 }
+
+plot_MVLest_allregions <- function(returnedlist, estname = "mvlcc.pickaH", ...){
+  fvall <- createfvofallregions(returnedlist, estname = estname)
+  ims <- lapply(returnedlist, function(x) x$classimage)
+  alist <- do.call(anylist, c(ims, list(mvls = fvall)))
+  plot.anylist(alist,
+               ncols = 2,
+               ...
+               )
+}
+
+createfvofallregions <- function(output, estname = "mvlcc.pickaH"){
+  estvals <- data.frame(lapply(output, function(x) x$mvl.est[, estname, drop = TRUE]))
+  names(estvals) <- names(output)
+  fvdf <- data.frame(s = output[[1]]$mvl.est[,"s", drop = TRUE], estvals)
+  lacfv <- fv(fvdf,
+         argu = "s",
+         valu = names(fvdf)[[2]],
+         fmla = ". ~ s",
+         alim = c(1, nrow(fvdf)),
+         ylab = expression(MVL[gb]),
+         unitname = unitname(output[[1]]$mvl.est),
+         fname = "MVL"
+         )
+  return(lacfv)
+}
+
