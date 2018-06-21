@@ -100,26 +100,15 @@ plot_MVLest_region <- function(returnedlist, plot.im.args = list(main = "Class I
 plot_MVLest_allregions <- function(returnedlist, estname = "mvlcc.pickaH", ...){
   fvall <- createfvofallregions(returnedlist, estname = estname)
   ims <- lapply(returnedlist, function(x) x$classimage)
-  alist <- do.call(anylist, c(ims, list(mvls = fvall)))
+  alist <- do.call(anylist, c(ims, list(MVL = fvall)))
   plot.anylist(alist,
-               ncols = 2,
                ...
                )
 }
 
 createfvofallregions <- function(output, estname = "mvlcc.pickaH"){
-  estvals <- data.frame(lapply(output, function(x) x$mvl.est[, estname, drop = TRUE]))
-  names(estvals) <- names(output)
-  fvdf <- data.frame(s = output[[1]]$mvl.est[,"s", drop = TRUE], estvals)
-  lacfv <- fv(fvdf,
-         argu = "s",
-         valu = names(fvdf)[[2]],
-         fmla = ". ~ s",
-         alim = c(1, nrow(fvdf)),
-         ylab = expression(MVL[gb]),
-         unitname = unitname(output[[1]]$mvl.est),
-         fname = "MVL"
-         )
+  fvs <- lapply(output, function(x) x$mvl.est)
+  lacfv <- collapse.fv(fvs,  different = c(estname))
   return(lacfv)
 }
 
