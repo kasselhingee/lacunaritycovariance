@@ -6,6 +6,7 @@
 \alias{MVLest_region}
 \alias{converttologicalim}
 \alias{plot_MVLest_region}
+\alias{plot_MVLest_allregions}
 \title{MVL estimates from shapefiles, SpatialPolygonDataFrames  and raster data}
 \usage{
 MVLests_files(shapefile, rasterfile, frange, NArange, boxwidths,
@@ -27,6 +28,9 @@ converttologicalim(polydf, rasterlayer, frange, NArange)
 
 plot_MVLest_region(returnedlist, plot.im.args = list(main = "Class Image",
   axes = TRUE), plot.mvl.args = NULL)
+
+plot_MVLest_allregions(returnedlist, normaliseAtStart = FALSE,
+  estname = "mvlcc.pickaH", ...)
 }
 \arguments{
 \item{shapefile}{The path to a shapefile}
@@ -73,5 +77,7 @@ Returns a list of the three items (1) the logical image used, (2) the MVL estima
 \item \code{converttologicalim}: Converts data contained in \code{rasterlayer} into a \code{spatstat im} object with logical values of TRUE (for foreground), FALSE (for background) and NA.
 
 \item \code{plot_MVLest_region}: A special plotting function for the results of \code{MVLest_region}. Plots the image used, the MVL estimates and includes polygon attributed below plots.
+
+\item \code{plot_MVLest_allregions}: A speical plotting function for the results of \code{MVLest_multipleregions} and \code{MVLest_files}.
 }}
 

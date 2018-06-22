@@ -130,6 +130,7 @@ plot_MVLest_region <- function(returnedlist, plot.im.args = list(main = "Class I
   graphics::mtext(text = attrchar, side = 1, outer = TRUE, line = 0)
 }
 
+#' @describeIn mvlfromshapeandraster A speical plotting function for the results of \code{MVLest_multipleregions} and \code{MVLest_files}.
 plot_MVLest_allregions <- function(returnedlist, normaliseAtStart = FALSE, estname = "mvlcc.pickaH", ...){
   fvall <- createfvofallregions(returnedlist, estname = estname)
   if (normaliseAtStart){fvall <- normaliseAtStart(fvall)} #normalise by the value at the lowest x value
