@@ -26,7 +26,7 @@
 #' cencovar <- ccvcs(xi, obswin = Frame(xi), modifications = c("pickaH"))$pickaH
 #' p <- area(xi) / area(Frame(xi))
 #' sidelengths <- seq(0.3, 14, by = 0.2)
-#' mvlccest <- mvlcc(sidelengths, cencovar, p))
+#' mvlccest <- mvlcc(sidelengths, cencovar, p)
 #' # what is the MVL estimates for boxes that are discs?
 #' discboxes <- lapply(sidelengths / 2, disc)
 #' discmvls <- mvlcc(discboxes, cencovar, p)

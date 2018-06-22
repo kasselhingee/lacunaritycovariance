@@ -10,15 +10,18 @@
 \usage{
 MVLests_files(shapefile, rasterfile, frange, NArange, boxwidths,
   estimators = c("MVLg.mattfeldt", "MVLg.pickaint", "MVLcc.mattfeldt",
-  "MVLcc.pickaint", "MVLcc.pickaH", "MVLc", "MVLgb"), display = TRUE)
+  "MVLcc.pickaint", "MVLcc.pickaH", "MVLc", "MVLgb"),
+  normalisebyMVLzero = FALSE, display = TRUE)
 
 MVLest_multipleregions(polysdf, rasterlayer, frange, NArange, boxwidths,
   estimators = c("MVLg.mattfeldt", "MVLg.pickaint", "MVLcc.mattfeldt",
-  "MVLcc.pickaint", "MVLcc.pickaH", "MVLc", "MVLgb"), display = TRUE)
+  "MVLcc.pickaint", "MVLcc.pickaH", "MVLc", "MVLgb"),
+  normalisebyMVLzero = FALSE, display = TRUE)
 
 MVLest_region(polydf, rasterlayer, frange, NArange, boxwidths,
   estimators = c("MVLg.mattfeldt", "MVLg.pickaint", "MVLcc.mattfeldt",
-  "MVLcc.pickaint", "MVLcc.pickaH", "MVLc", "MVLgb"))
+  "MVLcc.pickaint", "MVLcc.pickaH", "MVLc", "MVLgb"),
+  normalisebyMVLzero = FALSE)
 
 converttologicalim(polydf, rasterlayer, frange, NArange)
 
@@ -37,6 +40,9 @@ plot_MVLest_region(returnedlist, plot.im.args = list(main = "Class Image",
 \item{boxwidths}{The set of widths of square boxes to estimate MVL for.}
 
 \item{estimators}{A list of names of MVL estimators to use. See \code{mvl()} for available list and more information}
+
+\item{normalisebyMVLzero}{Logical. If TRUE the returned MVL estimates will be normalised by the MVL in the limit of very small boxes,
+which is \eqn{p (1-p)/p^2}, where \eqn{p} is the coverage probability.}
 
 \item{display}{If TRUE then \code{plot_MVLest_region} is called so that the results are automatically plotted}
 

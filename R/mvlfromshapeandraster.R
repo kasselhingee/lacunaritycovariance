@@ -10,6 +10,8 @@
 #' @param NArange is list of length 2 specifying the minimum and maximum pixel values to assign as NA values. The range is inclusive and overrides any assignment by frange.
 #' @param boxwidths The set of widths of square boxes to estimate MVL for.
 #' @param estimators A list of names of MVL estimators to use. See \code{mvl()} for available list and more information
+#' @param normalisebyMVLzero Logical. If TRUE the returned MVL estimates will be normalised by the MVL in the limit of very small boxes,
+#'  which is \eqn{p (1-p)/p^2}, where \eqn{p} is the coverage probability.
 #' @param display If TRUE then \code{plot_MVLest_region} is called so that the results are automatically plotted
 #' @describeIn mvlfromshapeandraster  Returns MVL estimates from regions specified in shapefile using raster data given in rasterfile
 MVLests_files <- function(
