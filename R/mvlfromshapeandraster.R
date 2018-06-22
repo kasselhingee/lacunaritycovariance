@@ -21,6 +21,7 @@ MVLests_files <- function(
   estimators = c("MVLg.mattfeldt", "MVLg.pickaint",
                  "MVLcc.mattfeldt", "MVLcc.pickaint", "MVLcc.pickaH",
                  "MVLc", "MVLgb"),
+  normalisebyMVLzero = FALSE,
   display = TRUE
 ){
   polysdf <- rgdal::readOGR(dirname(shapefile), sub(".shp", "", basename(shapefile)), verbose = FALSE)
@@ -32,6 +33,7 @@ MVLests_files <- function(
     NArange = NArange, 
     boxwidths = boxwidths, 
     estimators = estimators,
+    normalisebyMVLzero = normalisebyMVLzero,
     display = display
     )
   return(out)
@@ -48,13 +50,16 @@ MVLest_multipleregions <- function(polysdf,
                                        estimators = c("MVLg.mattfeldt", "MVLg.pickaint",
                                              "MVLcc.mattfeldt", "MVLcc.pickaint", "MVLcc.pickaH",
                                              "MVLc", "MVLgb"),
+                                       normalisebyMVLzero = FALSE,
                                        display = TRUE){
   lpolydf <- unlistSpatialPolygonsDataframe(polysdf)
   names(lpolydf) <- as.data.frame(polysdf)[,1]
   out <- lapply(lpolydf, MVLest_region, rasterlayer = rasterlayer,
-         frange = frange, NArange = NArange, boxwidths = boxwidths, estimators = estimators)
+         frange = frange, NArange = NArange, boxwidths = boxwidths, estimators = estimators, normalisebyMVLzero = normalisebyMVLzero)
   if (display) {
-    plot_MVLest_allregions(out, estname = "mvlcc.pickaH", main = "Class images and PickaH MVL estimate")
+    plot_MVLest_allregions(out, estname = "mvlcc.pickaH", main = "Class images and PickaH MVL estimate",
+                           normaliseAtStart = !normalisebyMVLzero
+                           )
   }
   return(out)
 }
@@ -64,10 +69,36 @@ MVLest_multipleregions <- function(polysdf,
 MVLest_region <- function(polydf, rasterlayer,
                           frange, NArange, boxwidths, estimators = c("MVLg.mattfeldt", "MVLg.pickaint",
                                                                       "MVLcc.mattfeldt", "MVLcc.pickaint", "MVLcc.pickaH",
-                                                                      "MVLc", "MVLgb")){
+                                                                      "MVLc", "MVLgb"),
+                          normalisebyMVLzero = FALSE){
   xiim <- converttologicalim(polydf, rasterlayer, frange, NArange)
   mvl.ests <- mvl(xiim, boxwidths, estimators = estimators)
+  if (normalisebyMVLzero){
+    phat <- coverageprob(xiim)
+    MVLatzero <- phat * (1 - phat) / phat^2
+    mvl.ests <- eval.fv(mvl.ests/MVLatzero)
+  }
   return(list(classimage = xiim, polydata = polydf, mvl.est = mvl.ests))
+}
+
+normaliseAtStart <- function(X) {#function written by Adrian Baddeley. Normalises result to value at the lowest x-value
+  if(is.numeric(X) && is.vector(X)) {
+    X1 <- X[1]
+    if(is.infinite(X1)) warning("Denominator is infinite", call.=FALSE) else
+      if(!is.finite(X1)) warning("Denominator is NA or NaN", call.=FALSE) else
+        if(X1 == 0) warning("Denominator is zero", call.=FALSE)
+    return(X/X1)
+  }
+  if(is.fv(X)) {
+    a <- fvnames(X, "*")
+    X[,a] <- lapply(X[,a,drop=TRUE], normaliseAtStart)
+    X <- prefixfv(X,
+                  tagprefix="nmld",
+                  descprefix="normalised ",
+                  lablprefix="normalised~")
+    return(X)
+  }
+  stop("Format of X is not understood")
 }
 
 #' @describeIn mvlfromshapeandraster Converts data contained in \code{rasterlayer} into a \code{spatstat im} object with logical values of TRUE (for foreground), FALSE (for background) and NA.
@@ -97,8 +128,9 @@ plot_MVLest_region <- function(returnedlist, plot.im.args = list(main = "Class I
   graphics::mtext(text = attrchar, side = 1, outer = TRUE, line = 0)
 }
 
-plot_MVLest_allregions <- function(returnedlist, estname = "mvlcc.pickaH", ...){
+plot_MVLest_allregions <- function(returnedlist, normaliseAtStart = FALSE, estname = "mvlcc.pickaH", ...){
   fvall <- createfvofallregions(returnedlist, estname = estname)
+  if (normaliseAtStart){fvall <- normaliseAtStart(fvall)} #normalise by the value at the lowest x value
   ims <- lapply(returnedlist, function(x) x$classimage)
   alist <- do.call(anylist, c(ims, list(MVL = fvall)))
   plot.anylist(alist,
