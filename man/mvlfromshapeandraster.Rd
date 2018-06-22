@@ -12,7 +12,7 @@
 MVLests_files(shapefile, rasterfile, frange, NArange, boxwidths,
   estimators = c("MVLg.mattfeldt", "MVLg.pickaint", "MVLcc.mattfeldt",
   "MVLcc.pickaint", "MVLcc.pickaH", "MVLc", "MVLgb"),
-  normalisebyMVLzero = FALSE, display = TRUE)
+  normalisebyMVLzero = TRUE, display = TRUE)
 
 MVLest_multipleregions(polysdf, rasterlayer, frange, NArange, boxwidths,
   estimators = c("MVLg.mattfeldt", "MVLg.pickaint", "MVLcc.mattfeldt",

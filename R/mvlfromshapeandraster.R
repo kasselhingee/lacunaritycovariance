@@ -1,6 +1,6 @@
 #' @title MVL estimates from shapefiles, SpatialPolygonDataFrames  and raster data
 #' @description Functions for estimating MVL from regions specified in shapefiles or SpatialPolygonDataFrames given a raster file, or a \code{RasterLayer} object.
-#' @export MVLests_files MVLest_region  converttologicalim  plot_MVLest_region MVLest_multipleregions 
+#' @export MVLests_files MVLest_region  converttologicalim  plot_MVLest_region MVLest_multipleregions  plot_MVLest_allregions
 
 #' @param rasterfile The path to a single layer raster file readable to RGDAL
 #' @param shapefile The path to a shapefile
@@ -23,7 +23,7 @@ MVLests_files <- function(
   estimators = c("MVLg.mattfeldt", "MVLg.pickaint",
                  "MVLcc.mattfeldt", "MVLcc.pickaint", "MVLcc.pickaH",
                  "MVLc", "MVLgb"),
-  normalisebyMVLzero = FALSE,
+  normalisebyMVLzero = TRUE,
   display = TRUE
 ){
   polysdf <- rgdal::readOGR(dirname(shapefile), sub(".shp", "", basename(shapefile)), verbose = FALSE)
