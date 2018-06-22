@@ -29,5 +29,7 @@ test_that("rbdr produces simulations with the correct coverage and covariance", 
   cvchat <- balancedracscovariances(as.mask(xi, eps = c(0.1, 0.1)), obswin = win, modifications = list("pickaint"))[[1]]
   truecvc.iso <- rotmean(thcovariance[disc(radius = 50), drop = FALSE], padzero = FALSE)
   cvchat.iso <- rotmean(cvchat[disc(radius = 50), drop = FALSE], padzero = FALSE)
-  expect_lt(max(eval.fv(cvchat.iso - truecvc.iso)), 10 * confint_halfwidth) #the 10 is just a guess based on 4th order properties being much harder to estimate
+  cvciso <- collapse.fv(truecvc.iso, cvchat.iso, different = "f")
+  with.fv(cvciso, max(x1 - x2))
+  expect_lt(with.fv(cvciso, max(x1 - x2)), 10 * confint_halfwidth) #the 10 is just a guess based on 4th order properties being much harder to estimate
 })
