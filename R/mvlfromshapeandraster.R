@@ -55,7 +55,7 @@ MVLest_multipleregions <- function(polysdf,
                                        normalisebyMVLzero = FALSE,
                                        display = TRUE){
   lpolydf <- unlistSpatialPolygonsDataframe(polysdf)
-  names(lpolydf) <- as.data.frame(polysdf)[,1]
+  names(lpolydf) <- make.names(as.data.frame(polysdf)[,1], unique = TRUE)
   out <- lapply(lpolydf, MVLest_region, rasterlayer = rasterlayer,
          frange = frange, NArange = NArange, boxwidths = boxwidths, estimators = estimators, normalisebyMVLzero = normalisebyMVLzero)
   if (display) {
