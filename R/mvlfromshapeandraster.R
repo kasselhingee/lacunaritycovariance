@@ -75,12 +75,12 @@ MVLest_region <- function(polydf, rasterlayer,
                           normalisebyMVLzero = FALSE){
   xiim <- converttologicalim(polydf, rasterlayer, frange, NArange)
   mvl.ests <- mvl(xiim, boxwidths, estimators = estimators)
+  phat <- coverageprob(xiim)
   if (normalisebyMVLzero){
-    phat <- coverageprob(xiim)
     MVLatzero <- phat * (1 - phat) / phat^2
     mvl.ests <- eval.fv(mvl.ests/MVLatzero)
   }
-  return(list(classimage = xiim, polydata = polydf, mvl.est = mvl.ests))
+  return(list(classimage = xiim, polydata = polydf, mvl.est = mvl.ests, coverageprob = phat))
 }
 
 normaliseAtStart <- function(X) {#function written by Adrian Baddeley. Normalises result to value at the lowest x-value
