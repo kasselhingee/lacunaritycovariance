@@ -1,5 +1,5 @@
 #' @title Simulation of Boolean Model of Grains Scaled According to a Pareto Distribution
-#' @export rbpto bpto.coverageprob bpto.covar
+#' @export rbpto bpto.coverageprob bpto.covar bpto.germintensity
 #' @description Functions for simulation and computing theoretical values of a Boolean model with identically shaped grains with size given by an approximate (in some cases a terrible approximation) Pareto distribution.
 #' 
 #' @param lambda Intensity of the germ process (which is a Poisson point process)
@@ -79,6 +79,23 @@ bpto.coverageprob <- function(lambda, grain, xm, alpha,
   
   meangrainarea <- sum(lengthscales * lengthscales * area.owin(grain) * weights)
   return(1 - exp(- lambda * meangrainarea))
+}
+
+#' @describeIn rbpto  Computes the germ intensity of the Boolean model with scaled grains distributed according to Pareto distribution and given coverage probability. Uses approximation of truncated length scales.
+bpto.germintensity <- function(coverp, grain, xm, alpha,
+                              lengthscales = 1:500){
+  #first get mean area. Need weight for each discrete grain.
+  #check that smallest scale is larger than xm
+  stopifnot(lengthscales[1] >= xm)
+  
+  #get weights of grain sizes from pmf
+  weights <- alpha * xm ^ alpha / (lengthscales ^ (alpha + 1) )
+  weights <- weights / sum(weights) #standardise
+  
+  meangrainarea <- sum(lengthscales * lengthscales * area.owin(grain) * weights)
+  #coverp formula: p = 1 - exp(- lambda * meangrainarea)
+  lambda <-   - 1 * log(1 - coverp)/ meangrainarea
+  return(lambda)
 }
 
 #' @describeIn rbpto  The racs covariance of the Boolean model with scaled grains distributed according to Pareto distribution. 

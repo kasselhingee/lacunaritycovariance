@@ -3,6 +3,7 @@
 \name{rbpto}
 \alias{rbpto}
 \alias{bpto.coverageprob}
+\alias{bpto.germintensity}
 \alias{bpto.covar}
 \title{Simulation of Boolean Model of Grains Scaled According to a Pareto Distribution}
 \usage{
@@ -10,6 +11,8 @@ rbpto(lambda, grain, win, xm, alpha, seed = NULL, xy = NULL,
   lengthscales = 1:500)
 
 bpto.coverageprob(lambda, grain, xm, alpha, lengthscales = 1:500)
+
+bpto.germintensity(coverp, grain, xm, alpha, lengthscales = 1:500)
 
 bpto.covar(lambda, grain, xm, alpha, lengthscales = 1:500, xy)
 }
@@ -45,6 +48,8 @@ Approximates the grain distribution using the scales given by \code{lengthscales
 \section{Functions}{
 \itemize{
 \item \code{bpto.coverageprob}: The coverage probability of the Boolean model with scaled grains distributed according to Pareto distribution. Uses approximation of truncated length scales.
+
+\item \code{bpto.germintensity}: Computes the germ intensity of the Boolean model with scaled grains distributed according to Pareto distribution and given coverage probability. Uses approximation of truncated length scales.
 
 \item \code{bpto.covar}: The racs covariance of the Boolean model with scaled grains distributed according to Pareto distribution. 
 Uses approximation of truncated length scales.
