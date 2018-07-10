@@ -13,6 +13,7 @@
 #' @param normalisebyMVLzero Logical. If TRUE the returned MVL estimates will be normalised by the MVL in the limit of very small boxes,
 #'  which is \eqn{p (1-p)/p^2}, where \eqn{p} is the coverage probability.
 #' @param display If TRUE then \code{plot_MVLest_region} is called so that the results are automatically plotted
+#' @param showprogress If TRUE then updates on progress will be printed to the screen.
 #' @describeIn mvlfromshapeandraster  Returns MVL estimates from regions specified in shapefile using raster data given in rasterfile
 MVLests_files <- function(
   shapefile, 
@@ -56,8 +57,13 @@ MVLest_multipleregions <- function(polysdf,
                                        display = TRUE){
   lpolydf <- unlistSpatialPolygonsDataframe(polysdf)
   names(lpolydf) <- make.names(as.data.frame(polysdf)[,1], unique = TRUE)
-  out <- lapply(lpolydf, MVLest_region, rasterlayer = rasterlayer,
-         frange = frange, NArange = NArange, boxwidths = boxwidths, estimators = estimators, normalisebyMVLzero = normalisebyMVLzero)
+  if ("pbapply" %in% installed.packages()[, 1]){
+    out <- pbapply::pblapply(lpolydf, MVLest_region, rasterlayer = rasterlayer,
+                  frange = frange, NArange = NArange, boxwidths = boxwidths, estimators = estimators, normalisebyMVLzero = normalisebyMVLzero, showprogress = TRUE)
+  } else {
+    out <- lapply(lpolydf, MVLest_region, rasterlayer = rasterlayer,
+           frange = frange, NArange = NArange, boxwidths = boxwidths, estimators = estimators, normalisebyMVLzero = normalisebyMVLzero, showprogress = TRUE)
+  }
   if (display) {
     plot_MVLest_allregions(out, estname = "mvlcc.pickaH", main = "Class images and PickaH MVL estimate",
                            normaliseAtStart = !normalisebyMVLzero
@@ -72,7 +78,9 @@ MVLest_region <- function(polydf, rasterlayer,
                           frange, NArange, boxwidths, estimators = c("MVLg.mattfeldt", "MVLg.pickaint",
                                                                       "MVLcc.mattfeldt", "MVLcc.pickaint", "MVLcc.pickaH",
                                                                       "MVLc", "MVLgb"),
-                          normalisebyMVLzero = FALSE){
+                          normalisebyMVLzero = FALSE,
+                          showprogress = FALSE){
+  if (showprogress) {print(paste("Staring MVL computation of polygon ", make.names(as.data.frame(polydf)[1,1])))}
   xiim <- converttologicalim(polydf, rasterlayer, frange, NArange)
   mvl.ests <- mvl(xiim, boxwidths, estimators = estimators)
   phat <- coverageprob(xiim)
@@ -80,6 +88,7 @@ MVLest_region <- function(polydf, rasterlayer,
     MVLatzero <- phat * (1 - phat) / phat^2
     mvl.ests <- eval.fv(mvl.ests/MVLatzero)
   }
+  if (showprogress) {print(paste("MVL estimates from polygon ", make.names(as.data.frame(polydf)[1,1]), "completed."))}
   return(list(classimage = xiim, polydata = polydf, mvl.est = mvl.ests, coverageprob = phat))
 }
 

@@ -22,7 +22,7 @@ MVLest_multipleregions(polysdf, rasterlayer, frange, NArange, boxwidths,
 MVLest_region(polydf, rasterlayer, frange, NArange, boxwidths,
   estimators = c("MVLg.mattfeldt", "MVLg.pickaint", "MVLcc.mattfeldt",
   "MVLcc.pickaint", "MVLcc.pickaH", "MVLc", "MVLgb"),
-  normalisebyMVLzero = FALSE)
+  normalisebyMVLzero = FALSE, showprogress = FALSE)
 
 converttologicalim(polydf, rasterlayer, frange, NArange)
 
@@ -55,6 +55,8 @@ which is \eqn{p (1-p)/p^2}, where \eqn{p} is the coverage probability.}
 \item{rasterlayer}{is a raster layer object}
 
 \item{polydf}{is a SpatialPolygonsDataFrame with a single region}
+
+\item{showprogress}{If TRUE then updates on progress will be printed to the screen.}
 
 \item{returnedlist}{The results of a call to \code{MVLest_region}}
 
