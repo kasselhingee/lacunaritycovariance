@@ -64,6 +64,7 @@ MVLest_multipleregions <- function(polysdf,
     out <- lapply(lpolydf, MVLest_region, rasterlayer = rasterlayer,
            frange = frange, NArange = NArange, boxwidths = boxwidths, estimators = estimators, normalisebyMVLzero = normalisebyMVLzero, showprogress = TRUE)
   }
+
   if (display) {
     plot_MVLest_allregions(out, estname = "mvlcc.pickaH", main = "Class images and PickaH MVL estimate",
                            normaliseAtStart = !normalisebyMVLzero
@@ -80,16 +81,19 @@ MVLest_region <- function(polydf, rasterlayer,
                                                                       "MVLc", "MVLgb"),
                           normalisebyMVLzero = FALSE,
                           showprogress = FALSE){
-  if (showprogress) {print(paste("Staring MVL computation of polygon ", make.names(as.data.frame(polydf)[1,1])))}
+  if (showprogress) {print(paste("Starting MVL computation of polygon ", make.names(as.data.frame(polydf)[1,1])))}
   xiim <- converttologicalim(polydf, rasterlayer, frange, NArange)
-  mvl.ests <- mvl(xiim, boxwidths, estimators = estimators)
-  phat <- coverageprob(xiim)
-  if (normalisebyMVLzero){
-    MVLatzero <- phat * (1 - phat) / phat^2
-    mvl.ests <- eval.fv(mvl.ests/MVLatzero)
-  }
+  secondordprops <- mvl(xiim, boxwidths, estimators = estimators, includenormed = TRUE, includepaircorr = TRUE, includecovar = TRUE)
   if (showprogress) {print(paste("MVL estimates from polygon ", make.names(as.data.frame(polydf)[1,1]), "completed."))}
-  return(list(classimage = xiim, polydata = polydf, mvl.est = mvl.ests, coverageprob = phat))
+  phat <- coverageprob(xiim)
+  
+  return(list(classimage = xiim,
+              polydata = polydf,
+              mvl.est = secondordprops$mvl.est,
+              nmd_mvl.est = secondordprops$normdmvls,
+              isocovar = secondordprops$covar,
+              isopaircorr = secondordprops$paircorr,
+              coverageprob = phat))
 }
 
 normaliseAtStart <- function(X) {#function written by Adrian Baddeley. Normalises result to value at the lowest x-value

@@ -65,7 +65,7 @@ mvl <- function(xiim, boxwidths,
   mvls.fv <- collapse.fv(mvl.ests, different = "MVL")
   names(mvls.fv) <- c(fvnames(mvls.fv, ".x"), names(mvl.ests))
   
-  allfvs <- list(mvlests = mvls.fv)
+  allfvs <- list(mvl.est = mvls.fv)
   
   if (includenormed){
     #compute MVLs normalised at zero
