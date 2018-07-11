@@ -25,7 +25,7 @@
 #' @examples 
 #' xi <- heather$coarse
 #' xiim <- as.im(xi, value = TRUE, na.replace = FALSE)
-#' mvlests <- mvl(xiim, seq(1, 10, by = 0.1), includepaircorr = TRUE)
+#' mvlests <- mvl(xiim, seq(1, 10, by = 0.1))
 
 mvl <- function(xiim, boxwidths,
                            estimators = c("MVLg.mattfeldt", "MVLg.pickaint", "MVLg.pickaH",
@@ -107,7 +107,7 @@ mvl <- function(xiim, boxwidths,
                           new.fname = "g(r)")
     allfvs <- c(allfvs, list(paircorr = isopcln))
   }
-  
+
   return(allfvs)
 }
 
