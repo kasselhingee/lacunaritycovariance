@@ -30,7 +30,9 @@
 mvl <- function(xiim, boxwidths,
                            estimators = c("MVLg.mattfeldt", "MVLg.pickaint", "MVLg.pickaH",
                                           "MVLcc.mattfeldt", "MVLcc.pickaint",
-                                          "MVLc", "MVLgb") ){
+                                          "MVLc", "MVLgb"),
+                includepaircorr = FALSE,
+                includecovar = FALSE){
   mvlgestimaterequests <- estimators %in% MVLgestimatornames
   mvlccestimaterequests <- estimators %in% MVLccestimatornames
   
@@ -58,7 +60,7 @@ mvl <- function(xiim, boxwidths,
       mvlgb.est <- NULL
     }
   }
-
+  
   mvl.ests <- c(mvlg = mvlgs, mvlcc = mvlccs, list(mvlc = mvlc.est), list(mvlgb = mvlgb.est))
   mvl.ests <- mvl.ests[!vapply(mvl.ests, is.null, FUN.VALUE = FALSE)]
   if (any(!vapply(mvl.ests[-1], function(x) compatible.fv(A = mvl.ests[[1]], B = x), FUN.VALUE = FALSE))){
@@ -67,7 +69,53 @@ mvl <- function(xiim, boxwidths,
   }
   mvls.fv <- collapse.fv(mvl.ests, different = "MVL")
   names(mvls.fv) <- c(fvnames(mvls.fv, ".x"), names(mvl.ests))
-  return(mvls.fv)
+  
+  allfvs <- list(mvlests = mvls.fv)
+  
+  #compute MVLs normalised at zero
+  normdmvls <- eval.fv(mvls.fv / ( phat * (1 - phat) / phat^2), relabel = FALSE)
+  normdmvls <- prefixfv(normdmvls,
+                   tagprefix="n_",
+                   descprefix="normalised at zero",
+                   lablprefix="plain(nrmd)~")
+  allfvs <- c(allfvs, list(normdmvls = normdmvls))
+  
+  if (includecovar || includepaircorr){
+    #computing an isotropic covariance
+    if (sum(mvlgestimaterequests) + sum(mvlccestimaterequests) > 0){
+      impcovar <- balancedracscovariance.cvchat(cvchat, cpp1 = cpp1, phat = phat, modification = "pickaH")
+      isocovar <- rotmean(impcovar, padzero = FALSE, Xname = "covar", result = "fv")
+    } else {
+      isocovar <- rotmean(cvchat, padzero = FALSE, Xname = "covar", result = "fv")
+    }
+    isocovar <- tweak.fv.entry(isocovar, "f", new.labl = "C(r)", new.desc = "isotropic covariance", new.tag = "C")
+    isocovar <- rebadge.fv(isocovar,
+                           new.ylab = "Isotropic Covariance",
+                           new.fname = "C(r)")
+    allfvs <- c(allfvs, list(covar = isocovar))
+  }
+  
+  if (includepaircorr){
+    #compute isotropic pair correlation
+    if (sum(mvlgestimaterequests) + sum(mvlccestimaterequests) > 0){
+      pclnest <- pclns.cvchat(cvchat, cpp1 = cpp1, phat = phat, modifications = "pickaH")[[1]]
+      isopcln <- rotmean(pclnest, padzero = FALSE, Xname = "pcln", result = "fv")
+    } else {
+      isopcln <- eval.fv(isocovar / phat^2, relabel = TRUE) #if no improvements available then use traditional estimates
+  
+    }
+    isopcln <- tweak.fv.entry(isopcln, "f", new.labl = "g(r)", new.desc = "isotropic pair-correlation", new.tag = "g")
+    isopcln <- rebadge.fv(isopcln,
+                          new.ylab = "Pair-Correlation",
+                          new.fname = "g(r)")
+    allfvs <- c(allfvs, list(paircorr = isopcln))
+  }
+  
+  allfvs <- harmonise.fv(allfvs)
+  
+  allfvs <- cbind.fv(allfvs)
+  fvnames(allfvs, ".") <- fvnames(mvls.fv, ".")
+  return(allfvs)
 }
 
 MVLgestimatornames <- c("MVLg.none", "MVLg.mattfeldt", "MVLg.pickaint", "MVLg.pickaH")
