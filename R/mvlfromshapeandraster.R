@@ -26,7 +26,7 @@ MVLests_files <- function(
   normalisebyMVLzero = TRUE,
   display = TRUE
 ){
-  polysdf <- rgdal::readOGR(dirname(shapefile), sub(".shp", "", basename(shapefile)), verbose = FALSE)
+  polysdf <- rgdal::readOGR(dirname(shapefile), sub("\\.shp$", "", basename(shapefile)), verbose = FALSE)
   rasterlayer <- raster::raster(rasterfile)
   out <- MVLest_multipleregions(
     polysdf = polysdf,
