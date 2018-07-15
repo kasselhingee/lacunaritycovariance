@@ -6,6 +6,12 @@
 #' @param xiim A \pkg{spatstat} \code{im} object with pixel values that are either TRUE, FALSE or NA. TRUE represents foreground, FALSE respresents background and NA represents unobserved locations.
 #' @param boxwidths A list of box boxwidths
 #' @param estimators A list of estimator names - see details for possibilities.
+#' @param includenormed A logical value. If TRUE then MVL estimates normalised by the MVL values at zero will be included in a returned list of fv objects
+#' @param includepaircorr A logical value. If TRUE and if balanced covariance-based estimators of MVL are requested then rotation-averaged pair-correlation estimates using
+#'  Picka's H modifcation will be included in the output. If TRUE and balanced covariance-based estimators aren't requested then the traditional estimate of pair correlation will be returned.
+#'  @param includecovar A logical value. I TRUE and if balanced covariance-based estimators of MVL are requested then otation-averaged covariance estimates using
+#'  Picka's H modifcation will be included in the output.
+#'   If TRUE and balanced covariance-based estimators aren't requested then the rotational average of the traditional estimate of covariance will be returned.
 
 #' @return An \code{fv} object.
 
@@ -30,15 +36,100 @@
 mvl <- function(xiim, boxwidths,
                            estimators = c("MVLg.mattfeldt", "MVLg.pickaint", "MVLg.pickaH",
                                           "MVLcc.mattfeldt", "MVLcc.pickaint",
-                                          "MVLc", "MVLgb") ){
+                                          "MVLc", "MVLgb"),
+                includenormed = FALSE,
+                includepaircorr = FALSE,
+                includecovar = FALSE){
   mvlgestimaterequests <- estimators %in% MVLgestimatornames
   mvlccestimaterequests <- estimators %in% MVLccestimatornames
   
   phat <- coverageprob(xiim)
   cvchat <- racscovariance(xiim, setcov_boundarythresh = 0.1 * area.owin(solutionset(is.na(xiim))))
   mvlgs <- mvlccs <- mvlc.est <- mvlgb.est <- NULL
+  cpp1 <- NULL
   if (sum(mvlgestimaterequests) + sum(mvlccestimaterequests) > 0){
     cpp1 <- cppicka(xiim, setcov_boundarythresh = 0.1 * area.owin(solutionset(is.na(xiim))))
+  }
+  #function that computes the covariance-based estimates of MVL
+  mvlcovarbased <- mvl.cvchat(boxwidths = boxwidths, estimators = estimators, phat = phat, cvchat = cvchat, cpp1 = cpp1)
+  
+  #the MVLgb estimate
+  if ("MVLgb" %in% estimators){
+    mvlgb.est <- mvlgb(sidelengths = boxwidths, xiim = xiim)
+    if (sum(!vapply(mvlgb.est[,fvnames(mvlgb.est), drop = TRUE], is.na, FUN.VALUE = TRUE)) < 2){
+      warning("mvlgb() returns estimates for 1 or fewer of the provided box widths. Results from mvlgb() will be ignored from the final results.")
+      mvlgb.est <- NULL
+    }
+  }
+  
+  mvl.ests <- c(mvlcovarbased, list(mvlgb = mvlgb.est))
+  mvl.ests <- mvl.ests[!vapply(mvl.ests, is.null, FUN.VALUE = FALSE)]
+  if (any(!vapply(mvl.ests[-1], function(x) compatible.fv(A = mvl.ests[[1]], B = x), FUN.VALUE = FALSE))){
+    warning("Some MVL estimates have differing argument values. These will be harmonised.")
+    mvl.ests <- harmonise.fv(mvl.ests)
+  }
+  mvls.fv <- collapse.fv(mvl.ests, different = "MVL")
+  names(mvls.fv) <- c(fvnames(mvls.fv, ".x"), names(mvl.ests))
+  
+  allfvs <- list(mvl.est = mvls.fv)
+  
+  if (includenormed){
+    #compute MVLs normalised at zero
+    normdmvls <- eval.fv(mvls.fv / ( phat * (1 - phat) / phat^2), relabel = FALSE)
+    normdmvls <- prefixfv(normdmvls,
+                     tagprefix="n_",
+                     descprefix="normalised at zero",
+                     lablprefix="plain(nrmd)~")
+    allfvs <- c(allfvs, list(normdmvls = normdmvls))
+  }
+  
+  if (includecovar || includepaircorr){
+    #computing an isotropic covariance
+    if (sum(mvlgestimaterequests) + sum(mvlccestimaterequests) > 0){
+      impcovar <- balancedracscovariance.cvchat(cvchat, cpp1 = cpp1, phat = phat, modification = "pickaH")
+      isocovar <- rotmean(impcovar, padzero = FALSE, Xname = "covar", result = "fv")
+    } else {
+      isocovar <- rotmean(cvchat, padzero = FALSE, Xname = "covar", result = "fv")
+    }
+    isocovar <- tweak.fv.entry(isocovar, "f", new.labl = "C(r)", new.desc = "isotropic covariance", new.tag = "C")
+    isocovar <- rebadge.fv(isocovar,
+                           new.ylab = "Isotropic Covariance",
+                           new.fname = "C(r)")
+    allfvs <- c(allfvs, list(covar = isocovar))
+  }
+  
+  if (includepaircorr){
+    #compute isotropic pair correlation
+    if (sum(mvlgestimaterequests) + sum(mvlccestimaterequests) > 0){
+      pclnest <- pclns.cvchat(cvchat, cpp1 = cpp1, phat = phat, modifications = "pickaH")[[1]]
+      isopcln <- rotmean(pclnest, padzero = FALSE, Xname = "pcln", result = "fv")
+    } else {
+      isopcln <- eval.fv(isocovar / phat^2, relabel = TRUE) #if no improvements available then use traditional estimates
+  
+    }
+    isopcln <- tweak.fv.entry(isopcln, "f", new.labl = "g(r)", new.desc = "isotropic pair-correlation", new.tag = "g")
+    isopcln <- rebadge.fv(isopcln,
+                          new.ylab = "Pair-Correlation",
+                          new.fname = "g(r)")
+    allfvs <- c(allfvs, list(paircorr = isopcln))
+  }
+
+  return(allfvs)
+}
+
+mvl.cvchat <- function(boxwidths,
+                      estimators = c("MVLg.mattfeldt", "MVLg.pickaint", "MVLg.pickaH",
+                                     "MVLcc.mattfeldt", "MVLcc.pickaint",
+                                     "MVLc", "MVLgb"),
+                      phat = NULL,
+                      cvchat = NULL,
+                      cpp1 = NULL){
+  mvlgestimaterequests <- estimators %in% MVLgestimatornames
+  mvlccestimaterequests <- estimators %in% MVLccestimatornames
+  mvlgs <- mvlccs <- mvlc.est <- mvlgb.est <- NULL
+  
+  if (sum(mvlgestimaterequests) + sum(mvlccestimaterequests) > 0){
+    stopifnot(!is.null(cpp1), !is.null(cvchat), !is.null(phat))
     if (sum(mvlgestimaterequests) > 0){
       pcln.ests <- pclns.cvchat(cvchat, cpp1 = cpp1, phat = phat, modifications = gsub("MVLg.", "", estimators[mvlgestimaterequests]))
       mvlgs <- lapply(pcln.ests, FUN = mvlg, boxes = boxwidths)
@@ -49,26 +140,15 @@ mvl <- function(xiim, boxwidths,
     }
   }
   if ("MVLc" %in% estimators){
+    stopifnot(!is.null(cvchat), !is.null(phat))
     mvlc.est <- mvlc(boxes = boxwidths, covariance = cvchat, p = phat)
   }
-  if ("MVLgb" %in% estimators){
-    mvlgb.est <- mvlgb(sidelengths = boxwidths, xiim = xiim)
-    if (sum(!vapply(mvlgb.est[,fvnames(mvlgb.est), drop = TRUE], is.na, FUN.VALUE = TRUE)) < 2){
-      warning("mvlgb() returns estimates for 1 or fewer of the provided box widths. Results from mvlgb() will be ignored from the final results.")
-      mvlgb.est <- NULL
-    }
-  }
-
-  mvl.ests <- c(mvlg = mvlgs, mvlcc = mvlccs, list(mvlc = mvlc.est), list(mvlgb = mvlgb.est))
+  mvl.ests <- c(mvlg = mvlgs, mvlcc = mvlccs, list(mvlc = mvlc.est))
   mvl.ests <- mvl.ests[!vapply(mvl.ests, is.null, FUN.VALUE = FALSE)]
-  if (any(!vapply(mvl.ests[-1], function(x) compatible.fv(A = mvl.ests[[1]], B = x), FUN.VALUE = FALSE))){
-    warning("Some MVL estimates have differing argument values. These will be harmonised.")
-    mvl.ests <- harmonise.fv(mvl.ests)
-  }
-  mvls.fv <- collapse.fv(mvl.ests, different = "MVL")
-  names(mvls.fv) <- c(fvnames(mvls.fv, ".x"), names(mvl.ests))
-  return(mvls.fv)
+  return(mvl.ests)
 }
+
+
 
 MVLgestimatornames <- c("MVLg.none", "MVLg.mattfeldt", "MVLg.pickaint", "MVLg.pickaH")
 MVLccestimatornames <- c("MVLcc.none", "MVLcc.mattfeldt", "MVLcc.pickaint", "MVLcc.pickaH")

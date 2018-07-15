@@ -5,7 +5,8 @@
 \title{Compute MVL estimates using all estimators}
 \usage{
 mvl(xiim, boxwidths, estimators = c("MVLg.mattfeldt", "MVLg.pickaint",
-  "MVLg.pickaH", "MVLcc.mattfeldt", "MVLcc.pickaint", "MVLc", "MVLgb"))
+  "MVLg.pickaH", "MVLcc.mattfeldt", "MVLcc.pickaint", "MVLc", "MVLgb"),
+  includenormed = FALSE, includepaircorr = FALSE, includecovar = FALSE)
 }
 \arguments{
 \item{xiim}{A \pkg{spatstat} \code{im} object with pixel values that are either TRUE, FALSE or NA. TRUE represents foreground, FALSE respresents background and NA represents unobserved locations.}
@@ -13,6 +14,14 @@ mvl(xiim, boxwidths, estimators = c("MVLg.mattfeldt", "MVLg.pickaint",
 \item{boxwidths}{A list of box boxwidths}
 
 \item{estimators}{A list of estimator names - see details for possibilities.}
+
+\item{includenormed}{A logical value. If TRUE then MVL estimates normalised by the MVL values at zero will be included in a returned list of fv objects}
+
+\item{includepaircorr}{A logical value. If TRUE and if balanced covariance-based estimators of MVL are requested then rotation-averaged pair-correlation estimates using
+Picka's H modifcation will be included in the output. If TRUE and balanced covariance-based estimators aren't requested then the traditional estimate of pair correlation will be returned.
+@param includecovar A logical value. I TRUE and if balanced covariance-based estimators of MVL are requested then otation-averaged covariance estimates using
+Picka's H modifcation will be included in the output.
+ If TRUE and balanced covariance-based estimators aren't requested then the rotational average of the traditional estimate of covariance will be returned.}
 }
 \value{
 An \code{fv} object.
