@@ -43,15 +43,22 @@ mvl <- function(xiim, boxwidths,
   mvlgestimaterequests <- estimators %in% MVLgestimatornames
   mvlccestimaterequests <- estimators %in% MVLccestimatornames
   
+  mvl.ests <- list()
+  cpp1 <- cvchat <- NULL
+  mvlcovarbased <- mvlgb.est <- NULL
+  
   phat <- coverageprob(xiim)
-  cvchat <- racscovariance(xiim, setcov_boundarythresh = 0.1 * area.owin(solutionset(is.na(xiim))))
-  mvlgs <- mvlccs <- mvlc.est <- mvlgb.est <- NULL
-  cpp1 <- NULL
+  if(sum(mvlgestimaterequests) + sum(mvlccestimaterequests) + ("MVLc" %in% estimators) + includepaircorr + includecovar > 0){
+    cvchat <- racscovariance(xiim, setcov_boundarythresh = 0.1 * area.owin(solutionset(is.na(xiim))))
+  }
   if (sum(mvlgestimaterequests) + sum(mvlccestimaterequests) > 0){
     cpp1 <- cppicka(xiim, setcov_boundarythresh = 0.1 * area.owin(solutionset(is.na(xiim))))
   }
-  #function that computes the covariance-based estimates of MVL
-  mvlcovarbased <- mvl.cvchat(boxwidths = boxwidths, estimators = estimators, phat = phat, cvchat = cvchat, cpp1 = cpp1)
+  if(sum(mvlgestimaterequests) + sum(mvlccestimaterequests) + ("MVLc" %in% estimators) > 0){
+    #function that computes the covariance-based estimates of MVL
+    mvlcovarbased <- mvl.cvchat(boxwidths = boxwidths, estimators = estimators, phat = phat, cvchat = cvchat, cpp1 = cpp1)
+    mvl.ests <- c(mvl.ests, mvlcovarbased)
+  }
   
   #the MVLgb estimate
   if ("MVLgb" %in% estimators){
@@ -60,9 +67,9 @@ mvl <- function(xiim, boxwidths,
       warning("mvlgb() returns estimates for 1 or fewer of the provided box widths. Results from mvlgb() will be ignored from the final results.")
       mvlgb.est <- NULL
     }
+    mvl.ests <- c(mvl.ests, list(mvlgb = mvlgb.est))
   }
   
-  mvl.ests <- c(mvlcovarbased, list(mvlgb = mvlgb.est))
   mvl.ests <- mvl.ests[!vapply(mvl.ests, is.null, FUN.VALUE = FALSE)]
   if (any(!vapply(mvl.ests[-1], function(x) compatible.fv(A = mvl.ests[[1]], B = x), FUN.VALUE = FALSE))){
     warning("Some MVL estimates have differing argument values. These will be harmonised.")
