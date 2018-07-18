@@ -34,3 +34,10 @@ test_that("Theoretical spectral density calculation is historically consistent",
   expect_equal(thspecdens_origin, 64.41312, tolerance = 1E-5)
   #I think the above number was checked to be consistent with plot in the Bohm paper
 })
+
+test_that("Computations of germ intensity, disc radius and coverage probability are correct",
+ {
+  expect_equal(bddcoverageprob(0.005, 5), 0.3247681)
+  expect_equal(bddlambda(bddcoverageprob(0.005, 5), 5), 0.005)
+  expect_equal(bdddiscr(bddcoverageprob(0.005, 5), 0.005), 5)
+})

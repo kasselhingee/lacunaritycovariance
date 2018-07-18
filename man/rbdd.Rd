@@ -3,6 +3,8 @@
 \name{rbdd}
 \alias{rbdd}
 \alias{bddcoverageprob}
+\alias{bddlambda}
+\alias{bdddiscr}
 \alias{bddcovar.iso}
 \alias{bddcovar}
 \alias{bddspectraldensity}
@@ -12,6 +14,10 @@
 rbdd(lambda, discr, window, seed = NULL)
 
 bddcoverageprob(lambda, discr)
+
+bddlambda(coverp, discr)
+
+bdddiscr(coverp, lambda)
 
 bddcovar.iso(r, lambda, discr)
 
@@ -57,6 +63,10 @@ Also described in this help file are functions for calculating the true coverage
 The point process of germs is generated using spatstat's \code{\link[spatstat]{rpoispp}}.
 
 \item \code{bddcoverageprob}: Returns the true coverage probability given the intensity and disc radius.
+
+\item \code{bddlambda}: Returns the germ intensity given coverage probability and disc radius.
+
+\item \code{bdddiscr}: Returns the disc radius given coverage probability and germ intensity.
 
 \item \code{bddcovar.iso}: Returns the true covariance of points separated by a distance \code{r} given the intensity, \code{lambda} and disc radius \code{discr} of the model.
 

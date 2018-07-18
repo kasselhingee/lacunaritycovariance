@@ -1,5 +1,5 @@
 #' @title Simulation of Boolean Model of Deterministic Discs
-#' @export rbdd  bddcoverageprob bddcovar.iso bddcovar bddspectraldensity.atorigin bddspectraldensity
+#' @export rbdd  bddcoverageprob bddcovar.iso bddcovar bddspectraldensity.atorigin bddspectraldensity bddlambda bdddiscr
 #' @importFrom stats fft
 #' 
 #' @description Functions for simulating a Boolean model with grains that are discs of fixed constant radius (the abreviation bdd is short for Boolean model with Determinisitic Discs).
@@ -67,6 +67,16 @@ rbdd <- function(lambda, discr, window, seed = NULL){
 #' @describeIn rbdd Returns the true coverage probability given the intensity and disc radius.
 bddcoverageprob  <- function(lambda, discr){
   return (1 - exp(-pi * discr ^ 2 * lambda))
+}
+
+#' @describeIn rbdd Returns the germ intensity given coverage probability and disc radius.
+bddlambda <- function(coverp, discr){
+  return(log(1 - coverp)/ (-pi * discr ^2))
+}
+
+#' @describeIn rbdd Returns the disc radius given coverage probability and germ intensity.
+bdddiscr <- function(coverp, lambda){
+  return(sqrt(log(1 - coverp)/ (-pi * lambda)))
 }
 
 #theoretical set covariance of a disc
