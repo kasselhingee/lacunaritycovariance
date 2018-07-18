@@ -98,10 +98,10 @@ mvl <- function(xiim, boxwidths,
     } else {
       isocovar <- rotmean(cvchat, padzero = FALSE, Xname = "covar", result = "fv")
     }
-    isocovar <- tweak.fv.entry(isocovar, "f", new.labl = expression("C(r)"), new.desc = "isotropic covariance", new.tag = "C")
+    isocovar <- tweak.fv.entry(isocovar, "f", new.labl = expression(C(r)), new.desc = "isotropic covariance", new.tag = "C")
     isocovar <- rebadge.fv(isocovar,
-                           new.ylab = expression("C(r)"),
-                           new.fname = expression("C(r)"))
+                           new.ylab = expression(C(r)),
+                           new.fname = "C(r)")
     allfvs <- c(allfvs, list(covar = isocovar))
   }
   
@@ -114,10 +114,10 @@ mvl <- function(xiim, boxwidths,
       isopcln <- eval.fv(isocovar / phat^2, relabel = TRUE) #if no improvements available then use traditional estimates
   
     }
-    isopcln <- tweak.fv.entry(isopcln, "f", new.labl = expression("g(r)"), new.desc = "isotropic pair-correlation", new.tag = "g")
+    isopcln <- tweak.fv.entry(isopcln, "f", new.labl = expression(g(r)), new.desc = "isotropic pair-correlation", new.tag = "g")
     isopcln <- rebadge.fv(isopcln,
-                          new.ylab = expression("g(r)"),
-                          new.fname = expression("g(r)"))
+                          new.ylab = expression(g(r)),
+                          new.fname = "g(r)")
     allfvs <- c(allfvs, list(paircorr = isopcln))
   }
 
