@@ -76,6 +76,10 @@ racscovariance <- function(xi,
   #make NA any values that are too small and lead to division to close to 0
   if (is.null(setcov_boundarythresh)){
     setcov_boundarythresh <- 0.1 * area.owin(obswin)
+  } else if (setcov_boundarythresh < setcovW$xstep * setcovW$ystep * 1E-8){
+    warning("setcov_boundarythresh is smaller than A*1E-8 where A is the size of a pixel.
+            This might be smaller than the precision of the set covariance computations.
+            Consider setting setcov_boundarythresh higher.")
   }
   setcovwindow[setcovwindow < setcov_boundarythresh] <- NA
   harmims <- harmonise.im(setcovxi, setcovwindow)
