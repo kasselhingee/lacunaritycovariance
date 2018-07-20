@@ -71,6 +71,10 @@ cppicka <- function(xi, obswin = NULL,
   #now xi and obswin should be of the same style regardless of input
   if (is.null(setcov_boundarythresh)){
     setcov_boundarythresh <- 0.1 * sum(obswin)*obswin$xstep*obswin$ystep
+  } else if (setcov_boundarythresh < setcovW$xstep * setcovW$ystep * 1E-8){
+    warning("setcov_boundarythresh is smaller than A*1E-8 where A is the size of a pixel.
+            This might be smaller than the precision of the set covariance computations.
+            Consider setting setcov_boundarythresh higher.")
   }
 
   #numerator
