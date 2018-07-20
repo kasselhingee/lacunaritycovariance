@@ -14,7 +14,7 @@
 #'   If TRUE and balanced covariance-based estimators aren't requested then the rotational average of the traditional estimate of covariance will be returned.
 #' @param setcov_boundarythresh Any vector \eqn{v} such that set covariance of the observation window is smaller than this threshold
 #' is given a covariance estimate (and other similar estimate) of NA to avoid instabilities caused by dividing by very small areas.
-#' If NULL is supplied (default) then 0.1 of the \code{xiim} area that is finite (and not NA) is used.
+#' If NULL is supplied (default) then 1E-6 is used.
 
 #' @return An \code{fv} object.
 
@@ -43,7 +43,7 @@ mvl <- function(xiim, boxwidths,
                 includenormed = FALSE,
                 includepaircorr = FALSE,
                 includecovar = FALSE,
-                setcov_boundarythresh = 1E-8){
+                setcov_boundarythresh = 1E-6){
   mvlgestimaterequests <- estimators %in% MVLgestimatornames
   mvlccestimaterequests <- estimators %in% MVLccestimatornames
   
@@ -102,9 +102,9 @@ mvl <- function(xiim, boxwidths,
     } else {
       isocovar <- rotmean(cvchat, padzero = FALSE, Xname = "covar", result = "fv")
     }
-    isocovar <- tweak.fv.entry(isocovar, "f", new.labl = expression(C(r)), new.desc = "isotropic covariance", new.tag = "C")
+    isocovar <- tweak.fv.entry(isocovar, "f", new.labl = "C(r)", new.desc = "isotropic covariance", new.tag = "C")
     isocovar <- rebadge.fv(isocovar,
-                           new.ylab = expression(C(r)),
+                           new.ylab = "C(r)",
                            new.fname = "C(r)")
     allfvs <- c(allfvs, list(covar = isocovar))
   }
@@ -118,9 +118,9 @@ mvl <- function(xiim, boxwidths,
       isopcln <- eval.fv(isocovar / phat^2, relabel = TRUE) #if no improvements available then use traditional estimates
   
     }
-    isopcln <- tweak.fv.entry(isopcln, "f", new.labl = expression(g(r)), new.desc = "isotropic pair-correlation", new.tag = "g")
+    isopcln <- tweak.fv.entry(isopcln, "f", new.labl = "g(r)", new.desc = "isotropic pair-correlation", new.tag = "g")
     isopcln <- rebadge.fv(isopcln,
-                          new.ylab = expression(g(r)),
+                          new.ylab = "g(r)",
                           new.fname = "g(r)")
     allfvs <- c(allfvs, list(paircorr = isopcln))
   }
