@@ -12,6 +12,9 @@
 #'  @param includecovar A logical value. I TRUE and if balanced covariance-based estimators of MVL are requested then otation-averaged covariance estimates using
 #'  Picka's H modifcation will be included in the output.
 #'   If TRUE and balanced covariance-based estimators aren't requested then the rotational average of the traditional estimate of covariance will be returned.
+#' @param setcov_boundarythresh Any vector \eqn{v} such that set covariance of the observation window is smaller than this threshold
+#' is given a covariance estimate (and other similar estimate) of NA to avoid instabilities caused by dividing by very small areas.
+#' If NULL is supplied (default) then 0.1 of the \code{xiim} area that is finite (and not NA) is used.
 
 #' @return An \code{fv} object.
 
@@ -39,7 +42,8 @@ mvl <- function(xiim, boxwidths,
                                           "MVLc", "MVLgb"),
                 includenormed = FALSE,
                 includepaircorr = FALSE,
-                includecovar = FALSE){
+                includecovar = FALSE,
+                setcov_boundarythresh = 1E-8){
   mvlgestimaterequests <- estimators %in% MVLgestimatornames
   mvlccestimaterequests <- estimators %in% MVLccestimatornames
   
@@ -49,10 +53,10 @@ mvl <- function(xiim, boxwidths,
   
   phat <- coverageprob(xiim)
   if(sum(mvlgestimaterequests) + sum(mvlccestimaterequests) + ("MVLc" %in% estimators) + includepaircorr + includecovar > 0){
-    cvchat <- racscovariance(xiim, setcov_boundarythresh = 0.1 * area.owin(solutionset(!is.na(xiim))))
+    cvchat <- racscovariance(xiim, setcov_boundarythresh = setcov_boundarythresh)
   }
   if (sum(mvlgestimaterequests) + sum(mvlccestimaterequests) > 0){
-    cpp1 <- cppicka(xiim, setcov_boundarythresh = 0.1 * area.owin(solutionset(!is.na(xiim))))
+    cpp1 <- cppicka(xiim, setcov_boundarythresh = setcov_boundarythresh)
   }
   if(sum(mvlgestimaterequests) + sum(mvlccestimaterequests) + ("MVLc" %in% estimators) > 0){
     #function that computes the covariance-based estimates of MVL
