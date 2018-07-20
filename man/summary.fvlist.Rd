@@ -15,7 +15,7 @@
 (i.e. NA values will be removed from all summations and the population size will decrease by 1 for each NA value).}
 }
 \value{
-An fv object containing the pointwise mean, variance and maxima and minima.
+An fv object containing the pointwise mean, pointwise sample variance, pointwise maximum and pointwise minimum.
 }
 \description{
 This function assumes that fv objects are each realisations of the same (stochastic) object. 

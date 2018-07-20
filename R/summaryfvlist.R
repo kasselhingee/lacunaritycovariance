@@ -11,7 +11,7 @@
 #' @param ...  Ignored.
 #' @param na.rm If TRUE NA values in the fv object will be ignored 
 #' (i.e. NA values will be removed from all summations and the population size will decrease by 1 for each NA value).
-#' @return An fv object containing the pointwise mean, variance and maxima and minima.
+#' @return An fv object containing the pointwise mean, pointwise sample variance, pointwise maximum and pointwise minimum.
 
 #' @examples
 #' obspatterns <- rpoispp(10, nsim = 10)
@@ -50,7 +50,7 @@ summary.fvlist <- function(object, ..., na.rm = FALSE){
   meanY <- prefixfv(meanY,
                         tagprefix="mean",
                         descprefix="mean ",
-                        lablprefix="")
+                        lablprefix="bold(mean)~")
     ## tweak labels of variance terms
   varY <- prefixfv(varY,
                          tagprefix="var",
