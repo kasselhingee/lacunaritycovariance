@@ -68,21 +68,21 @@ cppicka <- function(xi, obswin = NULL,
     obswin <- as.im(obswin, na.replace = 0, xy = xi)
   }
 
-  #now xi and obswin should be of the same style regardless of input
-  if (is.null(setcov_boundarythresh)){
-    setcov_boundarythresh <- 0.1 * sum(obswin)*obswin$xstep*obswin$ystep
-  } else if (setcov_boundarythresh < setcovW$xstep * setcovW$ystep * 1E-8){
-    warning("setcov_boundarythresh is smaller than A*1E-8 where A is the size of a pixel.
-            This might be smaller than the precision of the set covariance computations.
-            Consider setting setcov_boundarythresh higher.")
-  }
-
   #numerator
   top <- convolve.im(xi, obswin, reflectY = TRUE)  #u in (obswin + v) iff (u - v) in obswin. Thus Y needs to have argument reflected
   unitname(top) <- unitname(xi)
 
   #denominator
   bot <- convolve.im(obswin, obswin, reflectY = TRUE)
+  #now xi and obswin should be of the same style regardless of input
+  if (is.null(setcov_boundarythresh)){
+    setcov_boundarythresh <- 0.1 * sum(obswin)*obswin$xstep*obswin$ystep
+  } else if (setcov_boundarythresh < bot$xstep * bot$ystep * 1E-8){
+    warning("setcov_boundarythresh is smaller than A*1E-8 where A is the size of a pixel.
+            This might be smaller than the precision of the set covariance computations.
+            Consider setting setcov_boundarythresh higher.")
+  }
+
   bot[bot < setcov_boundarythresh] <- NA #to remove small denominators
   unitname(bot) <- unitname(obswin)
   return(eval.im( top / bot))
