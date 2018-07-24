@@ -7,7 +7,7 @@
 mvl(xiim, boxwidths, estimators = c("MVLg.mattfeldt", "MVLg.pickaint",
   "MVLg.pickaH", "MVLcc.mattfeldt", "MVLcc.pickaint", "MVLc", "MVLgb"),
   includenormed = FALSE, includepaircorr = FALSE, includecovar = FALSE,
-  setcov_boundarythresh = 1e-08)
+  setcov_boundarythresh = 1e-06)
 }
 \arguments{
 \item{xiim}{A \pkg{spatstat} \code{im} object with pixel values that are either TRUE, FALSE or NA. TRUE represents foreground, FALSE respresents background and NA represents unobserved locations.}
@@ -26,7 +26,7 @@ Picka's H modifcation will be included in the output.
 
 \item{setcov_boundarythresh}{Any vector \eqn{v} such that set covariance of the observation window is smaller than this threshold
 is given a covariance estimate (and other similar estimate) of NA to avoid instabilities caused by dividing by very small areas.
-If NULL is supplied (default) then 0.1 of the \code{xiim} area that is finite (and not NA) is used.}
+If NULL is supplied (default) then 1E-6 is used.}
 }
 \value{
 An \code{fv} object.
