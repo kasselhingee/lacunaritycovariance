@@ -61,7 +61,15 @@ median_ise.fvlist <- function(object, benchfv, domainlim, equiv = NULL,
 
 ise <- function(fvobj, benchfv, domainlim, equiv = NULL, avoverdomain = FALSE, fixeddomain = FALSE, ...){
   harmfvs <- harmonise.fv(fvobj, benchfv)
-  sefv <- eval.fv( (a - b)^2, envir = list(a = harmfvs[[1]], b = harmfvs[[2]]), equiv = equiv, relabel = FALSE)
+  withCallingHandlers(
+    sefv <- eval.fv( (a - b)^2, envir = list(a = harmfvs[[1]], b = harmfvs[[2]]), equiv = equiv, relabel = FALSE),
+      warning = function(w){
+        if(grepl("enforcing compatibility", w$message)){
+          invokeRestart( "muffleWarning" )
+        } else {
+        }
+      })
+  
   se.fun <- as.function.fv(sefv)
   finitevals <- is.finite(sefv[, fvnames(sefv, ".y"), drop = TRUE])
   if (fixeddomain){#if domain is fixed then throw out NAs when the function objects aren't long enough
