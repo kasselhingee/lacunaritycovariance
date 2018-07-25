@@ -57,25 +57,11 @@ ise <- function(fvobj, benchfv, domainlim, equiv = NULL, ...){
   harmfvs <- harmonise.fv(fvobj, benchfv)
   sefv <- eval.fv( (a - b)^2, envir = list(a = harmfvs[[1]], b = harmfvs[[2]]), equiv = equiv, relabel = FALSE)
   se.fun <- as.function.fv(sefv)
-  #following code makes the integration
-  # between known values for both functions
-  finitevals <-
-    is.finite(sefv[, fvnames(sefv, ".y"), drop = TRUE])
-  if (min(sefv[, fvnames(sefv, ".x"), drop = TRUE][finitevals]) > domainlim[[1]]){
-    return(list(value = NA, message = "integration domain larger the function domain"))
-  }
-  if (max(sefv[, fvnames(sefv, ".x"), drop = TRUE][finitevals]) < domainlim[[2]]){
-    return(list(value = NA, message = "integration domain larger the function domain"))
-  }
   lower <- max( min(sefv[, fvnames(sefv, ".x"), drop = TRUE][finitevals]), domainlim[[1]])
   upper <- min( max(sefv[, fvnames(sefv, ".x"), drop = TRUE][finitevals]), domainlim[[2]])
   intse <- integrate(se.fun, lower, upper, stop.on.error = FALSE, ...)
-  #subdivisions error from MVL going too high too fast close to 0?! I have ignored these curves by setting them to NA if there are few enough of them.
-  # stopifnot( (intse$message == "maximum number of subdivisions reached")
-  #            || (intse$message == "extremely bad integrand behaviour")
-  #            || (intse$message == "OK"))
   if (intse$message != "OK"){ intse$value <- NA}
-  intse$value <- intse$value #/ (upper - lower)
-  intse$abs.error <-  intse$abs.error #/ (upper - lower)
+  intse$value <- intse$value
+  intse$abs.error <-  intse$abs.error
   return(intse)
 }
