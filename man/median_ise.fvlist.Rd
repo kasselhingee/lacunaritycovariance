@@ -2,10 +2,15 @@
 % Please edit documentation in R/medianise.R
 \name{median_ise.fvlist}
 \alias{median_ise.fvlist}
+\alias{mean_ise.fvlist}
 \title{Median and Mean Integrated Squared Error of a List of fv Objects}
 \usage{
 median_ise.fvlist(object, reffv, domainlim, equiv = NULL,
   avoverdomain = FALSE, fixeddomain = FALSE, acceptableISEerrorrate = 0.1,
+  ...)
+
+mean_ise.fvlist(object, reffv, domainlim, equiv = NULL,
+  avoverdomain = FALSE, fixeddomain = FALSE, acceptableISEerrorrate = 0,
   ...)
 }
 \arguments{
@@ -34,24 +39,34 @@ A numeric value that is the Median Integrated Squared Error - see Details.
 Computes the median integrated squared error (defined below) of a list of fv objects given reference fv object.
 }
 \details{
-We define the median integrated squared error of a collection of estimates of functions \eqn{\hat{f}_i}
+#' We define the integrated squared error of a function \eqn{\hat{f}}
 and a reference function \eqn{f} as 
 \deqn{
-\left\{\int_{a_i}^{b_i} \left(\hat{f}_i(s) - f(s) \right)^2 ds  : i = 1, 2, 3, .... , n \right\},
+ISE(\hat{f}) := \int_{a_i}^{b_i} \left(\hat{f}(s) - f(s) \right)^2 ds,
 }
 where the domain of integration $[a_i, b_i]$ is 
 the largest possible interval between \code{domainlim[[1]]} and \code{domainlim[[2]]} for which the function
-\eqn{\hat{f}_i} exists.
- (Unless \code{fixeddomain} is \code{TRUE} in which case the domain of integration is fixed to \code{domainlim})
+\eqn{\hat{f}} exists.
+The integral is computed using the numerical integration function \code{integrate} and
+ if this numerical integration fails then ISE(\hat{f}) is given a value of NA.
+(Unless \code{fixeddomain} is \code{TRUE} in which case the domain of integration is fixed to \code{domainlim})
 
-The above integral is computed using the numerical integration function \code{integrate} and
- if this numerical integration fails then the result is ignored in the final computation of the median.
-\code{acceptableISEerrorrate} can be used to set the proportion of these failures that is acceptable for calculating the median.
+\code{median_ise.fvlist} and \code{meain_ise.fvlist} computes the median and mean, respectively, of this integrated squared error for a collection
+of functions \eqn{\hat{f}_i}, \eqn{i = 1, 2, 3, ... n}.
+
+\code{acceptableISEerrorrate} can be used to set the proportion of ISE that are NA valued
+ that is acceptable for calculating the median or mean.
+ The mean and median will both ignore NA values.
 
 The function fails if there is y-value name of the reference fv object
  is equal to a y-value name in the list fv objects that that you don't want to compare to
-  (e.g. if the list of fv objects also contain the reference value).
+  (e.g. if the an fv object in the list also contains the reference value).
 }
+\section{Functions}{
+\itemize{
+\item \code{mean_ise.fvlist}: The mean integrated squared error.
+}}
+
 \examples{
 obspatterns <- rpoispp(10, nsim = 10)
 object <- lapply(obspatterns, Kest, W = Frame(obspatterns[[1]]))

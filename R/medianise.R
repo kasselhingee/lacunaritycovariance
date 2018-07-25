@@ -26,23 +26,28 @@
 #' mean_ise.fvlist(object, reffv, c(0.1, 0.2), equiv = list(ref = "iso"))
 #' 
 #' @details 
-#' We define the median integrated squared error of a collection of estimates of functions \eqn{\hat{f}_i}
+#' #' We define the integrated squared error of a function \eqn{\hat{f}}
 #' and a reference function \eqn{f} as 
 #' \deqn{
-#' \left\{\int_{a_i}^{b_i} \left(\hat{f}_i(s) - f(s) \right)^2 ds  : i = 1, 2, 3, .... , n \right\},
+#' ISE(\hat{f}) := \int_{a_i}^{b_i} \left(\hat{f}(s) - f(s) \right)^2 ds,
 #' }
 #' where the domain of integration $[a_i, b_i]$ is 
 #' the largest possible interval between \code{domainlim[[1]]} and \code{domainlim[[2]]} for which the function
-#' \eqn{\hat{f}_i} exists.
-#'  (Unless \code{fixeddomain} is \code{TRUE} in which case the domain of integration is fixed to \code{domainlim})
+#' \eqn{\hat{f}} exists.
+#' The integral is computed using the numerical integration function \code{integrate} and
+#'  if this numerical integration fails then ISE(\hat{f}) is given a value of NA.
+#' (Unless \code{fixeddomain} is \code{TRUE} in which case the domain of integration is fixed to \code{domainlim})
 #' 
-#' The above integral is computed using the numerical integration function \code{integrate} and
-#'  if this numerical integration fails then the result is ignored in the final computation of the median.
-#' \code{acceptableISEerrorrate} can be used to set the proportion of these failures that is acceptable for calculating the median.
+#' \code{median_ise.fvlist} and \code{meain_ise.fvlist} computes the median and mean, respectively, of this integrated squared error for a collection
+#' of functions \eqn{\hat{f}_i}, \eqn{i = 1, 2, 3, ... n}.
+#' 
+#' \code{acceptableISEerrorrate} can be used to set the proportion of ISE that are NA valued
+#'  that is acceptable for calculating the median or mean.
+#'  The mean and median will both ignore NA values.
 #' 
 #' The function fails if there is y-value name of the reference fv object
 #'  is equal to a y-value name in the list fv objects that that you don't want to compare to
-#'   (e.g. if the list of fv objects also contain the reference value).
+#'   (e.g. if the an fv object in the list also contains the reference value).
 median_ise.fvlist <- function(object, reffv, domainlim, equiv = NULL,
                               avoverdomain = FALSE, fixeddomain = FALSE, acceptableISEerrorrate = 0.1, ...){
   isel <- lapply(object, ise, reffv = reffv, domainlim = domainlim, equiv = equiv,
@@ -58,7 +63,7 @@ median_ise.fvlist <- function(object, reffv, domainlim, equiv = NULL,
   return( median(iselvalues, na.rm = TRUE) )
 }
 
-#' @describeIn median_ise.fvlist
+#' @describeIn median_ise.fvlist The mean integrated squared error.
 mean_ise.fvlist <- function(object, reffv, domainlim, equiv = NULL,
                               avoverdomain = FALSE, fixeddomain = FALSE, acceptableISEerrorrate = 0, ...){
   isel <- lapply(object, ise, reffv = reffv, domainlim = domainlim, equiv = equiv,
