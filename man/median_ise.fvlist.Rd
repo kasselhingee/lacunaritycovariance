@@ -2,7 +2,7 @@
 % Please edit documentation in R/medianise.R
 \name{median_ise.fvlist}
 \alias{median_ise.fvlist}
-\title{Median Integrated Squared Error of a List of fv Objects}
+\title{Median and Mean Integrated Squared Error of a List of fv Objects}
 \usage{
 median_ise.fvlist(object, reffv, domainlim, equiv = NULL,
   avoverdomain = FALSE, fixeddomain = FALSE, acceptableISEerrorrate = 0.1,
@@ -57,7 +57,8 @@ obspatterns <- rpoispp(10, nsim = 10)
 object <- lapply(obspatterns, Kest, W = Frame(obspatterns[[1]]))
 reffv <- as.fv(object[[1]][, c("r", "theo"), drop = TRUE])
 names(reffv) <- c("r", "ref")
-median_ise.fvlist(object, reffv, c(0.1, 0.2), equiv = list(ref = "iso"), avoverdomain = TRUE)
+median_ise.fvlist(object, reffv, c(0.1, 0.2), equiv = list(ref = "iso"))
+mean_ise.fvlist(object, reffv, c(0.1, 0.2), equiv = list(ref = "iso"))
 
 }
 \author{

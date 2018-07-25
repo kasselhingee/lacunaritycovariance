@@ -1,5 +1,5 @@
-#' @title Median Integrated Squared Error of a List of fv Objects
-#' @export median_ise.fvlist
+#' @title Median and Mean Integrated Squared Error of a List of fv Objects
+#' @export median_ise.fvlist  mean_ise.fvlist
 #' @description
 #' Computes the median integrated squared error (defined below) of a list of fv objects given reference fv object.
 
@@ -22,7 +22,8 @@
 #' object <- lapply(obspatterns, Kest, W = Frame(obspatterns[[1]]))
 #' reffv <- as.fv(object[[1]][, c("r", "theo"), drop = TRUE])
 #' names(reffv) <- c("r", "ref")
-#' median_ise.fvlist(object, reffv, c(0.1, 0.2), equiv = list(ref = "iso"), avoverdomain = TRUE)
+#' median_ise.fvlist(object, reffv, c(0.1, 0.2), equiv = list(ref = "iso"))
+#' mean_ise.fvlist(object, reffv, c(0.1, 0.2), equiv = list(ref = "iso"))
 #' 
 #' @details 
 #' We define the median integrated squared error of a collection of estimates of functions \eqn{\hat{f}_i}
@@ -57,7 +58,21 @@ median_ise.fvlist <- function(object, reffv, domainlim, equiv = NULL,
   return( median(iselvalues, na.rm = TRUE) )
 }
 
-
+#' @describeIn median_ise.fvlist
+mean_ise.fvlist <- function(object, reffv, domainlim, equiv = NULL,
+                              avoverdomain = FALSE, fixeddomain = FALSE, acceptableISEerrorrate = 0, ...){
+  isel <- lapply(object, ise, reffv = reffv, domainlim = domainlim, equiv = equiv,
+                 avoverdomain = avoverdomain, fixeddomain = fixeddomain, ...)
+  ermessageok <- grepl("^OK$", lapply(isel, "[[", "message"))
+  if (is.null(acceptableISEerrorrate)){ acceptableISEerrorrate <- 0 }
+  if ( sum(ermessageok) / length(isel) < 1 - acceptableISEerrorrate){
+    #warning(lapply(isel[!ermessageok], "[[", "message"))
+    warning(sprintf("The fraction of integrated squared error calls that had a warning was %.2g. This is greater than acceptableISEerrorrate = %3.2g.", 1 - sum(ermessageok) / length(isel),  acceptableISEerrorrate))
+    return(NA)
+  }
+  iselvalues <- vapply(isel, "[[", "value", FUN.VALUE = 0.0)
+  return( mean(iselvalues, na.rm = TRUE) )
+}
 
 ise <- function(fvobj, reffv, domainlim, equiv = NULL, avoverdomain = FALSE, fixeddomain = FALSE, ...){
   harmfvs <- harmonise.fv(fvobj, reffv)
