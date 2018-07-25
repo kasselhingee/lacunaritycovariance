@@ -5,11 +5,11 @@
 
 #' @author Kassel Hingee
 
-#' @param object List of function objects to compare to benchfv
-#' @param benchfv An fv function object to treat as the true or reference values.
+#' @param object List of function objects to compare to reffv
+#' @param reffv An fv function object to treat as the true or reference values.
 #' @param domainlim A list of two entries giving the lower and upper bound of the domain to integrate over
 #' @param equiv Passed to eval.fv - see help for eval.fv for more details.
-#'        It is gives the functional value names to map to each other when comparing to benchfv. Default is NULL.
+#'        It is gives the functional value names to map to each other when comparing to reffv. Default is NULL.
 #' @param acceptableISEerrorrate The number of bad integrations that it is ok to ignore when computing the median ISE.
 #' @param avoverdomain  Divide the integral by the length of the domain (i.e. divide by \eqn{b_i} - \eqn{a_i} for each \eqn{\hat{f}_i}
 #' @param fixeddomain If the domain of the function \eqn{\hat{f}_i}
@@ -20,9 +20,9 @@
 #' @examples
 #' obspatterns <- rpoispp(10, nsim = 10)
 #' object <- lapply(obspatterns, Kest, W = Frame(obspatterns[[1]]))
-#' benchfv <- as.fv(object[[1]][, c("r", "theo"), drop = TRUE])
-#' names(benchfv) <- c("r", "bench")
-#' median_ise.fvlist(object, benchfv, c(0.1, 0.2), equiv = list(bench = "iso"), avoverdomain = TRUE)
+#' reffv <- as.fv(object[[1]][, c("r", "theo"), drop = TRUE])
+#' names(reffv) <- c("r", "ref")
+#' median_ise.fvlist(object, reffv, c(0.1, 0.2), equiv = list(ref = "iso"), avoverdomain = TRUE)
 #' 
 #' @details 
 #' We define the median integrated squared error of a collection of estimates of functions \eqn{\hat{f}_i}
@@ -42,9 +42,9 @@
 #' The function fails if there is y-value name of the reference fv object
 #'  is equal to a y-value name in the list fv objects that that you don't want to compare to
 #'   (e.g. if the list of fv objects also contain the reference value).
-median_ise.fvlist <- function(object, benchfv, domainlim, equiv = NULL,
+median_ise.fvlist <- function(object, reffv, domainlim, equiv = NULL,
                               avoverdomain = FALSE, fixeddomain = FALSE, acceptableISEerrorrate = 0.1, ...){
-  isel <- lapply(object, ise, benchfv = benchfv, domainlim = domainlim, equiv = equiv,
+  isel <- lapply(object, ise, reffv = reffv, domainlim = domainlim, equiv = equiv,
                  avoverdomain = avoverdomain, fixeddomain = fixeddomain, ...)
   ermessageok <- grepl("^OK$", lapply(isel, "[[", "message"))
   if (is.null(acceptableISEerrorrate)){ acceptableISEerrorrate <- 0.1 }
@@ -59,8 +59,8 @@ median_ise.fvlist <- function(object, benchfv, domainlim, equiv = NULL,
 
 
 
-ise <- function(fvobj, benchfv, domainlim, equiv = NULL, avoverdomain = FALSE, fixeddomain = FALSE, ...){
-  harmfvs <- harmonise.fv(fvobj, benchfv)
+ise <- function(fvobj, reffv, domainlim, equiv = NULL, avoverdomain = FALSE, fixeddomain = FALSE, ...){
+  harmfvs <- harmonise.fv(fvobj, reffv)
   withCallingHandlers(
     sefv <- eval.fv( (a - b)^2, envir = list(a = harmfvs[[1]], b = harmfvs[[2]]), equiv = equiv, relabel = FALSE),
       warning = function(w){

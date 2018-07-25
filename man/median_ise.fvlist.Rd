@@ -4,19 +4,19 @@
 \alias{median_ise.fvlist}
 \title{Median Integrated Squared Error of a List of fv Objects}
 \usage{
-median_ise.fvlist(object, benchfv, domainlim, equiv = NULL,
+median_ise.fvlist(object, reffv, domainlim, equiv = NULL,
   avoverdomain = FALSE, fixeddomain = FALSE, acceptableISEerrorrate = 0.1,
   ...)
 }
 \arguments{
-\item{object}{List of function objects to compare to benchfv}
+\item{object}{List of function objects to compare to reffv}
 
-\item{benchfv}{An fv function object to treat as the true or reference values.}
+\item{reffv}{An fv function object to treat as the true or reference values.}
 
 \item{domainlim}{A list of two entries giving the lower and upper bound of the domain to integrate over}
 
 \item{equiv}{Passed to eval.fv - see help for eval.fv for more details.
-It is gives the functional value names to map to each other when comparing to benchfv. Default is NULL.}
+It is gives the functional value names to map to each other when comparing to reffv. Default is NULL.}
 
 \item{avoverdomain}{Divide the integral by the length of the domain (i.e. divide by \eqn{b_i} - \eqn{a_i} for each \eqn{\hat{f}_i}}
 
@@ -55,9 +55,9 @@ The function fails if there is y-value name of the reference fv object
 \examples{
 obspatterns <- rpoispp(10, nsim = 10)
 object <- lapply(obspatterns, Kest, W = Frame(obspatterns[[1]]))
-benchfv <- as.fv(object[[1]][, c("r", "theo"), drop = TRUE])
-names(benchfv) <- c("r", "bench")
-median_ise.fvlist(object, benchfv, c(0.1, 0.2), equiv = list(bench = "iso"), avoverdomain = TRUE)
+reffv <- as.fv(object[[1]][, c("r", "theo"), drop = TRUE])
+names(reffv) <- c("r", "ref")
+median_ise.fvlist(object, reffv, c(0.1, 0.2), equiv = list(ref = "iso"), avoverdomain = TRUE)
 
 }
 \author{
