@@ -96,6 +96,9 @@ ise <- function(fvobj, reffv, domainlim, equiv = NULL, avoverdomain = FALSE, fix
     if (min(sefv[, fvnames(sefv, ".x"), drop = TRUE][finitevals]) > domainlim[[1]]){
       return(list(value = NA, message = "integration domain larger than function domain"))
     }
+    if (max(sefv[, fvnames(sefv, ".x"), drop = TRUE][finitevals]) < domainlim[[2]]){
+      return(list(value = NA, message = "integration domain larger the function domain"))
+    }
   }
   lower <- max( min(sefv[, fvnames(sefv, ".x"), drop = TRUE][finitevals]), domainlim[[1]])
   upper <- min( max(sefv[, fvnames(sefv, ".x"), drop = TRUE][finitevals]), domainlim[[2]])
