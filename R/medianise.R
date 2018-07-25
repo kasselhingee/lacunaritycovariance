@@ -38,8 +38,8 @@
 #' The function fails if there is y-value name of the reference fv object
 #'  is equal to a y-value name in the list fv objects that that you don't want to compare to
 #'   (e.g. if the list of fv objects also contain the reference value).
-median_ise.fvlist <- function(object, benchfv, domainlim, equiv = NULL, acceptableISEerrorrate = 0.1, ...){
-  isel <- lapply(object, ise, benchfv = benchfv, domainlim = domainlim, equiv = equiv, ...)
+median_ise.fvlist <- function(object, benchfv, domainlim, equiv = NULL, avoverdomain = FALSE, acceptableISEerrorrate = 0.1, ...){
+  isel <- lapply(object, ise, benchfv = benchfv, domainlim = domainlim, equiv = equiv, avoverdomain = avoverdomain, ...)
   ermessageok <- grepl("^OK$", lapply(isel, "[[", "message"))
   if (is.null(acceptableISEerrorrate)){ acceptableISEerrorrate <- 0.1 }
   if ( sum(ermessageok) / length(isel) < 1 - acceptableISEerrorrate){
@@ -53,15 +53,16 @@ median_ise.fvlist <- function(object, benchfv, domainlim, equiv = NULL, acceptab
 
 
 
-ise <- function(fvobj, benchfv, domainlim, equiv = NULL, ...){
+ise <- function(fvobj, benchfv, domainlim, equiv = NULL, avoverdomain = FALSE, ...){
   harmfvs <- harmonise.fv(fvobj, benchfv)
   sefv <- eval.fv( (a - b)^2, envir = list(a = harmfvs[[1]], b = harmfvs[[2]]), equiv = equiv, relabel = FALSE)
   se.fun <- as.function.fv(sefv)
+  finitevals <- is.finite(sefv[, fvnames(sefv, ".y"), drop = TRUE])
   lower <- max( min(sefv[, fvnames(sefv, ".x"), drop = TRUE][finitevals]), domainlim[[1]])
   upper <- min( max(sefv[, fvnames(sefv, ".x"), drop = TRUE][finitevals]), domainlim[[2]])
   intse <- integrate(se.fun, lower, upper, stop.on.error = FALSE, ...)
   if (intse$message != "OK"){ intse$value <- NA}
-  intse$value <- intse$value
-  intse$abs.error <-  intse$abs.error
+  if (avoverdomain) { intse$value <- intse$value / (upper - lower) }
+  if (avoverdomain) { intse$abs.error <-  intse$abs.error / (upper - lower) }
   return(intse)
 }
