@@ -11,6 +11,9 @@
 #' @param equiv Passed to eval.fv - see help for eval.fv for more details.
 #'        It is gives the functional value names to map to each other when comparing to benchfv. Default is NULL.
 #' @param acceptableISEerrorrate The number of bad integrations that it is ok to ignore when computing the median ISE.
+#' @param avoverdomain  Divide the integral by the length of the domain (i.e. divide by \eqn{b_i} - \eqn{a_i} for each \eqn{\hat{f}_i}
+#' @param fixeddomain If the domain of the function \eqn{\hat{f}_i}
+#'  is a non-equal subset of the domain given by \code{domainlim} then set the integrated error to NA.
 #' @param ... Arguments passed to integrate().
 #' @return A numeric value that is the Median Integrated Squared Error - see Details.
 
@@ -19,7 +22,7 @@
 #' object <- lapply(obspatterns, Kest, W = Frame(obspatterns[[1]]))
 #' benchfv <- as.fv(object[[1]][, c("r", "theo"), drop = TRUE])
 #' names(benchfv) <- c("r", "bench")
-#' median_ise.fvlist(object, benchfv, c(0.1, 0.2), equiv = list(bench = "iso"))
+#' median_ise.fvlist(object, benchfv, c(0.1, 0.2), equiv = list(bench = "iso"), avoverdomain = TRUE)
 #' 
 #' @details 
 #' We define the median integrated squared error of a collection of estimates of functions \eqn{\hat{f}_i}
@@ -30,6 +33,7 @@
 #' where the domain of integration $[a_i, b_i]$ is 
 #' the largest possible interval between \code{domainlim[[1]]} and \code{domainlim[[2]]} for which the function
 #' \eqn{\hat{f}_i} exists.
+#'  (Unless \code{fixeddomain} is \code{TRUE} in which case the domain of integration is fixed to \code{domainlim})
 #' 
 #' The above integral is computed using the numerical integration function \code{integrate} and
 #'  if this numerical integration fails then the result is ignored in the final computation of the median.
@@ -38,8 +42,10 @@
 #' The function fails if there is y-value name of the reference fv object
 #'  is equal to a y-value name in the list fv objects that that you don't want to compare to
 #'   (e.g. if the list of fv objects also contain the reference value).
-median_ise.fvlist <- function(object, benchfv, domainlim, equiv = NULL, avoverdomain = FALSE, acceptableISEerrorrate = 0.1, ...){
-  isel <- lapply(object, ise, benchfv = benchfv, domainlim = domainlim, equiv = equiv, avoverdomain = avoverdomain, ...)
+median_ise.fvlist <- function(object, benchfv, domainlim, equiv = NULL,
+                              avoverdomain = FALSE, fixeddomain = FALSE, acceptableISEerrorrate = 0.1, ...){
+  isel <- lapply(object, ise, benchfv = benchfv, domainlim = domainlim, equiv = equiv,
+                 avoverdomain = avoverdomain, fixeddomain = fixeddomain, ...)
   ermessageok <- grepl("^OK$", lapply(isel, "[[", "message"))
   if (is.null(acceptableISEerrorrate)){ acceptableISEerrorrate <- 0.1 }
   if ( sum(ermessageok) / length(isel) < 1 - acceptableISEerrorrate){
@@ -53,11 +59,16 @@ median_ise.fvlist <- function(object, benchfv, domainlim, equiv = NULL, avoverdo
 
 
 
-ise <- function(fvobj, benchfv, domainlim, equiv = NULL, avoverdomain = FALSE, ...){
+ise <- function(fvobj, benchfv, domainlim, equiv = NULL, avoverdomain = FALSE, fixeddomain = FALSE, ...){
   harmfvs <- harmonise.fv(fvobj, benchfv)
   sefv <- eval.fv( (a - b)^2, envir = list(a = harmfvs[[1]], b = harmfvs[[2]]), equiv = equiv, relabel = FALSE)
   se.fun <- as.function.fv(sefv)
   finitevals <- is.finite(sefv[, fvnames(sefv, ".y"), drop = TRUE])
+  if (fixeddomain){#if domain is fixed then throw out NAs when the function objects aren't long enough
+    if (min(sefv[, fvnames(sefv, ".x"), drop = TRUE][finitevals]) > domainlim[[1]]){
+      return(list(value = NA, message = "integration domain larger than function domain"))
+    }
+  }
   lower <- max( min(sefv[, fvnames(sefv, ".x"), drop = TRUE][finitevals]), domainlim[[1]])
   upper <- min( max(sefv[, fvnames(sefv, ".x"), drop = TRUE][finitevals]), domainlim[[2]])
   intse <- integrate(se.fun, lower, upper, stop.on.error = FALSE, ...)
