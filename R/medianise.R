@@ -1,8 +1,7 @@
 #' @title Median Integrated Squared Error of a List of fv Objects
 #' @export median_ise.fvlist
 #' @description
-#' This function assumes that fv objects are each realisations of the same (stochastic) object. 
-#' It returns pointwise summaries such as observed sample mean and sample variance.
+#' Computes the median integrated squared error (defined below) of a list of fv objects given reference fv object.
 
 #' @author Kassel Hingee
 
@@ -13,7 +12,7 @@
 #'        It is gives the functional value names to map to each other when comparing to benchfv. Default is NULL.
 #' @param acceptableISEerrorrate The number of bad integrations that it is ok to ignore when computing the median ISE.
 #' @param ... Arguments passed to integrate().
-#' @return An fv object containing the pointwise mean, pointwise sample variance, pointwise maximum and pointwise minimum.
+#' @return A numeric value that is the Median Integrated Squared Error - see Details.
 
 #' @examples
 #' obspatterns <- rpoispp(10, nsim = 10)
@@ -23,6 +22,19 @@
 #' median_ise.fvlist(object, benchfv, c(0.1, 0.2), equiv = list(bench = "iso"))
 #' 
 #' @details 
+#' We define the median integrated squared error of a collection of estimates of functions \eqn{\hat{f}_i}
+#' and a reference function \eqn{f} as 
+#' \deqn{
+#' \left\{\int_{a_i}^{b_i} \left(\hat{f}_i(s) - f(s) \right)^2 ds  : i = 1, 2, 3, .... , n \right\},
+#' }
+#' where the domain of integration $[a_i, b_i]$ is 
+#' the largest possible interval between \code{domainlim[[1]]} and \code{domainlim[[2]]} for which the function
+#' \eqn{\hat{f}_i} exists.
+#' 
+#' The above integral is computed using the numerical integration function \code{integrate} and
+#'  if this numerical integration fails then the result is ignored in the final computation of the median.
+#' \code{acceptableISEerrorrate} can be used to set the proportion of these failures that is acceptable for calculating the median.
+#' 
 #' The function fails if there is y-value name of the reference fv object
 #'  is equal to a y-value name in the list fv objects that that you don't want to compare to
 #'   (e.g. if the list of fv objects also contain the reference value).
