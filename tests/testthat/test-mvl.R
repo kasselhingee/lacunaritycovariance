@@ -13,9 +13,6 @@ test_that("mvlc() warns of unexpected inputs", {
 
   expect_error(mvlc(sidelengths, p = p, xiim = img),
                  regexp = "Either covariance and p must be supplied or xiim supplied.")
-
-  sidel <- c(2.2)
-  expectlac.wraw <- mvlgb(sidel, img, inclraw = TRUE)
 })
 
 test_that("mvlgb() warns of unexpected inputs", {
