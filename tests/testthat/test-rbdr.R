@@ -7,7 +7,7 @@ test_that("rbdr produces simulations with the correct coverage and covariance", 
   
   #calculate theoretical values of the model
   truecoveragefrac <- bdrcoverageprob(lambda, grain)
-  xy <- as.mask(dilationAny(win, win), eps = c(0.1, 0.1))
+  xy <- as.mask(dilationAny(win, win), eps = c(0.2, 0.2))
    #eps of 1 (a 10 grain width) is too large! eps of 0.1
   thcovariance <- bdrcovar(lambda, grain, xy)
   ## use covariance to form approximate confidence interval
@@ -26,10 +26,9 @@ test_that("rbdr produces simulations with the correct coverage and covariance", 
   expect_equal(phat, truecoveragefrac, tolerance = confint_halfwidth)
   
   #now on to checking covariance
-  cvchat <- balancedracscovariances(as.mask(xi, eps = c(0.1, 0.1)), obswin = win, modifications = list("pickaint"))[[1]]
+  cvchat <- balancedracscovariances(as.mask(xi, eps = c(0.2, 0.2)), obswin = win, modifications = list("pickaint"))[[1]]
   truecvc.iso <- rotmean(thcovariance[disc(radius = 50), drop = FALSE], padzero = FALSE)
   cvchat.iso <- rotmean(cvchat[disc(radius = 50), drop = FALSE], padzero = FALSE)
   cvciso <- collapse.fv(truecvc.iso, cvchat.iso, different = "f")
-  with.fv(cvciso, max(x1 - x2))
   expect_lt(with.fv(cvciso, max(x1 - x2)), 10 * confint_halfwidth) #the 10 is just a guess based on 4th order properties being much harder to estimate
 })
