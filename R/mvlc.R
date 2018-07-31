@@ -60,7 +60,7 @@ mvlc <- function(boxes, covariance = NULL, p = NULL, xiim = NULL){
                 fmla = ".y ~ s",
                 alim = c(lacsdf[alim.min, "s"], lacsdf[alim.max, "s"]),
                 ylab = quote(MVL[c]),
-                unitname = unitname(xiim),
+                unitname = unitname,
                 labl = c("Box Width",
                          "MVL",
                          "Var(BoxMass)",
