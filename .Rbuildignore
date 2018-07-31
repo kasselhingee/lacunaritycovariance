@@ -3,5 +3,6 @@
 ^\.git*$
 ^\racsScratch$
 ^\.gitignore$
+^\.scriptfor*
 build_and_inst_hints_on_windows.txt
 codestyleconventions.txt
