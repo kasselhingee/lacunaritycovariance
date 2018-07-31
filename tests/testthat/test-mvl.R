@@ -18,10 +18,10 @@ test_that("mvlc() warns of unexpected inputs", {
 test_that("mvlgb() warns of unexpected inputs", {
   sidel <- c(2.2)
   img <- as.im(heather$coarse,eps=c(heather$coarse$xstep, 2 * heather$coarse$xstep), na.replace = 0)
-  expect_error(mvlgb(sidel, img, inclraw = TRUE),
+  expect_error(mvlgb(sidel, img),
                  regexp = "image pixels must be square")
 
-  expect_error(mvlgb(sidel, 13, inclraw = TRUE),
+  expect_error(mvlgb(sidel, 13),
                  regexp = "input xiim must be of class im")
 
 })
@@ -37,9 +37,8 @@ test_that("MVLc estimates are historically consistent", {
 test_that("MVLgb estimates are historically consistent", {
   img <- as.im(heather$coarse, eps = heather$coarse$xstep, na.replace = 0)
   sidel <- c(2.2)
-  lac.wraw <- mvlgb(sidel, img, inclraw = TRUE)
-  expect_equal(lac.wraw$MVL, 0.03253836)
-  expect_equal(lac.wraw$raw, -0.05775767)
+  lac <- mvlgb(sidel, img)
+  expect_equal(lac$MVL, 0.03253836)
 })
 
 test_that("MVLc estimates are consistent for input side lengths or owin squares", {
@@ -47,7 +46,7 @@ test_that("MVLc estimates are consistent for input side lengths or owin squares"
   p <- area(heather$coarse) / area(Frame(heather$coarse))
   sidelengths <- 2.2
   lac <- mvlc(sidelengths, covar, p)
-  expect_equal(lac$MVL, mvlc(list(square(2.2)), covar, p))
+  expect_equal(lac$MVL, mvlc(list(square(2.2)), covar, p)$MVL)
 })
 
 test_that("MVLc estimates are the same from estimated covariance or original image", {
@@ -66,8 +65,8 @@ test_that("integration when covar is constant gives squared area", {
   sidelengths <- seq(1, 2.2, by = 0.1)
   lac <- mvlc(sidelengths, covar, p)
   expect_equal(lac$MVL, rep(0, length(sidelengths)), tolerance = 0.01)
-
-  expect_equal(mvlc(lapply(c(0.5, 1, 2, 3), disc), covar, p), rep(0, 4), tolerance = 0.01)
+  
+  expect_equal(mvlc(lapply(c(0.5, 1, 2, 3), disc), covar, p)$MVL, rep(0, 4), tolerance = 0.01)
 })
 
 test_that("MVLc and MVLgb produce similar results for large square observation windows", {
