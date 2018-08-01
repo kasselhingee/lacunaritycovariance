@@ -1,48 +1,86 @@
 
+opa <- par(mfrow=c(1,1))
 
+##################
+# IMPORTING REMOTE SENSING DATA DEMO
+# By Kassel Liam Hingee
+##################
 
-library("stationaryracsinference")
-library("rgdal")
-library("maptools")
-library("raster")
+# This document demonstrates how to convert raster data stored in a
+# remote sensing format and an observation window in an ESRI shapefile
+# format into a format suitable for the package stationaryracsinference.
 
+# The goal is to have 
+# 1) an observation window in spatstat's owin format
+# 2) the raster data as a spatstat im object containing values of 1,
+#    0 or NA representing foreground, background and outside the
+#    observation window respectively.
+# The result will be something like this:
+load(system.file("extdata/egbinarymap.RData", package="stationaryracsinference")) 
+plot(egbinarymap, col = c("grey", "black"), main = "The Final Result of This Demo")
+rm(egbinarymap)
 
-
-
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+# 1. Reading ESRI Shapefile in SpatialPolygonsDataFrame #
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+library("rgdal") # rgdal is used here to read the ESRI shapefile into a SpatialPolygonsDataFrame
 regionfilepath <- system.file("extdata", package="stationaryracsinference")
-obspoly <- readOGR(regionfilepath,"aregionofinterest")
+obspoly <- readOGR(regionfilepath, "aregionofinterest", verbose = FALSE)
+#For ESRI Shapefiles:
+#   the first argument of readOGR is the directory containing the shape files
+#   the second argument of readOGR is the filename without extension
 #print the coordinate projection of the polygon data for sanity
-crs(proj4string(obspoly)) 
+plot(obspoly, main = "Observation Window as a SpatialPolygonsDataFrame")
 
 
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+# 2.Converting Observation Window as SpatialPolygonsDataFrame into owin Format  #
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+library("maptools") # maptools is used to convert a SpatialPolygonsDataFrame into an owin object
+obsowin <- as.owin(obspoly) #only step that requires maptools
+unitname(obsowin) <- c("metre", "metres") #manually set units
+plot(obsowin,
+     main = "Observation Window as owin",axes=TRUE)
 
 
-obsbdry <- as.owin(obspoly) #only step that requires maptools
-unitname(obsbdry) <- c("metre", "metres")
-plot(obsbdry,
-     main = "A Region of Interest / Observation Window",axes=TRUE)
-
-
-
-
-#First unzip raster data
+# # # # # # # # # # # # # # # # # # # # # # # # # # #
+# 3. Extracting Raster Data for Observation Window  #
+# # # # # # # # # # # # # # # # # # # # # # # # # # #
+library("raster") # reads in remotely sensed raster data in a wide variety of formats.
+#### First unzip the example raster data
 #(raster data was compressed in a zip to save space)
 rsdatafilepath <- system.file("extdata/demorsraster.zip",
                               package="stationaryracsinference")
 rsfiles <- unzip(rsdatafilepath,exdir=tempdir())
+
+#### Open raster data file (this does not read the raster data)
 xidataset<-raster(rsfiles[[2]])
-# if this doesn't load you may need to try opening rsfiles[[1]]
-# (it may just be due to a filename extention convention)
+# if the above doesn't load you may need to try opening rsfiles[[1]]
+# (this may just be due to a filename extention convention)
 
+#### Reads in the smallest rectangle possible around the observation window
 xidataset <- crop(xidataset,extent(obspoly))
-plot(xidataset,main="Tree Canopy Map and Region of Interest")
-plot(add=TRUE,obsbdry)
+plot(xidataset, main="Raster Map around Observation Window")
+plot(add=TRUE, obsbdry, lwd = 3)
 
 
+# # # # # # # # # # # # # # # # # # # # # # # # # #
+# 4. Convert Raster Data into spatstat im Object  #
+# # # # # # # # # # # # # # # # # # # # # # # # # #
+xiimage <- as.im.RasterLayer(xidataset) # uses package maptools
+unitname(xiimage) <- c("metre","metres") # manually set units
+# remove raster data outside observation window:
+xiimage[setminus.owin(Frame(xiimage), obsowin)] <- NA
+plot(xiimage, col = c("grey", "black"), main = "im Object Ready for stationaryracsinference")
+
+# # # #
+# End #
+# # # #
+# The xiimage has values of 1, 0 and NA. It is ready be analysed
+# using stationaryracsinference.
 
 
-xiimage <- as.im(xidataset)
-unitname(xiimage) <- c("metre","metres")
-xiimage[setminus.owin(Frame(xiimage), obsbdry)] <- NA
-par(bg = "grey")
-plot(xiimage, col = c("white", "black"))
+# Thank you,
+# Kassel
+
+par(opa)
