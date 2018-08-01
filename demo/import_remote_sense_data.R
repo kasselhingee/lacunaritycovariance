@@ -10,6 +10,15 @@ opa <- par(mfrow=c(1,1))
 # remote sensing format and an observation window in an ESRI shapefile
 # format into a format suitable for the package stationaryracsinference.
 
+# For this demo you will need the following R packages installed: 
+#  rgdal You will need to install GDAL (http://www.gdal.org/)
+#        first which is available for Windows, Mac and Linux.
+#        An easy installation of GDAL on Windows is through
+#        installing OSGeo4W (http://trac.osgeo.org/osgeo4w/).
+#  maptools
+#  raster
+#  spatstat
+
 # The goal is to have 
 # 1) an observation window in spatstat's owin format
 # 2) the raster data as a spatstat im object containing values of 1,

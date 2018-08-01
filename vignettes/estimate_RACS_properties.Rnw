@@ -7,130 +7,44 @@
 
 \begin{document}
 \SweaveOpts{concordance=TRUE}
-\title{Estimating RACS Summary Functions from a Remotely Sensed Binary Map}
+\title{Estimating RACS Properties from a Binary Map}
 \author{Kassel Hingee}
 
 \maketitle
 
-This document demonstrates how to estimate various RACS summary functions from data stored in a remote sensing raster data format.
-The format used as an example here is ERMapper raster format (extension .ers) with observation window given in a shape file. 
- Any other formats supported by GDAL should work in a very similar fashion.
+This document demonstrates how to estimate various properties of a stationary RACS from an observation that is a binary map.
 
 \tableofcontents
 
+\section{Preparing the Binary Map}
+We will need an image in \code{spatstat}'s \code{im} format with values of 1, 0 and NA representing foreground, background and outside the observation window respectively.
+For this vignette we will use a small image already prepared.
+You can see how we prepared it from remote sensing data in the demo \verb!import_remote_sense_data!, which can be run by \code{demo("\verb!import_remote_sense_data!", package = "stationaryracsinference")}.
 
-\section{Installation of Packages}
-It is necessary to install the following packages to read remote sensing data and convert it into the formats used by \code{stationaryracsinference}:
-\begin{itemize}
-\item sp
-\item rgdal
-\item maptools
-\item raster
-\end{itemize}
- Except for \code{rgdal} these can be installed by simply using \code{install.packages()}. 
- Before installing \code{rgdal} it is needed to first install of GDAL (\verb!http://www.gdal.org/!) which is available for Windows, Mac and Linux.
- Note an easy installation of GDAL on Windows is by installing OSGeo4W (\verb!http://trac.osgeo.org/osgeo4w/!).
-  Once GDAL is installed then run \code{install.packages("rgdal")}.
-
-After installation load packages for use
-<<loadpackages,echo=TRUE>>=
-library("stationaryracsinference")
-library("rgdal")
-library("maptools")
-library("raster")
+{
+\centering
+<<loadbinarymap, fig = TRUE>>=
+library(stationaryracsinference)
+load(system.file("extdata/egbinarymap.RData", package="stationaryracsinference"))
+# the following converts egbinarymap to a thing of logical type (**shouldn't be needed long term)
+egbinarymap <- eval.im(egbinarymap > 0.5)
+plot(egbinarymap, col = c("grey", "black"), main = "The Binary Map")
 @
+\caption{The binary map used in this example. Black (TRUE) is tree canopy, grey (FALSE) is not tree canopy and white (NA) is outside the observation window.}
+}
 
+This binary map is a small subset of a tree canopy map with a spatial resolution of 20cm derived from aerial stereophotography following the methods described by Caccetta et al.~(2015).
 
-\section{The data used for this demonstration}
-The data used in this demonstration is a small subset of a tree canopy map derived from aerial stereophotography. 
 \begin{itemize}
-  \item GSD is 0.2m
+  \item Spatial resolution is 0.2m
   \item Year of capture was 2009
-  \item Location is a sparsely forested region just North of Perth, Australia
+  \item Location was a sparsely forested region just North of Perth, Australia
   \item Data is approximately 300m x 300m in extent.
-  \item Values are either 1 if in tree canopy, or NULL (0) if not in tree canopy.
+  \item Values are either 1 if in tree canopy, or 0 if not in tree canopy.
   \item Data format: ERMapper raster (.ers)
 \end{itemize}
-  See Caccetta 2015 for more details on capture and processing of this data.
 
-\section{Set up the observation window}
-Usually it is not desired to analyse an entire remote sensing data file.
- Here we specify the region of interest (which will become our observation window) using a polygon in a saved shapefile.
- It is also possible to specify extents using coordinates (see help for \code{extent()} from the raster package).
-
-
-<<readpolygon>>=
-regionfilepath <- system.file("extdata", package="stationaryracsinference")
-obspoly <- readOGR(regionfilepath,"aregionofinterest")
-#print the coordinate projection of the polygon data for sanity
-crs(proj4string(obspoly)) 
-@
-
-Note that the above uses \code{rgdal} to read the shape file, \code{maptools} also includes functions to read shapefiles however the \code{maptools} functions do not automatically attach coordinate projection information to the object.
-
-A \code{spatstat owin} version of \code{obspoly} is needed for the summary function estimations.
- The following uses a conversion tool provided by \code{maptools}
-
-<<convertowinpoly,fig=TRUE, include=FALSE>>=
-obsbdry <- as.owin(obspoly) #only step that requires maptools
-unitname(obsbdry) <- c("metre", "metres")
-plot(obsbdry,
-     main = "A Region of Interest / Observation Window",axes=TRUE)
-@
-\begin{center}
-\includegraphics[width=0.8\textwidth]{remotesensedatademo-convertowinpoly}
-\end{center}
-
-\section{Open raster data set and crop to observation window}
-The \code{raster} package is able to open and perform virtual operations on raster data.
-The data is not actually loaded into memory (RAM) until it is converted into a \code{spatstat im} object.
-
-<<openrasterdata,fig=TRUE, include = FALSE>>=
-#First unzip raster data
-#(raster data was compressed in a zip to save space)
-rsdatafilepath <- system.file("extdata/demorsraster.zip",
-                              package="stationaryracsinference")
-rsfiles <- unzip(rsdatafilepath,exdir=tempdir())
-xidataset<-raster(rsfiles[[2]])
-# if this doesn't load you may need to try opening rsfiles[[1]]
-# (it may just be due to a filename extention convention)
-
-xidataset <- crop(xidataset,extent(obspoly))
-plot(xidataset,main="Tree Canopy Map and Region of Interest")
-plot(add=TRUE,obsbdry)
-@
-\begin{center}
-\includegraphics[width=0.8\textwidth]{remotesensedatademo-openrasterdata}
-\end{center}
-
-\code{xidataset} is a virtual data set (the data is still not in memory) covering the smallest rectangular region containing \code{obspoly}.
- The pixels in this data are either \code{1} or \code{NA} and represent our class of interest (tree canopy) and everything else respectively.
- 
-This is suitable for converting the observed set into an \code{owin} object using \code{as.owin()} (\code{as.owin()} assumes that \code{NA} values are outside the set whilst everything else is inside the set).
- An \code{owin} object is necessary to estimate the spherical contact distribution (also known as core probability) using \code{spatstat}'s \code{Hest()} function.
- 
-If you are only interest in estimating covariance and mass variance lacunarity (MVL) then \code{racscovariance}, \code{mvlc} and \code{mvlgb} can operate directly on images that have values \code{1}, \code{0} and \code{NA} corresponding to the set of interest, everything outside the set of interest and unobserved locations respectively.
-
-The conversion from \code{xidataset} in \code{raster} format to \code{owin} requires two steps.
-<<conversiontoowin>>=
-xiimage <- as.im(xidataset)
-unitname(xiimage) <- c("metre","metres")
-xiowin <- as.owin(xiimage)
-@
-Note that \code{as.owin()} assumes all NA values are outside the set, and everything else is inside the set.
-
-\code{xiowin} currently has observations outside the polygon of interest.
-Intersecting the two rectifies this.
-
-<<intersectbdrywxiowin,fig=TRUE, include = FALSE>>=
-xiowin <- intersect.owin(xiowin, obsbdry)
-plot(xiowin, main = "Class cover in the region of interest", axes = TRUE)
-@
-\begin{center}
-\includegraphics[width=\textwidth]{remotesensedatademo-intersectbdrywxiowin}
-\end{center}
-
-\section{Estimate RACS summary functions}
+\section{Estimate Properties of Stationary RACS}
 For now \code{racstools} only has functions for estimating coverage probability, disc-state contagion, covariance and mass variance lacunarity, with the spherical contact distribution and conditional core probability estimated using \code{Hest} from \code{spatstat}.
  Conditional core probability is defined in Hingee (2016) is the probability that a point in the foreground (tree canopy) is in the core of the foreground, and is equivalent to the spherical contact distribution of the complement of the set.
  Coverage probability and disc-state contagion are also described in Hingee (2016), the former is a very common property that is also known as the coverage fraction.
@@ -138,23 +52,24 @@ For now \code{racstools} only has functions for estimating coverage probability,
  
  Below we estimate the coverage probability, spherical contact distribution, conditional core probability, disc-state contagion, covariance and mass variance lacunarity of the tree cover.
   The isotropic covariance function standardised by coverage probability, which is also known as the isotropic pair-correlation function is shown alongside the covariance estimate.
-  
-  Note that it is advisable to only use covariance estimates for distances less than 1/4 of the shortest width of the observation window; in estimating other summary functions the maximum reliable length is suggested to be 1/4 of the shortest width of the observation window (Foroutan-pour 1999). 
-  Beware that other factors influence to validity of the estimates and estimates for shorter distances may still be erroneous (e.g. if the observation window is much smaller than the range of dependence between locations).
 
-<<estimationsummfcn,fig=TRUE,include=FALSE,width=12,height=6>>=
-#convert boundary to a raster
-rasterbdry=as.mask(obsbdry,xy=xiowin)
-# Note that safest to convert boundary into a raster
-# of the same resolution as the image now so that no 
-# issues in differing discretisations arise later
+There is no clear maximum distance for estimates of covariance and other summary functions to use.
+Ripley's rule of thumb for the K-function in spatial point processes suggests to estimate covariance for vectors $v$ no longer than 1/4 of the shorest width of the observation window.
+Foroutan-pour et al. (1999) also noticed that estimates of contact distributions then used for box-counting dimension estimates were less reliable for distances greater 1/4 of the shortest width of the observation window.
+  Beware that many factors influence the validity of estimates of RACS properties and estimates for shorter distances can be misleading (e.g.~if the observation window is much smaller than the range of dependence between locations).
 
-coverp <- coveragefrac(xiowin,rasterbdry)
-coverp
+The coverage probability is estimated by the proportion of the observation window covered by the foreground.
+It is an important first-order summary of a stationary RACS.
+<<coverageprobability>>=
+phat <- coverageprob(egbinarymap)
+phat
+@
 
-scdest <- Hest(xiowin,W=rasterbdry)
-coreprob <- Hest(complement.owin(xiowin),W=rasterbdry)
-discstatecontag <- scdcontagion(scdest,coreprob,coverp)
+The following estimates the conditional spherical contact distribution [ref], conditional core probability [ref] and the disc state contagion [ref] of a stationary RACS. 
+<<contactdists, fig = TRUE>>=
+scdest <- Hest(egbinarymap)
+coreprob <- Hest(!egbinarymap)
+discstatecontag <- scdcontagion(scdest, coreprob, phat)
 
 par(mfrow=c(1,3))
 plot(scdest, main="Conditional Spherical Contact Distribution Estimates\n
@@ -164,37 +79,59 @@ plot(coreprob, main = "Conditional Core Probability Estimates\n
 plot(discstatecontag, main = "A Disc-State Contagion Estimate\n
  (Using the Reduced-Sample Border Correction)")
 @
+\caption{Estimated conditional spherical contact distribution, conditional core probability and disc state contagion.}
+
+The Kaplan-Meier estimates of spherical contact distribution and the core probability are automatically generated by Hest.
+We plot them here with smoothed versions.
+The spike at small values of the spherical contact hazard is likely a characteristic of the computations and not reflective of the hazard rate.
+The estimate of the hazard of the core probability fluctuates substantially and may not be reflective of the RACS.
+
+<<schazard, fig= TRUE>>=
+scdest.sm <- Smooth(scdest, which = "*", method = "smooth.spline", spar = 0.5)
+coreprob.sm <- Smooth(coreprob, which = "*", method = "smooth.spline", spar = 0.5)
+par(mfrow = c(1, 2))
+plot(scdest, hazard ~ r, col = "grey", main = "Spherical Contact Hazard")
+plot(add = TRUE, scdest.sm, "hazard ~ r")
+
+plot(coreprob, hazard ~ r, col = "grey", main = "Core Probability Hazard")
+plot(add = TRUE, coreprob.sm, "hazard ~ r")
+@
+\caption{Estimates of Spherical Contact Hazard (left) and Core Probability Hazard (right). The estimates smoothed using \code{smooth.spline} are shown in black. }
+
+Covariance estimates using the balanced estimator inspired by Picka's additively modified estimator of centred covariance are shown below.
+This estimator has smaller variance than the traditional estimator of covariance from binary maps and is consistent with estimates made from the complement of the observed set. 
+<<estimatecovariance, fig = TRUE, include = FALSE, width = 5>>=
+cvchat <- balancedracscovariances(egbinarymap, modifications = "pickaH")[[1]]
+plot(cvchat, main = "Estimated RACS Covariance", axes = TRUE)
+@
 \begin{center}
-\includegraphics[width=\textwidth]{remotesensedatademo-estimationsummfcn}
+\includegraphics[width=0.5\textwidth]{remotesensedatademo-estimatecovariance}
 \end{center}
 
-<<estimatecovariance, fig = TRUE, include = FALSE, width = 10>>=
-par(mfrow = c(1,2))
-covar <- racscovariance(xiowin, obswin = rasterbdry)
-plot(covar, main = "Estimated RACS Covariance", axes = TRUE)
-paircorrest <- eval.fv(y / coverp ^ 2,
-                       envir = list(y = rotmean(covar,
-                                                padzero = FALSE,
-                                                result = "fv")))
-plot(paircorrest,
+The additively modified estimate of pair-correlation [ref picka] is shown below, along with the rotational mean of this estimate are shown below.
+<<paircorr, fig = TRUE>>=
+par(mfrow = c(1, 2))
+pclnest <- eval.im(cvchat /  (phat^2))
+plot(pclnest, main = "Pair-Correlation Estimate")
+isopclnest <- rotmean(pclnest, padzero = FALSE, result = "fv")
+plot(isopclnest,
      main = "Estimated Isotropic Pair Correlation",
      xlim = c(0, 50))
 @
-\begin{center}
-\includegraphics[width=0.9\textwidth]{remotesensedatademo-estimatecovariance}
-\end{center}
+\caption{Estimated Pair-Correlation and Isotropic Pair-Correlation}
 
+MVL can be estimated using a variety of method, including the gliding-box algorithm and our new covariance-based estimates of MVL, using the function \code{mvl}.
 <<mvlestimation, fig = TRUE, include = FALSE>>=
-mvlest <- mvlc(seq(1, 200/4, by = 1), covariance = covar, p = coverp)
-plot(mvlest, main = "MVL Estimate")
+mvlest <- mvl(xiim = egbinarymap, seq(1, 200/4, by = 1))
+plot(mvlest[[1]], main = "MVL Estimate")
 @
 \begin{center}
 \includegraphics[width=0.5\textwidth]{remotesensedatademo-mvlestimation}
+\caption{MVL Estimates.}
 \end{center}
 
 \section{Summary}
-In this vignette we have used an observed set of tree canopy locations that were saved in ERMapper raster format and an observation window provided as an ESRI Shapefile.
- We have estimated the spherical contact distribution, conditional core probability, disc-state contagion, covariance, isotropic pair-correlation function and mass variance lacunarity for a stationary RACS model of the tree canopy pattern.
+From the binary map of tree canopy we have estimated the conditional spherical contact distribution, conditional core probability, disc-state contagion, spherical contact hazard and core probability hazard, covariance, isotropic pair-correlation function and mass variance lacunarity of a stationary RACS model of the tree canopy pattern.
 
 \section{References}
 Caccetta, P., Collings, S., Devereux, A., Hingee, K., McFarlane, D., Traylen, A., Wu, X., Zhou, Z. (2015) \emph{Monitoring land surface and cover in urban and peri-urban environments using digital aerial photography.} International Journal of Digital Earth, 1-19.

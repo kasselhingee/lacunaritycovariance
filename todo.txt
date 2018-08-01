@@ -9,3 +9,4 @@ TO DO BEFORE PUBLISHING:
 
 - setcov and imcov maintain units of input image - pass on to spatstat
 
+- make sure everything works on logically valued images (TRUE, FALSE, NA) created say using eval.im
