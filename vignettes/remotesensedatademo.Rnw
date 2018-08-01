@@ -7,7 +7,7 @@
 
 \begin{document}
 \SweaveOpts{concordance=TRUE}
-\title{Estimating RACS Summary Functions from data saved in Remote Sensing Formats}
+\title{Estimating RACS Summary Functions from a Remotely Sensed Binary Map}
 \author{Kassel Hingee}
 
 \maketitle
