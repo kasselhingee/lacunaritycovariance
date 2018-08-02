@@ -23,8 +23,16 @@ addfvtomap <- function(fvobj, mapxlim, mapylim){
   p.xmax <- mapxlim[[2]]
   yscale <- (p.ymax - p.ymin) / (fvobj.ymax - fvobj.ymin)
   xscale <- (p.xmax - p.xmin)/(fvobj.xmax - fvobj.xmin)
+  pltfmla <- with.fv(fvobj, p.ymin + yscale * (. - fvobj.ymin) ~ p.xmin + xscale * (.x - fvobj.xmin))
+  substitute_q <- function(x, env) {
+    call <- substitute(substitute(y, env), list(y = x))
+    eval(call)
+  }
+  pltfmla <- substitute_q(pltfmla,
+    list(p.ymin = p.ymin, yscale = yscale, p.xmin = p.xmin, xscale = xscale, fvobj.ymin = fvobj.ymin, fvobj.xmin
+          = fvobj.xmin))
   plot.fv(add = TRUE, fvobj,
-          p.ymin + yscale * (.y - fvobj.ymin) ~ p.xmin + xscale * (.x - fvobj.xmin),
+          pltfmla,
           xlim = mapxlim,
           ylim = mapylim,
           col = "green"
