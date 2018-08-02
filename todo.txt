@@ -1,4 +1,18 @@
 TO DO BEFORE PUBLISHING:
+- unit tests
+
+- make sure everything works on logically valued images (TRUE, FALSE, NA) created say using eval.im
+
+- syphon off estimation of cover in small window
+
+- syphon off helper functions never for release
+
+- scdcontag() --> contagdiscstate()?
+
+- setcov and imcov maintain units of input image - pass on to spatstat
+
+- consistent naming
+
 - Discussion on when to use the functions? Take 50% from thesis intro on pros and cons of summary functions.
 
 - Make it make sense to someone who isn't a spatial stats expert, to an ecologist, that I want to use it.
@@ -6,7 +20,3 @@ TO DO BEFORE PUBLISHING:
 ##**feature request: a test that simulations rbllognorm correspond to theoretical values for the model.
 
 - polish vignette?
-
-- setcov and imcov maintain units of input image - pass on to spatstat
-
-- make sure everything works on logically valued images (TRUE, FALSE, NA) created say using eval.im
