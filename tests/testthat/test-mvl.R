@@ -89,6 +89,7 @@ test_that("mvl() fails nicely when MVLgb can't estimate anything", {
 test_that("mvl() harmonises estimates to produce meaningful fv object", {
   xiim <- as.im(heather$coarse, value = TRUE, na.replace = FALSE)
   expect_warning(mvlest <- mvl(xiim, seq(0.2, 10, by = 1)), regexp = "harmon")
+  expect_silent(lapply(mvlest, plot.fv, type = "n"))
 })
 
 test_that("mvl() operates nicely when only one estimator requested", {
