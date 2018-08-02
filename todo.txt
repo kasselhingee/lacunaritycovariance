@@ -1,22 +1,25 @@
 TO DO BEFORE PUBLISHING:
-- unit tests
+- unit tests ACT 4h
 
-- make sure everything works on logically valued images (TRUE, FALSE, NA) created say using eval.im
+- make sure everything works on logically valued images (TRUE, FALSE, NA) created say using eval.im ACT 2h
 
-- syphon off estimation of cover in small window
+- syphon off estimation of cover in small window ACT 1.5h
 
-- syphon off helper functions never for release
+- syphon off helper functions never for release ACT 1.5h
 
-- scdcontag() --> contagdiscstate()?
+- scdcontag() --> contagdiscstate()? ACT 0.5h
 
-- setcov and imcov maintain units of input image - pass on to spatstat
+- setcov and imcov maintain units of input image - pass on to spatstat ACT 1h
 
-- consistent naming
+- consistent naming ACT 1h
 
-- Discussion on when to use the functions? Take 50% from thesis intro on pros and cons of summary functions.
+- Discussion on when to use the functions? Take 50% from thesis intro on pros and cons of summary functions. ACT 3h (to first smooth draft)
 
-- Make it make sense to someone who isn't a spatial stats expert, to an ecologist, that I want to use it.
+- Make it make sense to someone who isn't a spatial stats expert, to an ecologist, that I want to use it. ACT 3h (to first smooth draft)
 
-##**feature request: a test that simulations rbllognorm correspond to theoretical values for the model.
+##**feature request: a test that simulations rbllognorm correspond to theoretical values for the model. ACT 1h
 
-- polish vignette?
+- polish vignette? ACT 2h (to first smooth draft)
+
+
+Total anticipated time to completion: 20.5h
