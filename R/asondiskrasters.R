@@ -28,9 +28,9 @@ as.rasterlayer.im <- function(im, layername = NULL){
 #' @param filenamesave The filename to save \code{rasterobj} to.
 #' @describeIn asondiskrasters Create a rasterLayer (or other Raster* object) that is saved on disk out of another raster object.
 #' If \code{filenamesave} is \code{NULL} then a temporary location is used.
-offram <- function(rasterobj, filenamesave = NULL){
+offram <- function(rasterobj, filenamesave = NULL, overwrite = FALSE){
   if (is.null(filenamesave)){filenamesave <- tempfile()}
-  offramrasterobj <- raster::writeRaster(rasterobj, filename = filenamesave)
+  offramrasterobj <- raster::writeRaster(rasterobj, filename = filenamesave, overwrite = overwrite)
   if (raster::fromDisk(offramrasterobj)){
     rm(rasterobj)
     gc()
@@ -39,18 +39,19 @@ offram <- function(rasterobj, filenamesave = NULL){
 }
 
 #' @describeIn asondiskrasters Create a rasterLayer (or other Raster* object) that is saved on disk out of a \code{im} object.
-imtoondiskras <- function(im, layername = NULL, filenamesave = NULL){
+imtoondiskras <- function(im, layername = NULL, filenamesave = NULL, overwrite = overwrite){
   imras <- as.rasterlayer.im(im, layername = layername)
-  imras <- offram(imras, filenamesave = filenamesave)
+  imras <- offram(imras, filenamesave = filenamesave, overwrite = overwrite)
   return(imras)
 }
 
 #' @param alist A list containing some \code{im} objects.
 #' @param basefilename The filename that is used as root of all filenames. 
 #' @param recursive If TRUE sublists of \code{alist} will also be modified.
+#' @param overwrite If TRUE files, if they exist, will be overwritten.
 #' @describeIn asondiskrasters Replaces all \code{im} elements in a list with on-disk \code{rasterLayer} objects.
 #' Raster data is saved in \code{basefilename_[listentryname]}
-imstoondiskras <- function(alist, basefilename = NULL, recursive = FALSE){
+imstoondiskras <- function(alist, basefilename = NULL, recursive = FALSE, overwrite = FALSE){
   class(alist) <- "list" #removes all other class attributes - for example stops alist checking if entries are ims
   if (is.null(basefilename)){basefilename <- tempfile()}
   noname <- vapply(names(alist), is.null, FALSE)
@@ -61,6 +62,7 @@ imstoondiskras <- function(alist, basefilename = NULL, recursive = FALSE){
       alist[arelist] <- mapply(imstoondiskras, alist[arelist],
              basefilename = paste0(basefilename,"_",names(alist[arelist])),
              recursive = TRUE,
+             overwrite = overwrite,
              SIMPLIFY = FALSE)
     }
   }
@@ -71,6 +73,7 @@ imstoondiskras <- function(alist, basefilename = NULL, recursive = FALSE){
                          im = alist[areim],
                          layername = names(alist[areim]),
                          filenamesave = paste0(basefilename, "_", names(alist[areim])),
+                         overwrite = overwrite,
                          SIMPLIFY = FALSE
                          )
   return(alist)
