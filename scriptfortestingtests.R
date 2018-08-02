@@ -17,3 +17,7 @@ htmlwidgets::saveWidget(profout, "testprofile.html")
 
 
 test(".", filter = "rbdr")
+
+#test plotting with vdiffr:
+library(vdiffr)
+manage_cases(, filter = "addfvtomap")
