@@ -8,7 +8,8 @@ Maintainer: <kassel.hingee@research.uwa.edu.au>
 ByteCompile: true
 Depends:
     raster,
-    spatstat
+    spatstat,
+	OpenImageR
 Imports:
     maptools,
     RcppRoll
@@ -16,8 +17,7 @@ Suggests:
     sp,
     testthat,
     datadr,
-    rgdal,
-    OpenImageR
+    rgdal
 Description: This package augments the package spatstat with some additional
     functions that estimate summary characteristics of 2D RAndom Closed Sets (RACS).
     Summary characteristics of RACS are used in landscape ecology (as landscape
