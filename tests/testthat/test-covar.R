@@ -39,6 +39,27 @@ test_that("racscovariance() matches theoretical covariance for Boolean Model", {
   reset.spatstat.options()
 })
 
+test_that("unbalanced covariance estimation is symmetric for non-symmetric windows", {
+  unsymmw <- union.owin(square(100),
+	     shift.owin(square(100), vec = (c(100, 100))),
+	     shift.owin(square(100), vec = (c(100, 200))),
+	     shift.owin(square(100), vec = (c(200, 100)))
+	     )
+  
+  setcovw <- setcov(unsymmw)
+  expect_equal(max(abs(setcovw - reflect.im(setcovw))), 0)
+
+  covarest.frowin <- balancedracscovariances(xi, obswin = unsymmw, modifications = "pickaH")[[1]]
+  expect_equal(max(abs(covarest.frowin - reflect.im(covarest.frowin))), 0)
+})
+
+test_that("balancedracscovariances gives results in correct structure", {
+  out <- balancedracscovariances(xi, obswin = w)
+  expect_length(out, 8)
+  expect_named(out)
+  expect_s3_class(out, "imlist")
+})
+
 test_that("racscovariance() errors properly", {
   lambda <- 4 * 2.2064E-3
   discr <- 5
