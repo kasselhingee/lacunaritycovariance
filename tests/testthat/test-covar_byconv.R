@@ -1,8 +1,12 @@
 context("Covariance Estimation")
 
 test_that("balanced covar estimation using convolutions as the base object match balancedracscovariance", {
-  out1 <- balancedracscovariances(heather$coarse, obswin = Frame(heather$coarse))
-  out2 <- byconv_cvchats(heather$coarse, obswin = Frame(heather$coarse))
+  xi <- heather$coarse
+  obswin <- Frame(xi)
+  phat <- coverageprob(xi, obswin = Frame(xi))
+
+  out1 <- balancedracscovariances(xi, obswin = obswin)
+  out2 <- byconv_cvchats(xi, obswin = obswin)
   expect_equal(names(out1), names(out2))
   suppressWarnings(diffs <- mapply(function(x, y) eval.im(x - y), out1, out2, SIMPLIFY = FALSE))
   meandiff <- vapply(diffs, function(x) mean(x), FUN.VALUE = 0.0)
@@ -15,12 +19,9 @@ test_that("balanced covar estimation using convolutions as the base object match
   #Note that above results are slightly different to due to byconv <- cvchats accepting an xy argument of the as.mask of windows for setcov.
   #the following should skip this difference
 
-  xi <- heather$coarse
-  obswin <- Frame(xi)
   xixi <- setcov(xi, xy = xi)
   winwin <- setcov(obswin, eps = c(xixi$xstep, xixi$ystep))
   xiwin <- setcov(xi, obswin, xy = xi)
-  phat <- coverageprob(xi, obswin = Frame(xi))
 
   out3 <- cvchats_convolves(xixi, winwin, xiwin = xiwin, phat = phat, modifications = "all")
   diffs <- mapply(function(x, y) eval.im(x - y), out1, out3, SIMPLIFY = FALSE)
