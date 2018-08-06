@@ -1,12 +1,12 @@
 context("Covariance Estimation")
 
-#Test on a Boolean Model
-#takes a few minutes
-test_that("racscovariance() matches theoretical covariance for Boolean Model", {
-  #estimate covariance of owin (covariance of image already estimated in help code)
   spatstat.options(npixel = 512) #to make default pixelisations higher resolution
-  covarest.frowin <- balancedracscovariances(xi, obswin = w, modifications = "pickaH")[[1]]
+  #estimate covariance of owin (covariance of image already estimated in help code)
+  covarest.frowin.all <- balancedracscovariances(xi, obswin = w)
 
+test_that("Covariance Estimation from an owin object matches the estimates from an im object", {
+  
+  covarest.frowin <- covarest.frowin.all[["pickaH"]]
   expect_is(covarest.frim, "im")
   expect_is(covarest.frowin, "im")
 
@@ -15,29 +15,42 @@ test_that("racscovariance() matches theoretical covariance for Boolean Model", {
   expect_lt(mean(covarest.diffs), 0.1 * max(abs(covarest.frim)))
   expect_lt(max(abs(covarest.diffs)), 0.1 * max(abs(covarest.frim)))
 
-  #isotropise above functions
+})
+
+
+#Test on a Boolean Model
+#takes a few minutes
+test_that("racscovariance() matches theoretical covariance for Boolean Model", {
+
+  #isotropise covar functions
   covarest.frim <- covarest.frim[owin(xrange = c(-1, 1) * 3.5 * discr, yrange = c(-1, 1) * 3.5 * discr), drop = TRUE]
-  covarest.frowin <- covarest.frowin[owin(xrange = c(-1, 1) * 3.5 * discr, yrange = c(-1, 1) * 3.5 * discr), drop = TRUE]
+  covarest.frowin.all <- lapply(covarest.frowin.all, 
+				function(x) x[owin(xrange = c(-1, 1) * 3.5 * discr, yrange = c(-1, 1) * 3.5 * discr), drop = TRUE])
   covarest.frim.iso <- rotmean(covarest.frim, padzero = FALSE)
-  covarest.frowin.iso <- rotmean(covarest.frowin, padzero = FALSE)
+  covarest.frowin.all.iso <- lapply(covarest.frowin.all, rotmean, padzero = FALSE)
 
   truecovar.iso <- with.fv(covarest.frim.iso, bddcovar.iso(.x, lambda, discr),
                                fun = TRUE)
+  names(truecovar.iso) <- c("r", "f")
+
+  covarest.all.iso <- collapse.fv(c(list(truecovar = truecovar.iso),
+				    list(frim = covarest.frim.iso),
+				    covarest.frowin.all.iso), different = "f")
 
   #residual to theoretical covariance
-  isocovarresid.frim <- eval.fv( (covarest.frim.iso - truecovar.iso) / truecovar.iso, equiv = c(f = "col1"))
-  isocovarresid.frowin <- eval.fv( (a - b) / b, envir = harmonise.fv(a = covarest.frowin.iso, b = truecovar.iso), equiv = c(f = "col1"))
-
+  isocovarresid <- with.fv(covarest.all.iso, (. - truecovar) / truecovar, FUN = TRUE)
+  #truncate residuals
+  isocovarresid <- isocovarresid[isocovarresid$r < 3 * discr, ]
 
   #expect that this residual is smaller than 10% of the true covariance
-  maxisocovarresid.frim <- max(eval.fv(abs(isocovarresid.frim))[isocovarresid.frim$r < 3 * discr, ])
-  expect_lt(maxisocovarresid.frim,  0.1)
+  expect_lt(max(isocovarresid$pickaH),  0.1)
+  expect_lt(max(isocovarresid$pickaintmult),  0.1)
+  expect_lt(max(isocovarresid[, fvnames(isocovarresid, a = "."), drop = TRUE]), 0.1)
+  #expect_lt(max(isocovarresid[, fvnames(isocovarresid, a = ".") != "none"]), 0.1)
   
-  maxisocovarresid.frowin <- max(eval.fv(abs(isocovarresid.frowin))[isocovarresid.frowin$r < 3 * discr, ])
-  expect_lt(maxisocovarresid.frowin, 0.1)
+})
 
   reset.spatstat.options()
-})
 
 test_that("unbalanced covariance estimation is symmetric for non-symmetric windows", {
   unsymmw <- union.owin(square(100),
