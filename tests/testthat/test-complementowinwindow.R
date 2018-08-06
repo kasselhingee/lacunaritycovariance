@@ -1,6 +1,6 @@
-Context("Internals")
+context("Internals")
 
-test_thath("complement.owin.inwindow gives areas that are expected", {
+test_that("complement.owin.inwindow gives areas that are expected", {
   w <- disc(radius = 5, centre = c(5,10))
   xi <- heather$coarse
   xic <- complement.owin.inwindow(xi, w)
