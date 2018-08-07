@@ -29,4 +29,4 @@ Description: This package augments the package spatstat with some additional
 	spatial locations. The package also includes methods for computing summary
     characteristics of Boolean models and simulating Boolean models.
 License: GNU General Public License
-RoxygenNote: 6.0.1
+RoxygenNote: 6.1.0

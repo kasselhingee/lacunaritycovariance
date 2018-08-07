@@ -30,6 +30,7 @@
 mvlgb <- function(sidelengths, xiim, obswin = Frame(xiim)){
   if (!is.im(xiim)){stop("input xiim must be of class im")}
   if (abs(xiim$xstep - xiim$ystep) > 1E-2 * xiim$xstep){stop("image pixels must be square")}
+  isbinarymap(xiim, requiretrue = TRUE)
 #convert sidelengths to odd pixel amounts, taking into account that want a distance to edge
   spix <- 1 + round( (sidelengths - xiim$xstep) / (2 * xiim$xstep)) * 2
   spix <- unique(spix)
