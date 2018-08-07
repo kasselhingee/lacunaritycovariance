@@ -41,20 +41,14 @@ cppicka <- function(xi, obswin = NULL,
   if (is.im(xi)){
     if(!is.null(obswin)){xi[setminus.owin(Frame(xi), obswin)] <- 0}
     #check that xi is only 1s, 0s and NAs
-    uvals <- unique(as.list(as.matrix(xi)))
-    # convert to images of xi and obswin without NAs
-    if ( !all(  (uvals %in% c(0, 1)) | is.na(uvals))  && 
-             !all((uvals %in% c(FALSE, TRUE, NA)) | is.na(uvals)) ) {
-        stop("Input xi has values other than 0, 1 or NA")
-    } else {
-        if(!is.null(obswin)){obswin <- as.im(obswin, W = Frame(obswin), xy = xi) * xi}
-        else {obswin <- xi}
-        #saving all NAs as 0 and everything else as 1 in obswin
-        obswin[!is.na(as.matrix(obswin))] <- 1
-        obswin[is.na(as.matrix(obswin))] <- 0
-        #saving all NAs as 0 and everything else as 1 in xi
-        xi[is.na(as.matrix(xi))] <- 0 #turn all NA's in xi to 0s
-    }
+    isbinarymap(xi, requiretrue = TRUE)
+    if(!is.null(obswin)){obswin <- as.im(obswin, W = Frame(obswin), xy = xi) * xi}
+    else {obswin <- xi}
+    #saving all NAs as 0 and everything else as 1 in obswin
+    obswin[!is.na(as.matrix(obswin))] <- 1
+    obswin[is.na(as.matrix(obswin))] <- 0
+    #saving all NAs as 0 and everything else as 1 in xi
+    xi[is.na(as.matrix(xi))] <- 0 #turn all NA's in xi to 0s
   }
   
   if (is.owin(xi)){

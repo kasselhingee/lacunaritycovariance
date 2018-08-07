@@ -57,14 +57,10 @@ racscovariance <- function(xi,
         xi <- eval.im(xi * winim)
     }
     #check that xi is only 1s, 0s and NAs
-    uvals <- unique(as.list(as.matrix(xi)))
-    if ( !all(  (uvals %in% c(0, 1)) | is.na(uvals))  && 
-             !all((uvals %in% c(FALSE, TRUE, NA)) | is.na(uvals)) ) {
-        stop("Input xi has values other than 0, 1 or NA")
-    } else {
-        obswin <- as.owin(xi) #only the non-NA pixels will be in the window
-        xi[is.na(as.matrix(xi))] <- 0 #turn all NA's in xi to 0s
-    }
+    isbinarymap(xi, requiretrue = TRUE)
+
+    obswin <- as.owin(xi) #only the non-NA pixels will be in the window
+    xi[is.na(as.matrix(xi))] <- 0 #turn all NA's in xi to 0s
     setcovxi <- imcov(xi)
     unitname(setcovxi) <- unitname(xi)
     setcovwindow <- setcov(obswin, eps = c(setcovxi$xstep, setcovxi$ystep))
