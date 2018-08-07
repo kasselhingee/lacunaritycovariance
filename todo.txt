@@ -1,11 +1,11 @@
 TO DO BEFORE PUBLISHING:
-- unit tests ACT 4h
+D- unit tests ACT 4h
 
-- make sure everything works on logically valued images (TRUE, FALSE, NA) created say using eval.im ACT 2h
+D- make sure everything works on logically valued images (TRUE, FALSE, NA) created say using eval.im ACT 2h
 
-- syphon off estimation of cover in small window ACT 1.5h
+D- syphon off estimation of cover in small window ACT 1.5h
 
-- syphon off helper functions never for release ACT 1.5h
+D- syphon off helper functions never for release ACT 1.5h
 
 - scdcontag() --> contagdiscstate()? ACT 0.5h
 
