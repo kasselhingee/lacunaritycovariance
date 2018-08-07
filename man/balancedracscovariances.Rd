@@ -6,8 +6,8 @@
 \alias{balancedracscovariances.cvchat}
 \title{Balanced spatial covariance estimation, also known as `two-point probability', estimator for stationary RACS}
 \usage{
-balancedracscovariances(xi, obswin = NULL, setcov_boundarythresh = NULL,
-  modifications = "all")
+balancedracscovariances(xi, obswin = NULL,
+  setcov_boundarythresh = NULL, modifications = "all")
 
 balancedracscovariance.cvchat(cvchat, cpp1 = NULL, phat = NULL,
   modification = "pickaH")

@@ -8,8 +8,7 @@ Maintainer: <kassel.hingee@research.uwa.edu.au>
 ByteCompile: true
 Depends:
     raster,
-    spatstat,
-	OpenImageR
+    spatstat
 Imports:
     maptools,
     RcppRoll

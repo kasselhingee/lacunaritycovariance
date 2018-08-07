@@ -6,12 +6,12 @@
 \title{Median and Mean Integrated Squared Error of a List of fv Objects}
 \usage{
 median_ise.fvlist(object, reffv, domainlim, equiv = NULL,
-  avoverdomain = FALSE, fixeddomain = FALSE, acceptableISEerrorrate = 0.1,
-  ...)
+  avoverdomain = FALSE, fixeddomain = FALSE,
+  acceptableISEerrorrate = 0.1, ...)
 
 mean_ise.fvlist(object, reffv, domainlim, equiv = NULL,
-  avoverdomain = FALSE, fixeddomain = FALSE, acceptableISEerrorrate = 0,
-  ...)
+  avoverdomain = FALSE, fixeddomain = FALSE,
+  acceptableISEerrorrate = 0, ...)
 }
 \arguments{
 \item{object}{List of function objects to compare to reffv}

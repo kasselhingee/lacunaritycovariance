@@ -26,8 +26,8 @@ MVLest_region(polydf, rasterlayer, frange, NArange, boxwidths,
 
 converttologicalim(polydf, rasterlayer, frange, NArange)
 
-plot_MVLest_region(returnedlist, plot.im.args = list(main = "Class Image",
-  axes = TRUE), plot.mvl.args = NULL)
+plot_MVLest_region(returnedlist, plot.im.args = list(main =
+  "Class Image", axes = TRUE), plot.mvl.args = NULL)
 
 plot_MVLest_allregions(returnedlist, normaliseAtStart = FALSE,
   estname = "mvlcc.pickaH", ...)
