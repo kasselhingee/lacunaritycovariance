@@ -9,7 +9,7 @@ D- syphon off helper functions never for release ACT 1.5h
 
 D- scdcontag() --> contagdiscstate()? ACT 0.5h
 
-- setcov and imcov maintain units of input image - pass on to spatstat ACT 1h
+D- setcov and imcov maintain units of input image - pass on to spatstat ACT 1h
 
 - consistent naming ACT 1h
 
