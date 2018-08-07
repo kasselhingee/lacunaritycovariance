@@ -24,9 +24,10 @@ test_that("rbpto generates simulations that match covariance for big window", {
 
   #compare to cvc.th
   expect_warning(cvc.diff <- eval.im(cvc.th - cvc.est, harmonize = TRUE), regexp = "images .* were not compatible")
-  max(abs(cvc.diff))
-  plot(solist(cvc.th, cvc.est, cvc.diff[Frame(cvc.th)]), axes = TRUE)
-  expect_lt(max(abs(cvc.diff)), cp * 1E-2)
+  #plot(solist(cvc.th, cvc.est, cvc.diff[Frame(cvc.th)]), axes = TRUE)
+  # the differences make very beautiful patterns
+  expect_lt(max(abs(cvc.diff)), cp * 1E-1)
+  expect_lt(mean(abs(cvc.diff)), cp * 1E-2)
 })
 
 test_that("bpto.coverageprob is consistent with bpto.germintensity", {
