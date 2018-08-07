@@ -19,6 +19,8 @@ D- syphon off helper functions never for release ACT 1.5h
 
 ##**feature request: a test that simulations rbllognorm correspond to theoretical values for the model. ACT 1h
 
+##** add mean area contagion. And contagion for categorical maps
+
 - polish vignette? ACT 2h (to first smooth draft)
 
 

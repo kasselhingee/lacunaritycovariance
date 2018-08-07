@@ -22,7 +22,7 @@
 #' @param normalise If true normalises the results so that all RACS return a value between 0 and 1
 #' @return If \code{v} is included then returns a single number, otherwise a map of the two point contagion
 #' 
-#' @seealso \code{\link{scdcontagion}} 
+#' @seealso \code{\link{contagdiscstate}} 
 
 #' @examples 
 #' xi <- heather$coarse
