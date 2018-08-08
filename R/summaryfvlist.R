@@ -25,11 +25,12 @@
 summary.fvlist <- function(object, ..., na.rm = FALSE){
   object <- harmonise.fv(object)
   n <- length(object)
-  nacount <- with.fv(object[[1]], 0 * ., fun = TRUE)
+  nacount <- object[[1]]
+  nacount <- eval.fv(0 * nacount, dotonly = FALSE, relabel = FALSE)
   if (na.rm){
     #count number of NA values
     nas <- Map(function(a) eval.fv(is.na(a), dotonly = FALSE, relabel = FALSE), object)
-    nacount <- Reduce(Add.fv, nas)
+    nacount <- Reduce(Add.fv.nakeep, nas)
     
     #use narm versions of Add.fv, Pmax.fv and Pmin.fv functions
     Add.fv <- Add.fv.narm
