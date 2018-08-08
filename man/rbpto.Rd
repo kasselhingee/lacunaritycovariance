@@ -65,7 +65,6 @@ xm <- 0.01
 alpha <- 2
 lengthscales <- seq(1, 10, by = 0.1)
 
-xi <- rbpto(lambda, grain, win, xm, alpha, lengthscales = 1:100, xy = as.mask(win, eps = 0.1))
 xi <- rbpto(lambda, grain, win, xm, alpha, lengthscales = lengthscales)
 # plot(xi, col = "black")
 # plot(win, add = TRUE)
