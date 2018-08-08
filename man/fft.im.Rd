@@ -27,7 +27,8 @@ Aim <- im(A,xcol = (1:1000)/10, yrow = (1:10),
 			unitname=c("metre","metres"))
 fftA <- fft.im(Aim,padfactor=c(1,1))
 # plot(Re(fftA),axes=TRUE,clipwin=owin(xrange=c(-4,4),yrange=c(-5,5)))
-# The Fourier transform of \\eqn{\\cos(x)} is infinite at \\eqn{\\theta} equal to 1 or -1 and 0 elsewhere.
- So result should be an image with units 1/m, with a single large peak at x=1.
+# The Fourier transform of \\eqn{\\cos(x)} is infinite at \\eqn{\\theta} equal to 1 or -1,
+# and and it is 0 elsewhere.
+# So output fftA should be an image with units 1/m, with a single large peak at x=1.
 
 }

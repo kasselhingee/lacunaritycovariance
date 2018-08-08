@@ -34,6 +34,8 @@ It is used the same way as \code{xy} is \code{\link{spatstat}{as.mask}} in spats
 If non-null then the computations will be performed using rasters. Otherwise if \code{grain} and \code{win} are polygonal then computations may be all polygonal.}
 
 \item{lengthscales}{A list of scales of the \code{grain} for which to approximate the Pareto distribution: The grain for a germ is chosen by selecting a scaled version of \code{grain} where \code{lengthscales} specifies the possible scales and the Pareto distribution is used to specify the probability of selection of each scale.}
+
+\item{coverp}{Coverage probability of the Boolean model.}
 }
 \value{
 An owin object.
