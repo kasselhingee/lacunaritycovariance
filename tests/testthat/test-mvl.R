@@ -72,11 +72,11 @@ test_that("integration when covar is constant gives squared area", {
 test_that("MVLc and MVLgb produce similar results for large square observation windows", {
   #xiimg and covarest.frim is pregenerated in helper-calccovar
   sidelengths <- seq(xiimg$xstep * 3, 15, by = xiimg$xstep * 2) #odd pixel widths!
-  lac.mvlcest <- mvlc(sidelengths, covar = covarest.frim, p = xi.p)
+  lac.mvlcc.picakHest <- mvlc(sidelengths, covar = covarest.frim, p = xi.p)
   lac.mvlgbest <- mvlgb(sidelengths, xiimg)
 
-  expect_equal(lac.mvlcest$s, lac.mvlgbest$s)
-  expect_equal(lac.mvlcest$MVL, lac.mvlgbest$MVL, tolerance = 2E-2)
+  expect_equal(lac.mvlcc.picakHest$s, lac.mvlgbest$s)
+  expect_equal(lac.mvlcc.picakHest$MVL, lac.mvlgbest$MVL, tolerance = 5E-2)
 })
 
 test_that("mvl() fails nicely when MVLgb can't estimate anything", {

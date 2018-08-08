@@ -25,15 +25,23 @@
 summary.fvlist <- function(object, ..., na.rm = FALSE){
   object <- harmonise.fv(object)
   n <- length(object)
-  nacount <- eval.fv(0 * is.na(A), envir = list(A = object[[1]]), dotonly = FALSE, relabel = FALSE)
+  nacount <- with.fv(object[[1]], 0 * ., fun = TRUE)
   if (na.rm){
     #count number of NA values
     nas <- Map(function(a) eval.fv(is.na(a), dotonly = FALSE, relabel = FALSE), object)
     nacount <- Reduce(Add.fv, nas)
-    #remove NA vals from object
-    object <- Map(function(a) replace(a, is.na(as.data.frame(a)), 0), object)
-  }
     
+    #use narm versions of Add.fv, Pmax.fv and Pmin.fv functions
+    Add.fv <- Add.fv.narm
+    Pmax.fv <- Pmax.fv.narm
+    Pmin.fv <- Pmin.fv.narm
+  } else {#set nakeep versions of  Add.fv, Pmax.fv and Pmin.fv etc
+    Add.fv <- Add.fv.nakeep
+    Pmax.fv <- Pmax.fv.nakeep
+    Pmin.fv <- Pmin.fv.nakeep
+  }
+  
+  
   #compute mean
   meanY <- Reduce(Add.fv, object) #compute sum
   meanY <- eval.fv(meanY/(n - nacount), dotonly = FALSE, relabel = FALSE) #divide by number of non-NA vals
@@ -74,11 +82,26 @@ summary.fvlist <- function(object, ..., na.rm = FALSE){
 
 #Handy functions copied from spatstat
 Square.fv <- function(A) { force(A); eval.fv(A^2, dotonly = FALSE, relabel=FALSE) }
-Add.fv <- function(A,B){ force(A); force(B); eval.fv(A+B, dotonly = FALSE, relabel=FALSE) }
+Add.fv.nakeep <- function(A,B){ force(A); force(B); eval.fv(A+B, dotonly = FALSE, relabel=FALSE) }
+Add.fv.narm <- function(A,B){
+  force(A)
+  force(B)
+  #do addition that keeps NAs
+  out <- Add.fv.nakeep(A, B)
+  
+  #replace any NAs with values from A or B if they exist
+  fillfromA <- is.na(as.data.frame(out)) & (!is.na(as.data.frame(A)))
+  out <- replace(out, fillfromA, as.data.frame(A)[fillfromA])
+  fillfromB <- is.na(as.data.frame(out)) & (!is.na(as.data.frame(B)))
+  out <- replace(out, fillfromB, as.data.frame(B)[fillfromB])
+  if (any(fillfromA & fillfromB)) {stop("Add.fv.narm unable to remove the some NA values.")}
+  return(out)
+  }
 
-Pmax.fv <- function(A, B){force(A); force(B); eval.fv(pmax(A, B), dotonly = FALSE, relabel = FALSE)}
-Pmin.fv <- function(A, B){force(A); force(B); eval.fv(pmin(A, B), dotonly = FALSE, relabel = FALSE)}
-
+Pmax.fv.nakeep <- function(A, B){force(A); force(B); eval.fv(pmax(A, B, na.rm = FALSE), dotonly = FALSE, relabel = FALSE)}
+Pmax.fv.narm <- function(A, B){force(A); force(B); eval.fv(pmax(A, B, na.rm = TRUE), dotonly = FALSE, relabel = FALSE)}
+Pmin.fv.nakeep <- function(A, B){force(A); force(B); eval.fv(pmin(A, B, na.rm = FALSE), dotonly = FALSE, relabel = FALSE)}
+Pmin.fv.narm <- function(A, B){force(A); force(B); eval.fv(pmin(A, B, na.rm = TRUE), dotonly = FALSE, relabel = FALSE)}
 
 #this is a draft function - it doesn't operate for every function value in an fv object!
 summary_fvlist_fivenum <- function(object, ...){
