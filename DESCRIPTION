@@ -1,8 +1,8 @@
 Package: stationaryracsinference
 Type: Package
 Title: Some inference tools for remotely sensed random closed sets in 2D
-Version: 0.2-35
-Date: 2018-08-07
+Version: 0.2-36
+Date: 2018-08-08
 Author: Kassel Liam Hingee
 Maintainer: <kassel.hingee@research.uwa.edu.au>
 ByteCompile: true
