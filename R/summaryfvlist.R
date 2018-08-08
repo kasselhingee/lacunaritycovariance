@@ -1,6 +1,5 @@
 #' @title Summarise a list fv objects
 #' @export summary.fvlist
-#' @method summary fvlist
 #' @description
 #' This function assumes that fv objects are each realisations of the same (stochastic) object. 
 #' It returns pointwise summaries such as observed sample mean and sample variance.
