@@ -13,7 +13,7 @@ test_that("rbpto generates simulations that match covariance for big window", {
 
   #compare coverage probability to phat
   expect_equal(mean(vapply(xis, coverageprob, obswin = win, FUN.VALUE = 0.0)),
-  cp, tol = 1E-2)
+  cp, tol = 5E-2)
 
   #compare covariance to estimated covariance
   xy <- as.mask(win, eps = 0.001)
@@ -27,7 +27,7 @@ test_that("rbpto generates simulations that match covariance for big window", {
   #plot(solist(cvc.th, cvc.est, cvc.diff[Frame(cvc.th)]), axes = TRUE)
   # the differences make very beautiful patterns
   expect_lt(max(abs(cvc.diff)), cp * 1E-1)
-  expect_lt(mean(abs(cvc.diff)), cp * 1E-2)
+  expect_lt(mean(abs(cvc.diff)), cp * 5E-2)
 })
 
 test_that("bpto.coverageprob is consistent with bpto.germintensity", {
