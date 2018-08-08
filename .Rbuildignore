@@ -6,3 +6,5 @@
 ^\.scriptfor*
 build_and_inst_hints_on_windows.txt
 codestyleconventions.txt
+scriptfortestingtests.R
+todo.txt
