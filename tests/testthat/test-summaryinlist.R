@@ -18,4 +18,6 @@ test_that("summary.imlist matches point wise summaries", {
   expect_equivalent(ims.summ$min[3, 8, drop = TRUE], min(zheights * zfun(xy$xcol[[3]], xy$yrow[[8]])))
 
   expect_equal(unitname(ims[[1]]), unitname(xy))
+  
+  expect_error(ims.summ <- summary.imlist(ims, na.rm = TRUE))
 })

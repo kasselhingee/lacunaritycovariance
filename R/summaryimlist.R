@@ -22,6 +22,9 @@ summary.imlist <- function(object, ...,  harmonizeobject = TRUE){
   if (harmonizeobject) {object <- do.call(harmonize.im, args = object)} else { #for pointwise summaries the pixels must represent the same locations for each image.
     stopifnot(do.call(compatible.im, args = object))
   }
+  if ("na.rm" %in% names(list(...)) && list(...)[["na.rm"]]) {
+    stop("summary.imlist not able to remove NA values.")
+  }
   #class(object) <- "list"
   n <- length(object)
   meanY <- Reduce(Add.im, object)
