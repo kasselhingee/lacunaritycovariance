@@ -13,7 +13,7 @@ test_that("rbpto generates simulations that match covariance for big window", {
 
   #compare coverage probability to phat
   expect_equal(mean(vapply(xis, coverageprob, obswin = win, FUN.VALUE = 0.0)),
-  cp, tol = 1E-3)
+  cp, tol = 1E-2)
 
   #compare covariance to estimated covariance
   xy <- as.mask(win, eps = 0.001)
