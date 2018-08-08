@@ -65,11 +65,11 @@ xm <- 0.01
 alpha <- 2
 lengthscales <- seq(1, 10, by = 0.1)
 
-#system.time(xi <- rbpto(lambda, grain, win, xm, alpha, lengthscales = 1:100, xy = as.mask(win, eps = 0.1)))
-system.time(xi <- rbpto(lambda, grain, win, xm, alpha, lengthscales = lengthscales))
+xi <- rbpto(lambda, grain, win, xm, alpha, lengthscales = 1:100, xy = as.mask(win, eps = 0.1))
+xi <- rbpto(lambda, grain, win, xm, alpha, lengthscales = lengthscales)
 # plot(xi, col = "black")
 # plot(win, add = TRUE)
 
 bpto.coverageprob(lambda, grain, xm, alpha, lengthscales = lengthscales)
-covar <- bpto.covar(lambda, grain, xm, alpha, lengthscales = lenghtscales, xy = as.mask(win, eps = 0.1))
+covar <- bpto.covar(lambda, grain, xm, alpha, lengthscales = lengthscales, xy = as.mask(win, eps = 0.1))
 }
