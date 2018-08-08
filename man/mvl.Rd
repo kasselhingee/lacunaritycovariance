@@ -19,8 +19,9 @@ mvl(xiim, boxwidths, estimators = c("MVLg.mattfeldt", "MVLg.pickaint",
 \item{includenormed}{A logical value. If TRUE then MVL estimates normalised by the MVL values at zero will be included in a returned list of fv objects}
 
 \item{includepaircorr}{A logical value. If TRUE and if balanced covariance-based estimators of MVL are requested then rotation-averaged pair-correlation estimates using
-Picka's H modifcation will be included in the output. If TRUE and balanced covariance-based estimators aren't requested then the traditional estimate of pair correlation will be returned.
-@param includecovar A logical value. I TRUE and if balanced covariance-based estimators of MVL are requested then otation-averaged covariance estimates using
+Picka's H modifcation will be included in the output. If TRUE and balanced covariance-based estimators aren't requested then the traditional estimate of pair correlation will be returned.}
+
+\item{includecovar}{A logical value. I TRUE and if balanced covariance-based estimators of MVL are requested then otation-averaged covariance estimates using
 Picka's H modifcation will be included in the output.
  If TRUE and balanced covariance-based estimators aren't requested then the rotational average of the traditional estimate of covariance will be returned.}
 

@@ -36,6 +36,8 @@ bddspectraldensity.atorigin(lambda, discr)
 
 \item{seed}{Optional input (default in NULL). Is an integer passed to \code{\link{base}{set.seed}}. Used to reproduce patterns exactly.}
 
+\item{coverp}{Coverage probability of the Boolean model}
+
 \item{r}{is the radius to calculate covariance}
 
 \item{xrange}{range of x values for \code{bddcovar}}

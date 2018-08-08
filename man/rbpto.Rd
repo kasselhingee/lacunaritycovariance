@@ -70,5 +70,6 @@ xi <- rbpto(lambda, grain, win, xm, alpha, lengthscales = lengthscales)
 # plot(win, add = TRUE)
 
 bpto.coverageprob(lambda, grain, xm, alpha, lengthscales = lengthscales)
-covar <- bpto.covar(lambda, grain, xm, alpha, lengthscales = lengthscales, xy = as.mask(win, eps = 0.1))
+covar <- bpto.covar(lambda, grain, xm, alpha, lengthscales = lengthscales,
+   xy = as.mask(win, eps = 0.1))
 }

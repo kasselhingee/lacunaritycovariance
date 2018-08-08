@@ -14,8 +14,9 @@
 
 #' @examples
 #' obspatterns <- replicate(5, rbdd(10, 0.05, window = square(1)), simplify = FALSE)
-#' object <- solapply(obspatterns, function(x) balancedracscovariances(x, obswin = square(1), modifications = "pickaH")[[1]])
-#' summ <- summary.imlist(object, harmonizeobject = FALSE)
+#' ims <- solapply(obspatterns,
+#'  function(x) balancedracscovariances(x, obswin = square(1), modifications = "pickaH")[[1]])
+#' summ <- summary.imlist(ims, harmonizeobject = FALSE)
 
 summary.imlist <- function(object, ...,  harmonizeobject = TRUE){
   if (harmonizeobject) {object <- do.call(harmonize.im, args = object)} else { #for pointwise summaries the pixels must represent the same locations for each image.

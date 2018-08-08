@@ -88,7 +88,7 @@ summary_fvlist_fivenum <- function(object, ...){
   xname <- fvnames(object[[1]], a = ".x")
   yvals <- lapply(object, function(x) as.matrix(x[, ynames[[1]], drop = TRUE]))
   yvals.m <- do.call(cbind, args = yvals) #each column is an fv object, each row is a unique argument value
-  ptwisesum <- apply(yvals.m, MARGIN = 1, FUN = fivenum) #each column is a unique argument value, each row is a quartile thing
+  ptwisesum <- apply(yvals.m, MARGIN = 1, FUN = stats::fivenum) #each column is a unique argument value, each row is a quartile thing
   fvdata <- as.data.frame(cbind(object[[1]][, xname, drop = TRUE], t(ptwisesum)))
   names(fvdata) <- c(xname, "min", "Q1", "median", "Q3", "max")
   fivenumfv <- fv(fvdata,

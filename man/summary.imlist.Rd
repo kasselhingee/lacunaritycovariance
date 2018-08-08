@@ -22,8 +22,9 @@ It returns pointwise summaries such as observed sample mean and sample variance.
 }
 \examples{
 obspatterns <- replicate(5, rbdd(10, 0.05, window = square(1)), simplify = FALSE)
-object <- solapply(obspatterns, function(x) balancedracscovariances(x, obswin = square(1), modifications = "pickaH")[[1]])
-summ <- summary.imlist(object, harmonizeobject = FALSE)
+ims <- solapply(obspatterns,
+ function(x) balancedracscovariances(x, obswin = square(1), modifications = "pickaH")[[1]])
+summ <- summary.imlist(ims, harmonizeobject = FALSE)
 }
 \author{
 Kassel Hingee

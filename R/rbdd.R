@@ -9,6 +9,7 @@
 #' 
 #' @param lambda Intensity of the germ process (which is a Poisson point process)
 #' @param discr Radius of the discs
+#' @param coverp Coverage probability of the Boolean model
 #' @param window The window to simulate in (an owin object)
 #' @param seed Optional input (default in NULL). Is an integer passed to \code{\link{base}{set.seed}}. Used to reproduce patterns exactly.
 
