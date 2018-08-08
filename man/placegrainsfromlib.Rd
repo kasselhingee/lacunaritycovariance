@@ -7,14 +7,13 @@
 \alias{grainlib.covar}
 \title{A function to help simulate Boolean models with user-provided grains}
 \usage{
-placegrainsfromlib(pp, grainlib, replace = TRUE, prob = NULL,
-  w = NULL, xy = NULL)
+placegrainsfromlib(pp, grainlib, replace = TRUE, prob = NULL, w = NULL,
+  xy = NULL)
 
-meangrainarea(grainlib, weights = rep(1/length(grainlib),
-  length(grainlib)))
+meangrainarea(grainlib, weights = rep(1/length(grainlib), length(grainlib)))
 
-meangrainsetcov(grainlib, weights = rep(1/length(grainlib),
-  length(grainlib)), xy)
+meangrainsetcov(grainlib, weights = rep(1/length(grainlib), length(grainlib)),
+  xy)
 
 grainlib.covar(lambda, grainlib, weights, xy)
 }

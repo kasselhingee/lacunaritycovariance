@@ -6,8 +6,8 @@
 \usage{
 mvl(xiim, boxwidths, estimators = c("MVLg.mattfeldt", "MVLg.pickaint",
   "MVLg.pickaH", "MVLcc.mattfeldt", "MVLcc.pickaint", "MVLc", "MVLgb"),
-  includenormed = FALSE, includepaircorr = FALSE,
-  includecovar = FALSE, setcov_boundarythresh = 1e-06)
+  includenormed = FALSE, includepaircorr = FALSE, includecovar = FALSE,
+  setcov_boundarythresh = 1e-06)
 }
 \arguments{
 \item{xiim}{A \pkg{spatstat} \code{im} object with pixel values that are either TRUE, FALSE or NA. TRUE represents foreground, FALSE respresents background and NA represents unobserved locations.}
