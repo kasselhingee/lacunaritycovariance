@@ -23,7 +23,7 @@
 
 #' @examples
 #' xi <- heather$coarse
-#' cencovar <- cencovariance(xi, obswin = Frame(xi), modifications = c("pickaH"))
+#' cencovar <- cencovariance(xi, obswin = Frame(xi), modifications = c("pickaH"), drop = TRUE)
 #' p <- area(xi) / area(Frame(xi))
 #' sidelengths <- seq(0.3, 14, by = 0.2)
 #' mvlccest <- mvlcc(sidelengths, cencovar, p)
