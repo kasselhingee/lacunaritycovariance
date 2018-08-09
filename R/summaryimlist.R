@@ -1,4 +1,5 @@
 #' @title Pointwise summary of a list of im objects
+#' @export summary.imlist
 #' @description
 #' This function assumes that im objects are each realisations of the same (stochastic) object. 
 #' It returns pointwise summaries such as observed sample mean and sample variance.
