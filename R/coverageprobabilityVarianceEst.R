@@ -1,6 +1,6 @@
 #' @title Variances and Confidence Intervals for Coverage Fraction Estimates 
 #' @aliases asympvarP
-#' @export varCovProb varCovProb_ests varCovProb.covarsupplied
+#' @export cpvariance varCovProb_ests cpvariance.covarsupplied
 #' 
 #' @description Functions for estimating variance (and confidence intervals)  of the coverage fraction estimates
  
@@ -28,7 +28,7 @@
 #' varCovProb_ests(Xi, obswin, modifications = "all")
 #' @references 
 #' Molchanov, I. (1997) Statistics of the Boolean Model for Practitioners and Mathematicians. Wiley.
-varCovProb <- function(Xi, obswin){
+cpvariance <- function(Xi, obswin){
    Xiinside <- intersect.owin(Xi,obswin)
    setcovXi <- setcov(Xiinside)
    setcovB <- setcov(obswin)
@@ -47,8 +47,8 @@ varCovProb <- function(Xi, obswin){
 
 
 #a seperate function could be useful because the othe function will have less machine error
-#' @describeIn varCovProb Variance estimate from a given covariance function
-varCovProb.covarsupplied <- function(covar, obswin){
+#' @describeIn cpvariance Variance estimate from a given covariance function
+cpvariance.covarsupplied <- function(covar, obswin){
   p <- covar[as.ppp(c(0,0), W = Frame(covar))]
   setcovB <- setcov(obswin)
   integrand <- eval.im((covar-(p^2))*setcovB, harmonize = TRUE)
@@ -67,7 +67,7 @@ varCovProb.covarsupplied <- function(covar, obswin){
  #however if we look psqrt(A(W)) then something different happens?? *ASK GOPAL
  asympvarP <- function(){}
 
-#' @describeIn varCovProb Use multiple balanced estimators of covariance to estimate variance of coverage probability
+#' @describeIn cpvariance Use multiple balanced estimators of covariance to estimate variance of coverage probability
 varCovProb_ests <- function(Xi, obswin = NULL,
         setcov_boundarythresh = NULL,
         modifications = "all"){
@@ -92,7 +92,7 @@ varCovProb_ests <- function(Xi, obswin = NULL,
 }
 
 
-varCovProb.none <- function(Xi, obswin){
+cpvariance.none <- function(Xi, obswin){
    Xiinside <- intersect.owin(Xi,obswin)
    setcovXi <- setcov(Xiinside)
    setcovB <- setcov(obswin)
