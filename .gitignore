@@ -5,3 +5,7 @@ racsScratch/
 !vignettes/*.Rnw
 vignettes/*-*
 vignettes/*.*
+DESCRIPTION
+NAMESPACE
+man/*
+!man/*-package*
