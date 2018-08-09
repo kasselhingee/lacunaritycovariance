@@ -5,7 +5,7 @@
 
 #' @param xiim A \pkg{spatstat} \code{im} object with pixel values that are either TRUE, FALSE or NA. TRUE represents foreground, FALSE respresents background and NA represents unobserved locations.
 #' @param boxwidths A list of box boxwidths
-#' @param estimators A list of estimator names - see details for possibilities.
+#' @param estimators A list of estimator names - see details for possibilities. \code{estimators = "all"} will select all estimators.
 #' @param includenormed A logical value. If TRUE then MVL estimates normalised by the MVL values at zero will be included in a returned list of fv objects
 #' @param setcov_boundarythresh Any vector \eqn{v} such that set covariance of the observation window is smaller than this threshold
 #' is given a covariance estimate (and other similar estimate) of NA to avoid instabilities caused by dividing by very small areas.
@@ -37,6 +37,11 @@ mvl <- function(xiim, boxwidths,
                                           "MVLc", "MVLgb"),
                 includenormed = FALSE,
                 setcov_boundarythresh = 1E-6){
+  if ("all" %in% estimators){
+    estimators = c("MVLg.mattfeldt", "MVLg.pickaint", "MVLg.pickaH",
+     "MVLcc.mattfeldt", "MVLcc.pickaint",
+     "MVLc", "MVLgb")
+  }
   mvlgestimaterequests <- estimators %in% MVLgestimatornames
   mvlccestimaterequests <- estimators %in% MVLccestimatornames
   
@@ -93,10 +98,15 @@ mvl <- function(xiim, boxwidths,
 mvl.cvchat <- function(boxwidths,
                       estimators = c("MVLg.mattfeldt", "MVLg.pickaint", "MVLg.pickaH",
                                      "MVLcc.mattfeldt", "MVLcc.pickaint",
-                                     "MVLc", "MVLgb"),
+                                     "MVLc"),
                       phat = NULL,
                       cvchat = NULL,
                       cpp1 = NULL){
+  if ("all" %in% estimators){
+    estimators = c("MVLg.mattfeldt", "MVLg.pickaint", "MVLg.pickaH",
+     "MVLcc.mattfeldt", "MVLcc.pickaint",
+     "MVLc")
+  }
   mvlgestimaterequests <- estimators %in% MVLgestimatornames
   mvlccestimaterequests <- estimators %in% MVLccestimatornames
   mvlgs <- mvlccs <- mvlc.est <- mvlgb.est <- NULL

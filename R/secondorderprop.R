@@ -38,13 +38,13 @@ secondorderprops <- function(xiim,
   outlist <- list()
   
   #first compute MVL ests copying MVL()
-  if (!is.null(mvlargs)){ 
+  if (!is.null(mvlargs)){
     mvl.ests <- list()
-    if  (any("MVLgb" != mvlargs[["estimators"]])){
+    if  (any("MVLgb" != mvlargs[["estimators"]]) || is.null(mvlargs[["estimators"]]) || ("all" %in% mvlargs[["estimators"]])){
       mvlcovarbased <- do.call(mvl.cvchat, args = c(mvlargs, list(phat = phat, cvchat = cvchatT, cpp1 = cpp1)))
       mvl.ests <- c(mvl.ests, mvlcovarbased)
     }
-    if ("MVLgb" %in% mvlargs[["estimators"]]) {
+    if (("MVLgb" %in% mvlargs[["estimators"]]) || is.null(mvlargs[["estimators"]]) || ("all" %in% mvlargs[["estimators"]])) {
       mvlgb.est <- mvlgb(sidelengths = mvlargs[["boxwidths"]], xiim = xiim)
       if (sum(!vapply(mvlgb.est[,fvnames(mvlgb.est), drop = TRUE], is.na, FUN.VALUE = TRUE)) < 2){
         warning("mvlgb() returns estimates for 1 or fewer of the provided box widths. Results from mvlgb() will be ignored from the final results.")
@@ -54,13 +54,17 @@ secondorderprops <- function(xiim,
     }
     #combind the mvl ests
     mvl.ests <- mvl.ests[!vapply(mvl.ests, is.null, FUN.VALUE = FALSE)]
-    if (any(!vapply(mvl.ests[-1], function(x) compatible.fv(A = mvl.ests[[1]], B = x), FUN.VALUE = FALSE))){
-      warning("Some MVL estimates have differing argument values. These will be harmonised.")
-      mvl.ests <- harmonise.fv(mvl.ests)
+    if (is.owin(mvlargs[["boxwidths"]][[1]])){
+      mvls <- do.call(cbind, args = mvl.ests)
+    } else {
+      if (any(!vapply(mvl.ests[-1], function(x) compatible.fv(A = mvl.ests[[1]], B = x), FUN.VALUE = FALSE))){
+        warning("Some MVL estimates have differing argument values. These will be harmonised.")
+        mvl.ests <- harmonise.fv(mvl.ests)
+      }
+      mvls <- collapse.fv(mvl.ests, different = "MVL")
+      names(mvls) <- c(fvnames(mvls, ".x"), names(mvl.ests))
     }
-    mvls.fv <- collapse.fv(mvl.ests, different = "MVL")
-    names(mvls.fv) <- c(fvnames(mvls.fv, ".x"), names(mvl.ests))
-    outlist <- c(outlist, list(MVL = mvls.fv))
+    outlist <- c(outlist, list(MVL = mvls))
   }
   ### mvl estimation finished ###
   
@@ -83,7 +87,7 @@ secondorderprops <- function(xiim,
     #compute isotropic pair correlation
     pclnests <- do.call(paircorr.cvchat, c(list(cvchat = cvchatT, cpp1 = cpp1, phat = phat), paircorrargs, drop = FALSE))
     if (returnrotmean){
-      isopclns <- lapply(plcnests, rotmean, padzero = FALSE, Xname = "covar", result = "fv")
+      isopclns <- lapply(pclnests, rotmean, padzero = FALSE, Xname = "covar", result = "fv")
       isopclns <- lapply(isopclns, function(x) {
         x <- tweak.fv.entry(x, "f", new.labl = "g(r)", new.desc = "isotropic pair-correlation", new.tag = "g")
         return(x)

@@ -49,6 +49,27 @@ test_that("MVLc estimates are consistent for input side lengths or owin squares"
   expect_equal(lac$MVL, mvlc(list(square(2.2)), covar, p)$MVL)
 })
 
+test_that("MVLc estimates are operate on lists of owin objects", {
+  discs <- lapply(seq(1, 10, by = 0.5), function(x) disc(r = x))
+  lac <- mvlc(discs, xiim = as.im(heather$coarse, na.replace = 0))
+  expect_s3_class(lac, "data.frame")
+  expect_equal(nrow(lac), length(discs))
+})
+
+test_that("mvlcc estimates operate on lists of owin objects", {
+  discs <- lapply(seq(1, 10, by = 0.5), function(x) disc(r = x))
+  lac <- mvlcc(discs, xiim = as.im(heather$coarse, na.replace = 0))
+  expect_s3_class(lac, "data.frame")
+  expect_equal(nrow(lac), length(discs))
+})
+
+test_that("mvlg estimates operate on lists of owin objects", {
+  discs <- lapply(seq(1, 10, by = 0.5), function(x) disc(r = x))
+  lac <- mvlg(discs, xiim = as.im(heather$coarse, na.replace = 0))
+  expect_is(lac, "numeric")
+  expect_length(lac, length(discs))
+})
+
 test_that("MVLc estimates are the same from estimated covariance or original image", {
   img <- as.im(heather$coarse, eps = heather$coarse$xstep, na.replace = 0)
   covar <- tradcovarest(img)
