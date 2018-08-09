@@ -1,6 +1,4 @@
 #' @title Summarise a list fv objects
-#' @export summary.fvlist
-#' @S3method summary fvlist
 #' @description
 #' This function assumes that fv objects are each realisations of the same (stochastic) object. 
 #' It returns pointwise summaries such as observed sample mean and sample variance.
@@ -22,6 +20,7 @@
 #' object[[1]]$km[1:46] <- NA
 #' summ <- summary.fvlist(object, na.rm = TRUE)
 
+#' @export
 summary.fvlist <- function(object, ..., na.rm = FALSE){
   object <- harmonise.fv(object)
   n <- length(object)

@@ -1,6 +1,4 @@
 #' @title Pointwise summary of a list of im objects
-#' @export summary.imlist
-#' @S3method summary imlist
 #' @description
 #' This function assumes that im objects are each realisations of the same (stochastic) object. 
 #' It returns pointwise summaries such as observed sample mean and sample variance.
@@ -18,6 +16,7 @@
 #'  function(x) balancedracscovariances(x, obswin = square(1), modifications = "pickaH")[[1]])
 #' summ <- summary.imlist(ims, harmonizeobject = FALSE)
 
+#' @export
 summary.imlist <- function(object, ...,  harmonizeobject = TRUE){
   if (harmonizeobject) {object <- do.call(harmonize.im, args = object)} else { #for pointwise summaries the pixels must represent the same locations for each image.
     stopifnot(do.call(compatible.im, args = object))
