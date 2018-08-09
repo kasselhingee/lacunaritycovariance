@@ -19,7 +19,7 @@ test_that("rbpto generates simulations that match covariance for big window", {
   xy <- as.mask(win, eps = 0.001)
   cvc.th <- bpto.covar(lambda, grain, xm, alpha, lengthscales = lengthscales, xy)
   xiims <- lapply(xis, as.im.owin, W = win, eps = 0.001, value = TRUE, na.replace = FALSE)
-  cvc.ests <- lapply(xiims, function(x) racscovariance(x, modifications = "pickaH")[[1]])
+  cvc.ests <- lapply(xiims, function(x) racscovariance(x, modifications = "pickaH", drop = TRUE)
   cvc.est <- summary.imlist(cvc.ests)$mean
 
   #compare to cvc.th

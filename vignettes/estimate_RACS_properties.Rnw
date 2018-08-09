@@ -112,7 +112,7 @@ This estimator has smaller variance than the traditional estimator of covariance
 \begin{figure}[H]
 \centering
 <<estimatecovariance, fig = TRUE, include = TRUE, width = 5>>=
-cvchat <- racscovariance(egbinarymap, modifications = "pickaH")[[1]]
+cvchat <- racscovariance(egbinarymap, modifications = "pickaH", drop = TRUE)
 plot(cvchat, main = "Estimated RACS Covariance", axes = TRUE)
 @
 \caption{Estimated Covariance}

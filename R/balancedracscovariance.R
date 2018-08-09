@@ -20,6 +20,7 @@
 #' @param modification A string specifying the desired modification. See details.
 #' @param modifications A list of strings specifying desired modifications or functions to apply to cvchat, cpp1 and phat.
 #'  modifications = "all" will select all inbuilt modifications. See details. 
+#' @param drop If TRUE and one modification selected then the returned value will be a single \code{im} object and not a list of \code{im} object.
 
 #' @return \code{tradcovarest.cvchat} returns a \pkg{SpatStat} \code{im} object containing the modified estimated covariance.
 #'  The grey scale values in this image represent the covariance for an array of vectors. 
@@ -81,12 +82,13 @@
 #' 
 racscovariance <- function(xi, obswin = NULL,
         setcov_boundarythresh = NULL,
-        modifications = "all"){
+        modifications = "all",
+        drop = FALSE){
   cvchat <- tradcovarest(xi, obswin, setcov_boundarythresh = setcov_boundarythresh)
   cpp1 <- cppicka(xi, obswin, setcov_boundarythresh = setcov_boundarythresh)
   phat <- coverageprob(xi, obswin)
   
-  cvchats <- racscovariance.cvchat(cvchat, cpp1, phat, modifications = modifications) 
+  cvchats <- racscovariance.cvchat(cvchat, cpp1, phat, modifications = modifications, drop = drop) 
   return(cvchats)
 }
 
@@ -111,7 +113,7 @@ balancedracscovariance.cvchat <- function(cvchat, cpp1 = NULL, phat = NULL, modi
 }
 
 #' @describeIn racscovariance Applies multiple modifications simultaneously from a precomputed cvchat, cpp1 and phat
-racscovariance.cvchat <- function(cvchat, cpp1 = NULL, phat = NULL, modifications = "all"){
+racscovariance.cvchat <- function(cvchat, cpp1 = NULL, phat = NULL, modifications = "all", drop = FALSE){
   harmonised <- harmonise.im(cvchat = cvchat, cpp1 = cpp1)
   cvchat <- harmonised$cvchat
   cpp1 <- harmonised$cpp1
@@ -135,7 +137,9 @@ racscovariance.cvchat <- function(cvchat, cpp1 = NULL, phat = NULL, modification
   if(length(modificationsnotused) > 0){stop(
     paste("The following modifications are not recognised as existing function names or as a function:", modificationsnotused))}
   balancedcvchats <- lapply(fcnstouse, function(x) do.call(x, args = list(cvchat = cvchat, cpp1 = cpp1, phat = phat)))
-  return(as.imlist(balancedcvchats))
+
+  if (drop && (length(balancedcvchats) == 1)){ return(balancedcvchats[[1]])
+  } else {return(as.imlist(balancedcvchats)) }
 }
 
 
