@@ -112,7 +112,7 @@ mvl <- function(xiim, boxwidths,
   if (includepaircorr){
     #compute isotropic pair correlation
     if (sum(mvlgestimaterequests) + sum(mvlccestimaterequests) > 0){
-      pclnest <- paircorr.cvchat(cvchat, cpp1 = cpp1, phat = phat, modifications = "pickaH")[[1]]
+      pclnest <- paircorr.cvchat(cvchat, cpp1 = cpp1, phat = phat, modifications = "pickaH", drop = TRUE)
       isopcln <- rotmean(pclnest, padzero = FALSE, Xname = "pcln", result = "fv")
     } else {
       isopcln <- eval.fv(isocovar / phat^2, relabel = TRUE) #if no improvements available then use traditional estimates
@@ -142,7 +142,7 @@ mvl.cvchat <- function(boxwidths,
   if (sum(mvlgestimaterequests) + sum(mvlccestimaterequests) > 0){
     stopifnot(!is.null(cpp1), !is.null(cvchat), !is.null(phat))
     if (sum(mvlgestimaterequests) > 0){
-      pcln.ests <- paircorr.cvchat(cvchat, cpp1 = cpp1, phat = phat, modifications = gsub("MVLg.", "", estimators[mvlgestimaterequests]))
+      pcln.ests <- paircorr.cvchat(cvchat, cpp1 = cpp1, phat = phat, modifications = gsub("MVLg.", "", estimators[mvlgestimaterequests]), drop = FALSE)
       mvlgs <- lapply(pcln.ests, FUN = mvlg, boxes = boxwidths)
     }
     if (sum(mvlccestimaterequests) > 0){
