@@ -26,7 +26,7 @@
 #' @keywords spatial nonparametric
 
 #' @details 
-#' Computes centred covariance using \code{balancedracscovariances}. See help file for \code{balancedracscovariances} for available modifications.
+#' Computes centred covariance using \code{racscovariance}. See help file for \code{racscovariance} for available modifications.
 
 #' @examples
 #' xi <- heather$coarse
@@ -51,7 +51,7 @@ ccvcs.cvchat <- function(cvchat, cpp1 = NULL, phat = NULL,
         setcov_boundarythresh = NULL,
         modifications = "all"){
   
-  cvchats <- balancedracscovariances.cvchat(cvchat, cpp1, phat, modifications = modifications) 
+  cvchats <- racscovariance.cvchat(cvchat, cpp1, phat, modifications = modifications) 
   
   return(cvchats - phat^2)
 }

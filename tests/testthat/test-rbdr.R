@@ -26,7 +26,7 @@ test_that("rbdr produces simulations with the correct coverage and covariance", 
   expect_equal(phat, truecoveragefrac, tolerance = confint_halfwidth)
   
   #now on to checking covariance
-  cvchat <- balancedracscovariances(as.mask(xi, eps = c(0.2, 0.2)), obswin = win, modifications = list("pickaint"))[[1]]
+  cvchat <- racscovariance(as.mask(xi, eps = c(0.2, 0.2)), obswin = win, modifications = list("pickaint"))[[1]]
   truecvc.iso <- rotmean(thcovariance[disc(radius = 50), drop = FALSE], padzero = FALSE)
   cvchat.iso <- rotmean(cvchat[disc(radius = 50), drop = FALSE], padzero = FALSE)
   cvciso <- collapse.fv(truecvc.iso, cvchat.iso, different = "f")

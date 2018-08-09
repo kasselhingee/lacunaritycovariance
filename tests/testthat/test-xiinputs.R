@@ -38,12 +38,12 @@ test_that("tradcovarest operates when passed im (logical and numeric) and fails 
 })
 
 test_that("balancedracscovariance operates when passed im (logical and numeric) and fails correctly when im values not binary", {
-  cvcest.o <- balancedracscovariances(xiowin, obswin = w)[["pickaH"]]
-  cvcest.l <- balancedracscovariances(xiim.l)[["pickaH"]]
-  cvcest.n <- balancedracscovariances(xiim.n)[["pickaH"]]
+  cvcest.o <- racscovariance(xiowin, obswin = w)[["pickaH"]]
+  cvcest.l <- racscovariance(xiim.l)[["pickaH"]]
+  cvcest.n <- racscovariance(xiim.n)[["pickaH"]]
   expect_equal(max(abs(cvcest.o - cvcest.l)), 0)
   expect_equal(max(abs(cvcest.o - cvcest.n)), 0)
-  expect_error(balancedracscovariances(xiim.n3), regexp = "has values other than")
+  expect_error(racscovariance(xiim.n3), regexp = "has values other than")
 })
 
 test_that("pclns operates when passed im (logical and numeric) and fails correctly when im values not binary", {

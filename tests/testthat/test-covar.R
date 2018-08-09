@@ -2,7 +2,7 @@ context("Covariance Estimation")
 
   spatstat.options(npixel = 512) #to make default pixelisations higher resolution
   #estimate covariance of owin (covariance of image already estimated in help code)
-  covarest.frowin.all <- balancedracscovariances(xi, obswin = w)
+  covarest.frowin.all <- racscovariance(xi, obswin = w)
 
 test_that("Covariance Estimation from an owin object matches the estimates from an im object", {
   
@@ -62,12 +62,12 @@ test_that("unbalanced covariance estimation is symmetric for non-symmetric windo
   setcovw <- setcov(unsymmw)
   expect_equal(max(abs(setcovw - reflect.im(setcovw))), 0)
 
-  covarest.frowin <- balancedracscovariances(xi, obswin = unsymmw, modifications = "pickaH")[[1]]
+  covarest.frowin <- racscovariance(xi, obswin = unsymmw, modifications = "pickaH")[[1]]
   expect_equal(max(abs(covarest.frowin - reflect.im(covarest.frowin))), 0)
 })
 
-test_that("balancedracscovariances gives results in correct structure", {
-  out <- balancedracscovariances(xi, obswin = w)
+test_that("racscovariance gives results in correct structure", {
+  out <- racscovariance(xi, obswin = w)
   expect_length(out, 8)
   expect_named(out)
   expect_s3_class(out, "imlist")

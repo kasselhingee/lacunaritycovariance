@@ -38,5 +38,5 @@ windowOWIN <- Frame(heather$coarse)
  
 coverageProb <- coveragefrac(XiOWIN,windowOWIN)
  
-covar <- balancedracscovariances(XiOWIN,windowOWIN, modification = "pickaH")
+covar <- racscovariance(XiOWIN,windowOWIN, modification = "pickaH")
 }

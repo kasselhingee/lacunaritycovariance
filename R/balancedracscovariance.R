@@ -1,5 +1,5 @@
 #' @title Balanced spatial covariance estimation, also known as `two-point probability', estimator for stationary RACS
-#' @export balancedracscovariances balancedracscovariance.cvchat  balancedracscovariances.cvchat
+#' @export racscovariance balancedracscovariance.cvchat  racscovariance.cvchat
 #' @description 
 #' This function estimate the covariance of a stationary RACS. 
 #' A variety of balanced, partially balanced and classical estimates are available.
@@ -48,7 +48,7 @@
 #' @examples
 #' xi <- heather$coarse
 #' obswin <- Frame(xi)
-#' balancedcvchats <- balancedracscovariances(xi, obswin = Frame(xi), modifications = "all")
+#' balancedcvchats <- racscovariance(xi, obswin = Frame(xi), modifications = "all")
 #' balancedcvchats2 <- byconv_cvchats(xi, obswin = Frame(xi), modifications = "all")
 #' 
 #' # plot.solist(c(balancedcvchats, balancedcvchats2), ncols = 8)
@@ -64,7 +64,7 @@
 #' cpp1 <- harmonised$cpp1
 #' 
 #' balancedcvchat <- balancedracscovariance.cvchat(cvchat, cpp1, phat, modification = "pickaint")
-#' balancedcvchats <- balancedracscovariances.cvchat(cvchat, cpp1, phat, modifications = "all")
+#' balancedcvchats <- racscovariance.cvchat(cvchat, cpp1, phat, modifications = "all")
 #' modifications <- c("none",
 #'  "symm",
 #'  "adrian",
@@ -74,24 +74,24 @@
 #'  "pickaintmult",
 #'  "pickaH", 
 #'  function(cvchat, cpp1, phat) cvchat)
-#' balancedcvchats <- balancedracscovariances.cvchat(cvchat, cpp1, phat, modifications = modifications)
+#' balancedcvchats <- racscovariance.cvchat(cvchat, cpp1, phat, modifications = modifications)
 #' # plot(as.solist(balancedcvchats), equal.ribbon = TRUE)
 #' 
 
 #' 
-balancedracscovariances <- function(xi, obswin = NULL,
+racscovariance <- function(xi, obswin = NULL,
         setcov_boundarythresh = NULL,
         modifications = "all"){
   cvchat <- tradcovarest(xi, obswin, setcov_boundarythresh = setcov_boundarythresh)
   cpp1 <- cppicka(xi, obswin, setcov_boundarythresh = setcov_boundarythresh)
   phat <- coverageprob(xi, obswin)
   
-  cvchats <- balancedracscovariances.cvchat(cvchat, cpp1, phat, modifications = modifications) 
+  cvchats <- racscovariance.cvchat(cvchat, cpp1, phat, modifications = modifications) 
   return(cvchats)
 }
 
 
-#' @describeIn balancedracscovariances Applies covariance balancing modification to precomputed cvchat, cpp1 and phat
+#' @describeIn racscovariance Applies covariance balancing modification to precomputed cvchat, cpp1 and phat
 balancedracscovariance.cvchat <- function(cvchat, cpp1 = NULL, phat = NULL, modification = "pickaH"){
   harmonised <- harmonise.im(cvchat = cvchat, cpp1 = cpp1)
   cvchat <- harmonised$cvchat
@@ -110,8 +110,8 @@ balancedracscovariance.cvchat <- function(cvchat, cpp1 = NULL, phat = NULL, modi
   return(balancedcvchat)
 }
 
-#' @describeIn balancedracscovariances Applies multiple modifications simultaneously from a precomputed cvchat, cpp1 and phat
-balancedracscovariances.cvchat <- function(cvchat, cpp1 = NULL, phat = NULL, modifications = "all"){
+#' @describeIn racscovariance Applies multiple modifications simultaneously from a precomputed cvchat, cpp1 and phat
+racscovariance.cvchat <- function(cvchat, cpp1 = NULL, phat = NULL, modifications = "all"){
   harmonised <- harmonise.im(cvchat = cvchat, cpp1 = cpp1)
   cvchat <- harmonised$cvchat
   cpp1 <- harmonised$cpp1

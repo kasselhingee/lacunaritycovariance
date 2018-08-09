@@ -5,7 +5,7 @@ test_that("balanced covar estimation using convolutions as the base object match
   obswin <- Frame(xi)
   phat <- coverageprob(xi, obswin = Frame(xi))
 
-  out1 <- balancedracscovariances(xi, obswin = obswin)
+  out1 <- racscovariance(xi, obswin = obswin)
   out2 <- byconv_cvchats(xi, obswin = obswin)
   expect_equal(names(out1), names(out2))
   suppressWarnings(diffs <- mapply(function(x, y) eval.im(x - y), out1, out2, SIMPLIFY = FALSE))

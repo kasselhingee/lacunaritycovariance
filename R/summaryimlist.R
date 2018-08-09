@@ -14,7 +14,7 @@
 #' @examples
 #' obspatterns <- replicate(5, rbdd(10, 0.05, window = square(1)), simplify = FALSE)
 #' ims <- solapply(obspatterns,
-#'  function(x) balancedracscovariances(x, obswin = square(1), modifications = "pickaH")[[1]])
+#'  function(x) racscovariance(x, obswin = square(1), modifications = "pickaH")[[1]])
 #' summ <- summary.imlist(ims, harmonizeobject = FALSE)
 
 #' @export
