@@ -43,7 +43,7 @@ cencovariance <- function(xi, obswin = NULL,
   cpp1 <- cppicka(xi, obswin, setcov_boundarythresh = setcov_boundarythresh)
   phat <- coverageprob(xi, obswin)
   
-  ccvchats <- cencovariance.cvchat(cvchat, cpp1, phat, modifications = modifications) 
+  ccvchats <- cencovariance.cvchat(cvchat, cpp1, phat, modifications = modifications, drop = drop) 
   
   return(ccvchats)
 }

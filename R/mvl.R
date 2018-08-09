@@ -146,7 +146,7 @@ mvl.cvchat <- function(boxwidths,
       mvlgs <- lapply(pcln.ests, FUN = mvlg, boxes = boxwidths)
     }
     if (sum(mvlccestimaterequests) > 0){
-      ccvc.ests <- cencovariance.cvchat(cvchat, cpp1, phat, modifications = gsub("MVLcc.", "", estimators[mvlccestimaterequests]))
+      ccvc.ests <- cencovariance.cvchat(cvchat, cpp1, phat, modifications = gsub("MVLcc.", "", estimators[mvlccestimaterequests]), drop = FALSE)
       mvlccs <- lapply(ccvc.ests, FUN = mvlcc, p = phat, boxes = boxwidths)
     }
   }
