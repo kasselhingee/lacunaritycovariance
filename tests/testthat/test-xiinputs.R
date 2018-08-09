@@ -46,13 +46,13 @@ test_that("balancedracscovariance operates when passed im (logical and numeric) 
   expect_error(racscovariance(xiim.n3), regexp = "has values other than")
 })
 
-test_that("pclns operates when passed im (logical and numeric) and fails correctly when im values not binary", {
-  pclnest.o <- pclns(xiowin, obswin = w)[["pickaint"]]
-  pclnest.l <- pclns(xiim.l)[["pickaint"]]
-  pclnest.n <- pclns(xiim.n)[["pickaint"]]
+test_that("paircorr operates when passed im (logical and numeric) and fails correctly when im values not binary", {
+  pclnest.o <- paircorr(xiowin, obswin = w)[["pickaint"]]
+  pclnest.l <- paircorr(xiim.l)[["pickaint"]]
+  pclnest.n <- paircorr(xiim.n)[["pickaint"]]
   expect_equal(max(abs(pclnest.o - pclnest.l)), 0)
   expect_equal(max(abs(pclnest.o - pclnest.n)), 0)
-  expect_error(pclns(xiim.n3), regexp = "has values other than")
+  expect_error(paircorr(xiim.n3), regexp = "has values other than")
 })
 
 test_that("mvlgb operates as expected when pass im object", {

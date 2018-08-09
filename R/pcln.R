@@ -1,5 +1,5 @@
 #' @title Balanced estimation of centred spatial covariance for stationary RACS
-#' @export pclns  pclns.cvchat
+#' @export paircorr  paircorr.cvchat
 #' @description 
 #' Estimates the pair-correlation function of a stationary RACS. 
 #' A variety of balanced, partially balanced and classical estimates are available.
@@ -42,23 +42,23 @@
 #' cvchat <- tradcovarest(xi, inclraw = FALSE)
 #' cpp1 <- cppicka(xi, obswin = Frame(heather$coarse))
 #' 
-#' pclnsfrcvc <- pclns.cvchat(cvchat, cpp1, phat, modifications = "all")
-#' pclnsdir <- pclns(as.im(xi, na.replace = 0), modifications = "all")
+#' pclnsfrcvc <- paircorr.cvchat(cvchat, cpp1, phat, modifications = "all")
+#' pclnsdir <- paircorr(as.im(xi, na.replace = 0), modifications = "all")
 #' ###SHOULD TEST ON BOOLEAN MODEL###
-pclns <- function(xi, obswin = NULL,
+paircorr <- function(xi, obswin = NULL,
                   setcov_boundarythresh = NULL,
                   modifications = "all"){
   cvchat <- tradcovarest(xi, obswin, setcov_boundarythresh = setcov_boundarythresh)
   cpp1 <- cppicka(xi, obswin, setcov_boundarythresh = setcov_boundarythresh)
   phat <- coverageprob(xi, obswin)
   
-  pclns <- pclns.cvchat(cvchat, cpp1, phat, modifications = modifications) 
+  pclns <- paircorr.cvchat(cvchat, cpp1, phat, modifications = modifications) 
   
   return(pclns)
 }
 
-#' @describeIn pclns Applies multiple modifications simultaneously from a precomputed cvchat, cpp1 and phat
-pclns.cvchat <- function(cvchat, cpp1 = NULL, phat = NULL, modifications = "all"){
+#' @describeIn paircorr Applies multiple modifications simultaneously from a precomputed cvchat, cpp1 and phat
+paircorr.cvchat <- function(cvchat, cpp1 = NULL, phat = NULL, modifications = "all"){
   harmonised <- harmonise.im(cvchat = cvchat, cpp1 = cpp1)
   cvchat <- harmonised$cvchat
   cpp1 <- harmonised$cpp1
@@ -78,8 +78,8 @@ pclns.cvchat <- function(cvchat, cpp1 = NULL, phat = NULL, modifications = "all"
   
   if(length(modificationsnotused) > 0){stop(
     paste("The following modifications are not recognised as existing function names or as a function:", modificationsnotused))}
-  pclns <- lapply(fcnstouse, function(x) do.call(x, args = list(cvchat = cvchat, cpp1 = cpp1, phat = phat)))
-  return(as.imlist(pclns))
+  paircorr <- lapply(fcnstouse, function(x) do.call(x, args = list(cvchat = cvchat, cpp1 = cpp1, phat = phat)))
+  return(as.imlist(paircorr))
 }
 
 
