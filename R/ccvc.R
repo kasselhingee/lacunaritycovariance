@@ -1,5 +1,5 @@
 #' @title Balanced estimation of centred spatial covariance for stationary RACS
-#' @export cencovar  cencovar.cvchat
+#' @export ccvcs  ccvcs.cvchat
 #' @description 
 #' This function estimate the centred covariance of a stationary RACS. 
 #' A variety of balanced, partially balanced and classical estimates are available.
@@ -31,23 +31,23 @@
 #' @examples
 #' xi <- heather$coarse
 #' obswin <- Frame(xi)
-#' cencovar(xi, obswin, modifications = "all")
+#' ccvcs(xi, obswin, modifications = "all")
 
-cencovar <- function(xi, obswin = NULL,
+ccvcs <- function(xi, obswin = NULL,
         setcov_boundarythresh = NULL,
         modifications = "all"){
   cvchat <- tradcovarest(xi, obswin, setcov_boundarythresh = setcov_boundarythresh)
   cpp1 <- cppicka(xi, obswin, setcov_boundarythresh = setcov_boundarythresh)
   phat <- coverageprob(xi, obswin)
   
-  ccvchats <- cencovar.cvchat(cvchat, cpp1, phat, modifications = modifications) 
+  ccvchats <- ccvcs.cvchat(cvchat, cpp1, phat, modifications = modifications) 
   
   return(ccvchats)
 }
 
-#' @describeIn cencovar Estimates centred covariance using supplied classical covariance estimate (from \code{tradcovarest}),
+#' @describeIn ccvcs Estimates centred covariance using supplied classical covariance estimate (from \code{tradcovarest}),
 #'  Picka's coverage probability estimator and coverage probability.
-cencovar.cvchat <- function(cvchat, cpp1 = NULL, phat = NULL,
+ccvcs.cvchat <- function(cvchat, cpp1 = NULL, phat = NULL,
         setcov_boundarythresh = NULL,
         modifications = "all"){
   
