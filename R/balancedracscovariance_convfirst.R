@@ -17,6 +17,8 @@
 #' @param xy A raster object that specifies the pixel coordinates of the desired covariance image. In the same vein and as.mask in spatstat. **INCORRECT IT IS PASSED TO OBJECTS BEFORE setcov()
 #' @param modifications A list of strings specifying desired modifications or functions to apply to cvchat, cpp1 and phat.
 #'  modifications = "all" will select all inbuilt modifications. See details. 
+#' @param drop If TRUE and one modification selected then the returned value will be a single \code{im} object and not a list of \code{im} object.
+
 #' @param xixi The convolution of a set representing xi with itself
 #' @param winwin The convolution of the observation window with itself
 #' @param xiwin The convolution of the set xi with the observation window
@@ -33,7 +35,8 @@
 byconv_cvchats <- function(xi, obswin,
         xy = NULL,
         setcov_boundarythresh = NULL,
-        modifications = "all"){
+        modifications = "all",
+        drop = FALSE){
   if (is.null(setcov_boundarythresh)){
     setcov_boundarythresh <- 0.1 * area.owin(obswin)
   }
@@ -51,13 +54,13 @@ byconv_cvchats <- function(xi, obswin,
   xiwin[winwin < setcov_boundarythresh] <- NA #to remove small denominators
   phat <- area.owin(xi) / area.owin(obswin)
   
-  cvchats <- cvchats_convolves(xixi, winwin, xiwin, phat, modifications = modifications) 
+  cvchats <- cvchats_convolves(xixi, winwin, xiwin, phat, modifications = modifications, drop = drop) 
   return(cvchats)
 }
 
 
 #' @describeIn byconv_cvchats Applies multiple modifications simultaneously from a precomputed convolutions xi*xi, w*w, xi*w and phat
-cvchats_convolves <- function(xixi, winwin, xiwin = NULL, phat = NULL, modifications = "all"){
+cvchats_convolves <- function(xixi, winwin, xiwin = NULL, phat = NULL, modifications = "all", drop = FALSE){
   harmonised <- harmonise.im(xixi = xixi, winwin = winwin, xiwin = xiwin)
   xixi <- harmonised$xixi
   winwin <- harmonised$winwin
@@ -82,7 +85,8 @@ cvchats_convolves <- function(xixi, winwin, xiwin = NULL, phat = NULL, modificat
   if(length(modificationsnotused) > 0){stop(
     paste("The following modifications are not recognised as existing function names or as a function:", modificationsnotused))}
   balancedcvchats <- lapply(fcnstouse, function(x) do.call(x, args = list(xixi = xixi, winwin = winwin, xiwin = xiwin, phat = phat)))
-  return(as.imlist(balancedcvchats))
+  if (drop & (length(balancedcvchats) == 1)) {return(balancedcvchats[[1]])}
+  else { return(as.imlist(balancedcvchats)) }
 }
 
 
