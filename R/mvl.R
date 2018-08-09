@@ -1,5 +1,5 @@
 #' @title Compute MVL estimates using all estimators
-#' @export mvl
+#' @export mvl mvl.cvchat
 #' @description This function computes all the MVL estimators described in Hingee 2019** for square boxes and raster binary maps.
 #' It calls the functions \code{MVLc}, \code{MVLg}, \code{MVLcc} and \code{MVLgb}.
 
@@ -7,11 +7,6 @@
 #' @param boxwidths A list of box boxwidths
 #' @param estimators A list of estimator names - see details for possibilities.
 #' @param includenormed A logical value. If TRUE then MVL estimates normalised by the MVL values at zero will be included in a returned list of fv objects
-#' @param includepaircorr A logical value. If TRUE and if balanced covariance-based estimators of MVL are requested then rotation-averaged pair-correlation estimates using
-#'  Picka's H modifcation will be included in the output. If TRUE and balanced covariance-based estimators aren't requested then the traditional estimate of pair correlation will be returned.
-#' @param includecovar A logical value. I TRUE and if balanced covariance-based estimators of MVL are requested then otation-averaged covariance estimates using
-#'  Picka's H modifcation will be included in the output.
-#'   If TRUE and balanced covariance-based estimators aren't requested then the rotational average of the traditional estimate of covariance will be returned.
 #' @param setcov_boundarythresh Any vector \eqn{v} such that set covariance of the observation window is smaller than this threshold
 #' is given a covariance estimate (and other similar estimate) of NA to avoid instabilities caused by dividing by very small areas.
 #' If NULL is supplied (default) then 1E-6 is used.
@@ -41,8 +36,6 @@ mvl <- function(xiim, boxwidths,
                                           "MVLcc.mattfeldt", "MVLcc.pickaint",
                                           "MVLc", "MVLgb"),
                 includenormed = FALSE,
-                includepaircorr = FALSE,
-                includecovar = FALSE,
                 setcov_boundarythresh = 1E-6){
   mvlgestimaterequests <- estimators %in% MVLgestimatornames
   mvlccestimaterequests <- estimators %in% MVLccestimatornames
@@ -94,37 +87,6 @@ mvl <- function(xiim, boxwidths,
     allfvs <- c(allfvs, list(normdmvls = normdmvls))
   }
   
-  if (includecovar || includepaircorr){
-    #computing an isotropic covariance
-    if (sum(mvlgestimaterequests) + sum(mvlccestimaterequests) > 0){
-      impcovar <- balancedracscovariance.cvchat(cvchat, cpp1 = cpp1, phat = phat, modification = "pickaH")
-      isocovar <- rotmean(impcovar, padzero = FALSE, Xname = "covar", result = "fv")
-    } else {
-      isocovar <- rotmean(cvchat, padzero = FALSE, Xname = "covar", result = "fv")
-    }
-    isocovar <- tweak.fv.entry(isocovar, "f", new.labl = "C(r)", new.desc = "isotropic covariance", new.tag = "C")
-    isocovar <- rebadge.fv(isocovar,
-                           new.ylab = "C(r)",
-                           new.fname = "C(r)")
-    allfvs <- c(allfvs, list(covar = isocovar))
-  }
-  
-  if (includepaircorr){
-    #compute isotropic pair correlation
-    if (sum(mvlgestimaterequests) + sum(mvlccestimaterequests) > 0){
-      pclnest <- paircorr.cvchat(cvchat, cpp1 = cpp1, phat = phat, modifications = "pickaH", drop = TRUE)
-      isopcln <- rotmean(pclnest, padzero = FALSE, Xname = "pcln", result = "fv")
-    } else {
-      isopcln <- eval.fv(isocovar / phat^2, relabel = TRUE) #if no improvements available then use traditional estimates
-  
-    }
-    isopcln <- tweak.fv.entry(isopcln, "f", new.labl = "g(r)", new.desc = "isotropic pair-correlation", new.tag = "g")
-    isopcln <- rebadge.fv(isopcln,
-                          new.ylab = "g(r)",
-                          new.fname = "g(r)")
-    allfvs <- c(allfvs, list(paircorr = isopcln))
-  }
-
   return(allfvs)
 }
 
