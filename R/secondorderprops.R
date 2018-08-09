@@ -20,9 +20,11 @@
 #' covarargs = list(modifications = "all")
 #' paircorrargs = list(modifications = "pickaH")
 #' returnrotmean = TRUE
-#' secondests <- secondorderprops(xiim, mvlargs = mvlargs, covarargs = covarargs, paircorrargs = paircorrargs, returnrotmean = FALSE)
-#'#to test, with and without returnrotmean, with various parts NULL, with only MVLgb, only MVLc.pickaH or no estimators.
-#'#with discs
+#' secondests <- secondorderprops(xiim,
+#'    mvlargs = mvlargs,
+#'    covarargs = covarargs,
+#'    paircorrargs = paircorrargs, 
+#'    returnrotmean = FALSE)
 
 secondorderprops <- function(xiim,
                              mvlargs = NULL,

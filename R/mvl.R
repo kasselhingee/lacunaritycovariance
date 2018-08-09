@@ -10,6 +10,9 @@
 #' @param setcov_boundarythresh Any vector \eqn{v} such that set covariance of the observation window is smaller than this threshold
 #' is given a covariance estimate (and other similar estimate) of NA to avoid instabilities caused by dividing by very small areas.
 #' If NULL is supplied (default) then 1E-6 is used.
+#' @param phat Traditional estimate of coverage probability.
+#' @param cvchat Traditional estimate of covariance (often from \code{tradcovarest}).
+#' @param cpp1 Picka's estimate of coverage probability (often from \code{cppicka}).
 
 #' @return An \code{fv} object.
 
@@ -50,7 +53,7 @@ mvl <- function(xiim, boxwidths,
   mvlcovarbased <- mvlgb.est <- NULL
   
   phat <- coverageprob(xiim)
-  if(sum(mvlgestimaterequests) + sum(mvlccestimaterequests) + ("MVLc" %in% estimators) + includepaircorr + includecovar > 0){
+  if(sum(mvlgestimaterequests) + sum(mvlccestimaterequests) + ("MVLc" %in% estimators) > 0){
     cvchat <- tradcovarest(xiim, setcov_boundarythresh = setcov_boundarythresh)
   }
   if (sum(mvlgestimaterequests) + sum(mvlccestimaterequests) > 0){
@@ -95,6 +98,7 @@ mvl <- function(xiim, boxwidths,
   return(allfvs)
 }
 
+#' @describeIn mvl Computes covariance-based estimator of MVL from traditional estimates of covariance, Picka's reduced coverage probability estimate and the traditional coverage probability estimate.
 mvl.cvchat <- function(boxwidths,
                       estimators = c("MVLg.mattfeldt", "MVLg.pickaint", "MVLg.pickaH",
                                      "MVLcc.mattfeldt", "MVLcc.pickaint",
