@@ -21,7 +21,7 @@
 
 #' @examples
 #' xi <- heather$coarse
-#' covar <- racscovariance(xi, inclraw = FALSE)
+#' covar <- tradcovarest(xi, inclraw = FALSE)
 #' p <- area(xi) / area(Frame(xi))
 #' sidelengths <- seq(0.3, 14, by = 0.2)
 #' mvlest <- mvlc(sidelengths, covar, p)
@@ -41,7 +41,7 @@ mvlc <- function(boxes, covariance = NULL, p = NULL, xiim = NULL){
     p <- sum(xiim) / sum(is.finite(xiim$v))
     w <- as.owin(xiim) #w is observation window - only the non NA values end up in window
     xiim[is.na(xiim$v)] <- 0
-    covar <- racscovariance(xiim, obswin = w)
+    covar <- tradcovarest(xiim, obswin = w)
     lacv <- mvlc.inputcovar(boxes, covar, p)
     unitname <- unitname(xiim)
   } else {

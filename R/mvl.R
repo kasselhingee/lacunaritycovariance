@@ -53,7 +53,7 @@ mvl <- function(xiim, boxwidths,
   
   phat <- coverageprob(xiim)
   if(sum(mvlgestimaterequests) + sum(mvlccestimaterequests) + ("MVLc" %in% estimators) + includepaircorr + includecovar > 0){
-    cvchat <- racscovariance(xiim, setcov_boundarythresh = setcov_boundarythresh)
+    cvchat <- tradcovarest(xiim, setcov_boundarythresh = setcov_boundarythresh)
   }
   if (sum(mvlgestimaterequests) + sum(mvlccestimaterequests) > 0){
     cpp1 <- cppicka(xiim, setcov_boundarythresh = setcov_boundarythresh)

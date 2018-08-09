@@ -30,11 +30,11 @@ test_that("cppicka operates when passed im (logical and numeric) and fails corre
 })
 
 
-test_that("racscovariance operates when passed im (logical and numeric) and fails correctly when im values not binary", {
-  cvcest <- racscovariance(xiowin, obswin = w)
-  expect_equal(max(abs(cvcest - racscovariance(xiim.l))), 0)
-  expect_equal(max(abs(cvcest - racscovariance(xiim.n))), 0)
-  expect_error(racscovariance(xiim.n3), regexp = "has values other than")
+test_that("tradcovarest operates when passed im (logical and numeric) and fails correctly when im values not binary", {
+  cvcest <- tradcovarest(xiowin, obswin = w)
+  expect_equal(max(abs(cvcest - tradcovarest(xiim.l))), 0)
+  expect_equal(max(abs(cvcest - tradcovarest(xiim.n))), 0)
+  expect_error(tradcovarest(xiim.n3), regexp = "has values other than")
 })
 
 test_that("balancedracscovariance operates when passed im (logical and numeric) and fails correctly when im values not binary", {

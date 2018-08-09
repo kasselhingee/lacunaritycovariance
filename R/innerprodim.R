@@ -23,7 +23,7 @@
 
 #' @examples
 #' xi <- heather$coarse
-#' covar <- racscovariance(xi, inclraw = FALSE)
+#' covar <- tradcovarest(xi, inclraw = FALSE)
 #' B <- setcov(square(1))
 #' innerprod.im(covar, B, outsideB = 0)
 innerprod.im <- function(A, B, outsideA = NA, outsideB = NA, na.rm = FALSE){

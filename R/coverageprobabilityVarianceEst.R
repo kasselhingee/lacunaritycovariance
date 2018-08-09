@@ -19,7 +19,7 @@
 #' @param Xi is an observation (in owin) format of a RACS or an image of 0, 1 and NA values.
 #' @param obswin is the corresponding observation window. 
 #' @param covar A covariance image for the RACS (could be estimated from Xi)
-#' @param setcov_boundarythresh When estimating covariance the threshold at which the set covariance of the observation window is deemed too small and estimation doesn't occur. See \code{racscovariance()}.
+#' @param setcov_boundarythresh When estimating covariance the threshold at which the set covariance of the observation window is deemed too small and estimation doesn't occur. See \code{tradcovarest()}.
 #' @param modifications A list of modifications of centred covariance estimation to use - see \code{ccvc()}.
 
 #' @examples 
@@ -71,7 +71,7 @@ varCovProb.covarsupplied <- function(covar, obswin){
 varCovProb_ests <- function(Xi, obswin = NULL,
         setcov_boundarythresh = NULL,
         modifications = "all"){
-  cvchat <- racscovariance(Xi, obswin, setcov_boundarythresh = setcov_boundarythresh)
+  cvchat <- tradcovarest(Xi, obswin, setcov_boundarythresh = setcov_boundarythresh)
   cpp1 <- cppicka(Xi, obswin, setcov_boundarythresh = setcov_boundarythresh)
   phat <- cvchat[ppp(x = 0, y = 0, window = Frame(cvchat))]
   #phat <- coverageprob(Xi, obswin)
