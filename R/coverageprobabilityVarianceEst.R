@@ -76,7 +76,7 @@ varCovProb_ests <- function(Xi, obswin = NULL,
   phat <- cvchat[ppp(x = 0, y = 0, window = Frame(cvchat))]
   #phat <- coverageprob(Xi, obswin)
   
-  cvchats <- racscovariance.cvchat(cvchat, cpp1, phat, modifications = modifications) 
+  cvchats <- racscovariance.cvchat(cvchat, cpp1, phat, modifications = modifications, drop = FALSE) 
   
   if (is.null(obswin) && is.im(Xi)){
     obswin <- as.owin(Xi) #only excludes NA values in Xi

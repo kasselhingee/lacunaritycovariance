@@ -23,7 +23,7 @@
 
 #' @examples
 #' xi <- heather$coarse
-#' cencovar <- cencovariance(xi, obswin = Frame(xi), modifications = c("pickaH"))$pickaH
+#' cencovar <- cencovariance(xi, obswin = Frame(xi), modifications = c("pickaH"))
 #' p <- area(xi) / area(Frame(xi))
 #' sidelengths <- seq(0.3, 14, by = 0.2)
 #' mvlccest <- mvlcc(sidelengths, cencovar, p)
@@ -44,7 +44,7 @@ mvlcc <- function(boxes, cencovar = NULL, p = NULL, xiim = NULL, modification = 
     unitname <- unitname(cencovar)
   } else if (!is.null(xiim)){
     p <- sum(xiim) / sum(is.finite(xiim$v))
-    cencovar <- cencovariance(xiim, modifications = c(modification), drop = TRUE)
+    cencovar <- cencovariance(xiim, modifications = c(modification), drop = FALSE)
     lacv <- mvlcc.inputcovar(boxes, cencovar, p)
     unitname <- unitname(xiim)
   } else {
