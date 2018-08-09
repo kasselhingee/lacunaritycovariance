@@ -81,7 +81,7 @@ paircorr.cvchat <- function(cvchat, cpp1 = NULL, phat = NULL, modifications = "a
   if(length(modificationsnotused) > 0){stop(
     paste("The following modifications are not recognised as existing function names or as a function:", modificationsnotused))}
   pclns <- lapply(fcnstouse, function(x) do.call(x, args = list(cvchat = cvchat, cpp1 = cpp1, phat = phat)))
-  if (drop & (length(pclns) == 1) {return pclns[[1]]}
+  if (drop & (length(pclns) == 1)) {return(pclns[[1]])}
   else { return(as.imlist(pclns)) }
 }
 
