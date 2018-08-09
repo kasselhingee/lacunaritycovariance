@@ -1,5 +1,5 @@
 #' @title Two Point Probability Contagion
-#' @export contagTwoPtProb
+#' @export contagtwoptprob
 #' @description Calculates the two point probability version of Contagion. 
 #' @details Contagion is **. 
 #' In this case the Pij are the probability that two points separated by a vector \code{v}
@@ -27,18 +27,18 @@
 #' @examples 
 #' xi <- heather$coarse
 #' covariance <- tradcovarest(xi,Frame(xi))
-#' twoptcontagion <- contagTwoPtProb(covariance)
+#' twoptcontagion <- contagtwoptprob(covariance)
 #' p <- coveragefrac(xi,Frame(xi))
-#' twoptcontagion <- contagTwoPtProb(covariance,p)
+#' twoptcontagion <- contagtwoptprob(covariance,p)
 #' # plot(twoptcontagion)
 #' # plot(twoptcontagion,clipwin=owin(xrange=c(-0.5,0.5),yrange=c(-0.5,0.5)),main="zoom")
 #' v <- c(5,15)
 #' twoptcontagion[ppp(v[1],v[2],window=owin(xrange=c(v[1]-1,v[1]+1),yrange=c(v[2]-1,v[2]+1)))]
 #' 
-#' contagTwoPtProb(covariance,p=p, v=c(5,15))
+#' contagtwoptprob(covariance,p=p, v=c(5,15))
 #' #result for both should be -0.9985666
 #' 
-contagTwoPtProb <- function(covariance,p=NULL,v=NULL,normalise=FALSE){
+contagtwoptprob <- function(covariance,p=NULL,v=NULL,normalise=FALSE){
   if (is.null(p)){p <- covariance[ppp(0,0)]}
   if (is.null(v)){
     originOnlyInXi <- covariance
