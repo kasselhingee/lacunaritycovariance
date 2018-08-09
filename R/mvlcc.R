@@ -44,7 +44,7 @@ mvlcc <- function(boxes, cencovar = NULL, p = NULL, xiim = NULL, modification = 
     unitname <- unitname(cencovar)
   } else if (!is.null(xiim)){
     p <- sum(xiim) / sum(is.finite(xiim$v))
-    cencovar <- cencovariance(xiim, modifications = c(modification))[[1]]
+    cencovar <- cencovariance(xiim, modifications = c(modification), drop = TRUE)
     lacv <- mvlcc.inputcovar(boxes, cencovar, p)
     unitname <- unitname(xiim)
   } else {
