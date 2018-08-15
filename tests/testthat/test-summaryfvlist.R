@@ -11,6 +11,7 @@ test_that("summary.fvlist gives correct numbers for constant function", {
   expect_equal(fvlist.summ$vary[[1]], var(yheights))
   expect_equal(fvlist.summ[1, fvnames(fvlist.summ, ".a"), drop = TRUE], 
     fvlist.summ[6, fvnames(fvlist.summ, ".a"), drop = TRUE]) 
+  expect_equal(fvlist.summ$nay[[1]], 0)
 })
 
 #test when functions have multiple y columns
@@ -21,21 +22,24 @@ test_that("summary.fvlist works when multiple y columns around", {
 		   as.fv(data.frame(x = xvals, y = y, y2 = y^2, y3 = y^3))
     } )
   fvlist.summ <- summary.fvlist(fvlist)
-  expect_length(fvnames(fvlist.summ, ".a"), 4 * length(fvnames(fvlist[[1]], ".a")))
+  expect_length(fvnames(fvlist.summ, ".a"), 5 * length(fvnames(fvlist[[1]], ".a")))
   expect_equal(fvlist.summ$maxy[[1]], max(yheights))
   expect_equal(fvlist.summ$miny[[1]], min(yheights))
   expect_equal(fvlist.summ$meany[[1]], mean(yheights))
   expect_equal(fvlist.summ$vary[[1]], var(yheights))
+  expect_equal(fvlist.summ$nay[[1]], 0)
   
   expect_equal(fvlist.summ$maxy2[[1]], max(yheights^2))
   expect_equal(fvlist.summ$miny2[[1]], min(yheights^2))
   expect_equal(fvlist.summ$meany2[[1]], mean(yheights^2))
   expect_equal(fvlist.summ$vary2[[1]], var(yheights^2))
+  expect_equal(fvlist.summ$nay2[[1]], 0 )
   
   expect_equal(fvlist.summ$maxy3[[1]], max(yheights^3))
   expect_equal(fvlist.summ$miny3[[1]], min(yheights^3))
   expect_equal(fvlist.summ$meany3[[1]], mean(yheights^3))
   expect_equal(fvlist.summ$vary3[[1]], var(yheights^3))
+  expect_equal(fvlist.summ$nay3[[1]], 0)
 })
 
 
@@ -86,16 +90,19 @@ test_that("summary.fvlist operates when functions contain NA values", {
   expect_equal(fvlist.summ$miny[[2]], min(yheights * xvals[[2]]))
   expect_equal(fvlist.summ$meany[[2]], mean(yheights * xvals[[2]]))
   expect_equal(fvlist.summ$vary[[2]], var(yheights * xvals[[2]]))
+  expect_equal(fvlist.summ$nay[[2]], 0)
   
   expect_equal(fvlist.summ$maxy[[8]], max(yheights_a * xvals[[8]]))
   expect_equal(fvlist.summ$miny[[8]], min(yheights_a * xvals[[8]]))
   expect_equal(fvlist.summ$meany[[8]], mean(yheights_a * xvals[[8]]))
   expect_equal(fvlist.summ$vary[[8]], var(yheights_a * xvals[[8]]))
+  expect_equal(fvlist.summ$nay[[8]], length(fvlist_b))
   
   expect_equal(fvlist.summ$maxy2[[9]], max((yheights_a * xvals[[9]])^2))
   expect_equal(fvlist.summ$miny2[[9]], min((yheights_a * xvals[[9]])^2))
   expect_equal(fvlist.summ$meany2[[9]], mean((yheights_a * xvals[[9]])^2))
   expect_equal(fvlist.summ$vary2[[9]], var((yheights_a * xvals[[9]])^2))
+  expect_equal(fvlist.summ$nay2[[9]], length(fvlist_b))
 })
 
 

@@ -10,7 +10,8 @@
 #' @param ...  Ignored.
 #' @param na.rm If TRUE NA values in the fv object will be ignored 
 #' (i.e. NA values will be removed from all summations and the population size will decrease by 1 for each NA value).
-#' @return An fv object containing the pointwise mean, pointwise sample variance, pointwise maximum and pointwise minimum.
+#' @return An fv object containing the pointwise mean, pointwise sample variance, pointwise maximum, pointwise minimum
+#' and number of NA values (pointwise) for each y-column of the input fvs.
 
 #' @examples
 #' obspatterns <- rpoispp(10, nsim = 10)
@@ -18,20 +19,20 @@
 #' summ <- summary.fvlist(object)
 #' 
 #' #test with NA vals
-#' object[[1]]$km[1:46] <- NA
+#' object[[1]]$km[1:100] <- NA
 #' summ <- summary.fvlist(object, na.rm = TRUE)
 
 #' @export
 summary.fvlist <- function(object, ..., na.rm = FALSE){
   object <- harmonise.fv(object)
   n <- length(object)
+  #count number of NA values
   nacount <- object[[1]]
   nacount <- eval.fv(0 * nacount, dotonly = FALSE, relabel = FALSE)
-  if (na.rm){
-    #count number of NA values
-    nas <- Map(function(a) eval.fv(is.na(a), dotonly = FALSE, relabel = FALSE), object)
-    nacount <- Reduce(Add.fv.nakeep, nas)
+  nas <- Map(function(a) eval.fv(is.na(a), dotonly = FALSE, relabel = FALSE), object)
+  nacount <- Reduce(Add.fv.nakeep, nas)
     
+  if (na.rm) {
     #use narm versions of Add.fv, Pmax.fv and Pmin.fv functions
     Add.fv <- Add.fv.narm
     Pmax.fv <- Pmax.fv.narm
@@ -54,7 +55,7 @@ summary.fvlist <- function(object, ..., na.rm = FALSE){
   maxY <- Reduce(Pmax.fv, object)
   minY <- Reduce(Pmin.fv, object)
   ## tweak labels of main estimate
-  attributes(meanY) <- attributes(varY) <- attributes(maxY) <- attributes(minY) <- attributes(vanilla.fv(object[[1]]))
+  attributes(nacount) <- attributes(meanY) <- attributes(varY) <- attributes(maxY) <- attributes(minY) <- attributes(vanilla.fv(object[[1]]))
   attributes(minY) <- attributes(vanilla.fv(object[[1]]))
   meanY <- prefixfv(meanY,
                         tagprefix="mean",
@@ -73,8 +74,12 @@ summary.fvlist <- function(object, ..., na.rm = FALSE){
                          tagprefix="min",
                          descprefix="minimum ",
                          lablprefix="bold(min)~")
+  nacount <- prefixfv(nacount,
+                         tagprefix="na",
+                         descprefix="na count ",
+                         lablprefix="bold(NA)~")
     ## glue together
-    result <- Reduce(bind.fv, list(meanY, varY, maxY, minY))
+    result <- Reduce(bind.fv, list(meanY, varY, maxY, minY, nacount))
     # set default plotting lines
     fvnames(result, ".") <- c(fvnames(meanY, "."), fvnames(maxY, "."), fvnames(minY, "."))
     attr(result, "fmla") <- ". ~ .x"
