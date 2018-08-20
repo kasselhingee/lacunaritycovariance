@@ -1,39 +1,53 @@
-#' @title Pixel Contagion
+#' @title Pixel Adjacency Contagion
 #' @export contagpixelgrid adjacency
 #' 
-#' @description Function for calculating the standard LPI contagion from a pixel grid.
-#' Refer to FRAGSTATS for a full description of contagion.
+#' @description Function for calculating the traditional contagion LPI from a binary map [cite fragstats manual].
 #' 
-#' @param xi an owin mask representing a realisation of RACS
-#' @param w the window of observation
-#' @param normalise If \code{TRUE} will divide result by 2*log(2) and add 1 to make contagion between 0 and 1 for any binary map
+#' @param xi A binary map of an observation of a RACS of interest. See
+#'   \code{\link{stationaryracsinference-package}} for details.
+#'   If \code{xi} is an owin object it must be of \code{mask} type.
+#' @param obswin If \code{xi} is an \code{owin} object then \code{obswin} is an
+#'   \code{owin} object that specifies the observation window.
+#' @param normalise If \code{TRUE} will divide result by \eqn{2 ln(2)} and add 1 to make contagion between 0 and 1 for any binary map
 
-#' @details The `double count' method as described in the FRAGSTATS manual on adjacency matrix.
-#' Considering not xi as another phase and using a 4-neighbourhood.
+#' @details The unnormalised contagion LPI of categorical map is defined as
+#' \deqn{\sum_i \sum_j Pij ln(Pij),} where \eqn{Pij} is the probability of
+#' randomly selected adjacent pixels being in class \eqn{i} and class \eqn{j}
+#' respectively, and \eqn{m} is the number of classes.
+#'
+#' Here \eqn{m = 2} as \eqn{xi} is a binary map and we have defined 'adjacent'
+#' pixels using the 4-neighbourhood regime.
+#' 
+#' Contagion is calculated from an adjacency matrix created using \code{adjacency}.
+#' 
+#' **What is the `double count' method as described in the
+#' FRAGSTATS manual on adjacency matrix? 
+
 #' @examples
 #' xi <- heather$coarse
-#' w <- owin(xrange = c(0,7),yrange=c(0,16))
-#' adjmat <- adjacency(xi,w)
+#' obswin <- owin(xrange = c(0,7),yrange=c(0,16))
+#' adjmat <- adjacency(xi,obswin)
 #' adjmat
-#' contagion <- contagpixelgrid(xi,w)
+#' contagion <- contagpixelgrid(xi,obswin)
 #' contagion
 
 #' #Finer resolution
 #' xi <- heather$medium
-#' w <- owin(xrange = c(0,7),yrange=c(0,16))
-#' contagion <- contagpixelgrid(xi,w)
+#' obswin <- owin(xrange = c(0,7),yrange=c(0,16))
+#' contagion <- contagpixelgrid(xi,obswin)
 #' contagion
 
 #' @section Warning: Will fail if there are no adjacencies
-contagpixelgrid <- function(xi, w, normalise=FALSE){
+#' @describeIn contagpixelgrid Traditional contagion LPI of a binary map.
+contagpixelgrid <- function(xi, obswin, normalise=FALSE){
   stopifnot(is.mask(xi))
-  out <- harmonise(xi,w)
+  out <- harmonise(xi,obswin)
   xi <- out[[1]]
-  w <- out[[2]]
-  adjmat <- adjacency(xi,w)
-  # num pixels in w?
-  propOfXi <- sum(as.matrix(intersect.owin(xi,w)))/sum(as.matrix(w))
-  propOfNotXi <- sum(as.matrix(intersect.owin(complement.owin(xi),w)))/sum(as.matrix(w))
+  obswin <- out[[2]]
+  adjmat <- adjacency(xi,obswin)
+  # num pixels in obswin?
+  propOfXi <- sum(as.matrix(intersect.owin(xi,obswin)))/sum(as.matrix(obswin))
+  propOfNotXi <- sum(as.matrix(intersect.owin(complement.owin(xi),obswin)))/sum(as.matrix(obswin))
   
   contag <- 0
   #xi with xi part of contagion
@@ -45,10 +59,16 @@ contagpixelgrid <- function(xi, w, normalise=FALSE){
 
 
 #' @describeIn contagpixelgrid Calculates the adjacency matrix used in the pixel contagion
-adjacency <- function(xi,w){
-  stopifnot(is.mask(xi))
-  xic <- intersect.owin(complement.owin(xi),w)
-  xi <- intersect.owin(xi,w)
+adjacency <- function(xi, obswin = NULL){
+  if("im" %in% class(xi)){isbinarymap(xi, requiretrue = TRUE)}
+  else if (is.owin(xi) && is.null(obswin)){stop("obswin must be included if xi is an owin object.")}
+  
+  if (is.owin(xi){
+    xi <- as.im(xi, value = TRUE, na.replace = FALSE)
+    xi[setminus.owin(Frame(xi), obswin)] <- NA
+  }
+  xic <- intersect.owin(complement.owin(xi),obswin)
+  xi <- intersect.owin(xi,obswin)
   #neighbours of points in xi that are also in xi, in each direction
   #(4 neighbourhood)
   numNnbr <- sum(as.matrix(intersect.owin(xi,shift.owin(xi,vec=c(0,-xi$ystep)))))

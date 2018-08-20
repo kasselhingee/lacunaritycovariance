@@ -6,7 +6,7 @@ test_that("Pixel Adjacency Contagion gives correct results on toy images", {
 testmat <- matrix(FALSE,nrow=5,ncol=5)
 testmat[2,2] <- TRUE
 xi <- owin(mask = testmat)
-w <- Frame(xi)
+obswin <- Frame(xi)
 adjmat <- adjacency(xi, Frame(xi))
 expect_equal(adjmat,
 	     matrix(c(0, 4, 4, 72), nrow = 2, ncol = 2, byrow = TRUE),
@@ -18,7 +18,7 @@ testmat <- matrix(FALSE,nrow=5,ncol=5)
 testmat[2,2] <- TRUE
 testmat[3,2] <- TRUE
 xi <- owin(mask = testmat)
-w <- Frame(xi)
+obswin <- Frame(xi)
 adjmat <- adjacency(xi, Frame(xi))
 expect_equal(adjmat,
 	     matrix(c(2, 6, 6, 66), nrow = 2, ncol = 2, byrow = TRUE),
@@ -30,7 +30,7 @@ testmat <- matrix(TRUE,nrow=5,ncol=5)
 testmat[2,2] <- FALSE
 testmat[2,3] <- FALSE
 xi <- owin(mask = testmat)
-w <- Frame(xi)
+obswin <- Frame(xi)
 adjmat <- adjacency(xi, Frame(xi))
 expect_equal(adjmat,
 	     matrix(c(66, 6 , 6, 2), nrow = 2, ncol = 2, byrow = TRUE),
@@ -54,4 +54,40 @@ xi <- owin(mask = testmat)
 expect_equal(contagpixelgrid(xi,Frame(xi),normalise=TRUE),
 	     1, tolerance = 0.01)
 #result should be close to 1
+
+#contagion with piece missing
+#should have 0 nbrs of Xi and Xi, and 4 nbrs of xi and not xi
+#should have 4 nbrs of not xi and xi, and lots of not xi and not xi
+testmat <- matrix(FALSE,nrow=5,ncol=5)
+testmat[2,2] <- TRUE
+xi <- owin(mask = testmat)
+obswin <- setminus.owin(Frame(xi), owin())
+adjmat <- adjacency(xi, obswin)
+expect_equal(adjmat,
+             matrix(c(0, 4, 4, 68), nrow = 2, ncol = 2, byrow = TRUE),
+             check.attributes = FALSE)
+})
+
+test_that("contagpixelgrid operates when passed im objects", {
+  #should have 0 nbrs of Xi and Xi, and 4 nbrs of xi and not xi
+  #should have 4 nbrs of not xi and xi, and lots of not xi and not xi
+  testmat <- matrix(FALSE,nrow=5,ncol=5)
+  testmat[2,2] <- TRUE
+  xi <- as.im(testmat)
+  adjmat <- adjacency(xi)
+  expect_equal(adjmat,
+               matrix(c(0, 4, 4, 72), nrow = 2, ncol = 2, byrow = TRUE),
+               check.attributes = FALSE)
+  
+  #maximum contagion
+  vectmp <- vector(mode="logical",length=10000)
+  vectmp[3:length(vectmp)] <- TRUE
+  vectmp[1:2] <- FALSE #two points to avoid zero adjacency
+  testmat <- matrix(vectmp,nrow=100,ncol=100)
+  xi <- as.im(testmap)
+  expect_equal(contagpixelgrid(xi,normalise=TRUE),
+               1, tolerance = 0.01)
+  #result should be close to 1
+  
+
 })
