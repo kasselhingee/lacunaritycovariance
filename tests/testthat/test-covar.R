@@ -75,6 +75,8 @@ test_that("racscovariance gives results in correct structure", {
 
 test_that("racscovariance errors correctly", {
   expect_error(racscovariance(heather$coarse), regexp = "owin")
+  expect_error(racscovariance(as.im(heather$coarse, value = TRUE, na.replace = FALSE),
+                 obswin = shift.owin(disc(), vec = c(3, 3))))
 })
 
 test_that("tradcovarest() errors properly", {

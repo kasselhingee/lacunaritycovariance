@@ -8,8 +8,12 @@
 
 
 
-#' @param xi A binary map. Either an \code{im} object with pixel values of 0, 1, TRUE, FALSE or NA, 
-#' or an \code{owin} object representing the foreground (in which case \code{obswin} is required).
+#' @param xi A binary map. Either an \code{im} object or a \code{owin} object.
+#'   If an \code{im} object then pixel values of 1 or TRUE represent foreground,
+#'   0 or \code{FALSE} values represent background, and \code{NA} values
+#'   represent outside the  observation window. If an \code{owin} object then
+#'   \code{xi} represents foreground and \code{obswin} is required to specify
+#'   the observation window.
 #' @param obswin The observation window in \code{owin} format if \code{xi} is also in \code{owin} format. 
 #' @param setcov_boundarythresh Any vector \eqn{v} such that set covariance of the observation window
 #'  is smaller than this threshold is given a covariance of NA to avoid instabilities caused by dividing by very small areas, 
@@ -41,48 +45,38 @@
 #' the probability that two points separated by a vector \eqn{v} are covered by
 #' \eqn{\Xi}.
 #' 
-#' Traditionally covariance for vector \eqn{v} is estimated from a binary map
-#' \eqn{xi} using the volume of the set of points, \eqn{x}, such that both
+#' Traditionally covariance for vector \eqn{v} is estimated from a binary map,
+#' \eqn{xi}, using the volume of the set of points, \eqn{x}, such that both
 #' \eqn{x} and \eqn{x+v} are observed to be in the foreground of \code{xi}
 #' relative to the volume of points, \eqn{x}, for which both \eqn{x} and \eqn{x+v}
 #' are in the observation window [1].
+#' Picka [picka1997va,picka2000va] suggested a number of improvements to centred
+#' covariance estimation (see \code{\link{cencovariance}}) that `balanced' the
+#' data used to estimate covariance with the data used to estimate coverage
+#' probability. These lead to covariance estimators that give
+#' estimates for the covariance of \eqn{Xi} that are a constant offset from
+#' covariance estimates for the complement of \eqn{Xi} (note the constant offset
+#' depends on the coverage probability), which
+#' appears to avoid some suprising behaviour that the traditional estimator
+#' suffers [Chapter 4, hingee2019thesis].
+#' These estimators are called \code{pickaint} and \code{pickaH} in this package.
 #' 
-#'   ,
-#' \deqn{C_T (v) = \gamma_{\cap (W, X)}(v)/ \le \gamma_W(v)}
-#'  where
-#' \eqn{X} is a realisation of \eqn{\Xi} observed in window \eqn{W},
-#' \eqn{\gamma_{W}(v)} is the set covariance of the observation window \eqn{|W
-#' \cap (W\oplus v)|} and \eqn{\gamma_{W\cap X}(v)} is the set covariance of an
-#' observation, \eqn{X}, of the RACS \eqn{\Xi}, \eqn{\gamma_{W\cap X}(v) = |W
-#' \cap X \cap ((W\cap X ) \oplus v)|}.
+#' Another improved estimator inspired by an `intrinsic modification' briefly mentioned by Picka [picka1997va]
+#' for pair-correlation estimators`is also available.
+#' We have called this estimator \code{mattfeldt} as a similar isotropic estimator for pair-correlation
+#' was studied by Mattfeldt and Stoyan [mattfeldt2000im].
 #' 
-#' Picka [picka1997va,picka2000va] suggested a number of improvements to
-#'  centred covariance estimation
-#'   (see \code{\link{cencovariance}}) that
-#'    `balanced' the use of data in the observation window.
-#'  These lead to estimators \eqn{\hat{C}(v)} of covariance that satisify
-#'  \deqn{\hat{C}(v, X) = \hat{C}(v, X^c) - 1 + 2\hat{p}},
-#'  which is the same as the relationship between 
-#'  covariance of \eqn{\Xi}, \eqn{\Xi^c} and the coverage probability of \eqn{\Xi}.
-#'  It appears that these new estimators of covariance avoid
-#'   some suprising behaviour that the traditional estimator has [Chapter 4, hingee2019thesis].
-#' 
-#' If \code{xi} is an \code{im} object the pixel values of 1 or TRUE are interpreted as foreground
-#'  and the pixel values of 0 or FALSE are interpreted as background.
-#'  Pixel values of NA are considered outside the observation window.
-#' 
-#' Modifies the classical covariance estimator to based on balancing ideas for pair-correlation and centred covariance estimation.
-#' Many of the modifications use Picka's coverage probability estimators in some way.
-#' Modifications available are: 
+
+#' The estimators available are (see [Chapter 4, hingee2019thesis] for information): 
 #' \itemize{
-#' \item \code{none} Returns cvchat
-#' \item symm Returns the estimated average of cvchat at -v and +v
-#' \item adrian  Similar to Picka additive but uses \code{cpp1} twice and not the refelction of \code{cpp1}
-#' \item mattfeldadd
-#' \item mattfeldmult
-#' \item pickaint The only modification supplied that provides estimates that satisfy C(v) = 2phat - 1 + Ccomplment(v)
-#' \item pickaintmult
-#' \item pickaH
+#' \item{\code{none}} the traditional covariance estimator
+#' \item{\code{mattfeldt**}} an estimator inspired by an 
+#' `intrinsically' balanced pair-correlation estimator from Picka that was later studied in an
+#' isotropic situation by Mattfeldt and Stoyan [mattfeldt2000im]
+#' \item{pickaint} an estimator inspired by an 
+#' `intrinsically' balanced centred covariance estimator from Picka [picka2000va].
+#' \item{pickaH} an estimator inspired by the 
+#' `additively' balanced centred covariance estimator from Picka [picka2000va].
 #' }
 
 #' @examples
