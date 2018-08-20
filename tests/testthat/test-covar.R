@@ -73,6 +73,10 @@ test_that("racscovariance gives results in correct structure", {
   expect_s3_class(out, "imlist")
 })
 
+test_that("racscovariance errors correctly", {
+  expect_error(racscovariance(heather$coarse), regexp = "owin")
+})
+
 test_that("tradcovarest() errors properly", {
   lambda <- 4 * 2.2064E-3
   discr <- 5
