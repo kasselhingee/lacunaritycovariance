@@ -68,7 +68,7 @@ test_that("unbalanced covariance estimation is symmetric for non-symmetric windo
 
 test_that("racscovariance gives results in correct structure", {
   out <- racscovariance(xi, obswin = w)
-  expect_length(out, 8)
+  expect_length(out, 4)
   expect_named(out)
   expect_s3_class(out, "imlist")
 })

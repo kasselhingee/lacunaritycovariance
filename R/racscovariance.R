@@ -24,7 +24,6 @@
 #' Typically created with \code{\link{tradcovarest}}.
 #' @param cpp1 Picka's reduced window estimate of coverage probability in \code{im} format - used in improved (balanced) covariance estimators.
 #' Can be generated using \code{\link{cppicka}}.
-#' @param modification A string specifying the desired modification. See details.
 #' @param modifications A list of strings specifying covariance estimators to use. 
 #' See details.
 #' \code{modifications = "all"} will select all available estimators.  

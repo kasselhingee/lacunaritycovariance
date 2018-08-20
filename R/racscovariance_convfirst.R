@@ -67,12 +67,8 @@ cvchats_convolves <- function(xixi, winwin, xiwin = NULL, phat = NULL, modificat
   xiwin <- harmonised$xiwin
   fcns <- list(
          none = cvchat_none,
-         symm = cvchat_symm,
-         adrian = cvchat_adrian,
          mattfeldt = cvchat_mattfeldt_add,
-         mattfeldtmult = cvchat_mattfeldt_mult,
          pickaint = cvchat_picka_int,
-         pickaintmult = cvchat_picka_intmult,
          pickaH = cvchat_picka_H
   )
   if ((modifications == "all")[[1]]) {modifications <- names(fcns)}
@@ -95,29 +91,12 @@ cvchat_none <- function(xixi, winwin, xiwin = NULL, phat = NULL){
   return(xixi / winwin)
 }
 
-cvchat_symm <- function(xixi, winwin, xiwin = NULL, phat = NULL){
-  return((xixi + reflect.im(xixi))/ (2 * winwin))
-}
-
-cvchat_adrian <- function(xixi, winwin, xiwin = NULL, phat = NULL){
-  return((xixi - (xiwin * xiwin / winwin)) / winwin + phat^2)
-}
-
 cvchat_mattfeldt_add <- function(xixi, winwin, xiwin = NULL, phat = NULL){
   return((xixi - (0.5 * (xiwin + reflect.im(xiwin)))^2 / winwin ) / winwin  +  phat^2)
 }
 
-cvchat_mattfeldt_mult <- function(xixi, winwin, xiwin = NULL, phat = NULL){
-  mattfeldtnum <- 0.5 * (xiwin + reflect.im(xiwin))
-  return((xixi * phat ^2 * winwin) / (mattfeldtnum^2))
-}
-
 cvchat_picka_int <- function(xixi, winwin, xiwin = NULL, phat = NULL){
   return((xixi - xiwin * reflect.im(xiwin) / winwin) / winwin + phat ^2 )
-}
-
-cvchat_picka_intmult <- function(xixi, winwin, xiwin = NULL, phat = NULL){
-  return((xixi * phat^2 * winwin) / (xiwin * reflect.im(xiwin)))
 }
 
 cvchat_picka_H <- function(xixi, winwin, xiwin, phat){
