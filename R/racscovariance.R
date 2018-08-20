@@ -1,7 +1,7 @@
 #' @title Covariance Estimation
 #' @export racscovariance racscovariance.cvchat
 #' @description 
-#' Estimates the covariance of a stationary RACS from a binary map. 
+#' Estimates the covariance of a stationary RACS. 
 #' The traditional covariance estimator and
 #' new estimators based on [**picka2000va**, picka1997va] are available.
 #' @author{Kassel Liam Hingee}
@@ -108,10 +108,10 @@ racscovariance <- function(xi, obswin = NULL,
   return(cvchats)
 }
 
-#' @describeIn racscovariance Applies generates covariances estimates from
-#'   a traditional estimate of covariance estimate, Picka's reduced window estimate of coverage probability,
+#' @describeIn racscovariance Generates covariances estimates from
+#'   a traditional estimate of covariance, Picka's reduced window estimate of coverage probability,
 #'   and the traditional estimate of coverage probability.
-#'   This can save significant computation time if these estimates already exist.
+#'   If these estimates already exist then \code{racscovariance.cvchat} can save significant computation time.
 racscovariance.cvchat <- function(cvchat, cpp1 = NULL, phat = NULL, modifications = "all", drop = FALSE){
   harmonised <- harmonise.im(cvchat = cvchat, cpp1 = cpp1)
   cvchat <- harmonised$cvchat
