@@ -1,5 +1,5 @@
 #' @title Covariance Estimation
-#' @export racscovariance balancedracscovariance.cvchat  racscovariance.cvchat
+#' @export racscovariance racscovariance.cvchat
 #' @description 
 #' Estimates the covariance of a stationary RACS from a binary map. 
 #' The traditional covariance estimator and
@@ -22,7 +22,7 @@
 #'  See \code{coverageprob} for more information.
 #' @param cvchat The traditional estimate of covariance in \code{im} format. 
 #' Typically created with \code{\link{tradcovarest}}.
-#' @param cpp1 Picka's reduced estimate of coverage probability in \code{im} format - used in improved (balanced) covariance estimators.
+#' @param cpp1 Picka's reduced window estimate of coverage probability in \code{im} format - used in improved (balanced) covariance estimators.
 #' Can be generated using \code{\link{cppicka}}.
 #' @param modification A string specifying the desired modification. See details.
 #' @param modifications A list of strings specifying covariance estimators to use. 
@@ -33,7 +33,7 @@
 #' @return 
 #' If \code{drop = TRUE} and only one estimator is requested then 
 #' an \code{im} object containing the covariance estimate.
-#'  Otherwise a named \code{imlist} of such covariance estimates corresponding to each requested estimator.
+#'  Otherwise a named \code{imlist} of covariance estimates corresponding to each requested estimator.
 
 
 #' @keywords spatial nonparametric
@@ -70,26 +70,22 @@
 #' The estimators available are (see [Chapter 4, hingee2019thesis] for information): 
 #' \itemize{
 #' \item{\code{none}} the traditional covariance estimator
-#' \item{\code{mattfeldt**}} an estimator inspired by an 
+#' \item{\code{mattfeldt}} an estimator inspired by an 
 #' `intrinsically' balanced pair-correlation estimator from Picka that was later studied in an
 #' isotropic situation by Mattfeldt and Stoyan [mattfeldt2000im]
-#' \item{pickaint} an estimator inspired by an 
+#' \item{\code{pickaint}} an estimator inspired by an 
 #' `intrinsically' balanced centred covariance estimator from Picka [picka2000va].
-#' \item{pickaH} an estimator inspired by the 
+#' \item{\code{pickaH}} an estimator inspired by the 
 #' `additively' balanced centred covariance estimator from Picka [picka2000va].
 #' }
 
 #' @examples
+#' #direct from a binary map
 #' xi <- heather$coarse
 #' obswin <- Frame(xi)
 #' balancedcvchats <- racscovariance(xi, obswin = Frame(xi), modifications = "all")
-#' balancedcvchats2 <- byconv_cvchats(xi, obswin = Frame(xi), modifications = "all")
 #' 
-#' # plot.solist(c(balancedcvchats, balancedcvchats2), ncols = 8)
-#' diff <- mapply(function(x, y) x - y, balancedcvchats, balancedcvchats2, SIMPLIFY = FALSE)
-#' # plot.solist(diff)
-#' 
-
+#' # from coverage probability estimates and traditional covariance estimate.
 #' phat <- coverageprob(xi, obswin = Frame(xi))
 #' cvchat <- tradcovarest(xi, inclraw = FALSE)
 #' cpp1 <- cppicka(xi, obswin = Frame(heather$coarse))
@@ -97,22 +93,9 @@
 #' cvchat <- harmonised$cvchat
 #' cpp1 <- harmonised$cpp1
 #' 
-#' balancedcvchat <- balancedracscovariance.cvchat(cvchat, cpp1, phat, modification = "pickaint")
-#' balancedcvchats <- racscovariance.cvchat(cvchat, cpp1, phat, modifications = "all")
-#' modifications <- c("none",
-#'  "symm",
-#'  "adrian",
-#'  "mattfeldt",
-#'  "mattfeldtmult",
-#'  "pickaint",
-#'  "pickaintmult",
-#'  "pickaH", 
-#'  function(cvchat, cpp1, phat) cvchat)
-#' balancedcvchats <- racscovariance.cvchat(cvchat, cpp1, phat, modifications = modifications)
-#' # plot(as.solist(balancedcvchats), equal.ribbon = TRUE)
+#' balancedcvchats <- racscovariance.cvchat(cvchat, cpp1, phat, modifications = "pickaH", drop = TRUE)
 #' 
-
-#' 
+#' @describeIn racscovariance Estimates covariance from a binary map.
 racscovariance <- function(xi, obswin = NULL,
         setcov_boundarythresh = NULL,
         modifications = "all",
@@ -125,39 +108,18 @@ racscovariance <- function(xi, obswin = NULL,
   return(cvchats)
 }
 
-
-#' @describeIn racscovariance Applies covariance balancing modification to precomputed cvchat, cpp1 and phat
-balancedracscovariance.cvchat <- function(cvchat, cpp1 = NULL, phat = NULL, modification = "pickaH"){
-  harmonised <- harmonise.im(cvchat = cvchat, cpp1 = cpp1)
-  cvchat <- harmonised$cvchat
-  cpp1 <- harmonised$cpp1
-  balancedcvchat <- switch(modification,
-         none = cvchat,
-         symm = balancedracscovariance_symm(cvchat),
-         adrian = balancedracscovariance_adrian(cvchat, cpp1, phat),
-         mattfeldt = balancedracscovariance_mattfeldt_add(cvchat, cpp1, phat),
-         mattfeldtmult = balancedracscovariance_mattfeldt_mult(cvchat, cpp1, phat),
-         pickaint = balancedracscovariance_picka_int(cvchat, cpp1, phat),
-         pickaintmult = balancedracscovariance_picka_intmult(cvchat, cpp1, phat),
-         pickaH = balancedracscovariance_picka_H(cvchat, cpp1, phat),
-         stop(paste("Modification", modification, "not found.")) 
-         )
-  return(balancedcvchat)
-}
-
-#' @describeIn racscovariance Applies multiple modifications simultaneously from a precomputed cvchat, cpp1 and phat
+#' @describeIn racscovariance Applies generates covariances estimates from
+#'   a traditional estimate of covariance estimate, Picka's reduced window estimate of coverage probability,
+#'   and the traditional estimate of coverage probability.
+#'   This can save significant computation time if these estimates already exist.
 racscovariance.cvchat <- function(cvchat, cpp1 = NULL, phat = NULL, modifications = "all", drop = FALSE){
   harmonised <- harmonise.im(cvchat = cvchat, cpp1 = cpp1)
   cvchat <- harmonised$cvchat
   cpp1 <- harmonised$cpp1
   fcns <- list(
          none = function(cvchat, cpp1 = NULL, phat = NULL) cvchat,
-         symm = balancedracscovariance_symm,
-         adrian = balancedracscovariance_adrian,
          mattfeldt = balancedracscovariance_mattfeldt_add,
-         mattfeldtmult = balancedracscovariance_mattfeldt_mult,
          pickaint = balancedracscovariance_picka_int,
-         pickaintmult = balancedracscovariance_picka_intmult,
          pickaH = balancedracscovariance_picka_H
   )
   if ((modifications == "all")[[1]]) {modifications <- names(fcns)}
@@ -176,28 +138,12 @@ racscovariance.cvchat <- function(cvchat, cpp1 = NULL, phat = NULL, modification
 }
 
 
-balancedracscovariance_symm <- function(cvchat, cpp1 = NULL, phat = NULL){
-  return((cvchat + reflect.im(cvchat))/2) 
-}
-
-balancedracscovariance_adrian <- function(cvchat, cpp1, phat){
-  return(cvchat - cpp1*cpp1 + phat^2) 
-}
-
 balancedracscovariance_mattfeldt_add <- function(cvchat, cpp1, phat){
   return(cvchat - ( (cpp1 + reflect.im(cpp1))/2 )^2 + phat^2) 
 }
 
-balancedracscovariance_mattfeldt_mult <- function(cvchat, cpp1, phat){
-  return(cvchat * phat^2/ ( ( (cpp1 + reflect.im(cpp1))/2 )^2) ) 
-}
-
 balancedracscovariance_picka_int <- function(cvchat, cpp1, phat){
   return(cvchat - cpp1*reflect.im(cpp1) + phat^2) 
-}
-
-balancedracscovariance_picka_intmult <- function(cvchat, cpp1, phat){
-  return(cvchat * phat^2 / (cpp1*reflect.im(cpp1))) 
 }
 
 balancedracscovariance_picka_H <- function(cvchat, cpp1, phat){
