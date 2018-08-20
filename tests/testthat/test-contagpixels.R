@@ -84,10 +84,19 @@ test_that("contagpixelgrid operates when passed im objects", {
   vectmp[3:length(vectmp)] <- TRUE
   vectmp[1:2] <- FALSE #two points to avoid zero adjacency
   testmat <- matrix(vectmp,nrow=100,ncol=100)
-  xi <- as.im(testmap)
+  xi <- as.im(testmat)
   expect_equal(contagpixelgrid(xi,normalise=TRUE),
                1, tolerance = 0.01)
   #result should be close to 1
   
-
+  #should have 0 nbrs of Xi and Xi, and 4 nbrs of xi and not xi
+  #should have 4 nbrs of not xi and xi, and lots of not xi and not xi
+  testmat <- matrix(FALSE,nrow=5,ncol=5)
+  testmat[2,2] <- TRUE
+  xi <- as.im(testmat)
+  xi[owin()] <- NA
+  adjmat <- adjacency(xi)
+  expect_equal(adjmat,
+               matrix(c(0, 4, 4, 68), nrow = 2, ncol = 2, byrow = TRUE),
+               check.attributes = FALSE)
 })

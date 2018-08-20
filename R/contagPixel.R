@@ -37,13 +37,25 @@
 #' contagion <- contagpixelgrid(xi,obswin)
 #' contagion
 
-#' @section Warning: Will fail if there are no adjacencies
+#' @section Warning: Will fail if map is either all foreground or all background.
 #' @describeIn contagpixelgrid Traditional contagion LPI of a binary map.
 contagpixelgrid <- function(xi, obswin, normalise=FALSE){
-  stopifnot(is.mask(xi))
-  out <- harmonise(xi,obswin)
-  xi <- out[[1]]
-  obswin <- out[[2]]
+  if("im" %in% class(xi)){isbinarymap(xi, requiretrue = TRUE)
+  }  else if (is.owin(xi) && is.null(obswin)){stop("obswin must be included if xi is an owin object.")}
+  
+  if (is.owin(xi)){
+    out <- harmonise(xi,obswin)
+    xi <- out[[1]]
+    obswin <- out[[2]]
+    xic <- intersect.owin(complement.owin(xi),obswin)
+    xi <- intersect.owin(xi,obswin)
+  }
+  
+  if (is.im(xi)){
+    obswin <- solutionset(!is.na(xi))
+    xi <- solutionset(xi == 1)
+  }
+
   adjmat <- adjacency(xi,obswin)
   # num pixels in obswin?
   propOfXi <- sum(as.matrix(intersect.owin(xi,obswin)))/sum(as.matrix(obswin))
@@ -60,15 +72,23 @@ contagpixelgrid <- function(xi, obswin, normalise=FALSE){
 
 #' @describeIn contagpixelgrid Calculates the adjacency matrix used in the pixel contagion
 adjacency <- function(xi, obswin = NULL){
-  if("im" %in% class(xi)){isbinarymap(xi, requiretrue = TRUE)}
-  else if (is.owin(xi) && is.null(obswin)){stop("obswin must be included if xi is an owin object.")}
+  if("im" %in% class(xi)){isbinarymap(xi, requiretrue = TRUE)
+    }  else if (is.owin(xi) && is.null(obswin)){stop("obswin must be included if xi is an owin object.")}
   
-  if (is.owin(xi){
-    xi <- as.im(xi, value = TRUE, na.replace = FALSE)
-    xi[setminus.owin(Frame(xi), obswin)] <- NA
+  if (is.owin(xi)){
+    xic <- intersect.owin(complement.owin(xi),obswin)
+    xi <- intersect.owin(xi,obswin)
   }
-  xic <- intersect.owin(complement.owin(xi),obswin)
-  xi <- intersect.owin(xi,obswin)
+  if (is.im(xi)){
+    obswin <- solutionset(!is.na(xi))
+    xi <- solutionset(xi == 1)
+  }
+  
+  stopifnot(is.mask(xi))
+  xic <- intersect.owin(complement.owin(xi), obswin)
+  xi <- intersect.owin(xi, obswin)
+  
+
   #neighbours of points in xi that are also in xi, in each direction
   #(4 neighbourhood)
   numNnbr <- sum(as.matrix(intersect.owin(xi,shift.owin(xi,vec=c(0,-xi$ystep)))))
