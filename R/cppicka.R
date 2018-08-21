@@ -1,39 +1,41 @@
-#' @title Picka's Modified Estimator of Coverage Probability
+#' @title Picka's Reduced Window Estimator of Coverage Probability
 #' @author Kassel Liam Hingee 
 #' @import spatstat
 #' @export cppicka
 #' 
 #' @description 
-#' Picka2000va modifies coverage probability and covariance estimators to develop estimators of centered covariance and pair-correlation function that are balanced.
-#' The entity computed by this function corresponds to Picka's \eqn{\hat{m}_1[\check{0},v]}.
-#' The result should be 
-#' \deqn{\frac{|\Xi \cap W \cap (W \oplus v)|} {|W \cap (W\oplus v)|} }
-#' @param xi An observation of a RACS in \pkg{spatstat}'s \code{owin} or \code{im} format.
-#' @param obswin The window of observation (not necessarily rectangular) also in \code{owin} format.
-#' @param setcov_boundarythresh Any vector \eqn{v} such that set covariance of the observation window is smaller than this threshold is given a value of NA to avoid instabilities caused by dividing by very small areas 
+#' This function provides estimates of coverage probability from subsets of the observation window,
+#'  which are a key component of balanced estimators of covariance, centred covariance, pair-correlation and mass variance lacunarity.
+#' @param xi A binary map of an observation of a RACS of interest. See
+#'   \code{\link{stationaryracsinference-package}} for details.
+#' @param obswin If \code{xi} is an \code{owin} object then \code{obswin} is an
+#'   \code{owin} object that specifies the observation window.
+#' @param setcov_boundarythresh Any vector \eqn{v} such that set covariance of the observation window
+#'  is smaller than this threshold is given a covariance of NA to avoid instabilities caused by dividing by very small areas, 
 
 
-#' @return An estimate of the coverage probability
-#' @details
-#' If \code{xi} is in \code{im} format then \code{xi} must be an image of 1s, 0s and NAs
-#'  representing inside the set, outside the set and outside the observation window respectively.
-#'  \code{coverageprob} will not accept a \code{obswin} argument if \code{xi} is in \code{im} format.
+#' @return An \code{im} object. Pixel values correspond to estimates of the coverage probability
+#' from the subregion of the observation window, \eqn{W}, that is the intersection \eqn{W} and \eqn{W} shifted by vector \eqn{v}, where \eqn{v} is the pixel location.
 #' 
+#' @details
+#' The traditional covariance estimator uses less of the observation window than the traditional coverage probability.
+#' Picka [picka1997va,picka2000va] created new 'balanced' estimators of centred covariance and pair-correlation
+#' that accounted for this difference.
+#' A key component of Picka's estimators is an estimate of the coverage probability from the subregion of the binary map that is
+#' the intersection between \eqn{W} and \eqn{W} shifted by vector \eqn{v}, where \eqn{W} is the observation window [picka2000va, p687].
+#' If we treat \eqn{X} and \eqn{W} as indicator functions representing the foreground and observation window respectively,
+#'  this coverage probability estimator used by Picka is
+#' \deqn{ \frac{\int X(u) W(u) W(u - v) du} {\int W(u) W(u - v) du}. }{integral(X(u) W(u) W(u - v) du)  /  integral(W(u) W(u - v) du).}
+#' 
+#' \code{cppicka} produces these estimates for an array of vectors \eqn{v} using fast Fourier transforms.
+
 #' @examples
 #' xi <- heather$coarse
 #' obswindow <- Frame(heather$coarse)
 #' cp <- coverageprob(xi, obswindow)
 #' cpp1 <- cppicka(xi, obswindow)
 #' cpp1[as.ppp(c(0,0), W = obswindow)]
-#' # plot(cpp1[cpp1 < 2, drop = FALSE])
 #' 
-#' #test that it is doing what we expect for a single vector
-#' xi <- shift.owin(square(r = 1), vec = c(2, 2))
-#' win <- square(r = 4)
-#' #expect cppicka at v = c(2,2) to return 1/(2*2)
-#' #expect cppicka at v = c(-2, -2) to return 0
-#' cpp1 <- cppicka(xi, obswin = win)
-#' cpp1[ppp(x = c(2, -2), y = c(2, -2), window = Frame(cpp1))]
 
 #' @keywords spatial nonparametric
 cppicka <- function(xi, obswin = NULL,

@@ -14,9 +14,9 @@
 #'  If \code{normalise} is \code{TRUE} then result is divided by \eqn{-log(1/4)} and translated by 1 to force contagion 
 #'  between 0 and 1.
 #'  
-#' @section Warning: there might still be some instability for covariance very close, but less than p
+#' @section Warning: there might be some instability for covariance at estimates that are very close to p (**where is this comment coming from!?)
 #
-#' @param covariance is a map of covariance in spatstat \code{im} format
+#' @param covariance (estimated) covariance in \code{im} format
 #' @param p is an estimated coverage fraction. If none is provided an estimate is made using covariance (see details).
 #' @param v is an optional input. It is a vector in format c(x,y)
 #' @param normalise If true normalises the results so that all RACS return a value between 0 and 1

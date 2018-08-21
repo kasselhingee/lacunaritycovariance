@@ -21,3 +21,18 @@ test_that("cppicka matchs phat at centre", {
   expect_equal(cppickacentre, phat)
 })
 
+test_that("cppicka gives expected results for a toy image", {
+  #test that it is doing what we expect for a single vector
+  xi <- shift.owin(square(r = 1), vec = c(2, 2))
+  win <- square(r = 4)
+  cpp1 <- cppicka(xi, obswin = win)
+  #expect cppicka at v = c(2,2) to return 1/(2*2)
+  expect_equal(cpp1[ppp(x = 2, y = 2, window = Frame(cpp1))],
+               1/4  )
+  #expect cppicka at v = c(-2, -2) to return 0
+  expect_equal(cpp1[ppp(x = -2, y = -2, window = Frame(cpp1))],
+               0  )
+  #expect cppicka at v = c(2, 0) to return 1 / 8
+  expect_equal(cpp1[ppp(x = 2, y = 0, window = Frame(cpp1))],
+               1 / 8  )
+})
