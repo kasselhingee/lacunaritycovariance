@@ -1,4 +1,4 @@
-context("MVL estimation")
+context("Estimation - MVL")
 
 test_that("mvlc() warns of unexpected inputs", {
   covar <- tradcovarest(heather$coarse)

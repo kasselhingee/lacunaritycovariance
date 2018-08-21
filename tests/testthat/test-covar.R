@@ -1,4 +1,4 @@
-context("Covariance Estimation")
+context("Estimation - Covariance")
 
   spatstat.options(npixel = 512) #to make default pixelisations higher resolution
   #estimate covariance of owin (covariance of image already estimated in help code)

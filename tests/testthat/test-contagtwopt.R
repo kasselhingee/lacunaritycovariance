@@ -1,4 +1,4 @@
-context("Contagion Computations")
+context("Estimation - Contagion")
 # test twopt contag
 
 test_that("Two Point (Covariance) Contagion is consitent with past computations", {

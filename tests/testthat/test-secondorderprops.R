@@ -1,4 +1,4 @@
-context("Estimation")
+context("Estimation - second order properties")
 
 test_that("secondorderprop() produces output of the expected classes given different arguments", {
   xi <- heather$coarse

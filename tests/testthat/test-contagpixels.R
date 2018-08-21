@@ -1,4 +1,4 @@
-context("Contagion Computations")
+context("Estimation - Contagion")
 
 test_that("Pixel Adjacency Contagion gives correct results on toy images", {
 #should have 0 nbrs of Xi and Xi, and 4 nbrs of xi and not xi

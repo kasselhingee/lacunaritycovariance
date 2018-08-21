@@ -1,4 +1,4 @@
-context("Reading Ims")
+context("Internals")
 
 #creating a test that involves NA values in an image
 w <- setminus.owin(Frame(heather$coarse), square(5)) 

@@ -1,4 +1,4 @@
-context("Summary Functions")
+context("Summarising Operations")
 
 test_that("summary.imlist matches point wise summaries", {
   xy <- as.mask(square(1), eps = 0.1)

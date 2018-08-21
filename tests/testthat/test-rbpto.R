@@ -1,4 +1,4 @@
-context("Simulation")
+context("RACS Simulation")
 
 test_that("rbpto generates simulations that match covariance for big window", {
   win <- owin()

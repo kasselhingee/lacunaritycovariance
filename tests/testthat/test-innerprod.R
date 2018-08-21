@@ -1,4 +1,4 @@
-context("MVL Estimation")
+context("Internals")
 
 test_that("Inner product gives correct error results",  {
   A <- as.im(function(x,y) {sin(x/2.0)},W=square(4*pi),eps=0.01)

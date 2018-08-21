@@ -1,4 +1,4 @@
-context("Covariance Estimation")
+context("Estimation - Covariance")
 
 test_that("balanced covar estimation using convolutions as the base object match balancedracscovariance", {
   xi <- heather$coarse

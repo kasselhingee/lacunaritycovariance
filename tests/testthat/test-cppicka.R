@@ -1,4 +1,4 @@
-context("cppicka")
+context("Estimation - Covariance")
 
 #cppikca is already tested indirectly through covar().
 # it would be very cool in the future to use my analytical computations for rectangles to test cppicka

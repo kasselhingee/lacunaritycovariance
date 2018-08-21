@@ -1,3 +1,5 @@
+context("Estimation - Contagion")
+
 test_that("contagdiscstate is returning the correct format", {
   xi <- heather$coarse
   obswindow <- Frame(heather$coarse)

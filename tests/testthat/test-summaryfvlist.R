@@ -1,4 +1,4 @@
-context("Summary Functions")
+context("Summarising Operations")
 
 test_that("summary.fvlist gives correct numbers for constant function", {
   xvals <- seq(0, 1, by = 0.1)
