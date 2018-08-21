@@ -1,23 +1,39 @@
-#' @title Covariance-based calculations of mass variance lacunarity
+#' @title Mass variance lacunarity estimates from traditional covariance estimator
 #' @export mvlc
 #'
-#' @description Estimates the mass variance lacunarity (MVL) of a stationary RACS from a bi-tonal image using the covariance method.
-#'  It can also calculate the MVL of a RACS from a provided covariance (two-point probability) and coverage probability. 
+#' @description 
+#' Can be used to estimate the mass variance lacunarity (MVL) of a stationary RACS from a binary map
+#'  using the traditional covariance estimate.
+#'  It can also calculate the MVL of a RACS from a provided covariance and coverage probability. 
 
 #' @details
-#' If we denoted the estimated covariance by \eqn{\hat{C}(v)} and coverage probability \eqn{\hat{p}} then the estimate of MVL is
-#' \deqn{\frac{1}{\hat{p}^2 |B|^2}\int \gamma_B(v)\hat{C}(v)dv -1 }
+#' Computes a numerical approximation of 
+#' \deqn{\int \gamma_B C(v) dv / (p^2 |B|^2) - 1 .}{\int gammaB C(v) dv / (p^2 |B|^2) - 1,}
+#' where \eqn{B} is a given set (often called a box),
+#' \eqn{\gamma_B}{gammaB} is the set covariance of \eqn{B},
+#' \eqn{|B|} is the area of \eqn{B},
+#' \eqn{p} is the coverage probability of a stationary RACS, and
+#' \eqn{C(v)} is the covariance of a stationary RACS.
+#' This can be used to compute the MVL from model parameters by passing \code{mvlc} the 
+#' covariance and coverage probability of the model.
+#' 
+#' If a binary map is supplied then \eqn{p} and \eqn{C(v)} are estimated using
+#'  the traditional coverage probability and covariance estimators respectively 
+#'  (see \code{link{coverageprob}} and \code{\link{tradcovarest}}).
 
 #' @param boxes Either a list of sidelengths for square boxes or a list of \code{owin} objects of any shape.
 #' @param covariance  A \code{im} object containing the covariance function
 #' @param p The coverage probability. Typically estimated by the fraction of the observation window covered by the set of interest.
 #' @param xiim An observation of a stationary RACS in \code{im} format. \code{xiim} must have values of either 1, 0 or NA; 1 denotes inside the RACS, 0 denotes outside, and NA denotes unobserved.
 
-#' @return If \code{boxes} is a list of numerical values then MVL is estimated for square boxes with side length given by \code{boxes}.
-#'  The returned object is then an \code{fv} object containing estimates of MVL, box mass variance and box mass mean.
-#'  If \code{boxes} is a list of owin objects then \code{mvlc} returns a dataframe of with columns corresponding to estimates of MVL, box mass variance and box mass mean.
-#'  Note if NA or NaN values in the \code{covariance} object are used then \code{mvlc} will return NA or NaN instead of an MVL value. 
-#'  If the true covariance function and coverage probability of a RACS are passed to \code{mvlc} then the results will be the true MVL, box mass variance and box mass mean for the RACS.
+#' @return If \code{boxes} is a list of numerical values then MVL is estimated 
+#' for square boxes with side length given by \code{boxes}.
+#'  The returned object is then an \code{fv} object containing estimates of MVL,
+#'   box mass variance and box mass mean.
+#'  If \code{boxes} is a list of owin objects then \code{mvlc} returns a 
+#'  dataframe of with columns corresponding to estimates of MVL, box mass variance and box mass mean.
+#' 
+#'   Note if NA or NaN values in the \code{covariance} object are used then \code{mvlc} will return NA or NaN. 
 
 #' @examples
 #' xi <- heather$coarse
