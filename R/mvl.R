@@ -157,5 +157,5 @@ mvl.cvchat <- function(boxwidths,
 
 
 
-MVLgestimatornames <- c("MVLg.none", "MVLg.mattfeldt", "MVLg.pickaint", "MVLg.pickaH")
-MVLccestimatornames <- c("MVLcc.none", "MVLcc.mattfeldt", "MVLcc.pickaint", "MVLcc.pickaH")
+MVLgestimatornames <- c("MVLg.trad", "MVLg.mattfeldt", "MVLg.pickaint", "MVLg.pickaH")
+MVLccestimatornames <- c("MVLcc.trad", "MVLcc.mattfeldt", "MVLcc.pickaint", "MVLcc.pickaH")

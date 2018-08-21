@@ -68,7 +68,7 @@
 
 #' The estimators available are (see [Chapter 4, hingee2019thesis] for information): 
 #' \itemize{
-#' \item{\code{none}} the traditional covariance estimator
+#' \item{\code{trad}} the traditional covariance estimator
 #' \item{\code{mattfeldt}} an estimator inspired by an 
 #' `intrinsically' balanced pair-correlation estimator from Picka that was later studied in an
 #' isotropic situation by Mattfeldt and Stoyan [mattfeldt2000im]
@@ -116,7 +116,7 @@ racscovariance.cvchat <- function(cvchat, cpp1 = NULL, phat = NULL, modification
   cvchat <- harmonised$cvchat
   cpp1 <- harmonised$cpp1
   fcns <- list(
-         none = function(cvchat, cpp1 = NULL, phat = NULL) cvchat,
+         trad = function(cvchat, cpp1 = NULL, phat = NULL) cvchat,
          mattfeldt = balancedracscovariance_mattfeldt_add,
          pickaint = balancedracscovariance_picka_int,
          pickaH = balancedracscovariance_picka_H

@@ -40,7 +40,7 @@
 #'   The estimators available are (see [Chapter 4, hingee2019thesis] for
 #'   more information): 
 #'   \itemize{ 
-#'   \item{\code{none}} the traditional pair-correlation estimator which is \eqn{Chat(v) / (phat^2)}, where \eqn{Chat} and \eqn{phat} are 
+#'   \item{\code{trad}} the traditional pair-correlation estimator which is \eqn{Chat(v) / (phat^2)}, where \eqn{Chat} and \eqn{phat} are 
 #' the traditional estimates of coverage probability and covariance respectively. 
 #'   \item{\code{mattfeldt}} an `intrinsically' balanced pair-correlation estimator suggested by Picka.
 #'   A similar isotropic pair-correlation estimator was later studied by Mattfeldt and Stoyan [mattfeldt2000im].
@@ -85,7 +85,7 @@ paircorr.cvchat <- function(cvchat, cpp1 = NULL, phat = NULL, modifications = "a
   cvchat <- harmonised$cvchat
   cpp1 <- harmonised$cpp1
   fcns <- list(
-         none = pcln_none,
+         trad = pcln_trad,
          symm = pcln_symm,
          mattfeldt = pcln_mattfeldt,
          pickaint = pcln_picka_intr,
@@ -106,7 +106,7 @@ paircorr.cvchat <- function(cvchat, cpp1 = NULL, phat = NULL, modifications = "a
 }
 
 
-pcln_none <- function(cvchat, cpp1 = NULL, phat = NULL){
+pcln_trad <- function(cvchat, cpp1 = NULL, phat = NULL){
   return(cvchat / (phat^2)) 
 }
 

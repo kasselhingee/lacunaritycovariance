@@ -47,7 +47,7 @@ test_that("racscovariance pickaH method matches theoretical covariance for Boole
   expect_lt(max(isocovarresid$pickaint),  0.1)
   expect_lt(max(isocovarresid$mattfeldt),  0.1)
   expect_lt(max(isocovarresid[, fvnames(isocovarresid, a = "."), drop = TRUE]), 0.1)
-  #expect_lt(max(isocovarresid[, fvnames(isocovarresid, a = ".") != "none"]), 0.1)
+  #expect_lt(max(isocovarresid[, fvnames(isocovarresid, a = ".") != "trad"]), 0.1)
   
 })
 

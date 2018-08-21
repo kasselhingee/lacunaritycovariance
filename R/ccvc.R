@@ -37,7 +37,7 @@
 #'   The estimators available are (see [Chapter 4, hingee2019thesis] for
 #'   information): 
 #'   \itemize{ 
-#'   \item{\code{none}} the traditional centred
+#'   \item{\code{trad}} the traditional centred
 #'   covariance estimator 
 #'   \item{\code{mattfeldt}} an estimator inspired by an
 #'   `intrinsically' balanced pair-correlation estimator from Picka that was
