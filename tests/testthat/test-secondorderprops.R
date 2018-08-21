@@ -5,11 +5,12 @@ test_that("secondorderprop() produces output of the expected classes given diffe
   xiim <- as.im(xi, value = TRUE, na.replace = FALSE)
 
   #operates with all props going "everythingmode"
-  secondests <- secondorderprops(xiim, 
+  expect_warning(secondests <- secondorderprops(xiim, 
     mvlargs = list(boxwidths = seq(1, 10, by = 0.1)),
     covarargs = list(modifications = "all"),
     paircorrargs = list(modifications = "all"),
-    returnrotmean = FALSE)
+    returnrotmean = FALSE),
+    regexp = "harmonised")
   expect_s3_class(secondests$MVL, "fv")
   expect_s3_class(secondests$covariance, "imlist")
   expect_s3_class(secondests$paircorr, "imlist")
@@ -23,11 +24,12 @@ test_that("secondorderprop() produces output of the expected classes given diffe
   expect_length(secondests, 0)
 
   #test with rotmean and multiple estimators
-  secondests <- secondorderprops(xiim, 
+  expect_warning(secondests <- secondorderprops(xiim, 
     mvlargs = list(boxwidths = seq(1, 10, by = 0.1)),
     covarargs = list(modifications = "all"),
     paircorrargs = list(modifications = "all"),
-    returnrotmean = TRUE)
+    returnrotmean = TRUE),
+    regexp = "harmonised")
   expect_s3_class(secondests$MVL, "fv")
   expect_s3_class(secondests$covariance, "fv")
   expect_s3_class(secondests$paircorr, "fv")

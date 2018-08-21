@@ -44,7 +44,8 @@ test_that("racscovariance pickaH method matches theoretical covariance for Boole
 
   #expect that this residual is smaller than 10% of the true covariance
   expect_lt(max(isocovarresid$pickaH),  0.1)
-  expect_lt(max(isocovarresid$pickaintmult),  0.1)
+  expect_lt(max(isocovarresid$pickaint),  0.1)
+  expect_lt(max(isocovarresid$mattfeldt),  0.1)
   expect_lt(max(isocovarresid[, fvnames(isocovarresid, a = "."), drop = TRUE]), 0.1)
   #expect_lt(max(isocovarresid[, fvnames(isocovarresid, a = ".") != "none"]), 0.1)
   
