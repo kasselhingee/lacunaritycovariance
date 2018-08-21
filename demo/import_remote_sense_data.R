@@ -8,7 +8,7 @@ opa <- par(mfrow=c(1,1))
 
 # This document demonstrates how to convert raster data stored in a
 # remote sensing format and an observation window in an ESRI shapefile
-# format into a format suitable for the package statracstools.
+# format into a format suitable for the package stationaryracsinference.
 
 # For this demo you will need the following R packages installed: 
 #  rgdal You will need to install GDAL (http://www.gdal.org/)
@@ -25,7 +25,7 @@ opa <- par(mfrow=c(1,1))
 #    0 or NA representing foreground, background and outside the
 #    observation window respectively.
 # The result will be something like this:
-load(system.file("extdata/egbinarymap.RData", package="statracstools")) 
+load(system.file("extdata/egbinarymap.RData", package="stationaryracsinference")) 
 plot(egbinarymap, col = c("grey", "black"), main = "The Final Result of This Demo")
 rm(egbinarymap)
 
@@ -33,7 +33,7 @@ rm(egbinarymap)
 # 1. Reading ESRI Shapefile in SpatialPolygonsDataFrame #
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 library("rgdal") # rgdal is used here to read the ESRI shapefile into a SpatialPolygonsDataFrame
-regionfilepath <- system.file("extdata", package="statracstools")
+regionfilepath <- system.file("extdata", package="stationaryracsinference")
 obspoly <- readOGR(regionfilepath, "aregionofinterest", verbose = FALSE)
 #For ESRI Shapefiles:
 #   the first argument of readOGR is the directory containing the shape files
@@ -59,7 +59,7 @@ library("raster") # reads in remotely sensed raster data in a wide variety of fo
 #### First unzip the example raster data
 #(raster data was compressed in a zip to save space)
 rsdatafilepath <- system.file("extdata/demorsraster.zip",
-                              package="statracstools")
+                              package="stationaryracsinference")
 rsfiles <- unzip(rsdatafilepath,exdir=tempdir())
 
 #### Open raster data file (this does not read the raster data)
@@ -80,13 +80,13 @@ xiimage <- as.im.RasterLayer(xidataset) # uses package maptools
 unitname(xiimage) <- c("metre","metres") # manually set units
 # remove raster data outside observation window:
 xiimage[setminus.owin(Frame(xiimage), obsowin)] <- NA
-plot(xiimage, col = c("grey", "black"), main = "im Object Ready for statracstools")
+plot(xiimage, col = c("grey", "black"), main = "im Object Ready for stationaryracsinference")
 
 # # # #
 # End #
 # # # #
 # The xiimage has values of 1, 0 and NA. It is ready be analysed
-# using statracstools.
+# using stationaryracsinference.
 
 
 # Thank you,

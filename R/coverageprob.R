@@ -11,7 +11,7 @@
  
 #' 
 #' @param xi A binary map of an observation of a RACS of interest. See
-#'   \code{\link{statracstools-package}} for details.
+#'   \code{\link{stationaryracsinference-package}} for details.
 #' @param obswin The window of observation (not necessarily rectangular) also in \code{owin} format.
 #' @return An estimate of the coverage probability
 #' @details
