@@ -1,7 +1,7 @@
-#' @title Compute MVL estimates using all estimators
+#' @title Mass variance lacunarity estimatation using all estimators
 #' @export mvl mvl.cvchat
-#' @description This function computes all the MVL estimators described in Hingee 2019** for square boxes and raster binary maps.
-#' It calls the functions \code{MVLc}, \code{MVLg}, \code{MVLcc} and \code{MVLgb}.
+#' @description Estimates mass variance lacunarity (MVL) using all estimators described in [Hingee2019**] from binary maps for square box.
+#' It calls the functions \code{mvlc}, \code{mvlg}, \code{mvlcc} and \code{mvlgb}.
 
 #' @param xiim A \pkg{spatstat} \code{im} object with pixel values that are either TRUE, FALSE or NA. TRUE represents foreground, FALSE respresents background and NA represents unobserved locations.
 #' @param boxwidths A list of box boxwidths
@@ -17,16 +17,19 @@
 #' @return An \code{fv} object.
 
 #' @details
+#' The function is not able to estimate MVL for non-square boxes as the gliding box estimator is included.
+#' To estimate MVL for non-square boxes use \code{mvlcc} or \code{mvlg} directly.
+#' 
 #' The estimators available are
 #' \itemize{
-#' \item \code{"MVLc"} The unmodified (unbalanced) covariance estimator provided by \code{MVLc()}
-#' \item \code{"MVLgb"} The Gliding-Box estimator of Alain and Cloitre **ref. Calls \code{MVLgb()}
-#' \item \code{"MVLg.mattfeldt"} See help for \code{MVLg()}
-#' \item \code{"MVLg.pickaint"} See help for \code{MVLg()}
-#' \item \code{"MVLg.pickaH"} See help for \code{MVLg()}
-#' \item \code{"MVLcc.mattfeldt"} See help for \code{MVLcc()}
-#' \item \code{"MVLcc.pickaint"} See help for \code{MVLcc()}
-#' \item \code{"MVLcc.pickaH"} See help for \code{MVLcc()}
+#' \item{\code{"MVLc"}} The unmodified (unbalanced) covariance estimator provided by \code{\link{mvlc}}
+#' \item{\code{"MVLgb"}} The Gliding-Box estimator of Alain and Cloitre [allain1991ch]. Calls \code{\link{mvlgb}}
+#' \item{\code{"MVLg.mattfeldt"}} See help for \code{\link{mvlg}}
+#' \item{\code{"MVLg.pickaint"}} See help for \code{\link{mvlg}}
+#' \item{\code{"MVLg.pickaH"}} See help for \code{\link{mvlg}}
+#' \item{\code{"MVLcc.mattfeldt"}} See help for \code{\link{mvlcc}}
+#' \item{\code{"MVLcc.pickaint"}} See help for \code{\link{mvlcc}}
+#' \item{\code{"MVLcc.pickaH"}} See help for \code{\link{mvlcc}}
 #' }
 
 #' @examples 
@@ -34,6 +37,7 @@
 #' xiim <- as.im(xi, value = TRUE, na.replace = FALSE)
 #' mvlests <- mvl(xiim, seq(1, 10, by = 0.1))
 
+#' @describeIn mvl Computes MVL estimates from a binary map.
 mvl <- function(xiim, boxwidths,
                            estimators = c("MVLg.mattfeldt", "MVLg.pickaint", "MVLg.pickaH",
                                           "MVLcc.mattfeldt", "MVLcc.pickaint",
@@ -98,7 +102,8 @@ mvl <- function(xiim, boxwidths,
   return(allfvs)
 }
 
-#' @describeIn mvl Computes covariance-based estimator of MVL from traditional estimates of covariance, Picka's reduced coverage probability estimate and the traditional coverage probability estimate.
+#' @describeIn mvl Computes covariance-based estimator of MVL from the traditional estimate of covariance,
+#'  Picka's reduced window coverage probability estimates and the traditional coverage probability estimate.
 mvl.cvchat <- function(boxwidths,
                       estimators = c("MVLg.mattfeldt", "MVLg.pickaint", "MVLg.pickaH",
                                      "MVLcc.mattfeldt", "MVLcc.pickaint",
