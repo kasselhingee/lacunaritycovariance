@@ -138,7 +138,7 @@ MVL can be estimated using a variety of method, including the gliding-box algori
 \begin{figure}[H]
 \centering
 <<mvlestimation, fig = TRUE>>=
-mvlest <- mvl(xiim = egbinarymap, seq(1, 200/4, by = 1))
+mvlest <- mvl(xi = egbinarymap, seq(1, 200/4, by = 1))
 plot(mvlest[[1]], main = "MVL Estimate")
 @
 \caption{MVL Estimates.}
