@@ -1,5 +1,5 @@
 #' @title Simulation of Boolean Model of Deterministic Discs
-#' @export rbdd  bddcoverageprob bddcovar.iso bddcovar bddspectraldensity.atorigin bddspectraldensity bddlambda bdddiscr
+#' @export rbdd  bddcoverageprob bddcovar.iso bddcovar bddlambda bdddiscr
 #' @importFrom stats fft
 #'
 #' @description Functions for simulating a Boolean model with grains that are
@@ -9,7 +9,7 @@
 #'   according to a Poisson point process, then a random grain is placed on each
 #'   germ independently. Introduction to Boolean models are available in many
 #'   stochastic geometry books [3]. Also described here are
-#'   functions for calculating the coverage probability, germ intensity, spectral density, and
+#'   functions for calculating the coverage probability, germ intensity, and
 #'   covariance of a Boolean model with deterministic discs from model
 #'   parameters [1,2].
 #'
@@ -27,7 +27,6 @@
 #' @section WARNING:
 #' The returned object of \code{rbdd} is only the contents of Xi and thus could be much smaller than the window (e.g. when the simulated set is empty).
 #' 
-#' **remove bddspectral density.
 #' 
 #' @examples 
 #' #Boolean model with discs of radius 10.
@@ -130,62 +129,3 @@ bddcovar <- function(xrange, yrange, eps, lambda, discr){
   return(im(mat, xcol = xpts, yrow = ypts))
 }
 
-#' @describeIn rbdd  Computes the spectral density using the theoretical covariance and FFT
-bddspectraldensity <- function(lambda, discr){
-  xpts <- 0:(20 * discr) / 4
-  ypts <- 0:(20 * discr) / 4
-  mat <- outer(xpts, ypts, FUN = "bddcovar.vec", lambda = lambda, discr = discr) #rows correspond to xstep - just a quirk of outer!
-  #reflect out to all corners
-  mat <- mat[, c( (ncol(mat)):2, 1:ncol(mat))]
-  mat <- mat[c( (nrow(mat)):2, 1:nrow(mat)), ]
-  #theoretical p value
-  p <- 1 - exp(-pi * discr ^ 2 * lambda)
-
-  M <- mat - p ^ 2
-  nr <- nrow(M)
-  nc <- ncol(M)
-  #pad with lots of 0!
-  thcovpad <- matrix(0, ncol = 8 * nc, nrow = 8 * nr)
-  thcovpad[1:nr, 1:nc] <- M
-  scalefactorx <- (xpts[2] - xpts[1])
-  scalefactory <- (ypts[2] - ypts[1])
-  specdens <- scalefactorx * scalefactory * fft(thcovpad)
-  specdens <- abs(specdens)
-  nr <- nrow(specdens) #can use these because specdens has same dimensions as start
-  nc <- ncol(specdens)
-  if (nr %% 2 == 0){
-    specdens <- specdens[ ( (-nr / 2):(nr / 2)) %% (nr) + 1, ]
-    yrow <- ( (-nr / 2):(nr / 2)) * 2 * pi / (scalefactory * nr)
-  } else {
-    specdens <- specdens[ ( ( -(nr - 1) / 2):( (nr - 1) / 2)) %% (nr) + 1, ]
-    yrow <- ( ( -(nr - 1) / 2):( (nr - 1) / 2)) * 2 * pi / (scalefactory * nr)
-  }
-  if (nc %% 2 == 0){
-    specdens <- specdens[, ( (-nc / 2):(nc / 2)) %% (nc) + 1]
-    xcol <- ( (-nc / 2):(nc / 2)) * 2 * pi / (scalefactorx * nc)
-  } else {
-    specdens <- specdens[, ( ( -(nc - 1) / 2):(nc / 2)) %% (nc) + 1]
-    xcol <- ( ( -(nc - 1) / 2):(nc / 2))  *  2 * pi / (scalefactorx * nc)
-  }
-
-  specdens <- im(specdens, xcol = xcol, yrow = yrow)
-  return(specdens)
-}
-
-#' @describeIn rbdd Calculates spectral density at at the origin using the theoretical covariance.
-#' It is the integral of the (covariance - (coverage probability)^2) over all space.
-bddspectraldensity.atorigin <- function(lambda, discr){
-  xpts <- 0:(80 * discr) / 20
-  ypts <- 0:(80 * discr) / 20
-  mat <- outer(xpts, ypts, FUN = "bddcovar.vec", lambda = lambda, discr = discr) #rows correspond to xstep - just a quirk of outer!
-  #reflect out to all corners
-  mat <- mat[, c( (ncol(mat)):2, 1:ncol(mat))]
-  mat <- mat[c( (nrow(mat)):2, 1:nrow(mat)), ]
-  #theoretical p value
-  p <- 1 - exp(-pi * discr ^ 2 * lambda)
-
-  M <- mat - p ^ 2
-  scalefactorx <- (xpts[2] - xpts[1])
-  scalefactory <- (ypts[2] - ypts[1])
-  return(sum(M) * scalefactory * scalefactorx)
-}

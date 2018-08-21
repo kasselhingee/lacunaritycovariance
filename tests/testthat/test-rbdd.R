@@ -27,14 +27,6 @@ test_that("rbdd produces simulations with the correct area fraction", {
   expect_equal(coveragefrac(xi, w), truecoveragefrac, tolerance = confint_halfwidth)
 })
 
-test_that("Theoretical spectral density calculation is historically consistent", {
-  discr <- 10
-  lambda <- 2.2064E-3
-  thspecdens_origin <- bddspectraldensity.atorigin(lambda, discr)
-  expect_equal(thspecdens_origin, 64.41312, tolerance = 1E-5)
-  #I think the above number was checked to be consistent with plot in the Bohm paper
-})
-
 test_that("Computations of germ intensity, disc radius and coverage probability are correct",
  {
   expect_equal(bddcoverageprob(0.005, 5), 0.3247681)
