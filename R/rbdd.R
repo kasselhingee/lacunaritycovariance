@@ -1,24 +1,34 @@
 #' @title Simulation of Boolean Model of Deterministic Discs
-#' @export rbdd  bddcoverageprob bddcovar.iso bddcovar bddspectraldensity.atorigin bddspectraldensity bddlambda bdddiscr
+#' @export rbdd  bddcoverageprob bddcovar.iso bddcovar
+#'   bddspectraldensity.atorigin bddspectraldensity bddlambda bdddiscr
 #' @importFrom stats fft
-#' 
-#' @description Functions for simulating a Boolean model with grains that are discs of fixed constant radius (the abreviation bdd is short for Boolean model with Determinisitic Discs).
-#' A Boolean model is a two stage model, first the locations (called germs) of grains are randomly distributed according to a Poisson point process, then a random grain is placed on each germ independently.
-#' A thorough introduction can be found in [3].
-#' Also described in this help file are functions for calculating the true coverage probability, covariance, and spectral density from model parameters [1,2].
-#' 
-#' @param lambda Intensity of the germ process (which is a Poisson point process)
+#'
+#' @description Functions for simulating a Boolean model with grains that are
+#'   discs of fixed constant radius (the abreviation bdd is short for Boolean
+#'   model with Determinisitic Discs). A Boolean model is a two stage model,
+#'   first the locations (called germs) of grains are randomly distributed
+#'   according to a Poisson point process, then a random grain is placed on each
+#'   germ independently. Introduction to Boolean models are available in many
+#'   stochastic geometry books [3]. Also described here are
+#'   functions for calculating the coverage probability, germ intensity, spectral density, and
+#'   covariance of a Boolean model with deterministic discs from model
+#'   parameters [1,2].
+#'
+#' @param lambda Intensity of the germ process (which is a Poisson point
+#'   process)
 #' @param discr Radius of the discs
 #' @param coverp Coverage probability of the Boolean model
 #' @param window The window to simulate in (an owin object)
-#' @param seed Optional input (default in NULL). Is an integer passed to \code{\link{base}{set.seed}}. Used to reproduce patterns exactly.
+#' @param seed Optional input (default in NULL). Is an integer passed to
+#'   \code{\link{base}{set.seed}}. Used to reproduce patterns exactly.
 
 #' @return 
-#' Depends on the function used (see Functions section).
+#' See Functions section.
 
 #' @section WARNING:
 #' The returned object of \code{rbdd} is only the contents of Xi and thus could be much smaller than the window (e.g. when the simulated set is empty).
 #' 
+#' **remove bddspectral density.
 #' 
 #' @examples 
 #' #Boolean model with discs of radius 10.
@@ -31,12 +41,9 @@
 #' # plot(w, add = TRUE)
 #' 
 #' #calculate theoretical values of the model
-#' truecoverageprob <- bddcoverageprob(lambda, discr)
-#' truecovariance <- bddcovar(
+#' cp <- bddcoverageprob(lambda, discr)
+#' cvc <- bddcovar(
 #'                    c(-10, 10), c(-10, 10), c(0.2, 0.2), lambda, discr)
-#' thspecdens <- bddspectraldensity(lambda, discr)
-#' thspecdens_origin <- bddspectraldensity.atorigin(lambda, discr)
-#' thspecdens[round(dim(thspecdens)[2] / 2), round(dim(thspecdens)[1] / 2)]
 
 #' @references 
 #' [1] Koch, K., Ohser, J. and Schladitz, K. (2003) Spectral Theory for Random Closed Sets and Estimating the Covariance via Frequency Space. Advances in Applied Probability, 35, 603-613.
@@ -52,7 +59,7 @@
 #'  model with specified intensity and disc radius.
 #'  The window information is not contained in this object.
 #'  If the simulated set is empy then an empty \code{owin} object is returned.
-#' The point process of germs is generated using spatstat's \code{\link[spatstat]{rpoispp}}.
+#' The point process of germs is generated using \pkg{spatstat}'s \code{\link[spatstat]{rpoispp}}.
 rbdd <- function(lambda, discr, window, seed = NULL){
   grainlib <- solist(disc(radius = discr))
   bufferdist <- 1.1 * discr
