@@ -63,10 +63,10 @@ test_that("mvlgb operates as expected when pass im object", {
   expect_error(mvlgb(boxwidths, xiim.n3), regexp = "has values other than")
 })
 
-test_that("mvl() operates well when passed im or owin objects", {
+test_that("mvl() operates well when passed im or owin boxes", {
   boxwidths <- seq(1, 5, by = 1)
   expect_warning(mvlest.l <- mvl(xiim.l, boxwidths), regexp = "harmon")
   expect_warning(mvlest.n <- mvl(xiim.n, boxwidths), regexp = "harmon")
   expect_equal(mvlest.l, mvlest.n)
-  expect_error(mvl(xiim.n3, boxwidths), regexp = "has values other than")
+  expect_error(mvl(xiim.n3, boxwidths), regexp = "isbinarymap")
 })

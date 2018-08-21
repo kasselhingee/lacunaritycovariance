@@ -26,3 +26,9 @@ library(vdiffr)
 manage_cases(, filter = "addfvtomap")
 
 check(build_args = list("--compact-vignettes=gs+qpdf"))
+
+
+#code coverage report
+library(covr)
+out <- package_coverage()
+report(out)
