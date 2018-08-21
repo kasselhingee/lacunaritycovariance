@@ -1,24 +1,26 @@
 #' @title Test if an im object is a binary map
 #' @export isbinarymap
 #' @import spatstat
-#' @param xiim an image object
-#' @param requiretrue Logical. If TRUE then isbinarymap will error if xiim is NOT a binary map.
+#' @param xi an image object
+#' @param requiretrue Logical. If TRUE then isbinarymap will error if xi is NOT a binary map.
 #' @description
-#' Tests \code{xiim} to see if it is a binary map. The pixel values must be of logical type (TRUE, FALSE and NA only), or numerical with values of 0, 1 and NA.
+#' Tests whether \code{xi} is a binary map. 
+#' The pixel values must be of logical type (TRUE, FALSE and NA only), or numerical with values of 1, 0 and NA.
 
-#' @return Logical value. TRUE if \code{xiim} is a binary map. Otherwise FALSE.
+#' @return Logical value. TRUE if \code{xi} is a binary map. Otherwise FALSE.
+#' If \code{requiretrue = TRUE} and \code{xi} is not a binary map then an error will occur.
 
 #' @examples
-#' #The following return TRUE
+#' #The following returns TRUE
 #' isbinarymap(as.im(heather$coarse, na.value = 0))
 #' isbinarymap(as.im(heather$coarse, na.value = FALSE, value = TRUE))
-
-#' #the following return FALSE
+#' #
+#' #the following returns FALSE
 #' isbinarymap(as.im(heather$coarse, na.value = 0.2, value = 1))
 #' isbinarymap(as.im(heather$coarse, na.value = 0, value = 1.5))
 
-isbinarymap <- function(xiim, requiretrue = FALSE) {
-    uvals <- unique(as.list(as.matrix(xiim)))
+isbinarymap <- function(xi, requiretrue = FALSE) {
+    uvals <- unique(as.list(as.matrix(xi)))
     if ( !all(  (uvals %in% c(0, 1)) | is.na(uvals))  && 
              !all((uvals %in% c(FALSE, TRUE, NA)) | is.na(uvals)) ) {
         isbinary <- FALSE

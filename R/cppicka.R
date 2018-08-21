@@ -15,7 +15,7 @@
 
 
 #' @return An \code{im} object. Pixel values correspond to estimates of the coverage probability
-#' from the subregion of the observation window, \eqn{W}, that is the intersection \eqn{W} and \eqn{W} shifted by vector \eqn{v}, where \eqn{v} is the pixel location.
+#' from the subregion of the observation window, \eqn{W}, that is the intersection of \eqn{W} and \eqn{W} shifted by vector \eqn{v}, where \eqn{v} is the pixel location.
 #' 
 #' @details
 #' The traditional covariance estimator uses less of the observation window than the traditional coverage probability.
@@ -34,8 +34,6 @@
 #' obswindow <- Frame(heather$coarse)
 #' cp <- coverageprob(xi, obswindow)
 #' cpp1 <- cppicka(xi, obswindow)
-#' cpp1[as.ppp(c(0,0), W = obswindow)]
-#' 
 
 #' @keywords spatial nonparametric
 cppicka <- function(xi, obswin = NULL,

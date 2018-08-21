@@ -6,20 +6,23 @@
 #' \deqn{\int f(v) g(v) dv.}
 
 
-#' @param A An \code{im} object containing function values.
-#' @param B An \code{im} object.
-#' @param outsideA The value of the function represented by \code{A} outside the domain of \code{A}. Typically will be 0 or NA. Default is NA.
-#' @param outsideB The value of the function represented by \code{B} outside the domain of \code{B}. Typically will be 0 or NA. Default is NA.
+#' @param A An \code{im} object containing function values representing function \eqn{f}.
+#' @param B An \code{im} object containing function values representing function \eqn{g}.
+#' @param outsideA The value of \eqn{f} outside the domain of \code{A}. Typically will be 0 or NA. Default is NA.
+#' @param outsideB The value of \eqn{g} outside the domain of \code{B}. Typically will be \code{0} or \code{NA}. Default is \code{NA}.
 #' @param na.rm Logical. If TRUE NA values are skipped in the summation of the product of the images.
 
-#' @details
-#' Harmonises the two input images and computes their multiple. The sum of values of their multiples is then returned.
-#' outsideA and outsideB are used to determine how to act if the inner product requires values outside the domain of A and B.
-#' For example if outsideA=0 and the domain of B is larger than A's domain then the inner product can still be computed.
-#' However if A is NA outside (e.g. not known/not provided) and the domain of B is larger than A's domain then the inner product is not computable.
+#' @details Harmonises the two input images, multiplies them together and returns the
+#' integral of the resulting image.
+#'  \code{outsideA} and \code{outsideB} are used to determine result if the inner product requires
+#' values outside the domain of A or B. For example if \code{outsideA=0} and the
+#' domain of \code{B} is larger than \code{A}'s domain then the inner product
+#' can still be computed. However if \code{A} is \code{NA} outside (e.g. not
+#' known/not provided) and the domain of \code{B} is larger than \code{A}'s
+#' domain then the inner product is not computable and the returned value is \code{NA}
 
 #' @return 
-#' If the inner product can be computed then returns sum(A*B), otherwise returns NA.
+#' If the inner product can be computed then returns sum(\code{A} * \code{B}), otherwise returns \code{NA}.
 
 #' @examples
 #' xi <- heather$coarse
