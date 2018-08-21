@@ -107,7 +107,7 @@ contagdiscstate <- function(XiH, XicH, p, normalise=FALSE){
   tempstates[probofstate < 1E-8] <- 1
   contag <- colSums(probofstate * log(tempstates))
   if (normalise) {
-    contag <- 1 + contag / (-2 * ln(2))
+    contag <- 1 + contag / (-2 * log(2))
   }
   if (returnfv) {
   return(fv(data.frame(r = xvals,
