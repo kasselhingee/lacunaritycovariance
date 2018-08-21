@@ -138,11 +138,11 @@ mvl.cvchat <- function(boxwidths,
   if (sum(mvlgestimaterequests) + sum(mvlccestimaterequests) > 0){
     stopifnot(!is.null(cpp1), !is.null(cvchat), !is.null(phat))
     if (sum(mvlgestimaterequests) > 0){
-      pcln.ests <- paircorr.cvchat(cvchat, cpp1 = cpp1, phat = phat, modifications = gsub("MVLg.", "", estimators[mvlgestimaterequests]), drop = FALSE)
+      pcln.ests <- paircorr.cvchat(cvchat, cpp1 = cpp1, phat = phat, estimators = gsub("MVLg.", "", estimators[mvlgestimaterequests]), drop = FALSE)
       mvlgs <- lapply(pcln.ests, FUN = mvlg, boxes = boxwidths)
     }
     if (sum(mvlccestimaterequests) > 0){
-      ccvc.ests <- cencovariance.cvchat(cvchat, cpp1, phat, modifications = gsub("MVLcc.", "", estimators[mvlccestimaterequests]), drop = FALSE)
+      ccvc.ests <- cencovariance.cvchat(cvchat, cpp1, phat, estimators = gsub("MVLcc.", "", estimators[mvlccestimaterequests]), drop = FALSE)
       mvlccs <- lapply(ccvc.ests, FUN = mvlcc, p = phat, boxes = boxwidths)
     }
   }

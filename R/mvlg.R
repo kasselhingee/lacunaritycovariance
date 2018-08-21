@@ -20,7 +20,7 @@
 
 #' @examples
 #' xi <- heather$coarse
-#' pcln <- paircorr(as.im(xi, na.replace = 0), modifications = "pickaH", drop = TRUE)
+#' pcln <- paircorr(as.im(xi, na.replace = 0), estimators = "pickaH", drop = TRUE)
 #' sidelengths <- seq(0.3, 14, by = 0.2)
 #' mvlgest <- mvlg(sidelengths, pcln)
 #' # what is the MVL estimates for boxes that are discs?
@@ -35,7 +35,7 @@ mvlg <- function(boxes, paircorr = NULL, xiim = NULL){
     lacv <- mvlg.inputpaircorr(boxes, paircorr)
     unitname <- unitname(paircorr)
   } else if (!is.null(xiim)){
-    paircorr <- paircorr(xiim, modifications = "pickaH", drop = TRUE)
+    paircorr <- paircorr(xiim, estimators = "pickaH", drop = TRUE)
     lacv <- mvlg.inputpaircorr(boxes, paircorr)
     unitname <- unitname(xiim)
   } else {

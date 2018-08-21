@@ -7,8 +7,8 @@ test_that("secondorderprop() produces output of the expected classes given diffe
   #operates with all props going "everythingmode"
   expect_warning(secondests <- secondorderprops(xiim, 
     mvlargs = list(boxwidths = seq(1, 10, by = 0.1)),
-    covarargs = list(modifications = "all"),
-    paircorrargs = list(modifications = "all"),
+    covarargs = list(estimators = "all"),
+    paircorrargs = list(estimators = "all"),
     returnrotmean = FALSE),
     regexp = "harmonised")
   expect_s3_class(secondests$MVL, "fv")
@@ -26,8 +26,8 @@ test_that("secondorderprop() produces output of the expected classes given diffe
   #test with rotmean and multiple estimators
   expect_warning(secondests <- secondorderprops(xiim, 
     mvlargs = list(boxwidths = seq(1, 10, by = 0.1)),
-    covarargs = list(modifications = "all"),
-    paircorrargs = list(modifications = "all"),
+    covarargs = list(estimators = "all"),
+    paircorrargs = list(estimators = "all"),
     returnrotmean = TRUE),
     regexp = "harmonised")
   expect_s3_class(secondests$MVL, "fv")
@@ -40,8 +40,8 @@ test_that("secondorderprop() produces output of the expected classes given diffe
   #test with rotmean and single estimators
   secondests <- secondorderprops(xiim, 
     mvlargs = list(boxwidths = seq(1, 10, by = 0.1), estimators = "MVLcc.pickaH"),
-    covarargs = list(modifications = "pickaH"),
-    paircorrargs = list(modifications = "pickaH"),
+    covarargs = list(estimators = "pickaH"),
+    paircorrargs = list(estimators = "pickaH"),
     returnrotmean = TRUE)
   expect_s3_class(secondests$MVL, "fv")
   expect_s3_class(secondests$covariance, "fv")
@@ -53,8 +53,8 @@ test_that("secondorderprop() produces output of the expected classes given diffe
   #test without rotmean and single estimators
   secondests <- secondorderprops(xiim, 
     mvlargs = list(boxwidths = seq(1, 10, by = 0.1), estimators = "MVLcc.pickaH"),
-    covarargs = list(modifications = "pickaH"),
-    paircorrargs = list(modifications = "pickaH"),
+    covarargs = list(estimators = "pickaH"),
+    paircorrargs = list(estimators = "pickaH"),
     returnrotmean = FALSE)
   expect_s3_class(secondests$MVL, "fv")
   expect_s3_class(secondests$covariance, "imlist")

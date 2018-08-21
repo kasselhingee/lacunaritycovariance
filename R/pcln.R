@@ -19,11 +19,11 @@
 #' Typically created with \code{\link{tradcovarest}}.
 #' @param cpp1 Picka's reduced window estimate of coverage probability in \code{im} format - used in improved (balanced) covariance estimators.
 #' Can be generated using \code{\link{cppicka}}.
-#' @param modifications A list of strings specifying estimators to use. 
+#' @param estimators A list of strings specifying estimators to use. 
 #' See details.
-#' \code{modifications = "all"} will select all available estimators.  
-#' @param drop If TRUE and one modification selected then the returned value will be a single \code{im} object and not a list of \code{im} object.
-#'  modifications = "all" will select all inbuilt modifications. See details. 
+#' \code{estimators = "all"} will select all available estimators.  
+#' @param drop If TRUE and one estimator selected then the returned value will be a single \code{im} object and not a list of \code{im} object.
+#'  estimators = "all" will select all inbuilt estimators. See details. 
 
 #' @return If \code{drop = TRUE} and a single estimator requested then a
 #'   \code{im} object containing the pair-correlaion estimate. Otherwise a
@@ -51,7 +51,7 @@
 #' @examples
 #' xi <- heather$coarse
 #' #estimate directly from a binary map
-#' pclns_direst <- paircorr(as.im(xi, na.replace = 0), modifications = "all")
+#' pclns_direst <- paircorr(as.im(xi, na.replace = 0), estimators = "all")
 #' 
 #' #estimate using traditional covariance estimates, traditional coverage
 #' #probability estimate and Picka's reduced window coverage probability
@@ -60,18 +60,18 @@
 #' phat <- coverageprob(xi, obswin = Frame(xi))
 #' cvchat <- tradcovarest(xi)
 #' cpp1 <- cppicka(xi, obswin = Frame(heather$coarse))
-#' pclns_frcvc <- paircorr.cvchat(cvchat, cpp1, phat, modifications = "all")
+#' pclns_frcvc <- paircorr.cvchat(cvchat, cpp1, phat, estimators = "all")
 
 #' @describeIn paircorr Estimates pair-correlation from a binary map.
 paircorr <- function(xi, obswin = NULL,
                   setcov_boundarythresh = NULL,
-                  modifications = "all",
+                  estimators = "all",
                   drop = FALSE){
   cvchat <- tradcovarest(xi, obswin, setcov_boundarythresh = setcov_boundarythresh)
   cpp1 <- cppicka(xi, obswin, setcov_boundarythresh = setcov_boundarythresh)
   phat <- coverageprob(xi, obswin)
   
-  pclns <- paircorr.cvchat(cvchat, cpp1, phat, modifications = modifications, drop = drop) 
+  pclns <- paircorr.cvchat(cvchat, cpp1, phat, estimators = estimators, drop = drop) 
   
   return(pclns)
 }
@@ -80,7 +80,7 @@ paircorr <- function(xi, obswin = NULL,
 #'   a traditional estimate of covariance, Picka's reduced window estimate of coverage probability,
 #'   and the traditional estimate of coverage probability.
 #'   If these estimates already exist then \code{paircorr.cvchat} can save significant computation time.
-paircorr.cvchat <- function(cvchat, cpp1 = NULL, phat = NULL, modifications = "all", drop = FALSE){
+paircorr.cvchat <- function(cvchat, cpp1 = NULL, phat = NULL, estimators = "all", drop = FALSE){
   harmonised <- harmonise.im(cvchat = cvchat, cpp1 = cpp1)
   cvchat <- harmonised$cvchat
   cpp1 <- harmonised$cpp1
@@ -91,15 +91,15 @@ paircorr.cvchat <- function(cvchat, cpp1 = NULL, phat = NULL, modifications = "a
          pickaint = pcln_picka_intr,
          pickaH = pcln_picka_H
   )
-  if ((modifications == "all")[[1]]) {modifications <- names(fcns)}
-  fcnstouse <- fcns[names(fcns) %in% modifications]
-  isfunction <- unlist(lapply(modifications, function(x) "function" %in% class(x)))
-  modificationsnotused <- modifications[!( (modifications %in% names(fcns)) | isfunction)]
+  if ((estimators == "all")[[1]]) {estimators <- names(fcns)}
+  fcnstouse <- fcns[names(fcns) %in% estimators]
+  isfunction <- unlist(lapply(estimators, function(x) "function" %in% class(x)))
+  estimatorsnotused <- estimators[!( (estimators %in% names(fcns)) | isfunction)]
   
-  fcnstouse <- c(fcnstouse, modifications[isfunction]) #add user specified modification
+  fcnstouse <- c(fcnstouse, estimators[isfunction]) #add user specified estimator
   
-  if(length(modificationsnotused) > 0){stop(
-    paste("The following modifications are not recognised as existing function names or as a function:", modificationsnotused))}
+  if(length(estimatorsnotused) > 0){stop(
+    paste("The following estimators are not recognised as existing function names or as a function:", estimatorsnotused))}
   pclns <- lapply(fcnstouse, function(x) do.call(x, args = list(cvchat = cvchat, cpp1 = cpp1, phat = phat)))
   if (drop & (length(pclns) == 1)) {return(pclns[[1]])}
   else { return(as.imlist(pclns)) }

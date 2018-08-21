@@ -24,10 +24,10 @@
 #' Typically created with \code{\link{tradcovarest}}.
 #' @param cpp1 Picka's reduced window estimate of coverage probability in \code{im} format - used in improved (balanced) covariance estimators.
 #' Can be generated using \code{\link{cppicka}}.
-#' @param modifications A list of strings specifying covariance estimators to use. 
+#' @param estimators A list of strings specifying covariance estimators to use. 
 #' See details.
-#' \code{modifications = "all"} will select all available estimators.  
-#' @param drop If TRUE and one modification selected then the returned value will be a single \code{im} object and not a list of \code{im} object.
+#' \code{estimators = "all"} will select all available estimators.  
+#' @param drop If TRUE and one estimator is selected then the returned value will be a single \code{im} object and not a list of \code{im} object.
 
 #' @return 
 #' If \code{drop = TRUE} and only one estimator is requested then 
@@ -82,7 +82,7 @@
 #' #direct from a binary map
 #' xi <- heather$coarse
 #' obswin <- Frame(xi)
-#' balancedcvchats <- racscovariance(xi, obswin = Frame(xi), modifications = "all")
+#' balancedcvchats <- racscovariance(xi, obswin = Frame(xi), estimators = "all")
 #' 
 #' # from coverage probability estimates and traditional covariance estimate.
 #' phat <- coverageprob(xi, obswin = Frame(xi))
@@ -92,18 +92,18 @@
 #' cvchat <- harmonised$cvchat
 #' cpp1 <- harmonised$cpp1
 #' 
-#' balancedcvchats <- racscovariance.cvchat(cvchat, cpp1, phat, modifications = "pickaH", drop = TRUE)
+#' balancedcvchats <- racscovariance.cvchat(cvchat, cpp1, phat, estimators = "pickaH", drop = TRUE)
 #' 
 #' @describeIn racscovariance Estimates covariance from a binary map.
 racscovariance <- function(xi, obswin = NULL,
         setcov_boundarythresh = NULL,
-        modifications = "all",
+        estimators = "all",
         drop = FALSE){
   cvchat <- tradcovarest(xi, obswin, setcov_boundarythresh = setcov_boundarythresh)
   cpp1 <- cppicka(xi, obswin, setcov_boundarythresh = setcov_boundarythresh)
   phat <- coverageprob(xi, obswin)
   
-  cvchats <- racscovariance.cvchat(cvchat, cpp1, phat, modifications = modifications, drop = drop) 
+  cvchats <- racscovariance.cvchat(cvchat, cpp1, phat, estimators = estimators, drop = drop) 
   return(cvchats)
 }
 
@@ -111,7 +111,7 @@ racscovariance <- function(xi, obswin = NULL,
 #'   a traditional estimate of covariance, Picka's reduced window estimate of coverage probability,
 #'   and the traditional estimate of coverage probability.
 #'   If these estimates already exist then \code{racscovariance.cvchat} can save significant computation time.
-racscovariance.cvchat <- function(cvchat, cpp1 = NULL, phat = NULL, modifications = "all", drop = FALSE){
+racscovariance.cvchat <- function(cvchat, cpp1 = NULL, phat = NULL, estimators = "all", drop = FALSE){
   harmonised <- harmonise.im(cvchat = cvchat, cpp1 = cpp1)
   cvchat <- harmonised$cvchat
   cpp1 <- harmonised$cpp1
@@ -121,15 +121,15 @@ racscovariance.cvchat <- function(cvchat, cpp1 = NULL, phat = NULL, modification
          pickaint = balancedracscovariance_picka_int,
          pickaH = balancedracscovariance_picka_H
   )
-  if ((modifications == "all")[[1]]) {modifications <- names(fcns)}
-  fcnstouse <- fcns[names(fcns) %in% modifications]
-  isfunction <- unlist(lapply(modifications, function(x) "function" %in% class(x)))
-  modificationsnotused <- modifications[!( (modifications %in% names(fcns)) | isfunction)]
+  if ((estimators == "all")[[1]]) {estimators <- names(fcns)}
+  fcnstouse <- fcns[names(fcns) %in% estimators]
+  isfunction <- unlist(lapply(estimators, function(x) "function" %in% class(x)))
+  estimatorsnotused <- estimators[!( (estimators %in% names(fcns)) | isfunction)]
   
-  fcnstouse <- c(fcnstouse, modifications[isfunction]) #add user specified modification
+  fcnstouse <- c(fcnstouse, estimators[isfunction]) #add user specified estimator 
   
-  if(length(modificationsnotused) > 0){stop(
-    paste("The following modifications are not recognised as existing function names or as a function:", modificationsnotused))}
+  if(length(estimatorsnotused) > 0){stop(
+    paste("The following estimators are not recognised as existing function names or as a function:", estimatorsnotused))}
   balancedcvchats <- lapply(fcnstouse, function(x) do.call(x, args = list(cvchat = cvchat, cpp1 = cpp1, phat = phat)))
 
   if (drop && (length(balancedcvchats) == 1)){ return(balancedcvchats[[1]])

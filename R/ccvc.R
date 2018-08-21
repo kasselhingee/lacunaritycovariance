@@ -19,10 +19,10 @@
 #' Typically created with \code{\link{tradcovarest}}.
 #' @param cpp1 Picka's reduced window estimate of coverage probability in \code{im} format - used in improved (balanced) covariance estimators.
 #' Can be generated using \code{\link{cppicka}}.
-#' @param modifications A list of strings specifying estimators to use. 
+#' @param estimators A list of strings specifying estimators to use. 
 #' See details.
-#' \code{modifications = "all"} will select all available estimators.  
-#' @param drop If TRUE and one modification selected then the returned value will be a single \code{im} object and not a list of \code{im} object.
+#' \code{estimators = "all"} will select all available estimators.  
+#' @param drop If TRUE and one estimator selected then the returned value will be a single \code{im} object and not a list of \code{im} object.
 
 
 #' @return If \code{drop = TRUE} and a single estimator requested then a
@@ -54,18 +54,18 @@
 #' @examples
 #' xi <- heather$coarse
 #' obswin <- Frame(xi)
-#' cencovariance(xi, obswin, modifications = "all")
+#' cencovariance(xi, obswin, estimators = "all")
 #' 
 #' @describeIn cencovariance Centred covariance estimates from a binary map.
 cencovariance <- function(xi, obswin = NULL,
         setcov_boundarythresh = NULL,
-        modifications = "all",
+        estimators = "all",
         drop = FALSE){
   cvchat <- tradcovarest(xi, obswin, setcov_boundarythresh = setcov_boundarythresh)
   cpp1 <- cppicka(xi, obswin, setcov_boundarythresh = setcov_boundarythresh)
   phat <- coverageprob(xi, obswin)
   
-  ccvchats <- cencovariance.cvchat(cvchat, cpp1, phat, modifications = modifications, drop = drop) 
+  ccvchats <- cencovariance.cvchat(cvchat, cpp1, phat, estimators = estimators, drop = drop) 
   
   return(ccvchats)
 }
@@ -76,10 +76,10 @@ cencovariance <- function(xi, obswin = NULL,
 #'   If these estimates already exist then \code{cencovariance.cvchat} can save significant computation time.
 cencovariance.cvchat <- function(cvchat, cpp1 = NULL, phat = NULL,
         setcov_boundarythresh = NULL,
-        modifications = "all",
+        estimators = "all",
         drop = FALSE){
   
-  cvchats <- racscovariance.cvchat(cvchat, cpp1, phat, modifications = modifications, drop = drop) 
+  cvchats <- racscovariance.cvchat(cvchat, cpp1, phat, estimators = estimators, drop = drop) 
   
   return(cvchats - phat^2)
 }

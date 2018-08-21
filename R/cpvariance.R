@@ -20,12 +20,12 @@
 #' @param obswin is the corresponding observation window. 
 #' @param covar A covariance image for the RACS (could be estimated from Xi)
 #' @param setcov_boundarythresh When estimating covariance the threshold at which the set covariance of the observation window is deemed too small and estimation doesn't occur. See \code{tradcovarest()}.
-#' @param modifications A list of modifications of centred covariance estimation to use - see \code{ccvc()}.
+#' @param estimators A list of estimators of centred covariance estimation to use - see \code{ccvc()}.
 
 #' @examples 
 #' Xi <- heather$coarse
 #' obswin <- Frame(Xi)
-#' varCovProb_ests(Xi, obswin, modifications = "all")
+#' varCovProb_ests(Xi, obswin, estimators = "all")
 #' @references 
 #' Molchanov, I. (1997) Statistics of the Boolean Model for Practitioners and Mathematicians. Wiley.
 cpvariance <- function(Xi, obswin){
@@ -70,13 +70,13 @@ cpvariance.covarsupplied <- function(covar, obswin){
 #' @describeIn cpvariance Use multiple balanced estimators of covariance to estimate variance of coverage probability
 varCovProb_ests <- function(Xi, obswin = NULL,
         setcov_boundarythresh = NULL,
-        modifications = "all"){
+        estimators = "all"){
   cvchat <- tradcovarest(Xi, obswin, setcov_boundarythresh = setcov_boundarythresh)
   cpp1 <- cppicka(Xi, obswin, setcov_boundarythresh = setcov_boundarythresh)
   phat <- cvchat[ppp(x = 0, y = 0, window = Frame(cvchat))]
   #phat <- coverageprob(Xi, obswin)
   
-  cvchats <- racscovariance.cvchat(cvchat, cpp1, phat, modifications = modifications, drop = FALSE) 
+  cvchats <- racscovariance.cvchat(cvchat, cpp1, phat, estimators = estimators, drop = FALSE) 
   
   if (is.null(obswin) && is.im(Xi)){
     obswin <- as.owin(Xi) #only excludes NA values in Xi

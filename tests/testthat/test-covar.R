@@ -63,7 +63,7 @@ test_that("unbalanced covariance estimation is symmetric for non-symmetric windo
   setcovw <- setcov(unsymmw)
   expect_equal(max(abs(setcovw - reflect.im(setcovw))), 0)
 
-  covarest.frowin <- racscovariance(xi, obswin = unsymmw, modifications = "pickaH", drop = TRUE)
+  covarest.frowin <- racscovariance(xi, obswin = unsymmw, estimators = "pickaH", drop = TRUE)
   expect_equal(max(abs(covarest.frowin - reflect.im(covarest.frowin))), 0)
 })
 

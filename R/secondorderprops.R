@@ -17,8 +17,8 @@
 #' xi <- heather$coarse
 #' xiim <- as.im(xi, value = TRUE, na.replace = FALSE)
 #' mvlargs = list(boxwidths = seq(1, 10, by = 0.1), estimators = c("MVLgb", "MVLc"))
-#' covarargs = list(modifications = "all")
-#' paircorrargs = list(modifications = "pickaH")
+#' covarargs = list(estimators = "all")
+#' paircorrargs = list(estimators = "pickaH")
 #' returnrotmean = TRUE
 #' secondests <- secondorderprops(xiim,
 #'    mvlargs = mvlargs,

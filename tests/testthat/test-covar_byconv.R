@@ -23,7 +23,7 @@ test_that("balanced covar estimation using convolutions as the base object match
   winwin <- setcov(obswin, eps = c(xixi$xstep, xixi$ystep))
   xiwin <- setcov(xi, obswin, xy = xi)
 
-  out3 <- cvchats_convolves(xixi, winwin, xiwin = xiwin, phat = phat, modifications = "all")
+  out3 <- cvchats_convolves(xixi, winwin, xiwin = xiwin, phat = phat, estimators = "all")
   diffs <- mapply(function(x, y) eval.im(x - y), out1, out3, SIMPLIFY = FALSE)
   meandiff <- vapply(diffs, function(x) mean(x), FUN.VALUE = 0.0)
   expect_lt(max(meandiff), phat^2/100)

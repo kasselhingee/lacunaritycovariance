@@ -61,7 +61,7 @@ xi_owin_obswin <- Frame(heather$coarse)
 xi <- as.im(xi_owin, value = TRUE, na.replace = FALSE)
 
 cphat <- coverageprob(xi)
-cvchat <- racscovariance(xi, modification = "pickaH")
+cvchat <- racscovariance(xi, estimator = "pickaH")
 mvlhat <- mvl(xi, seq(0.1, 5, by = 0.1), estimators = "MVLcc.pickaH")
 contagds <- contagdiscstate(Hest(xi), Hest(!xi), p = cphat)
 
