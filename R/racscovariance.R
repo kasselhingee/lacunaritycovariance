@@ -86,7 +86,7 @@
 #' 
 #' # from coverage probability estimates and traditional covariance estimate.
 #' phat <- coverageprob(xi, obswin = Frame(xi))
-#' cvchat <- tradcovarest(xi, inclraw = FALSE)
+#' cvchat <- tradcovarest(xi)
 #' cpp1 <- cppicka(xi, obswin = Frame(heather$coarse))
 #' harmonised <- harmonise.im(cvchat = cvchat, cpp1 = cpp1)
 #' cvchat <- harmonised$cvchat

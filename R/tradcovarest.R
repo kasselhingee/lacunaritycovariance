@@ -21,7 +21,7 @@
 
 #' @examples
 #' xi <- heather$coarse
-#' covar <- tradcovarest(xi, inclraw = FALSE)
+#' covar <- tradcovarest(xi)
 #' covar <- tradcovarest(as.im(heather$coarse, na.replace = 0))
 
 #' @keywords spatial nonparametric

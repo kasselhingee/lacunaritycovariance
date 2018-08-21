@@ -57,7 +57,7 @@
 #' probability estimate and Picka's reduced window coverage probability estimates.
 #' obswin <- Frame(xi)
 #' phat <- coverageprob(xi, obswin = Frame(xi))
-#' cvchat <- tradcovarest(xi, inclraw = FALSE)
+#' cvchat <- tradcovarest(xi)
 #' cpp1 <- cppicka(xi, obswin = Frame(heather$coarse))
 #' pclns_frcvc <- paircorr.cvchat(cvchat, cpp1, phat, modifications = "all")
 

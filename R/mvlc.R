@@ -37,7 +37,7 @@
 
 #' @examples
 #' xi <- heather$coarse
-#' covar <- tradcovarest(xi, inclraw = FALSE)
+#' covar <- tradcovarest(xi)
 #' p <- area(xi) / area(Frame(xi))
 #' sidelengths <- seq(0.3, 14, by = 0.2)
 #' mvlest <- mvlc(sidelengths, covar, p)
