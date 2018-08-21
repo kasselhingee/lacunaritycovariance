@@ -1,14 +1,14 @@
 #' @title Gliding Box estimation of mass variance lacunarity
-#' @export mvlgb lacgb
+#' @export mvlgb
 #' @importFrom utils installed.packages
 #'
-#' @description Calculates the gliding box estimate [1] of mass variance lacunarity from a bi-tonal image.
+#' @description Calculates the gliding box estimate [1] of mass variance lacunarity from a binary map.
 #' @details Calculates the gliding box estimate [1] of mass variance lacunarity for a given range of square box sizes. 
 #' The algorithm uses the pixel locations in \code{xiim} as an array of box centre locations to compute
 #'  the mean and variance of the area in a random box of a given size.
 #' Locations where the box is not completely within the observation window are ignored.
 #'  
-#' WARNING: This function needs the \code{roll_sum} function in \code{RcppRoll} to operate.
+#' WARNING: This function needs the \code{\link[RcppRoll]{roll_sum}} function in \pkg{RcppRoll} to operate.
 #' 
 #' Note: The side lengths are rounded such that they are an odd number of pixels across.
 #' 
@@ -18,21 +18,22 @@
 #'  The side lengths (labelled \code{s}) are always odd multiples of the pixel width.
 #'  
 #' @param xiim An image of pixels valued either \code{0}, \code{1} or \code{NA}. \code{NA} valued pixels are assumed to be outside the observation window.
-#' @param sidelengths A list of suggested box side lengths in the same units as \code{xiim}. Note the actual side lengths used will be the closest multiple of an odd number of pixel widths.
+#' @param boxwidths A list of suggested box widths in the same units as \code{xiim}. 
+#' Note the actual box widths used by \code{mvlgb} will be the closest multiple of an odd number of pixel widths.
 #' @param obswin Optional observation window. The observation window used for the estimator will be the intersection of \code{obswin} and the pixels that are not \code{NA} in \code{xiim}.
 #' @examples
 #' xiim <- as.im(heather$coarse, na.replace = 0)
-#' sidelengths <- seq(0.2, 14, by = 0.2) #in units of xiim
-#' lac <- mvlgb(sidelengths, xiim)
+#' boxwidths <- seq(0.2, 14, by = 0.2) #in units of xiim
+#' lac <- mvlgb(boxwidths, xiim)
 #' # plot(lac)
 #'
 #' @keywords spatial nonparametric 
-mvlgb <- function(sidelengths, xiim, obswin = Frame(xiim)){
+mvlgb <- function(boxwidths, xiim, obswin = Frame(xiim)){
   if (!is.im(xiim)){stop("input xiim must be of class im")}
   if (abs(xiim$xstep - xiim$ystep) > 1E-2 * xiim$xstep){stop("image pixels must be square")}
   isbinarymap(xiim, requiretrue = TRUE)
-#convert sidelengths to odd pixel amounts, taking into account that want a distance to edge
-  spix <- 1 + round( (sidelengths - xiim$xstep) / (2 * xiim$xstep)) * 2
+#convert boxwidths to odd pixel amounts, taking into account that want a distance to edge
+  spix <- 1 + round( (boxwidths - xiim$xstep) / (2 * xiim$xstep)) * 2
   spix <- unique(spix)
   rpix <- (spix - 1) / 2
   sidel <- spix * xiim$xstep
@@ -107,6 +108,3 @@ mvlgb_intern.rcpproll <- function(xiim, sidep, obswin = Frame(xiim)){
       xbar = sampmean.rs
       ))
 }
-
-#' @rdname mvlgb
-lacgb <- mvlgb

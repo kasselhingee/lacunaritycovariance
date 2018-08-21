@@ -47,7 +47,7 @@ secondorderprops <- function(xiim,
       mvl.ests <- c(mvl.ests, mvlcovarbased)
     }
     if (("MVLgb" %in% mvlargs[["estimators"]]) || is.null(mvlargs[["estimators"]]) || ("all" %in% mvlargs[["estimators"]])) {
-      mvlgb.est <- mvlgb(sidelengths = mvlargs[["boxwidths"]], xiim = xiim)
+      mvlgb.est <- mvlgb(boxwidths = mvlargs[["boxwidths"]], xiim = xiim)
       if (sum(!vapply(mvlgb.est[,fvnames(mvlgb.est), drop = TRUE], is.na, FUN.VALUE = TRUE)) < 2){
         warning("mvlgb() returns estimates for 1 or fewer of the provided box widths. Results from mvlgb() will be ignored from the final results.")
         mvlgb.est <- NULL
