@@ -1,12 +1,12 @@
-#' @title Pair-correlation based calculations of mass variance lacunarity
+#' @title Pair-correlation based estimates of mass variance lacunarity
 #' @export mvlg
 #'
-#' @description Estimates the mass variance lacunarity (MVL) of a stationary RACS from a bi-tonal image by estimating pair-correlation.
+#' @description Estimates the mass variance lacunarity (MVL) of a stationary RACS by estimating pair-correlation from a binary map.
 #'  It can also calculate the MVL of a RACS from a provided pair-correlation function. 
 
 #' @details
-#' If we denoted the estimated pair-correlation by \eqn{\hat{g}(v)} then the estimate of MVL is
-#' \deqn{\frac{1}{|B|^2}\int \gamma_B(v)\hat{g}(v)dv - 1 }
+#' If we denoted the estimated pair-correlation by \eqn{\hat{g}(v)}{g(v)} then the estimate of MVL is
+#' \deqn{\frac{1}{|B|^2}\int \gamma_B(v)\hat{g}(v)dv - 1. }{  \int gammaB(v) g(v) dv  /  (|B|^2)  - 1.  }
 
 #' @param boxes Either a list of sidelengths for square boxes or a list of \code{owin} objects of any shape.
 #' @param paircorr  A \code{im} object containing the pair-correlation function
@@ -15,8 +15,8 @@
 #' @return If \code{boxes} is a list of numerical values then MVL is estimated for square boxes with side length given by \code{boxes}.
 #'  The returned object is then an \code{fv} object containing estimates of MVL.
 #'  If \code{boxes} is a list of owin objects then \code{mvlg} returns a dataframe of with columns corresponding to estimates of MVL.
+#'  
 #'  Note if NA or NaN values in the \code{paircorr} object are used then \code{mvlg} will return NA or NaN instead of an MVL value. 
-#'  If the true pair-correlation function of a RACS is passed to \code{mvlg} then the result will be the true MVL of the RACS.
 
 #' @examples
 #' xi <- heather$coarse

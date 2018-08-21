@@ -1,13 +1,13 @@
-#' @title Centred covariance based calculations of mass variance lacunarity
+#' @title Centred covariance based estimates of mass variance lacunarity
 #' @export mvlcc
 #'
-#' @description Estimates the mass variance lacunarity (MVL) of a stationary RACS from a bi-tonal image using centred covariance estimates.
-#'  The centred covariance and coverage probability can be provided or estimated from an image.
+#' @description Estimates the mass variance lacunarity (MVL) of a stationary RACS using centred covariance estimates.
+#'  The centred covariance and coverage probability can be provided or estimated from binary map.
 
-#' @details
-#' \code{mvl} and \code{lac} are aliases of mvlc.
-#' If we denoted the estimated centred covariance by \eqn{\hat{\kappa}(v)} and coverage probability \eqn{\hat{p}} then the estimate of MVL is
-#' \deqn{\frac{1}{\hat{p}^2 |B|^2}\int \gamma_B(v)\hat{kapp}(v)dv}
+#' @details If we denoted the estimated centred covariance by
+#' \eqn{\hat{\kappa}(v)}{k(v)} and coverage probability \eqn{\hat{p}}{p} then
+#' the estimate of MVL is
+#' \deqn{ \frac{1}{\hat{p}^2 |B|^2}\int \gamma_B(v)\hat{\kappa}(v)dv }{ \int gammaB(v) k(v) dv  /  (p^2 |B|^2).}
 
 #' @param boxes Either a list of sidelengths for square boxes or a list of \code{owin} objects of any shape.
 #' @param cencovar  A \code{im} object containing the centred covariance function
@@ -17,9 +17,9 @@
 
 #' @return If \code{boxes} is a list of numerical values then MVL is estimated for square boxes with side length given by \code{boxes}.
 #'  The returned object is then an \code{fv} object containing estimates of MVL, box mass variance and box mass mean.
+#'  
 #'  If \code{boxes} is a list of owin objects then \code{mvlcc} returns a dataframe of with columns corresponding to estimates of MVL, box mass variance and box mass mean.
 #'  Note if NA or NaN values in the \code{covariance} object are used then \code{mvlc} will return NA or NaN instead of an MVL value. 
-#'  If the true covariance function and coverage probability of a RACS are passed to \code{mvlc} then the results will be the true MVL, box mass variance and box mass mean for the RACS.
 
 #' @examples
 #' xi <- heather$coarse
