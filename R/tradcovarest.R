@@ -43,7 +43,6 @@
 
 tradcovarest <- function(xi,
         obswin = NULL,
-        inclraw =FALSE,
         setcov_boundarythresh = NULL) {
   if (is.owin(xi)) {
     if (!is.null(obswin)) {xi <- intersect.owin(xi, obswin)}
@@ -82,11 +81,7 @@ tradcovarest <- function(xi,
   setcovwindow[setcovwindow < setcov_boundarythresh] <- NA
   harmims <- harmonise.im(setcovxi, setcovwindow)
   covar <- harmims[[1]]/harmims[[2]]
-  if (!inclraw) {return(covar)}
-  if (inclraw) {
-    return(list(rs = covar,
-               raw = setcovxi / area(obswin)))
-   }
+  return(covar)
 }
 
 #catch the warning message about harmonising 
