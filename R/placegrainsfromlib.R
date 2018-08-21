@@ -1,22 +1,20 @@
 #' @name placegrainsfromlib 
 
-#' @title A function to help simulate Boolean models with user-provided grains
+#' @title Place grains randomly on a point pattern
 #' @aliases placegrainsfromlib
-#' @export placegrainsfromlib grainlib.covar meangrainarea
+#' @export placegrainsfromlib covar.grainlib meanarea.grainlib
 #' @author Kassel Liam Hingee
 
 #' @description
-#' A Boolean model has two components, a point process (called germs) and a process that creates
-#'  independent identically distributed grains that are centred on the germs.
-#' The point process of germs can be easily simulated using a variety of \code{spatstat} functions
-#'  (note that this simulation window must include a buffer because grains centred outside an observation window can still be observed).
-#'   The function here, \code{placegrainsfromlib},
-#'   can then be used to randomly select grains from a library and place them around each point.
-#'   The buffer zone must then be cropped out to get a simulation of the Boolean model in the desired observation window.
+#' Places subsets (grains) of two dimension space randomly on a given point pattern.
+#' This is useful for simulating germ-grain models such as Boolean models.
+#' Also described here a functions for computing summary properties of the a list of grains.
+#' 
+#' 
 
 
 #' @param pp A point pattern (in \code{ppp} format).
-#' @param grainlib A list of grains (in \code{\link[spatstat]{solist}} format) that grains will be selected from
+#' @param grainlib A list of grains as \code{owin} objects in a \code{\link[spatstat]{solist}}. 
 #' @param replace passed directly to \code{\link[base]{sample}}. When TRUE grains are chosen from library with replacement.
 #' @param prob A list of probability weights for each grain in the library. Passed directly to \code{\link[base]{sample}}.
 #'  If NULL the grains are selected with equal probability.
@@ -26,8 +24,23 @@
 #' @param weights Probability of selecting each grain in the library
 #' @param lambda Intensity of germs of a Boolean model - for computing the covariance of a Boolean model that has grain distribution given by \code{grainlib} and \code{weights}.
 
-#' @details \code{placegrainsfromlib} randomly samples from a library of grains (\code{grainlib}) and places these on the points in \code{pp}.
-
+#' @details 
+#' Germ-grain models have two components, a point process (called germs) and a process that creates
+#'  grains that are centred on the germs.
+#' The point process of germs can be easily simulated using a number of \pkg{spatstat} functions 
+#' (e.g. \code{\link[spatstat]{rpoispp}} for Boolean models).
+#' To simulate a germ-grain model in a window \eqn{W} the germ process must be simulated in a larger window 
+#' because grains centred outside \eqn{W} can intersect \eqn{W}.
+#' The result must then be cropped to \eqn{W} to acheive a realistation of the germ-grain process within \eqn{W}.
+#' 
+#' \code{placegrainsfromlib} randomly samples from a library of grains (\code{grainlib}) and places these on the points in \code{pp}.
+#' Sampling of the grain is independent of the location of the point in \code{pp}.
+#' It can be used to simulate the grain process in some germ-grain models.
+#' 
+#' **tests needed for summary properties
+#' 
+#' **covar.grainlib is out of place!
+#'   
 #' @return Returns an \code{owin} object.
 #' @rdname placegrainsfromlib
 #' 
@@ -60,9 +73,9 @@
 #' discr <- 10
 #' weights <- c(0.9999, 0.0001)
 #' grainlib <- solist(disc(r = discr), disc(r = 2*discr))
-#' meangrainarea(grainlib, weights)
-#' # plot(meangrainsetcov(grainlib, weights, xy = as.mask(w, eps = 0.1)))
-#' truecovartest <- grainlib.covar(lambda, grainlib, weights, xy = as.mask(w, eps = 0.1))
+#' meanarea.grainlib(grainlib, weights)
+#' # plot(meansetcov.grainlib(grainlib, weights, xy = as.mask(w, eps = 0.1)))
+#' truecovartest <- covar.grainlib(lambda, grainlib, weights, xy = as.mask(w, eps = 0.1))
 #' truecovariance <- bddcovar(
 #'                    c(-10, 10), c(-10, 10), c(0.1, 0.1), lambda, discr)
 #' # plot(solist(truecovartest, truecovariance), clipwin = disc(r = 3))
@@ -70,6 +83,7 @@
 #' range(truecovartest - truecovariance)
 
 #' @keywords spatial nonparametric datagen
+#' @describeIn placegrainsfromlib Place grains randomly from a list of grains.
 placegrainsfromlib <- function(pp, grainlib,
                                replace = TRUE, prob = NULL, w = NULL, xy = NULL){
   if (pp$n == 0){
@@ -113,14 +127,14 @@ tocompatiblepixelarray <- function(grain, xy){
 }
 
 #' @describeIn placegrainsfromlib Compute mean area of a random grain given by the library
-meangrainarea <- function(grainlib, weights = rep(1/length(grainlib), length(grainlib))){
+meanarea.grainlib <- function(grainlib, weights = rep(1/length(grainlib), length(grainlib))){
   grainareas <- vapply(grainlib, area.owin, 0.0)
   return(sum(grainareas * as.vector(weights)))
 }
 
-#' @describeIn placegrainsfromlib Compute the mean set covariance of the random grain given by the library.
-#' xy is required because the set covariance function must rasterise the owin objects
-meangrainsetcov <- function(grainlib, weights = rep(1/length(grainlib), length(grainlib)), xy){
+#' @describeIn placegrainsfromlib Computes the mean of the set covariance of the grains in \code{grainlib}.
+#' xy is required because the set covariance function must rasterise the owin objects.
+meansetcov.grainlib <- function(grainlib, weights = rep(1/length(grainlib), length(grainlib)), xy){
   grainlib <- solapply(grainlib, tocompatiblepixelarray, xy = xy)
   setcovagrain <- solapply(grainlib, setcov)
   setcovagrain <- as.solist(mapply(function(x, y) x * y, setcovagrain, weights, SIMPLIFY = FALSE))
@@ -134,9 +148,9 @@ meangrainsetcov <- function(grainlib, weights = rep(1/length(grainlib), length(g
 
 
 #' @describeIn placegrainsfromlib Compute the covariance of a Boolean model with random grain given by the library
-grainlib.covar <- function(lambda, grainlib, weights, xy){
-  p <- 1 - exp(- lambda * meangrainarea(grainlib, weights))
-  meangsetcov <- meangrainsetcov(grainlib, weights, xy)
+covar.grainlib <- function(lambda, grainlib, weights, xy){
+  p <- 1 - exp(- lambda * meanarea.grainlib(grainlib, weights))
+  meangsetcov <- meansetcov.grainlib(grainlib, weights, xy)
   racscov <- 2 * p - 1 + (1 - p)^2 * exp(lambda * meangsetcov) #this formula from 47 of Bohm 2004 Kernel Estimation of Stationary RACS paper
   return(racscov)
 }

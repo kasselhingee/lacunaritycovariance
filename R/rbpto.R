@@ -117,6 +117,6 @@ bpto.covar <- function(lambda, grain, xm, alpha, lengthscales = 1:500, xy){
   weights <- alpha * xm ^ alpha / (lengthscales ^ (alpha + 1) )
   weights <- weights / sum(weights) #standardise
   
-  covar <- grainlib.covar(lambda, grainlib, weights, xy)
+  covar <- covar.grainlib(lambda, grainlib, weights, xy)
   return(covar)
 }
