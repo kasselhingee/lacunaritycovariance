@@ -117,3 +117,20 @@ test_that("mvl() operates nicely when only one estimator requested", {
   xiim <- as.im(heather$coarse, value = TRUE, na.replace = FALSE)
   expect_silent(mvl(xiim, seq(0.1, 10, by = 1), estimators = "MVLc"))
 })
+
+test_that("mvl() operates on owin style binary maps", {
+  xiim <- as.im(heather$coarse, value = TRUE, na.replace = FALSE)
+  xi <- heather$coarse
+  obswin <- setminus.owin(Frame(heather$coarse), square(5))
+  xiim[square(5)] <- NA
+  expect_warning(out <- mvl(xi, seq(0.1, 10, by = 1), obswin = obswin))
+  expect_warning(out_im <- mvl(xiim, seq(0.1, 10, by = 1)))
+  expect_equal(out, out_im)
+  
+  xiim <- as.im(heather$coarse, value = TRUE, na.replace = FALSE)
+  xi <- heather$coarse
+  obswin <- Frame(xi)
+  expect_warning(out <- mvl(xi, seq(0.1, 10, by = 1), obswin = obswin))
+  expect_warning(out_im <- mvl(xiim, seq(0.1, 10, by = 1)))
+  expect_equal(out, out_im)
+})

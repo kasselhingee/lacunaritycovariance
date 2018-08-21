@@ -1,10 +1,13 @@
 #' @title Mass variance lacunarity estimatation using all estimators
 #' @export mvl mvl.cvchat
-#' @description Estimates mass variance lacunarity (MVL) using all estimators described in [Hingee2019**] from binary maps for square box.
+#' @description Estimates mass variance lacunarity (MVL) using all estimators described in [Hingee2019**] from binary maps for square boxes.
 #' It calls the functions \code{mvlc}, \code{mvlg}, \code{mvlcc} and \code{mvlgb}.
 
-#' @param xiim A \pkg{spatstat} \code{im} object with pixel values that are either TRUE, FALSE or NA. TRUE represents foreground, FALSE respresents background and NA represents unobserved locations.
-#' @param boxwidths A list of box boxwidths
+#' @param xi A binary map of an observation of a RACS of interest. See
+#'   \code{\link{stationaryracsinference-package}} for details.
+#' @param obswin If \code{xi} is an \code{owin} object then \code{obswin} is an
+#'   \code{owin} object that specifies the observation window.
+#' @param boxwidths A list of box widths
 #' @param estimators A list of estimator names - see details for possibilities. \code{estimators = "all"} will select all estimators.
 #' @param includenormed A logical value. If TRUE then MVL estimates normalised by the MVL values at zero will be included in a returned list of fv objects
 #' @param setcov_boundarythresh Any vector \eqn{v} such that set covariance of the observation window is smaller than this threshold
@@ -20,10 +23,13 @@
 #' The function is not able to estimate MVL for non-square boxes as the gliding box estimator is included.
 #' To estimate MVL for non-square boxes use \code{mvlcc} or \code{mvlg} directly.
 #' 
+#' If \code{xi} is in \code{owin} format then \code{obswin} and \code{xi} are converted
+#'  into a binary map in \code{im} format using \code{\link[spatstat]{as.im}}
+#' 
 #' The estimators available are
 #' \itemize{
 #' \item{\code{"MVLc"}} The unmodified (unbalanced) covariance estimator provided by \code{\link{mvlc}}
-#' \item{\code{"MVLgb"}} The Gliding-Box estimator of Alain and Cloitre [allain1991ch]. Calls \code{\link{mvlgb}}
+#' \item{\code{"MVLgb"}} The Gliding-Box estimator of Allain and Cloitre [allain1991ch]. Calls \code{\link{mvlgb}}
 #' \item{\code{"MVLg.mattfeldt"}} See help for \code{\link{mvlg}}
 #' \item{\code{"MVLg.pickaint"}} See help for \code{\link{mvlg}}
 #' \item{\code{"MVLg.pickaH"}} See help for \code{\link{mvlg}}
@@ -34,14 +40,15 @@
 
 #' @examples 
 #' xi <- heather$coarse
-#' xiim <- as.im(xi, value = TRUE, na.replace = FALSE)
-#' mvlests <- mvl(xiim, seq(1, 10, by = 0.1))
+#' xi <- as.im(xi, value = TRUE, na.replace = FALSE)
+#' mvlests <- mvl(xi, seq(1, 10, by = 0.1))
 
 #' @describeIn mvl Computes MVL estimates from a binary map.
-mvl <- function(xiim, boxwidths,
+mvl <- function(xi, boxwidths,
                            estimators = c("MVLg.mattfeldt", "MVLg.pickaint", "MVLg.pickaH",
                                           "MVLcc.mattfeldt", "MVLcc.pickaint",
                                           "MVLc", "MVLgb"),
+                obswin = NULL,
                 includenormed = FALSE,
                 setcov_boundarythresh = 1E-6){
   if ("all" %in% estimators){
@@ -56,12 +63,20 @@ mvl <- function(xiim, boxwidths,
   cpp1 <- cvchat <- NULL
   mvlcovarbased <- mvlgb.est <- NULL
   
-  phat <- coverageprob(xiim)
+  #if an owin is passed convert to an im object 
+  if (is.owin(xi)) {
+    if (is.null(obswin)) {stop("obswin must be provide if xi is owin")}
+    xi <- as.im(xi, value = TRUE, na.replace = FALSE)
+    xi[setminus.owin(Frame(xi), obswin)] <- NA
+  }
+  stopifnot(isbinarymap(xi))
+  
+  phat <- coverageprob(xi)
   if(sum(mvlgestimaterequests) + sum(mvlccestimaterequests) + ("MVLc" %in% estimators) > 0){
-    cvchat <- tradcovarest(xiim, setcov_boundarythresh = setcov_boundarythresh)
+    cvchat <- tradcovarest(xi, setcov_boundarythresh = setcov_boundarythresh)
   }
   if (sum(mvlgestimaterequests) + sum(mvlccestimaterequests) > 0){
-    cpp1 <- cppicka(xiim, setcov_boundarythresh = setcov_boundarythresh)
+    cpp1 <- cppicka(xi, setcov_boundarythresh = setcov_boundarythresh)
   }
   if(sum(mvlgestimaterequests) + sum(mvlccestimaterequests) + ("MVLc" %in% estimators) > 0){
     #function that computes the covariance-based estimates of MVL
@@ -71,7 +86,7 @@ mvl <- function(xiim, boxwidths,
   
   #the MVLgb estimate
   if ("MVLgb" %in% estimators){
-    mvlgb.est <- mvlgb(sidelengths = boxwidths, xiim = xiim)
+    mvlgb.est <- mvlgb(sidelengths = boxwidths, xi = xi)
     if (sum(!vapply(mvlgb.est[,fvnames(mvlgb.est), drop = TRUE], is.na, FUN.VALUE = TRUE)) < 2){
       warning("mvlgb() returns estimates for 1 or fewer of the provided box widths. Results from mvlgb() will be ignored from the final results.")
       mvlgb.est <- NULL
