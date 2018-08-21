@@ -1,23 +1,40 @@
-#' @title Simulation of Boolean Model of Grains Scaled According to a Pareto Distribution
+#' @title Simulate Boolean Model with Grains Scaled According to a truncated
+#'   Pareto Distribution
 #' @export rbpto bpto.coverageprob bpto.covar bpto.germintensity
-#' @description Functions for simulation and computing theoretical values of a Boolean model with identically shaped grains with size given by an approximate (in some cases a terrible approximation) Pareto distribution.
-#' 
-#' @param lambda Intensity of the germ process (which is a Poisson point process)
-#' @param grain A single owin object that gives the shape and size of the grain at scale 1
-#' @param xm A parameter governing the shape of the Pareto distribution used - see details
-#' @param alpha A parameter governing the shape of the Pareto distribution used - see details
-#' @param lengthscales A list of scales of the \code{grain} for which to approximate the Pareto distribution: The grain for a germ is chosen by selecting a scaled version of \code{grain} where \code{lengthscales} specifies the possible scales and the Pareto distribution is used to specify the probability of selection of each scale.
+#' @description Functions for simulation and computing theoretical values of a
+#'   Boolean model with identically shaped grains with size given by a
+#'   truncated Pareto distribution.
+#'
+#' @param lambda Intensity of the germ process (which is a Poisson point
+#'   process)
+#' @param grain A single owin object that gives the shape and size of the grain
+#'   at scale 1
+#' @param xm A parameter governing the shape of the Pareto distribution used -
+#'   see details
+#' @param alpha A parameter governing the shape of the Pareto distribution used
+#'   - see details
+#' @param lengthscales A list of scales of the \code{grain} for which to
+#'   approximate the Pareto distribution: The grain for a germ is chosen by
+#'   selecting a scaled version of \code{grain} where \code{lengthscales}
+#'   specifies the possible scales and the Pareto distribution is used to
+#'   specify the probability of selection of each scale.
 #' @param coverp Coverage probability of the Boolean model.
 #' @param win The window to simulate in (an owin object)
-#' @param seed Optional input (default in NULL). Is an integer passed to \code{\link{base}{set.seed}}. Used to reproduce patterns exactly.
-#' @param xy A raster object that specifies pixel coordinates of the final simulated binary map.
-#' It is used the same way as \code{xy} is \code{\link{spatstat}{as.mask}} in spatstat.
-#' If non-null then the computations will be performed using rasters. Otherwise if \code{grain} and \code{win} are polygonal then computations may be all polygonal.
+#' @param seed Optional input (default in NULL). Is an integer passed to
+#'   \code{\link{base}{set.seed}}. Used to reproduce patterns exactly.
+#' @param xy A raster object that specifies pixel coordinates of the final
+#'   simulated binary map. It is used the same way as \code{xy} is
+#'   \code{\link{spatstat}{as.mask}} in spatstat. If non-null then the
+#'   computations will be performed using rasters. Otherwise if \code{grain} and
+#'   \code{win} are polygonal then computations may be all polygonal.
 
 #' @details
 #' The parameters xm and alpha are such that the CDF of the Pareto distribuion is \eqn{P(s <= x) = 1 - (xm / x)^{alpha}}.
-#' Approximates the grain distribution using the scales given by \code{lengthscales} and weighted by the probability distribution function of the Pareto distribution.
-
+#' The distribution of grains scales is a step-function approximation to the CDF with steps at \code{lengthscales}.
+#' 
+#'
+#' **is truncated the right word in the title?
+#' 
 #' @return 
 #' An owin object.
 
@@ -38,9 +55,9 @@
 #' bpto.coverageprob(lambda, grain, xm, alpha, lengthscales = lengthscales)
 #' covar <- bpto.covar(lambda, grain, xm, alpha, lengthscales = lengthscales,
 #'    xy = as.mask(win, eps = 0.1))
-
-rbpto <- function(lambda, grain, win, xm, alpha,
-                  seed = NULL, xy = NULL, lengthscales = 1:500){
+#' @describeIn rbpto Simulate Boolean model with grain size distributed according to a truncated Pareto distribution.
+rbpto <- function(lambda, grain, win, xm, alpha, lengthscales,
+                  seed = NULL, xy = NULL){
   #check that smallest scale is larger than xm
   stopifnot(lengthscales[1] >= xm)
   
@@ -69,7 +86,7 @@ rbpto <- function(lambda, grain, win, xm, alpha,
   return(xi)
 }
 
-#' @describeIn rbpto  The coverage probability of the Boolean model with scaled grains distributed according to Pareto distribution. Uses approximation of truncated length scales.
+#' @describeIn rbpto  The coverage probability of the Boolean model with grain size distributed according to a truncated Pareto distribution.
 bpto.coverageprob <- function(lambda, grain, xm, alpha,
                               lengthscales = 1:500){
   #first get mean area. Need weight for each discrete grain.
@@ -84,7 +101,7 @@ bpto.coverageprob <- function(lambda, grain, xm, alpha,
   return(1 - exp(- lambda * meangrainarea))
 }
 
-#' @describeIn rbpto  Computes the germ intensity of the Boolean model with scaled grains distributed according to Pareto distribution and given coverage probability. Uses approximation of truncated length scales.
+#' @describeIn rbpto  The germ intensity of the Boolean model with grain size distributed according to a truncated Pareto distribution.
 bpto.germintensity <- function(coverp, grain, xm, alpha,
                               lengthscales = 1:500){
   #first get mean area. Need weight for each discrete grain.
@@ -101,9 +118,8 @@ bpto.germintensity <- function(coverp, grain, xm, alpha,
   return(lambda)
 }
 
-#' @describeIn rbpto  The racs covariance of the Boolean model with scaled grains distributed according to Pareto distribution. 
-#' Uses approximation of truncated length scales.
-#' xy is required to specify resolution and offset of pixel grid
+#' @describeIn rbpto  The covariance of the Boolean model with grain size distributed according to a truncated Pareto distribution.
+#' xy is required to specify resolution and offset of pixel grid.
 bpto.covar <- function(lambda, grain, xm, alpha, lengthscales = 1:500, xy){
   #check that smallest scale is larger than xm
   stopifnot(lengthscales[1] >= xm)

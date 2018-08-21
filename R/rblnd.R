@@ -11,7 +11,8 @@
 #' @param  meanlog For the distribution of radii. The logarithm of the distribution is set to have mean \code{meanlog}.
 #' @param  sdlog For the distribution of radii. The logarithm of the distribution is set to have standard deviation \code{sdlog}
 #' @param seed Optional input (default is \code{NULL}). Is an integer passed to \code{\link[base]{set.seed}}. Used to reproduce patterns exactly.
-#' @section Warning: A good choice of bufferdist is required and it probably depends on the distribution of radii. 
+#' 
+#' @section Warning: A good choice of \code{bufferdist} is required and will be sensitive to the distribution of radii. 
 
 
 #' @details The point process needs to be simulated in a larger region than the desired observation window to account for the possibility of discs that intersect the observation window, but have germs outside the observation window.
