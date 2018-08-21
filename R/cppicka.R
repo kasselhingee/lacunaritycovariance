@@ -7,7 +7,7 @@
 #' This function provides estimates of coverage probability from subsets of the observation window,
 #'  which are a key component of balanced estimators of covariance, centred covariance, pair-correlation and mass variance lacunarity.
 #' @param xi A binary map of an observation of a RACS of interest. See
-#'   \code{\link{stationaryracsinference-package}} for details.
+#'   \code{\link{statracstools-package}} for details.
 #' @param obswin If \code{xi} is an \code{owin} object then \code{obswin} is an
 #'   \code{owin} object that specifies the observation window.
 #' @param setcov_boundarythresh Any vector \eqn{v} such that set covariance of the observation window

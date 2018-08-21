@@ -4,7 +4,7 @@
 #' It calls the functions \code{mvlc}, \code{mvlg}, \code{mvlcc} and \code{mvlgb}.
 
 #' @param xi A binary map of an observation of a RACS of interest. See
-#'   \code{\link{stationaryracsinference-package}} for details.
+#'   \code{\link{statracstools-package}} for details.
 #' @param obswin If \code{xi} is an \code{owin} object then \code{obswin} is an
 #'   \code{owin} object that specifies the observation window.
 #' @param boxwidths A list of box widths

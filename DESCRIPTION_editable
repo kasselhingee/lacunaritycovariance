@@ -1,5 +1,5 @@
 Type: Package
-Package: stationaryracsinference
+Package: statracstools
 Title: Some inference tools for remotely sensed random closed
     sets in 2D
 Version: 0.2-38

@@ -20,13 +20,13 @@ This document demonstrates how to estimate various properties of a stationary RA
 \section{Preparing the Binary Map}
 We will need an image in \code{spatstat}'s \code{im} format with values of 1, 0 and NA representing foreground, background and outside the observation window respectively.
 For this vignette we will use a small image already prepared.
-You can see how we prepared it from remote sensing data in the demo \verb!import_remote_sense_data!, which can be run by \verb!demo("import_remote_sense_data", package = "stationaryracsinference")!.
+You can see how we prepared it from remote sensing data in the demo \verb!import_remote_sense_data!, which can be run by \verb!demo("import_remote_sense_data", package = "statracstools")!.
 
 \begin{figure}[H]
 \centering
 <<loadbinarymap, fig = TRUE>>=
-library(stationaryracsinference)
-load(system.file("extdata/egbinarymap.RData", package="stationaryracsinference"))
+library(statracstools)
+load(system.file("extdata/egbinarymap.RData", package="statracstools"))
 # the following converts egbinarymap to a thing of logical type (**shouldn't be needed long term)
 egbinarymap <- eval.im(egbinarymap > 0.5)
 plot(egbinarymap, col = c("grey", "black"), main = "The Binary Map")

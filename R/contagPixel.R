@@ -4,7 +4,7 @@
 #' @description Function for calculating the traditional contagion LPI from a binary map [cite fragstats manual].
 #' 
 #' @param xi A binary map of an observation of a RACS of interest. See
-#'   \code{\link{stationaryracsinference-package}} for details.
+#'   \code{\link{statracstools-package}} for details.
 #'   If \code{xi} is an owin object it must be of \code{mask} type.
 #' @param obswin If \code{xi} is an \code{owin} object then \code{obswin} is an
 #'   \code{owin} object that specifies the observation window.
