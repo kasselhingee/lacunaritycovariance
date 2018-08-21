@@ -1,5 +1,3 @@
-#' @name placegrainsfromlib 
-
 #' @title Place grains randomly on a point pattern
 #' @aliases placegrainsfromlib
 #' @export placegrainsfromlib covar.grainlib meanarea.grainlib
@@ -42,7 +40,6 @@
 #' **covar.grainlib is out of place!
 #'   
 #' @return Returns an \code{owin} object.
-#' @rdname placegrainsfromlib
 #' 
 #' @examples
 #' #Generate a germ-grain models where germs are a Poisson point process

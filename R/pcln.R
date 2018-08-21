@@ -54,7 +54,8 @@
 #' pclns_direst <- paircorr(as.im(xi, na.replace = 0), modifications = "all")
 #' 
 #' #estimate using traditional covariance estimates, traditional coverage
-#' probability estimate and Picka's reduced window coverage probability estimates.
+#' #probability estimate and Picka's reduced window coverage probability
+#' #estimates.
 #' obswin <- Frame(xi)
 #' phat <- coverageprob(xi, obswin = Frame(xi))
 #' cvchat <- tradcovarest(xi)

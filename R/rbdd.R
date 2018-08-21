@@ -1,6 +1,5 @@
 #' @title Simulation of Boolean Model of Deterministic Discs
-#' @export rbdd  bddcoverageprob bddcovar.iso bddcovar
-#'   bddspectraldensity.atorigin bddspectraldensity bddlambda bdddiscr
+#' @export rbdd  bddcoverageprob bddcovar.iso bddcovar bddspectraldensity.atorigin bddspectraldensity bddlambda bdddiscr
 #' @importFrom stats fft
 #'
 #' @description Functions for simulating a Boolean model with grains that are
