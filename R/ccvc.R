@@ -35,13 +35,19 @@
 #'   C(v) - p^2.}
 #'
 #'   The estimators available are (see [Chapter 4, hingee2019thesis] for
-#'   information): \itemize{ \item{\code{none}} the traditional centred
-#'   covariance estimator \item{\code{mattfeldt}} an estimator inspired by an
+#'   information): 
+#'   \itemize{ 
+#'   \item{\code{none}} the traditional centred
+#'   covariance estimator 
+#'   \item{\code{mattfeldt}} an estimator inspired by an
 #'   `intrinsically' balanced pair-correlation estimator from Picka that was
 #'   later studied in an isotropic situation by Mattfeldt and Stoyan
-#'   [mattfeldt2000im] \item{\code{pickaint}} Picka's intrinsically' balanced
-#'   centred covariance estimator [picka2000va]. \item{\code{pickaH}} Picka's
-#'   additively' balanced centred covariance estimator [picka2000va]. }
+#'   [mattfeldt2000im] 
+#'   \item{\code{pickaint}} Picka's intrinsically' balanced
+#'   centred covariance estimator [picka2000va]. 
+#'   \item{\code{pickaH}} Picka's
+#'   additively' balanced centred covariance estimator [picka2000va].
+#'   }
 #'
 #'   Currently computes centred covariance using \code{\link{racscovariance}}.
 #'

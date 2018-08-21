@@ -8,14 +8,15 @@
 #'  the mean and variance of the area in a random box of a given size.
 #' Locations where the box is not completely within the observation window are ignored.
 #'  
-#' WARNING: This function needs the \code{\link[RcppRoll]{roll_sum}} function in \pkg{RcppRoll} to operate.
+#' @section WARNING: \code{mvlgb} uses the \code{\link[RcppRoll]{roll_sum}} function in \pkg{RcppRoll} to operate.
+#' \pkg{RcppRoll} must be installed.
 #' 
 #' Note: The side lengths are rounded such that they are an odd number of pixels across.
 #' 
 #' @references [1] Allain, C. and Cloitre, M. (1991) Characterizing the lacunarity of random and deterministic fractal sets. Physical Review A, 44, 3552-3558.
 #'
 #' @return An \code{fv} object containing estimates of MVL, box mass variance and box mass mean computed using the gliding box estimator described in [1]. 
-#'  The side lengths (labelled \code{s}) are always odd multiples of the pixel width.
+#'  The box widths (labelled \code{s}) are always odd multiples of the pixel width.
 #'  
 #' @param xiim An image of pixels valued either \code{0}, \code{1} or \code{NA}. \code{NA} valued pixels are assumed to be outside the observation window.
 #' @param boxwidths A list of suggested box widths in the same units as \code{xiim}. 
@@ -24,8 +25,7 @@
 #' @examples
 #' xiim <- as.im(heather$coarse, na.replace = 0)
 #' boxwidths <- seq(0.2, 14, by = 0.2) #in units of xiim
-#' lac <- mvlgb(boxwidths, xiim)
-#' # plot(lac)
+#' mvlest <- mvlgb(boxwidths, xiim)
 #'
 #' @keywords spatial nonparametric 
 mvlgb <- function(boxwidths, xiim, obswin = Frame(xiim)){
