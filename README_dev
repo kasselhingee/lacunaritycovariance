@@ -1,6 +1,0 @@
-TO BUILD MAN AND NAMESPACE FILES
-run roxygen2::roxygenise() in R from the root directory of this package.
-
-TO BUILD DESCRIPTION FILE:
-
-
