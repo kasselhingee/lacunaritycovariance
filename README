@@ -1,2 +1,6 @@
-TO BUILD MAN AND NAMESPACE FILES
-run roxygen2::roxygenise() in R from the root directory of this package.
+TO INSTALL FROM GITHUB USING DEVTOOLS PACKAGE:
+library(devtools)
+install_github("HingK/racsstats", ref = "release", auth_token = "****")
+
+where auth_token is a personal access token that can be generated here: https://github.com/settings/tokens. Copy it from your browser and use it as the auth_token argument of install_github.
+(an access token is required because the repository is private).
