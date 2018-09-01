@@ -53,7 +53,7 @@ mvl <- function(xi, boxwidths,
                 setcov_boundarythresh = 1E-6){
   if ("all" %in% estimators){
     estimators = c("MVLg.mattfeldt", "MVLg.pickaint", "MVLg.pickaH",
-     "MVLcc.mattfeldt", "MVLcc.pickaint",
+     "MVLcc.mattfeldt", "MVLcc.pickaint", "MVLcc.pickaH",
      "MVLc", "MVLgb")
   }
   mvlgestimaterequests <- estimators %in% MVLgestimatornames
