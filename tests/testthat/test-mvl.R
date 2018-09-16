@@ -31,14 +31,14 @@ test_that("GBLc estimates are historically consistent", {
   p <- area(heather$coarse) / area(Frame(heather$coarse))
   sidelengths <- 2.2
   lac <- gblc(sidelengths, covar, p)
-  expect_equal(lac$GBL, 0.05855459, tolerance = 1E-6)
+  expect_equal(lac$GBL, 1 + 0.05855459, tolerance = 1E-6)
 })
 
 test_that("GBLgb estimates are historically consistent", {
   img <- as.im(heather$coarse, eps = heather$coarse$xstep, na.replace = 0)
   sidel <- c(2.2)
   lac <- gblgb(sidel, img)
-  expect_equal(lac$GBL, 0.03253836)
+  expect_equal(lac$GBL, 1 + 0.03253836)
 })
 
 test_that("GBLc estimates are consistent for input side lengths or owin squares", {
@@ -80,14 +80,14 @@ test_that("GBLc estimates are the same from estimated covariance or original ima
   expect_equal(gblc.covar, gblc.im)
 })
 
-test_that("integration when covar is constant gives squared area", {
+test_that("integration when covar is constant gives squared area (i.e. gbl = 1)", {
   covar <- as.im(owin(c(-6, 6), c(-6, 6)), eps = 0.01)
   p <- 1
   sidelengths <- seq(1, 2.2, by = 0.1)
   lac <- gblc(sidelengths, covar, p)
-  expect_equal(lac$GBL, rep(0, length(sidelengths)), tolerance = 0.01)
+  expect_equal(lac$GBL, rep(1, length(sidelengths)), tolerance = 0.01)
   
-  expect_equal(gblc(lapply(c(0.5, 1, 2, 3), disc), covar, p)$GBL, rep(0, 4), tolerance = 0.01)
+  expect_equal(gblc(lapply(c(0.5, 1, 2, 3), disc), covar, p)$GBL, rep(1, 4), tolerance = 0.01)
 })
 
 test_that("GBLc and GBLgb produce similar results for large square observation windows", {
