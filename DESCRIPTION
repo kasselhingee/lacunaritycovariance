@@ -2,8 +2,8 @@ Type: Package
 Package: stationaryracsinference
 Title: Some inference tools for remotely sensed random closed
     sets in 2D
-Version: 0.3-00
-Date: 2018-08-21
+Version: 0.4-01
+Date: 2018-09-16
 Author: Kassel Liam Hingee
 Maintainer: <kassel.hingee@research.uwa.edu.au>
 Description:  Functions for estimating properties of random
@@ -14,9 +14,9 @@ Description:  Functions for estimating properties of random
     geospatial data formats (e.g. presence-absence maps or two-class
     landcover maps) is provided.  The binary map may also be represented
     in non-rasterised form using a polygonal set as the foreground.  The
-    gliding box estimator of mass variance lacunarity with improved
-    estimators of mass variance lacunarity are included.  Also included
-    are anisotropic estimators of covariance, centred covariance and
+    gliding box estimator of gliding box lacunarity with improved
+    estimators of gliding box lacunarity are included.  Also included are
+    anisotropic estimators of covariance, centred covariance and
     pair-correlation based on estimators proposed by Picka.  Additional
     estimators for properties of random closed sets are available in the
     spatstat package.  The package is based on research conducted during

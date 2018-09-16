@@ -9,8 +9,8 @@
 \packageDescription{stationaryracsinference}
 }
 \details{
-Background is available for RACS [chiu2013st,molchanov2005th], mass-variance lacunarity (MVL) [**MVL paper**] and contagion for RACS [**ISPRS conference paper**].
-A forthcoming PhD thesis by Kassel Liam Hingee will provide additional background for MVL, and for RACS in lanscape metrics (which includes contagion).
+Background is available for RACS [chiu2013st,molchanov2005th], gliding box lacunarity (GBL) [**GBL paper**] and contagion for RACS [**ISPRS conference paper**].
+A forthcoming PhD thesis by Kassel Liam Hingee will provide additional background for GBL, and for RACS in landscape metrics (which includes contagion).
 
 This package expects RACS observations to be in the form of binary maps either in raster format, or as a set representing foreground with a second set giving the observation window.
 If in raster format, the object is expected to be a spatstat \code{im} object with pixel values that are only 1 and 0, or are logically valued (i.e. TRUE or FALSE). In both cases the observation window is taken to be the set of pixels with values that are not \code{NA} (i.e. \code{NA} values are considered outside the observation window).
@@ -26,10 +26,10 @@ The key functions within this package for estimating properties of RACS are:
 \itemize{
 \item{\code{coverageprob}}{estimates the coverage probability of a stationary RACS}
 \item{\code{racscovariance}}{ estimates the covariance of a stationary RACS}
-\item{\code{mvl}} {estimates the MVL of a stationary RACS}
+\item{\code{gbl}} {estimates the GBL of a stationary RACS}
 \item{\code{cencovariance}} {estimates the centred covariance of a stationary RACS}
 \item{\code{paircorr}} {estimates the pair-correlation of a stationary RACS}
-\item{\code{secondorderprops}} {estimates MVL, covariance and other second order properties of stationary RACS}
+\item{\code{secondorderprops}} {estimates GBL, covariance and other second order properties of stationary RACS}
 \item{\code{contagdiscstate}} {estimates the disc-state contagion of a stationary RACS}
 }
 
@@ -62,7 +62,7 @@ xi <- as.im(xi_owin, value = TRUE, na.replace = FALSE)
 
 cphat <- coverageprob(xi)
 cvchat <- racscovariance(xi, estimator = "pickaH")
-mvlhat <- mvl(xi, seq(0.1, 5, by = 0.1), estimators = "MVLcc.pickaH")
+gblhat <- gbl(xi, seq(0.1, 5, by = 0.1), estimators = "GBLcc.pickaH")
 contagds <- contagdiscstate(Hest(xi), Hest(!xi), p = cphat)
 
 #simulate a Boolean model with deterministic discs in a square window

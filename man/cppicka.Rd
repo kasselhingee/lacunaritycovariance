@@ -22,7 +22,7 @@ from the subregion of the observation window, \eqn{W}, that is the intersection 
 }
 \description{
 This function provides estimates of coverage probability from subsets of the observation window,
- which are a key component of balanced estimators of covariance, centred covariance, pair-correlation and mass variance lacunarity.
+ which are a key component of balanced estimators of covariance, centred covariance, pair-correlation and gliding box lacunarity.
 }
 \details{
 The traditional covariance estimator uses less of the observation window than the traditional coverage probability.

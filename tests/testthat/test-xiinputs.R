@@ -55,18 +55,18 @@ test_that("paircorr operates when passed im (logical and numeric) and fails corr
   expect_error(paircorr(xiim.n3), regexp = "has values other than")
 })
 
-test_that("mvlgb operates as expected when pass im object", {
+test_that("gbltrad operates as expected when pass im object", {
   boxwidths <- seq(1, 5, by = 1)
-  mvlgb.l <- mvlgb(boxwidths, xiim.l)
-  mvlgb.n <- mvlgb(boxwidths, xiim.n)
-  expect_equal(max(abs(mvlgb.l - mvlgb.n)), 0)
-  expect_error(mvlgb(boxwidths, xiim.n3), regexp = "has values other than")
+  gbltrad.l <- gbltrad(boxwidths, xiim.l)
+  gbltrad.n <- gbltrad(boxwidths, xiim.n)
+  expect_equal(max(abs(gbltrad.l - gbltrad.n)), 0)
+  expect_error(gbltrad(boxwidths, xiim.n3), regexp = "has values other than")
 })
 
-test_that("mvl() operates well when passed im or owin boxes", {
+test_that("gbl() operates well when passed im or owin boxes", {
   boxwidths <- seq(1, 5, by = 1)
-  expect_warning(mvlest.l <- mvl(xiim.l, boxwidths), regexp = "harmon")
-  expect_warning(mvlest.n <- mvl(xiim.n, boxwidths), regexp = "harmon")
-  expect_equal(mvlest.l, mvlest.n)
-  expect_error(mvl(xiim.n3, boxwidths), regexp = "isbinarymap")
+  expect_warning(gblest.l <- gbl(xiim.l, boxwidths), regexp = "harmon")
+  expect_warning(gblest.n <- gbl(xiim.n, boxwidths), regexp = "harmon")
+  expect_equal(gblest.l, gblest.n)
+  expect_error(gbl(xiim.n3, boxwidths), regexp = "isbinarymap")
 })

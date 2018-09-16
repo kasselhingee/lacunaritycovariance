@@ -4,13 +4,13 @@
 \alias{secondorderprops}
 \title{Estimate Second-Order Properties of a RACS}
 \usage{
-secondorderprops(xiim, mvlargs = NULL, covarargs = NULL,
+secondorderprops(xiim, gblargs = NULL, covarargs = NULL,
   cencovarargs = NULL, paircorrargs = NULL, returnrotmean = FALSE)
 }
 \arguments{
 \item{xiim}{A \pkg{spatstat} \code{im} object with pixel values that are either TRUE, FALSE or NA. TRUE represents foreground, FALSE respresents background and NA represents unobserved locations.}
 
-\item{mvlargs}{Arguments passed to \code{mvlgb} and \code{mvl.cvchat}. If NULL then MVL will not be estimated.
+\item{gblargs}{Arguments passed to \code{gbltrad} and \code{gbl.cvchat}. If NULL then GBL will not be estimated.
 You can also request to}
 
 \item{covarargs}{Arguments passed to \code{racscovariance.cvchat}. If NULL then covariance will not be returned.}
@@ -23,19 +23,19 @@ You can also request to}
 If TRUE then average covariance and pair-correlation over all directions will be returned as \code{fv} objects.}
 }
 \description{
-Estimates many second order properties of RACS, mass variance lacunarity, covariance, centred covariance,#' and pair-correlation.
+Estimates many second order properties of RACS, gliding box lacunarity, covariance, centred covariance,#' and pair-correlation.
 This can be faster than computing estimates of multiple second order properties separately as  
 Fourier transforms of the binary map are not repeated.
 }
 \examples{
 xi <- heather$coarse
 xiim <- as.im(xi, value = TRUE, na.replace = FALSE)
-mvlargs = list(boxwidths = seq(1, 10, by = 0.1), estimators = c("MVLgb", "MVLc"))
+gblargs = list(boxwidths = seq(1, 10, by = 0.1), estimators = c("GBLgb", "GBLc"))
 covarargs = list(estimators = "all")
 paircorrargs = list(estimators = "pickaH")
 returnrotmean = TRUE
 secondests <- secondorderprops(xiim,
-   mvlargs = mvlargs,
+   gblargs = gblargs,
    covarargs = covarargs,
    paircorrargs = paircorrargs, 
    returnrotmean = FALSE)
