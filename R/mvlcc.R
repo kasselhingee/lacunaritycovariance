@@ -1,13 +1,13 @@
-#' @title Centred covariance based estimates of mass variance lacunarity
-#' @export mvlcc
+#' @title Centred covariance based estimates of gliding box lacunarity
+#' @export gblcc
 #'
-#' @description Estimates the mass variance lacunarity (MVL) of a stationary RACS using centred covariance estimates.
+#' @description Estimates the gliding box lacunarity (GBL) of a stationary RACS using centred covariance estimates.
 #'  The centred covariance and coverage probability can be provided or estimated from binary map.
 
 #' @details If we denoted the estimated centred covariance by
 #' \eqn{\hat{\kappa}(v)}{k(v)} and coverage probability \eqn{\hat{p}}{p} then
-#' the estimate of MVL is
-#' \deqn{ \frac{1}{\hat{p}^2 |B|^2}\int \gamma_B(v)\hat{\kappa}(v)dv }{ \int gammaB(v) k(v) dv  /  (p^2 |B|^2).}
+#' the estimate of GBL is
+#' \deqn{1 + \frac{1}{\hat{p}^2 |B|^2}\int \gamma_B(v)\hat{\kappa}(v)dv }{1 + \int gammaB(v) k(v) dv  /  (p^2 |B|^2).}
 
 #' @param boxes Either a list of sidelengths for square boxes or a list of \code{owin} objects of any shape.
 #' @param cencovar  A \code{im} object containing the centred covariance function
@@ -15,37 +15,37 @@
 #' @param xiim An observation of a stationary RACS in \code{im} format. \code{xiim} must have values of either 1, 0 or NA; 1 denotes inside the RACS, 0 denotes outside, and NA denotes unobserved.
 #' @param estimator If an observation \code{xiim} is passed then \code{estimator} will select the balancing method that \code{ccvc} uses to estimate the centred covariance.
 
-#' @return If \code{boxes} is a list of numerical values then MVL is estimated for square boxes with side length given by \code{boxes}.
-#'  The returned object is then an \code{fv} object containing estimates of MVL, box mass variance and box mass mean.
+#' @return If \code{boxes} is a list of numerical values then GBL is estimated for square boxes with side length given by \code{boxes}.
+#'  The returned object is then an \code{fv} object containing estimates of GBL, box mass variance and box mass mean.
 #'  
-#'  If \code{boxes} is a list of owin objects then \code{mvlcc} returns a dataframe of with columns corresponding to estimates of MVL, box mass variance and box mass mean.
-#'  Note if NA or NaN values in the \code{covariance} object are used then \code{mvlc} will return NA or NaN instead of an MVL value. 
+#'  If \code{boxes} is a list of owin objects then \code{gblcc} returns a dataframe of with columns corresponding to estimates of GBL, box mass variance and box mass mean.
+#'  Note if NA or NaN values in the \code{covariance} object are used then \code{gblc} will return NA or NaN instead of an GBL value. 
 
 #' @examples
 #' xi <- heather$coarse
 #' cencovar <- cencovariance(xi, obswin = Frame(xi), estimators = c("pickaH"), drop = TRUE)
 #' p <- area(xi) / area(Frame(xi))
 #' sidelengths <- seq(0.3, 14, by = 0.2)
-#' mvlccest <- mvlcc(sidelengths, cencovar, p)
-#' # what is the MVL estimates for boxes that are discs?
+#' gblccest <- gblcc(sidelengths, cencovar, p)
+#' # what is the GBL estimates for boxes that are discs?
 #' discboxes <- lapply(sidelengths / 2, disc)
-#' discmvls <- mvlcc(discboxes, cencovar, p)
-#' # points(sidelengths, discmvls)
+#' discgbls <- gblcc(discboxes, cencovar, p)
+#' # points(sidelengths, discgbls)
 #' 
 #' #direct to an image
 #' xiim <- as.im(xi, na.replace = 0)
-#' mvlccest <- mvlcc(sidelengths, xiim = xiim, estimator = "pickaH")
+#' gblccest <- gblcc(sidelengths, xiim = xiim, estimator = "pickaH")
 #' 
 #' @keywords spatial nonparametric 
-mvlcc <- function(boxes, cencovar = NULL, p = NULL, xiim = NULL, estimator = "pickaH"){
+gblcc <- function(boxes, cencovar = NULL, p = NULL, xiim = NULL, estimator = "pickaH"){
   if (!(is.null(cencovar) && is.null(p))){
     if (!is.null(xiim)){stop("xiim (an observation image) and cencovar or p were given. Either cencovar and p must be supplied or xiim supplied.")}
-    lacv <- mvlcc.inputcovar(boxes, cencovar, p)
+    lacv <- gblcc.inputcovar(boxes, cencovar, p)
     unitname <- unitname(cencovar)
   } else if (!is.null(xiim)){
     p <- sum(xiim) / sum(is.finite(xiim$v))
     cencovar <- cencovariance(xiim, estimators = c(estimator), drop = TRUE)
-    lacv <- mvlcc.inputcovar(boxes, cencovar, p)
+    lacv <- gblcc.inputcovar(boxes, cencovar, p)
     unitname <- unitname(xiim)
   } else {
     stop("Input requires specification of xiim or cencovar and p")
@@ -56,31 +56,31 @@ mvlcc <- function(boxes, cencovar = NULL, p = NULL, xiim = NULL, estimator = "pi
     lacsdf <- cbind(s = boxes, lacsdf)
     #recommended xlim:
     alim.min <- 1
-    alim.max <- min(which(vapply(lacsdf[, "MVL"], is.na, FUN.VALUE = TRUE)), nrow(lacsdf))
+    alim.max <- min(which(vapply(lacsdf[, "GBL"], is.na, FUN.VALUE = TRUE)), nrow(lacsdf))
     lacfv <- fv(lacsdf,
                 argu = "s",
-                valu = "MVL",
+                valu = "GBL",
                 fmla = ".y ~ s",
                 alim = c(lacsdf[alim.min, "s"], lacsdf[alim.max, "s"]),
-                ylab = quote(MVL[c]),
+                ylab = quote(GBL[c]),
                 unitname = unitname(xiim),
                 labl = c("Box Width",
-                         "MVL",
+                         "GBL",
                          "Var(BoxMass)",
                          "Mean[BoxMass]"),
                 desc = c("side lengths of boxes", 
-                         "MVL derived from covariance",
+                         "GBL derived from covariance",
                          "A covariance-based estimate of the variance in box mass",
                          "An estimate of mean box mass using coverage probability"
                 ),
-                fname = "MVL"
+                fname = "GBL"
     )
-    fvnames(lacfv, a = ".") <- "MVL"
+    fvnames(lacfv, a = ".") <- "GBL"
     return(lacfv)
   } else (return(lacsdf))
 }
 
-mvlcc.inputcovar <- function(boxes, cencovar, p){
+gblcc.inputcovar <- function(boxes, cencovar, p){
   stopifnot(is.im(cencovar))
   stopifnot(is.numeric(p))
   if (mode(boxes) %in% c("integer", "numeric")){
@@ -97,9 +97,9 @@ mvlcc.inputcovar <- function(boxes, cencovar, p){
 
   integrationresults <- mapply(innerprod.im, boxcov, list(cencovar), outsideA = 0, outsideB = NA, na.rm = FALSE, SIMPLIFY = FALSE) # the list around the cencovar is necessary to stop mapply unlisting the image itself
 
-  lac <- unlist(integrationresults) / (p ^ 2 * boxarea ^ 2)
+  coefvar2 <- unlist(integrationresults) / (p ^ 2 * boxarea ^ 2)
   return(list(
-    MVL = lac,
+    GBL = coefvar2 + 1,
     s2 = unlist(integrationresults),
     xbar = p * boxarea
   ))

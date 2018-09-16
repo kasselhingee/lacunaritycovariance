@@ -1,7 +1,7 @@
-#' @title Mass variance lacunarity estimatation using all estimators
-#' @export mvl mvl.cvchat
-#' @description Estimates mass variance lacunarity (MVL) using all estimators described in [Hingee2019**] from binary maps for square boxes.
-#' It calls the functions \code{mvlc}, \code{mvlg}, \code{mvlcc} and \code{mvlgb}.
+#' @title Gliding box lacunarity estimatation using all estimators
+#' @export gbl gbl.cvchat
+#' @description Estimates gliding box lacunarity (GBL) using all estimators described in [Hingee2019**] from binary maps for square boxes.
+#' It calls the functions \code{gblc}, \code{gblg}, \code{gblcc} and \code{gblgb}.
 
 #' @param xi A binary map of an observation of a RACS of interest. See
 #'   \code{\link{stationaryracsinference-package}} for details.
@@ -9,7 +9,7 @@
 #'   \code{owin} object that specifies the observation window.
 #' @param boxwidths A list of box widths
 #' @param estimators A list of estimator names - see details for possibilities. \code{estimators = "all"} will select all estimators.
-#' @param includenormed A logical value. If TRUE then MVL estimates normalised by the MVL values at zero will be included in a returned list of fv objects
+#' @param includenormed A logical value. If TRUE then GBL estimates normalised by the GBL values at zero will be included in a returned list of fv objects
 #' @param setcov_boundarythresh Any vector \eqn{v} such that set covariance of the observation window is smaller than this threshold
 #' is given a covariance estimate (and other similar estimate) of NA to avoid instabilities caused by dividing by very small areas.
 #' If NULL is supplied (default) then 1E-6 is used.
@@ -20,48 +20,48 @@
 #' @return An \code{fv} object.
 
 #' @details
-#' The function is not able to estimate MVL for non-square boxes as the gliding box estimator is included.
-#' To estimate MVL for non-square boxes use \code{mvlcc} or \code{mvlg} directly.
+#' The function is not able to estimate GBL for non-square boxes as the gliding box estimator is included.
+#' To estimate GBL for non-square boxes use \code{gblcc} or \code{gblg} directly.
 #' 
 #' If \code{xi} is in \code{owin} format then \code{obswin} and \code{xi} are converted
 #'  into a binary map in \code{im} format using \code{\link[spatstat]{as.im}}
 #' 
 #' The estimators available are
 #' \itemize{
-#' \item{\code{"MVLc"}} The unmodified (unbalanced) covariance estimator provided by \code{\link{mvlc}}
-#' \item{\code{"MVLgb"}} The Gliding-Box estimator of Allain and Cloitre [allain1991ch]. Calls \code{\link{mvlgb}}
-#' \item{\code{"MVLg.mattfeldt"}} See help for \code{\link{mvlg}}
-#' \item{\code{"MVLg.pickaint"}} See help for \code{\link{mvlg}}
-#' \item{\code{"MVLg.pickaH"}} See help for \code{\link{mvlg}}
-#' \item{\code{"MVLcc.mattfeldt"}} See help for \code{\link{mvlcc}}
-#' \item{\code{"MVLcc.pickaint"}} See help for \code{\link{mvlcc}}
-#' \item{\code{"MVLcc.pickaH"}} See help for \code{\link{mvlcc}}
+#' \item{\code{"GBLc"}} The unmodified (unbalanced) covariance estimator provided by \code{\link{gblc}}
+#' \item{\code{"GBLgb"}} The Gliding-Box estimator of Allain and Cloitre [allain1991ch]. Calls \code{\link{gblgb}}
+#' \item{\code{"GBLg.mattfeldt"}} See help for \code{\link{gblg}}
+#' \item{\code{"GBLg.pickaint"}} See help for \code{\link{gblg}}
+#' \item{\code{"GBLg.pickaH"}} See help for \code{\link{gblg}}
+#' \item{\code{"GBLcc.mattfeldt"}} See help for \code{\link{gblcc}}
+#' \item{\code{"GBLcc.pickaint"}} See help for \code{\link{gblcc}}
+#' \item{\code{"GBLcc.pickaH"}} See help for \code{\link{gblcc}}
 #' }
 
 #' @examples 
 #' xi <- heather$coarse
 #' xi <- as.im(xi, value = TRUE, na.replace = FALSE)
-#' mvlests <- mvl(xi, seq(1, 10, by = 0.1))
+#' gblests <- gbl(xi, seq(1, 10, by = 0.1))
 
-#' @describeIn mvl Computes MVL estimates from a binary map.
-mvl <- function(xi, boxwidths,
-                           estimators = c("MVLg.mattfeldt", "MVLg.pickaint", "MVLg.pickaH",
-                                          "MVLcc.mattfeldt", "MVLcc.pickaint",
-                                          "MVLc", "MVLgb"),
+#' @describeIn gbl Computes GBL estimates from a binary map.
+gbl <- function(xi, boxwidths,
+                           estimators = c("GBLg.mattfeldt", "GBLg.pickaint", "GBLg.pickaH",
+                                          "GBLcc.mattfeldt", "GBLcc.pickaint",
+                                          "GBLc", "GBLgb"),
                 obswin = NULL,
                 includenormed = FALSE,
                 setcov_boundarythresh = 1E-6){
   if ("all" %in% estimators){
-    estimators = c("MVLg.mattfeldt", "MVLg.pickaint", "MVLg.pickaH",
-     "MVLcc.mattfeldt", "MVLcc.pickaint", "MVLcc.pickaH",
-     "MVLc", "MVLgb")
+    estimators = c("GBLg.mattfeldt", "GBLg.pickaint", "GBLg.pickaH",
+     "GBLcc.mattfeldt", "GBLcc.pickaint", "GBLcc.pickaH",
+     "GBLc", "GBLgb")
   }
-  mvlgestimaterequests <- estimators %in% MVLgestimatornames
-  mvlccestimaterequests <- estimators %in% MVLccestimatornames
+  gblgestimaterequests <- estimators %in% GBLgestimatornames
+  gblccestimaterequests <- estimators %in% GBLccestimatornames
   
-  mvl.ests <- list()
+  gbl.ests <- list()
   cpp1 <- cvchat <- NULL
-  mvlcovarbased <- mvlgb.est <- NULL
+  gblcovarbased <- gblgb.est <- NULL
   
   #if an owin is passed convert to an im object 
   if (is.owin(xi)) {
@@ -72,90 +72,90 @@ mvl <- function(xi, boxwidths,
   stopifnot(isbinarymap(xi))
   
   phat <- coverageprob(xi)
-  if(sum(mvlgestimaterequests) + sum(mvlccestimaterequests) + ("MVLc" %in% estimators) > 0){
+  if(sum(gblgestimaterequests) + sum(gblccestimaterequests) + ("GBLc" %in% estimators) > 0){
     cvchat <- tradcovarest(xi, setcov_boundarythresh = setcov_boundarythresh)
   }
-  if (sum(mvlgestimaterequests) + sum(mvlccestimaterequests) > 0){
+  if (sum(gblgestimaterequests) + sum(gblccestimaterequests) > 0){
     cpp1 <- cppicka(xi, setcov_boundarythresh = setcov_boundarythresh)
   }
-  if(sum(mvlgestimaterequests) + sum(mvlccestimaterequests) + ("MVLc" %in% estimators) > 0){
-    #function that computes the covariance-based estimates of MVL
-    mvlcovarbased <- mvl.cvchat(boxwidths = boxwidths, estimators = estimators, phat = phat, cvchat = cvchat, cpp1 = cpp1)
-    mvl.ests <- c(mvl.ests, mvlcovarbased)
+  if(sum(gblgestimaterequests) + sum(gblccestimaterequests) + ("GBLc" %in% estimators) > 0){
+    #function that computes the covariance-based estimates of GBL
+    gblcovarbased <- gbl.cvchat(boxwidths = boxwidths, estimators = estimators, phat = phat, cvchat = cvchat, cpp1 = cpp1)
+    gbl.ests <- c(gbl.ests, gblcovarbased)
   }
   
-  #the MVLgb estimate
-  if ("MVLgb" %in% estimators){
-    mvlgb.est <- mvlgb(boxwidths = boxwidths, xiim = xi)
-    if (sum(!vapply(mvlgb.est[,fvnames(mvlgb.est), drop = TRUE], is.na, FUN.VALUE = TRUE)) < 2){
-      warning("mvlgb() returns estimates for 1 or fewer of the provided box widths. Results from mvlgb() will be ignored from the final results.")
-      mvlgb.est <- NULL
+  #the GBLgb estimate
+  if ("GBLgb" %in% estimators){
+    gblgb.est <- gblgb(boxwidths = boxwidths, xiim = xi)
+    if (sum(!vapply(gblgb.est[,fvnames(gblgb.est), drop = TRUE], is.na, FUN.VALUE = TRUE)) < 2){
+      warning("gblgb() returns estimates for 1 or fewer of the provided box widths. Results from gblgb() will be ignored from the final results.")
+      gblgb.est <- NULL
     }
-    mvl.ests <- c(mvl.ests, list(mvlgb = mvlgb.est))
+    gbl.ests <- c(gbl.ests, list(gblgb = gblgb.est))
   }
   
-  mvl.ests <- mvl.ests[!vapply(mvl.ests, is.null, FUN.VALUE = FALSE)]
-  if (any(!vapply(mvl.ests[-1], function(x) compatible.fv(A = mvl.ests[[1]], B = x), FUN.VALUE = FALSE))){
-    warning("Some MVL estimates have differing argument values. These will be harmonised.")
-    mvl.ests <- harmonise.fv(mvl.ests)
+  gbl.ests <- gbl.ests[!vapply(gbl.ests, is.null, FUN.VALUE = FALSE)]
+  if (any(!vapply(gbl.ests[-1], function(x) compatible.fv(A = gbl.ests[[1]], B = x), FUN.VALUE = FALSE))){
+    warning("Some GBL estimates have differing argument values. These will be harmonised.")
+    gbl.ests <- harmonise.fv(gbl.ests)
   }
-  mvls.fv <- collapse.fv(mvl.ests, different = "MVL")
-  names(mvls.fv) <- c(fvnames(mvls.fv, ".x"), names(mvl.ests))
+  gbls.fv <- collapse.fv(gbl.ests, different = "GBL")
+  names(gbls.fv) <- c(fvnames(gbls.fv, ".x"), names(gbl.ests))
   
-  allfvs <- list(mvl.est = mvls.fv)
+  allfvs <- list(gbl.est = gbls.fv)
   
   if (includenormed){
-    #compute MVLs normalised at zero
-    normdmvls <- eval.fv(mvls.fv / ( phat * (1 - phat) / phat^2), relabel = FALSE)
-    normdmvls <- prefixfv(normdmvls,
+    #compute GBLs normalised at zero
+    normdgbls <- eval.fv((gbls.fv - 1)/ ( phat * (1 - phat) / phat^2), relabel = FALSE)
+    normdgbls <- prefixfv(normdgbls,
                      tagprefix="n_",
-                     descprefix="normalised at zero",
+                     descprefix="standardised ",
                      lablprefix="plain(nrmd)~")
-    allfvs <- c(allfvs, list(normdmvls = normdmvls))
+    allfvs <- c(allfvs, list(normdgbls = normdgbls))
   }
   
   return(allfvs)
 }
 
-#' @describeIn mvl Computes covariance-based estimator of MVL from the traditional estimate of covariance,
+#' @describeIn gbl Computes covariance-based estimator of GBL from the traditional estimate of covariance,
 #'  Picka's reduced window coverage probability estimates and the traditional coverage probability estimate.
-mvl.cvchat <- function(boxwidths,
-                      estimators = c("MVLg.mattfeldt", "MVLg.pickaint", "MVLg.pickaH",
-                                     "MVLcc.mattfeldt", "MVLcc.pickaint",
-                                     "MVLc"),
+gbl.cvchat <- function(boxwidths,
+                      estimators = c("GBLg.mattfeldt", "GBLg.pickaint", "GBLg.pickaH",
+                                     "GBLcc.mattfeldt", "GBLcc.pickaint",
+                                     "GBLc"),
                       phat = NULL,
                       cvchat = NULL,
                       cpp1 = NULL){
   if ("all" %in% estimators){
-    estimators = c("MVLg.mattfeldt", "MVLg.pickaint", "MVLg.pickaH",
-     "MVLcc.mattfeldt", "MVLcc.pickaint",
-     "MVLc")
+    estimators = c("GBLg.mattfeldt", "GBLg.pickaint", "GBLg.pickaH",
+     "GBLcc.mattfeldt", "GBLcc.pickaint",
+     "GBLc")
   }
-  mvlgestimaterequests <- estimators %in% MVLgestimatornames
-  mvlccestimaterequests <- estimators %in% MVLccestimatornames
-  mvlgs <- mvlccs <- mvlc.est <- mvlgb.est <- NULL
+  gblgestimaterequests <- estimators %in% GBLgestimatornames
+  gblccestimaterequests <- estimators %in% GBLccestimatornames
+  gblgs <- gblccs <- gblc.est <- gblgb.est <- NULL
   
-  if (sum(mvlgestimaterequests) + sum(mvlccestimaterequests) > 0){
+  if (sum(gblgestimaterequests) + sum(gblccestimaterequests) > 0){
     stopifnot(!is.null(cpp1), !is.null(cvchat), !is.null(phat))
-    if (sum(mvlgestimaterequests) > 0){
-      pcln.ests <- paircorr.cvchat(cvchat, cpp1 = cpp1, phat = phat, estimators = gsub("MVLg.", "", estimators[mvlgestimaterequests]), drop = FALSE)
-      mvlgs <- lapply(pcln.ests, FUN = mvlg, boxes = boxwidths)
+    if (sum(gblgestimaterequests) > 0){
+      pcln.ests <- paircorr.cvchat(cvchat, cpp1 = cpp1, phat = phat, estimators = gsub("GBLg.", "", estimators[gblgestimaterequests]), drop = FALSE)
+      gblgs <- lapply(pcln.ests, FUN = gblg, boxes = boxwidths)
     }
-    if (sum(mvlccestimaterequests) > 0){
-      ccvc.ests <- cencovariance.cvchat(cvchat, cpp1, phat, estimators = gsub("MVLcc.", "", estimators[mvlccestimaterequests]), drop = FALSE)
-      mvlccs <- lapply(ccvc.ests, FUN = mvlcc, p = phat, boxes = boxwidths)
+    if (sum(gblccestimaterequests) > 0){
+      ccvc.ests <- cencovariance.cvchat(cvchat, cpp1, phat, estimators = gsub("GBLcc.", "", estimators[gblccestimaterequests]), drop = FALSE)
+      gblccs <- lapply(ccvc.ests, FUN = gblcc, p = phat, boxes = boxwidths)
     }
   }
-  if ("MVLc" %in% estimators){
+  if ("GBLc" %in% estimators){
     stopifnot(!is.null(cvchat), !is.null(phat))
-    mvlc.est <- mvlc(boxes = boxwidths, covariance = cvchat, p = phat)
+    gblc.est <- gblc(boxes = boxwidths, covariance = cvchat, p = phat)
   }
-  mvl.ests <- c(mvlg = mvlgs, mvlcc = mvlccs, list(mvlc = mvlc.est))
-  mvl.ests <- mvl.ests[!vapply(mvl.ests, is.null, FUN.VALUE = FALSE)]
-  return(mvl.ests)
+  gbl.ests <- c(gblg = gblgs, gblcc = gblccs, list(gblc = gblc.est))
+  gbl.ests <- gbl.ests[!vapply(gbl.ests, is.null, FUN.VALUE = FALSE)]
+  return(gbl.ests)
 }
 
 
 
-MVLgestimatornames <- c("MVLg.trad", "MVLg.mattfeldt", "MVLg.pickaint", "MVLg.pickaH")
-MVLccestimatornames <- c("MVLcc.trad", "MVLcc.mattfeldt", "MVLcc.pickaint", "MVLcc.pickaH")
+GBLgestimatornames <- c("GBLg.trad", "GBLg.mattfeldt", "GBLg.pickaint", "GBLg.pickaH")
+GBLccestimatornames <- c("GBLcc.trad", "GBLcc.mattfeldt", "GBLcc.pickaint", "GBLcc.pickaH")

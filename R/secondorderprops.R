@@ -1,11 +1,11 @@
 #' @title Estimate Second-Order Properties of a RACS
-#' @description Estimates many second order properties of RACS, mass variance lacunarity, covariance, centred covariance,#' and pair-correlation.
+#' @description Estimates many second order properties of RACS, gliding box lacunarity, covariance, centred covariance,#' and pair-correlation.
 #' This can be faster than computing estimates of multiple second order properties separately as  
 #' Fourier transforms of the binary map are not repeated.
 
 #' @export secondorderprops
 #' @param xiim A \pkg{spatstat} \code{im} object with pixel values that are either TRUE, FALSE or NA. TRUE represents foreground, FALSE respresents background and NA represents unobserved locations.
-#' @param mvlargs Arguments passed to \code{mvlgb} and \code{mvl.cvchat}. If NULL then MVL will not be estimated.
+#' @param gblargs Arguments passed to \code{gblgb} and \code{gbl.cvchat}. If NULL then GBL will not be estimated.
 #' You can also request to 
 #' @param covarargs Arguments passed to \code{racscovariance.cvchat}. If NULL then covariance will not be returned.
 #' @param cencovarargs NOT YET IMPLEMENTED
@@ -16,18 +16,18 @@
 #' @examples 
 #' xi <- heather$coarse
 #' xiim <- as.im(xi, value = TRUE, na.replace = FALSE)
-#' mvlargs = list(boxwidths = seq(1, 10, by = 0.1), estimators = c("MVLgb", "MVLc"))
+#' gblargs = list(boxwidths = seq(1, 10, by = 0.1), estimators = c("GBLgb", "GBLc"))
 #' covarargs = list(estimators = "all")
 #' paircorrargs = list(estimators = "pickaH")
 #' returnrotmean = TRUE
 #' secondests <- secondorderprops(xiim,
-#'    mvlargs = mvlargs,
+#'    gblargs = gblargs,
 #'    covarargs = covarargs,
 #'    paircorrargs = paircorrargs, 
 #'    returnrotmean = FALSE)
 
 secondorderprops <- function(xiim,
-                             mvlargs = NULL,
+                             gblargs = NULL,
                              covarargs = NULL,
                              cencovarargs = NULL,
                              paircorrargs = NULL,
@@ -39,36 +39,36 @@ secondorderprops <- function(xiim,
   
   outlist <- list()
   
-  #first compute MVL ests copying MVL()
-  if (!is.null(mvlargs)){
-    mvl.ests <- list()
-    if  (any("MVLgb" != mvlargs[["estimators"]]) || is.null(mvlargs[["estimators"]]) || ("all" %in% mvlargs[["estimators"]])){
-      mvlcovarbased <- do.call(mvl.cvchat, args = c(mvlargs, list(phat = phat, cvchat = cvchatT, cpp1 = cpp1)))
-      mvl.ests <- c(mvl.ests, mvlcovarbased)
+  #first compute GBL ests copying GBL()
+  if (!is.null(gblargs)){
+    gbl.ests <- list()
+    if  (any("GBLgb" != gblargs[["estimators"]]) || is.null(gblargs[["estimators"]]) || ("all" %in% gblargs[["estimators"]])){
+      gblcovarbased <- do.call(gbl.cvchat, args = c(gblargs, list(phat = phat, cvchat = cvchatT, cpp1 = cpp1)))
+      gbl.ests <- c(gbl.ests, gblcovarbased)
     }
-    if (("MVLgb" %in% mvlargs[["estimators"]]) || is.null(mvlargs[["estimators"]]) || ("all" %in% mvlargs[["estimators"]])) {
-      mvlgb.est <- mvlgb(boxwidths = mvlargs[["boxwidths"]], xiim = xiim)
-      if (sum(!vapply(mvlgb.est[,fvnames(mvlgb.est), drop = TRUE], is.na, FUN.VALUE = TRUE)) < 2){
-        warning("mvlgb() returns estimates for 1 or fewer of the provided box widths. Results from mvlgb() will be ignored from the final results.")
-        mvlgb.est <- NULL
+    if (("GBLgb" %in% gblargs[["estimators"]]) || is.null(gblargs[["estimators"]]) || ("all" %in% gblargs[["estimators"]])) {
+      gblgb.est <- gblgb(boxwidths = gblargs[["boxwidths"]], xiim = xiim)
+      if (sum(!vapply(gblgb.est[,fvnames(gblgb.est), drop = TRUE], is.na, FUN.VALUE = TRUE)) < 2){
+        warning("gblgb() returns estimates for 1 or fewer of the provided box widths. Results from gblgb() will be ignored from the final results.")
+        gblgb.est <- NULL
       }
-      mvl.ests <- c(mvl.ests, list(mvlgb = mvlgb.est))
+      gbl.ests <- c(gbl.ests, list(gblgb = gblgb.est))
     }
-    #combind the mvl ests
-    mvl.ests <- mvl.ests[!vapply(mvl.ests, is.null, FUN.VALUE = FALSE)]
-    if (is.owin(mvlargs[["boxwidths"]][[1]])){
-      mvls <- do.call(cbind, args = mvl.ests)
+    #combind the gbl ests
+    gbl.ests <- gbl.ests[!vapply(gbl.ests, is.null, FUN.VALUE = FALSE)]
+    if (is.owin(gblargs[["boxwidths"]][[1]])){
+      gbls <- do.call(cbind, args = gbl.ests)
     } else {
-      if (any(!vapply(mvl.ests[-1], function(x) compatible.fv(A = mvl.ests[[1]], B = x), FUN.VALUE = FALSE))){
-        warning("Some MVL estimates have differing argument values. These will be harmonised.")
-        mvl.ests <- harmonise.fv(mvl.ests)
+      if (any(!vapply(gbl.ests[-1], function(x) compatible.fv(A = gbl.ests[[1]], B = x), FUN.VALUE = FALSE))){
+        warning("Some GBL estimates have differing argument values. These will be harmonised.")
+        gbl.ests <- harmonise.fv(gbl.ests)
       }
-      mvls <- collapse.fv(mvl.ests, different = "MVL")
-      names(mvls) <- c(fvnames(mvls, ".x"), names(mvl.ests))
+      gbls <- collapse.fv(gbl.ests, different = "GBL")
+      names(gbls) <- c(fvnames(gbls, ".x"), names(gbl.ests))
     }
-    outlist <- c(outlist, list(MVL = mvls))
+    outlist <- c(outlist, list(GBL = gbls))
   }
-  ### mvl estimation finished ###
+  ### gbl estimation finished ###
   
   #covariance computations
   if (!is.null(covarargs)) {
