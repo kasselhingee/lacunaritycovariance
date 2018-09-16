@@ -83,7 +83,7 @@ lacs <- mapply(gbltrad_intern.rcpproll, sidep = 2 * rpix + 1, MoreArgs = list(xi
 
 
 ##########################
-##The following function calculates lacunarity for a box with side lengths 2*bX+1 and 2*bY+1 (in pixels). The RS version is automatically calculated by ignoring those boxes that have sums that includa NA values. 
+##The following function estimates gliding box lacunarity for a box with side lengths 2*bX+1 and 2*bY+1 (in pixels). The RS version is automatically calculated by ignoring those boxes that have sums that includa NA values. 
 #eg gbltrad_intern.rcpproll(xiim,5,5,5*0.8)
 #the obswin is only for the raw version and must be an owin object. 
 #uses rcpproll
