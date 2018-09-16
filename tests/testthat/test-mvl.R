@@ -15,13 +15,13 @@ test_that("gblc() warns of unexpected inputs", {
                  regexp = "Either covariance and p must be supplied or xiim supplied.")
 })
 
-test_that("gblgb() warns of unexpected inputs", {
+test_that("gbltrad() warns of unexpected inputs", {
   sidel <- c(2.2)
   img <- as.im(heather$coarse,eps=c(heather$coarse$xstep, 2 * heather$coarse$xstep), na.replace = 0)
-  expect_error(gblgb(sidel, img),
+  expect_error(gbltrad(sidel, img),
                  regexp = "image pixels must be square")
 
-  expect_error(gblgb(sidel, 13),
+  expect_error(gbltrad(sidel, 13),
                  regexp = "input xiim must be of class im")
 
 })
@@ -37,7 +37,7 @@ test_that("GBLc estimates are historically consistent", {
 test_that("GBLgb estimates are historically consistent", {
   img <- as.im(heather$coarse, eps = heather$coarse$xstep, na.replace = 0)
   sidel <- c(2.2)
-  lac <- gblgb(sidel, img)
+  lac <- gbltrad(sidel, img)
   expect_equal(lac$GBL, 1 + 0.03253836)
 })
 
@@ -94,10 +94,10 @@ test_that("GBLc and GBLgb produce similar results for large square observation w
   #xiimg and covarest.frim is pregenerated in helper-calccovar
   sidelengths <- seq(xiimg$xstep * 3, 15, by = xiimg$xstep * 2) #odd pixel widths!
   lac.gblcc.picakHest <- gblc(sidelengths, covar = covarest.frim, p = xi.p)
-  lac.gblgbest <- gblgb(sidelengths, xiimg)
+  lac.gbltradest <- gbltrad(sidelengths, xiimg)
 
-  expect_equal(lac.gblcc.picakHest$s, lac.gblgbest$s)
-  expect_equal(lac.gblcc.picakHest$GBL, lac.gblgbest$GBL, tolerance = 5E-2)
+  expect_equal(lac.gblcc.picakHest$s, lac.gbltradest$s)
+  expect_equal(lac.gblcc.picakHest$GBL, lac.gbltradest$GBL, tolerance = 5E-2)
 })
 
 test_that("gbl() fails nicely when GBLgb can't estimate anything", {

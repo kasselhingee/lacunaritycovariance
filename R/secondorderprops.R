@@ -5,7 +5,7 @@
 
 #' @export secondorderprops
 #' @param xiim A \pkg{spatstat} \code{im} object with pixel values that are either TRUE, FALSE or NA. TRUE represents foreground, FALSE respresents background and NA represents unobserved locations.
-#' @param gblargs Arguments passed to \code{gblgb} and \code{gbl.cvchat}. If NULL then GBL will not be estimated.
+#' @param gblargs Arguments passed to \code{gbltrad} and \code{gbl.cvchat}. If NULL then GBL will not be estimated.
 #' You can also request to 
 #' @param covarargs Arguments passed to \code{racscovariance.cvchat}. If NULL then covariance will not be returned.
 #' @param cencovarargs NOT YET IMPLEMENTED
@@ -47,12 +47,12 @@ secondorderprops <- function(xiim,
       gbl.ests <- c(gbl.ests, gblcovarbased)
     }
     if (("GBLgb" %in% gblargs[["estimators"]]) || is.null(gblargs[["estimators"]]) || ("all" %in% gblargs[["estimators"]])) {
-      gblgb.est <- gblgb(boxwidths = gblargs[["boxwidths"]], xiim = xiim)
-      if (sum(!vapply(gblgb.est[,fvnames(gblgb.est), drop = TRUE], is.na, FUN.VALUE = TRUE)) < 2){
-        warning("gblgb() returns estimates for 1 or fewer of the provided box widths. Results from gblgb() will be ignored from the final results.")
-        gblgb.est <- NULL
+      gbltrad.est <- gbltrad(boxwidths = gblargs[["boxwidths"]], xiim = xiim)
+      if (sum(!vapply(gbltrad.est[,fvnames(gbltrad.est), drop = TRUE], is.na, FUN.VALUE = TRUE)) < 2){
+        warning("gbltrad() returns estimates for 1 or fewer of the provided box widths. Results from gbltrad() will be ignored from the final results.")
+        gbltrad.est <- NULL
       }
-      gbl.ests <- c(gbl.ests, list(gblgb = gblgb.est))
+      gbl.ests <- c(gbl.ests, list(gbltrad = gbltrad.est))
     }
     #combind the gbl ests
     gbl.ests <- gbl.ests[!vapply(gbl.ests, is.null, FUN.VALUE = FALSE)]

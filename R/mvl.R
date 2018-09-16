@@ -1,7 +1,7 @@
 #' @title Gliding box lacunarity estimatation using all estimators
 #' @export gbl gbl.cvchat
 #' @description Estimates gliding box lacunarity (GBL) using all estimators described in [Hingee2019**] from binary maps for square boxes.
-#' It calls the functions \code{gblc}, \code{gblg}, \code{gblcc} and \code{gblgb}.
+#' It calls the functions \code{gblc}, \code{gblg}, \code{gblcc} and \code{gbltrad}.
 
 #' @param xi A binary map of an observation of a RACS of interest. See
 #'   \code{\link{stationaryracsinference-package}} for details.
@@ -29,7 +29,7 @@
 #' The estimators available are
 #' \itemize{
 #' \item{\code{"GBLc"}} The unmodified (unbalanced) covariance estimator provided by \code{\link{gblc}}
-#' \item{\code{"GBLgb"}} The Gliding-Box estimator of Allain and Cloitre [allain1991ch]. Calls \code{\link{gblgb}}
+#' \item{\code{"GBLgb"}} The Gliding-Box estimator of Allain and Cloitre [allain1991ch]. Calls \code{\link{gbltrad}}
 #' \item{\code{"GBLg.mattfeldt"}} See help for \code{\link{gblg}}
 #' \item{\code{"GBLg.pickaint"}} See help for \code{\link{gblg}}
 #' \item{\code{"GBLg.pickaH"}} See help for \code{\link{gblg}}
@@ -61,7 +61,7 @@ gbl <- function(xi, boxwidths,
   
   gbl.ests <- list()
   cpp1 <- cvchat <- NULL
-  gblcovarbased <- gblgb.est <- NULL
+  gblcovarbased <- gbltrad.est <- NULL
   
   #if an owin is passed convert to an im object 
   if (is.owin(xi)) {
@@ -86,12 +86,12 @@ gbl <- function(xi, boxwidths,
   
   #the GBLgb estimate
   if ("GBLgb" %in% estimators){
-    gblgb.est <- gblgb(boxwidths = boxwidths, xiim = xi)
-    if (sum(!vapply(gblgb.est[,fvnames(gblgb.est), drop = TRUE], is.na, FUN.VALUE = TRUE)) < 2){
-      warning("gblgb() returns estimates for 1 or fewer of the provided box widths. Results from gblgb() will be ignored from the final results.")
-      gblgb.est <- NULL
+    gbltrad.est <- gbltrad(boxwidths = boxwidths, xiim = xi)
+    if (sum(!vapply(gbltrad.est[,fvnames(gbltrad.est), drop = TRUE], is.na, FUN.VALUE = TRUE)) < 2){
+      warning("gbltrad() returns estimates for 1 or fewer of the provided box widths. Results from gbltrad() will be ignored from the final results.")
+      gbltrad.est <- NULL
     }
-    gbl.ests <- c(gbl.ests, list(gblgb = gblgb.est))
+    gbl.ests <- c(gbl.ests, list(gbltrad = gbltrad.est))
   }
   
   gbl.ests <- gbl.ests[!vapply(gbl.ests, is.null, FUN.VALUE = FALSE)]
@@ -133,7 +133,7 @@ gbl.cvchat <- function(boxwidths,
   }
   gblgestimaterequests <- estimators %in% GBLgestimatornames
   gblccestimaterequests <- estimators %in% GBLccestimatornames
-  gblgs <- gblccs <- gblc.est <- gblgb.est <- NULL
+  gblgs <- gblccs <- gblc.est <- gbltrad.est <- NULL
   
   if (sum(gblgestimaterequests) + sum(gblccestimaterequests) > 0){
     stopifnot(!is.null(cpp1), !is.null(cvchat), !is.null(phat))

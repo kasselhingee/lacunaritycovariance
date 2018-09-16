@@ -1,5 +1,5 @@
 #' @title Gliding Box estimation of gliding box lacunarity
-#' @export gblgb
+#' @export gbltrad
 #' @importFrom utils installed.packages
 #'
 #' @description Calculates the gliding box estimate [1] of gliding box lacunarity from a binary map.
@@ -8,7 +8,7 @@
 #'  the mean and variance of the area in a random box of a given size.
 #' Locations where the box is not completely within the observation window are ignored.
 #'  
-#' @section WARNING: \code{gblgb} uses the \code{\link[RcppRoll]{roll_sum}} function in \pkg{RcppRoll} to operate.
+#' @section WARNING: \code{gbltrad} uses the \code{\link[RcppRoll]{roll_sum}} function in \pkg{RcppRoll} to operate.
 #' \pkg{RcppRoll} must be installed.
 #' 
 #' Note: The side lengths are rounded such that they are an odd number of pixels across.
@@ -20,15 +20,15 @@
 #'  
 #' @param xiim An image of pixels valued either \code{0}, \code{1} or \code{NA}. \code{NA} valued pixels are assumed to be outside the observation window.
 #' @param boxwidths A list of suggested box widths in the same units as \code{xiim}. 
-#' Note the actual box widths used by \code{gblgb} will be the closest multiple of an odd number of pixel widths.
+#' Note the actual box widths used by \code{gbltrad} will be the closest multiple of an odd number of pixel widths.
 #' @param obswin Optional observation window. The observation window used for the estimator will be the intersection of \code{obswin} and the pixels that are not \code{NA} in \code{xiim}.
 #' @examples
 #' xiim <- as.im(heather$coarse, na.replace = 0)
 #' boxwidths <- seq(0.2, 14, by = 0.2) #in units of xiim
-#' gblest <- gblgb(boxwidths, xiim)
+#' gblest <- gbltrad(boxwidths, xiim)
 #'
 #' @keywords spatial nonparametric 
-gblgb <- function(boxwidths, xiim, obswin = Frame(xiim)){
+gbltrad <- function(boxwidths, xiim, obswin = Frame(xiim)){
   if (!is.im(xiim)){stop("input xiim must be of class im")}
   if (abs(xiim$xstep - xiim$ystep) > 1E-2 * xiim$xstep){stop("image pixels must be square")}
   isbinarymap(xiim, requiretrue = TRUE)
@@ -50,7 +50,7 @@ gblgb <- function(boxwidths, xiim, obswin = Frame(xiim)){
   }
 
 xiim[(complement.owin(intersect.owin(obswin, Frame(xiim)), frame = Frame(xiim)))] <- NA  #make sure the pixels outside obswin are set to NA so that reduce sampling happens naturally ##NOTE: this a time consuming operation that may never be needed
-lacs <- mapply(gblgb_intern.rcpproll, sidep = 2 * rpix + 1, MoreArgs = list(xiim = xiim, obswin = obsvd), SIMPLIFY = FALSE)
+lacs <- mapply(gbltrad_intern.rcpproll, sidep = 2 * rpix + 1, MoreArgs = list(xiim = xiim, obswin = obsvd), SIMPLIFY = FALSE)
 
   #converting results in fv objects
     valsdf <- matrix(unlist(lacs), ncol = length(lacs[[1]]), byrow = TRUE)
@@ -84,13 +84,13 @@ lacs <- mapply(gblgb_intern.rcpproll, sidep = 2 * rpix + 1, MoreArgs = list(xiim
 
 ##########################
 ##The following function calculates lacunarity for a box with side lengths 2*bX+1 and 2*bY+1 (in pixels). The RS version is automatically calculated by ignoring those boxes that have sums that includa NA values. 
-#eg gblgb_intern.rcpproll(xiim,5,5,5*0.8)
+#eg gbltrad_intern.rcpproll(xiim,5,5,5*0.8)
 #the obswin is only for the raw version and must be an owin object. 
 #uses rcpproll
-gblgb_intern.rcpproll <- function(xiim, sidep, obswin = Frame(xiim)){
+gbltrad_intern.rcpproll <- function(xiim, sidep, obswin = Frame(xiim)){
   mat <- as.matrix(xiim)
   if ( (sidep > nrow(mat)) | (sidep > ncol(mat))){
-    gblgb.rs <- NA
+    gbltrad.rs <- NA
     sampmean.rs <- NA
     samp2ndmom.rs <- NA
   }
@@ -99,11 +99,11 @@ gblgb_intern.rcpproll <- function(xiim, sidep, obswin = Frame(xiim)){
     movline.overrowthencols <- RcppRoll::roll_sum(t(movline.overrows), sidep) * xiim$xstep * xiim$ystep
     sampmean.rs <- mean(movline.overrowthencols, na.rm = TRUE) #sample mean
     samp2ndmom.rs <- mean(movline.overrowthencols ^ 2, na.rm = TRUE) #biased sample second moment
-    gblgb.rs <- samp2ndmom.rs / (sampmean.rs ^ 2) 
+    gbltrad.rs <- samp2ndmom.rs / (sampmean.rs ^ 2) 
   }
 
     return(list(
-      GBL = gblgb.rs,
+      GBL = gbltrad.rs,
       s2 = samp2ndmom.rs - sampmean.rs^2,
       xbar = sampmean.rs
       ))
