@@ -4,7 +4,7 @@
 #' This function estimates the centred covariance of a stationary RACS. 
 #' The traditional centred covariance estimator, two 'balanced' estimators suggested by Picka
 #'  and a third 'balanced' estimator inspired by one of Picka's pair-correlation estimators.
-#' @author{Kassel Liam Hingee}
+#' @author{Anonymous}
 
 #' @param xi A binary map of an observation of a RACS of interest. See
 #'   \code{\link{stationaryracsinference-package}} for details.

@@ -1,5 +1,5 @@
 #' @title Picka's Reduced Window Estimator of Coverage Probability
-#' @author Kassel Liam Hingee 
+#' @author Anonymous 
 #' @import spatstat
 #' @export cppicka
 #' 

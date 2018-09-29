@@ -10,7 +10,7 @@
 }
 \details{
 Background is available for RACS [chiu2013st,molchanov2005th], gliding box lacunarity (GBL) [**GBL paper**] and contagion for RACS [**ISPRS conference paper**].
-A forthcoming PhD thesis by Kassel Liam Hingee will provide additional background for GBL, and for RACS in landscape metrics (which includes contagion).
+A forthcoming PhD thesis by Anonymous will provide additional background for GBL, and for RACS in landscape metrics (which includes contagion).
 
 This package expects RACS observations to be in the form of binary maps either in raster format, or as a set representing foreground with a second set giving the observation window.
 If in raster format, the object is expected to be a spatstat \code{im} object with pixel values that are only 1 and 0, or are logically valued (i.e. TRUE or FALSE). In both cases the observation window is taken to be the set of pixels with values that are not \code{NA} (i.e. \code{NA} values are considered outside the observation window).

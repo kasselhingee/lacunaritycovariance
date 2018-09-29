@@ -3,7 +3,7 @@ opa <- par(mfrow=c(1,1))
 
 ##################
 # IMPORTING REMOTE SENSING DATA DEMO
-# By Kassel Liam Hingee
+# By Anonymous
 ##################
 
 # This document demonstrates how to convert raster data stored in a
@@ -89,7 +89,6 @@ plot(xiimage, col = c("grey", "black"), main = "im Object Ready for stationaryra
 # using stationaryracsinference.
 
 
-# Thank you,
-# Kassel
+# Thank you
 
 par(opa)

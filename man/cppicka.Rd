@@ -43,7 +43,7 @@ cp <- coverageprob(xi, obswindow)
 cpp1 <- cppicka(xi, obswindow)
 }
 \author{
-Kassel Liam Hingee
+Anonymous
 }
 \keyword{nonparametric}
 \keyword{spatial}

@@ -27,5 +27,5 @@ ims <- solapply(obspatterns,
 summ <- summary.imlist(ims, harmonizeobject = FALSE)
 }
 \author{
-Kassel Hingee
+Anonymous
 }

@@ -45,7 +45,7 @@ cp <- coverageprob(xi, obswindow)
 [1] Chiu, S.N., Stoyan, D., Kendall, W.S. and Mecke, J. (2013) Stochastic Geometry and Its Applications, 3rd ed. Chichester, United Kingdom: John Wiley & Sons.
 }
 \author{
-Kassel Liam Hingee
+Anonymous
 }
 \keyword{nonparametric}
 \keyword{spatial}

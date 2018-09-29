@@ -118,7 +118,7 @@ balancedcvchats <- racscovariance.cvchat(cvchat, cpp1, phat, estimators = "picka
 
 }
 \author{
-{Kassel Liam Hingee}
+{Anonymous}
 }
 \keyword{nonparametric}
 \keyword{spatial}

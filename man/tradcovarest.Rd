@@ -45,7 +45,7 @@ covar <- tradcovarest(as.im(heather$coarse, na.replace = 0))
 [1] Serra, J.P. (1982) Image Analysis and Mathematical Morphology. London; New York: Academic Press.
 }
 \author{
-{Kassel Liam Hingee}
+{Anonymous}
 }
 \keyword{nonparametric}
 \keyword{spatial}

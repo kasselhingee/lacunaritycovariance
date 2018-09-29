@@ -5,7 +5,7 @@
 #' For a stationary RACS, \eqn{\Xi}, the covariance 
 #' for a vector \eqn{v} is the probability of two points separated by a vector \eqn{v} are covered by \eqn{\Xi}
 #' \deqn{C(v) = P(\{x,x+v\}\subseteq \Xi).}{C(v) = P({x, x+ v} in Xi).}
-#' @author{Kassel Liam Hingee}
+#' @author{Anonymous}
 
 
 

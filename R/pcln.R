@@ -4,7 +4,7 @@
 #' Estimates the pair-correlation function of a stationary RACS. 
 #' The traditional pair-correlation estimator and three 'balanced' estimators suggested by Picka
 #' are available.
-#' @author{Kassel Liam Hingee}
+#' @author{Anonymous}
 
 #' @param xi A binary map of an observation of a RACS of interest. See
 #'   \code{\link{stationaryracsinference-package}} for details.

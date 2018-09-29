@@ -4,7 +4,7 @@
 #' This function assumes that im objects are each realisations of the same (stochastic) object. 
 #' It returns pointwise summaries such as observed sample mean and sample variance.
 
-#' @author Kassel Hingee
+#' @author Anonymous
 
 #' @param  object A list of im objects
 #' @param  harmonizeobject If TRUE (default) the pixel dimensions of the images will be harmonized. Otherwise the object will be tested for compatibility.

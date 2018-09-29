@@ -1,5 +1,5 @@
 #' @title Estimate the coverage probability of a stationary RACS
-#' @author Kassel Liam Hingee 
+#' @author Anonymous 
 #' @import spatstat
 #' @export coveragefrac coverageprob cp
 #' 

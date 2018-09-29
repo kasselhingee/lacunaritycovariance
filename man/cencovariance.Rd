@@ -86,7 +86,7 @@ cencovariance(xi, obswin, estimators = "all")
 
 }
 \author{
-{Kassel Liam Hingee}
+{Anonymous}
 }
 \keyword{nonparametric}
 \keyword{spatial}

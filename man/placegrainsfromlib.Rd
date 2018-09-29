@@ -113,7 +113,7 @@ truecovariance <- bddcovar(
 range(truecovartest - truecovariance)
 }
 \author{
-Kassel Liam Hingee
+Anonymous
 }
 \keyword{datagen}
 \keyword{nonparametric}
