@@ -89,7 +89,7 @@ cpp1 <- cppicka(xi, obswin = Frame(heather$coarse))
 pclns_frcvc <- paircorr.cvchat(cvchat, cpp1, phat, estimators = "all")
 }
 \author{
-{Anonymous}
+{Kassel Liam Hingee}
 }
 \keyword{nonparametric}
 \keyword{spatial}

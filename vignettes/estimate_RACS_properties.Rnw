@@ -9,7 +9,7 @@
 \begin{document}
 \SweaveOpts{concordance=TRUE}
 \title{Estimating RACS Properties from a Binary Map}
-\author{Anonymous}
+\author{Kassel Hingee}
 
 \maketitle
 

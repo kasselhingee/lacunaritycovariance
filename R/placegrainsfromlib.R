@@ -1,7 +1,7 @@
 #' @title Place grains randomly on a point pattern
 #' @aliases placegrainsfromlib
 #' @export placegrainsfromlib covar.grainlib meanarea.grainlib
-#' @author Anonymous
+#' @author Kassel Liam Hingee
 
 #' @description
 #' Places subsets (grains) of two dimension space randomly on a given point pattern.

@@ -4,7 +4,7 @@
 #' Estimates the covariance of a stationary RACS. 
 #' The traditional covariance estimator and
 #' new estimators based on [**picka2000va**, picka1997va] are available.
-#' @author{Anonymous}
+#' @author{Kassel Liam Hingee}
 
 
 
