@@ -1,4 +1,8 @@
 TO DO BEFORE PUBLISHING:
+- A citation command that links to my paper or thesis
+
+- Change function names to reflect gliding box estimator and plugin moment estimators
+
 D- unit tests ACT 4h
 
 D- make sure everything works on logically valued images (TRUE, FALSE, NA) created say using eval.im ACT 2h
