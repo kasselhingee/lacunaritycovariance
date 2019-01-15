@@ -17,7 +17,7 @@ rblnd             5.504  0.000   5.510
 
 D- A citation command that links to my paper or thesis ACT 1h
 
-- Fill in references. ACT 1h
+D- Fill in references. ACT 1h
 
 - p13 error: see link{}. ACT 10min
 
