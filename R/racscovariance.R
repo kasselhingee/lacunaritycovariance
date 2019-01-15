@@ -29,13 +29,6 @@
 #' \code{estimators = "all"} will select all available estimators.  
 #' @param drop If TRUE and one estimator is selected then the returned value will be a single \code{im} object and not a list of \code{im} object.
 
-#' @references
-#' Hingee, K.L. (2019) \emph{Spatial Statistics of Random Closed Sets for Earth Observations}. PhD: Perth, Western Australia: University of Western Australia. Submitted.
-#' 
-#' Picka, J.D. (1997) \emph{Variance-Reducing Modifications for Estimators of Dependence in Random Sets}. Ph.D.: Illinois, USA: The University of Chicago.
-#' 
-#' Picka, J.D. (2000) Variance reducing modifications for estimators of standardized moments of random sets. \emph{Advances in Applied Probability}, 32, 682–700.
-
 #' @return 
 #' If \code{drop = TRUE} and only one estimator is requested then 
 #' an \code{im} object containing the covariance estimate.
@@ -55,7 +48,7 @@
 #' \eqn{xi}, using the volume of the set of points, \eqn{x}, such that both
 #' \eqn{x} and \eqn{x+v} are observed to be in the foreground of \code{xi}
 #' relative to the volume of points, \eqn{x}, for which both \eqn{x} and \eqn{x+v}
-#' are in the observation window [1].
+#' are in the observation window (Hingee, 2019).
 #' Picka [picka1997va,picka2000va] suggested a number of improvements to centred
 #' covariance estimation (see \code{\link{cencovariance}}) that `balanced' the
 #' data used to estimate covariance with the data used to estimate coverage
@@ -63,14 +56,14 @@
 #' estimates for the covariance of \eqn{Xi} that are a constant offset from
 #' covariance estimates for the complement of \eqn{Xi} (note the constant offset
 #' depends on the coverage probability), which
-#' appears to avoid some suprising behaviour that the traditional estimator
-#' suffers [Chapter 4, hingee2019thesis].
+#' appears to avoid some surprising behaviour that the traditional estimator
+#' suffers (Hingee, 2019).
 #' These estimators are called \code{pickaint} and \code{pickaH} in this package.
 #' 
-#' Another improved estimator inspired by an `intrinsic modification' briefly mentioned by Picka [picka1997va]
+#' Another improved estimator inspired by an `intrinsic modification' briefly mentioned by Picka (1997)
 #' for pair-correlation estimators`is also available.
 #' We have called this estimator \code{mattfeldt} as a similar isotropic estimator for pair-correlation
-#' was studied by Mattfeldt and Stoyan [mattfeldt2000im].
+#' was studied by Mattfeldt and Stoyan (2000).
 #' 
 
 #' The estimators available are (see [Chapter 4, hingee2019thesis] for information): 
@@ -78,12 +71,21 @@
 #' \item{\code{trad}} the traditional covariance estimator
 #' \item{\code{mattfeldt}} an estimator inspired by an 
 #' `intrinsically' balanced pair-correlation estimator from Picka that was later studied in an
-#' isotropic situation by Mattfeldt and Stoyan [mattfeldt2000im]
+#' isotropic situation by Mattfeldt and Stoyan (2000) 
 #' \item{\code{pickaint}} an estimator inspired by an 
-#' `intrinsically' balanced centred covariance estimator from Picka [picka2000va].
+#' `intrinsically' balanced centred covariance estimator from Picka (2000).
 #' \item{\code{pickaH}} an estimator inspired by the 
-#' `additively' balanced centred covariance estimator from Picka [picka2000va].
+#' `additively' balanced centred covariance estimator from Picka (2000).
 #' }
+
+#' @references
+#' Hingee, K.L. (2019) \emph{Spatial Statistics of Random Closed Sets for Earth Observations}. PhD: Perth, Western Australia: University of Western Australia. Submitted.
+#' 
+#' Mattfeldt, T. and Stoyan, D. (2000) Improved estimation of the pair correlation function of random sets. \emph{Journal of Microscopy}, 200, 158-173.
+#' 
+#' Picka, J.D. (1997) \emph{Variance-Reducing Modifications for Estimators of Dependence in Random Sets}. Ph.D.: Illinois, USA: The University of Chicago.
+#' 
+#' Picka, J.D. (2000) Variance reducing modifications for estimators of standardized moments of random sets. \emph{Advances in Applied Probability}, 32, 682-700.
 
 #' @examples
 #' #direct from a binary map

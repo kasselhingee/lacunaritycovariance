@@ -23,6 +23,8 @@ D- Fill in references. ACT 1h
 
 - fix overfull lines (about 10 of them). ACT 30min
 
+- spell check using devtools
+
 --STOP for paper submission--
 
 - glbtrad description to: empirical Gliding Box, proposed by A and C [1]. And else where ACT 1h
