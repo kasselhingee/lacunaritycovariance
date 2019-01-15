@@ -27,7 +27,7 @@
 #'  estimators = "all" will select all inbuilt estimators. See details. 
 
 #' @return If \code{drop = TRUE} and a single estimator requested then a
-#'   \code{im} object containing the pair-correlaion estimate. Otherwise a
+#'   \code{im} object containing the pair-correlation estimate. Otherwise a
 #'   named \code{imlist} of \code{im} objects containing the pair-correlation
 #'   estimates for each requested estimator.
 #'

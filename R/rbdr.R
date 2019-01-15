@@ -7,7 +7,7 @@
 #' Also described in this help file are functions for calculating the coverage probability and covariance.
 #' 
 #' @param lambda Intensity of the germ process (which is a Poisson point process)
-#' @param grain Recantangle object specifying the grain
+#' @param grain Rectangle object specifying the grain
 #' @param win The window to simulate in (an owin object)
 #' @param seed Optional input (default in NULL). Is an integer passed to \code{\link{base}{set.seed}}. Used to reproduce patterns exactly.
 #' @param xy A raster object that specifies the pixel coordinates of the desired covariance image. In the same vein and as.mask in spatstat.
