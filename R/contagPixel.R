@@ -1,7 +1,7 @@
 #' @title Pixel Adjacency Contagion
 #' @export contagpixelgrid adjacency
 #' 
-#' @description Function for calculating the traditional contagion LPI from a binary map [cite fragstats manual].
+#' @description Function for calculating the traditional contagion LPI from a binary map (O'Neill, 1988).
 #' 
 #' @param xi A binary map of an observation of a RACS of interest. See
 #'   \code{\link{stationaryracsinference-package}} for details.
@@ -22,6 +22,9 @@
 #' 
 #' **What is the `double count' method as described in the
 #' FRAGSTATS manual on adjacency matrix? 
+
+#' @references
+#' O'Neill, R.V., Krummel, J.R., Gardner, R.H., Sugihara, G., Jackson, B., DeAngelis, D.L., et al. (1988) Indices of landscape pattern. \emph{Landscape Ecology}, 1, 153–162.
 
 #' @examples
 #' xi <- heather$coarse

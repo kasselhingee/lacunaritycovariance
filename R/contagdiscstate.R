@@ -1,7 +1,7 @@
 #' @title Disc State Contagion
 #' @export contagdiscstate
 #'
-#' @description Calculates the disc-state contagion LPI as described in [1]. The
+#' @description Calculates the disc-state contagion LPI as described in (Hingee, 2016; Hingee, 2019). The
 #'   disc-state contagion LPI describes the entropy (mixing) between four
 #'   possible states of a disc: \enumerate{ \item the disc is completely
 #'   contained in \eqn{\Xi} \item the disc does not intersect \eqn{\Xi} \item
@@ -11,7 +11,7 @@
 #'
 #'   Dics-state contagion is a function of the disc radius.
 #'
-#'   The main difference to classical contagion [2] is that disc-state contagion
+#'   The main difference to classical contagion (O'Neill, 1988) is that disc-state contagion
 #'   is based on the spherical contact distribution instead of pixel neighbours.
 #'   One impact of this design is that the distance with which to quantify the
 #'   mixing between \eqn{\Xi} and the background may be chosen by the user by
@@ -52,11 +52,12 @@
 #'   corresponding to the contagion at each \code{r} value of \code{XiH}.
 
 #' @references 
-#' [1] Hingee, K.L. (2016) Statistics for Patch Observations. ISPRS - International Archives of the Photogrammetry, Remote Sensing and Spatial Information Sciences pp. 235-242. ISPRS.
-#'
-#' [2] McGarigal, K. (2015) FRAGSTATS Help. University of Massachusetts.
-
-
+#' Hingee, K.L. (2016) Statistics for patch observations. \emph{International Archives of the Photogrammetry, Remote Sensing and Spatial Information Sciences} pp. 235–242. Prague: ISPRS.
+#' 
+#' Hingee, K.L. (2019) \emph{Spatial Statistics of Random Closed Sets for Earth Observations}. PhD: Perth, Western Australia: University of Western Australia. Submitted.
+#' 
+#' O'Neill, R.V., Krummel, J.R., Gardner, R.H., Sugihara, G., Jackson, B., DeAngelis, D.L., et al. (1988) Indices of landscape pattern. \emph{Landscape Ecology}, 1, 153–162.
+#' 
 #' @examples
 #' xi <- heather$coarse
 #' obswindow <- Frame(heather$coarse)
