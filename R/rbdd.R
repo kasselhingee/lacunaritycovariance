@@ -9,9 +9,9 @@
 #'   according to a Poisson point process, then a random grain is placed on each
 #'   germ independently. Introduction to Boolean models are available in many
 #'   stochastic geometry books (Chiu et al., 2013). Also described here are
-#'   functions for calculating the coverage probability, germ intensity, spectral density, and
+#'   functions for calculating the coverage probability, germ intensity, and
 #'   covariance of a Boolean model with deterministic discs from model
-#'   parameters (Koch et al., 2003; Bohm et al., 2004).
+#'   parameters.
 #'
 #' @param lambda Intensity of the germ process (which is a Poisson point
 #'   process)
@@ -44,10 +44,6 @@
 #'                    c(-10, 10), c(-10, 10), c(0.2, 0.2), lambda, discr)
 
 #' @references 
-#' Koch, K., Ohser, J. and Schladitz, K. (2003) Spectral theory for random closed sets and estimating the covariance via frequency Space. \emph{Advances in Applied Probability}, 35, 603-613.
-#' 
-#' Bohm, S., Heinrich, L. and Schmidt, V. (2004) Kernel estimation of the spectral density of stationary random closed sets. \emph{Australian and New Zealand Journal of Statistics}, 46, 41-51.
-#' 
 #' Chiu, S.N., Stoyan, D., Kendall, W.S. and Mecke, J. (2013) \emph{Stochastic Geometry and Its Applications}, 3rd ed. Chichester, United Kingdom: John Wiley & Sons.
 #' @keywords spatial datagen
 
