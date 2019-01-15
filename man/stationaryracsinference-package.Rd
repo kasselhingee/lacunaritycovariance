@@ -9,13 +9,13 @@
 \packageDescription{stationaryracsinference}
 }
 \details{
-Background is available for RACS [chiu2013st,molchanov2005th], gliding box lacunarity (GBL) [**GBL paper**] and contagion for RACS [**ISPRS conference paper**].
-A forthcoming PhD thesis by Kassel Liam Hingee will provide additional background for GBL, and for RACS in landscape metrics (which includes contagion).
+Background is available for RACS (Chiu et al., 2013; Molchanov, 2005), gliding box lacunarity (GBL) (Hingee et al., 2017) and contagion for RACS (Hingee, 2016).
+A forthcoming PhD thesis by (Hingee, 2019) will provide additional background for GBL, and for RACS in landscape metrics (which includes contagion).
 
 This package expects RACS observations to be in the form of binary maps either in raster format, or as a set representing foreground with a second set giving the observation window.
-If in raster format, the object is expected to be a spatstat \code{im} object with pixel values that are only 1 and 0, or are logically valued (i.e. TRUE or FALSE). In both cases the observation window is taken to be the set of pixels with values that are not \code{NA} (i.e. \code{NA} values are considered outside the observation window).
+If in raster format, the object is expected to be a \pkg{spatstat} \code{im} object with pixel values that are only 1 and 0, or are logically valued (i.e. TRUE or FALSE). In both cases the observation window is taken to be the set of pixels with values that are not \code{NA} (i.e. \code{NA} values are considered outside the observation window).
 The foreground of the binary map, corresponding to locations within the realisation of the RACS, is taken to be pixels that have value 1 or TRUE.
-If the binary map is in set format then a spatstat \code{owin} object is used to represent foreground and a second \code{owin} object is used to represent the observation window.
+If the binary map is in set format then a \pkg{spatstat} \code{owin} object is used to represent foreground and a second \code{owin} object is used to represent the observation window.
 
 We will usually denote a RACS as \eqn{\Xi} and a realisation of \eqn{\Xi} observed as a binary map as \eqn{xi}. We will usually denote the observation window as \code{obswin}.
 
@@ -48,7 +48,15 @@ Key function for simulating RACS are:
 Maintainer: \packageMaintainer{stationaryracsinference}
 }
 \references{
-refer to Chiu et al 2013, and molchanov2005th and hingee(forthcoming)
+Chiu, S.N., Stoyan, D., Kendall, W.S. and Mecke, J. (2013) \emph{Stochastic Geometry and Its Applications}, 3rd ed. Chichester, United Kingdom: John Wiley & Sons.
+
+Hingee, K.L. (2016) Statistics for patch observations. \emph{International Archives of the Photogrammetry, Remote Sensing and Spatial Information Sciences} pp. 235–242. Prague: ISPRS.
+
+Hingee, K.L. (2019) \emph{Spatial Statistics of Random Closed Sets for Earth Observations}. PhD: Perth, Western Australia: University of Western Australia. Submitted.
+
+Hingee K, Baddeley A, Caccetta P, Nair G (2017). Computation of lacunarity from covariance of spatial binary maps. \emph{Journal of Agricultural, Biological and Environmental Statistics}. Submitted.
+
+Molchanov, I.S. (2005) \emph{Theory of Random Sets}. USA: Springer.
 }
 \keyword{ package }
 \keyword{ spatial }
