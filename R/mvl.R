@@ -3,8 +3,9 @@
 #' @description Estimates gliding box lacunarity (GBL) using all estimators described in (Hingee et al., 2017) from binary maps for square boxes.
 #' It calls the functions \code{gblc}, \code{gblg}, \code{gblcc} and \code{gbltrad}.
 
-#' @param xi A binary map of an observation of a RACS of interest. See
-#'   \code{\link{stationaryracsinference-package}} for details.
+#' @param xi An observation of a RACS of interest as a full binary map (in \code{im} format) or as the foreground set (in \code{owin} format).
+#' In the latter case the observation window, \code{obswin}, must be supplied.
+#' See \code{\link{stationaryracsinference-package}} for details.
 #' @param obswin If \code{xi} is an \code{owin} object then \code{obswin} is an
 #'   \code{owin} object that specifies the observation window.
 #' @param boxwidths A list of box widths
