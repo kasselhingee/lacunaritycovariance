@@ -14,7 +14,7 @@
 #' Note: The side lengths are rounded such that they are an odd number of pixels across.
 #' 
 #' @references 
-#' Allain, C. and Cloitre, M. (1991) Characterizing the lacunarity of random and deterministic fractal sets. \emph{Physical Review A}, 44, 3552–3558.
+#' Allain, C. and Cloitre, M. (1991) Characterizing the lacunarity of random and deterministic fractal sets. \emph{Physical Review A}, 44, 3552-3558.
 #'
 #' @return An \code{fv} object containing estimates of GBL, box mass variance and box mass mean computed using the gliding box estimator described in [1]. 
 #'  The box widths (labelled \code{s}) are always odd multiples of the pixel width.
