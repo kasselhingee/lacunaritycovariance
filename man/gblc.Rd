@@ -27,7 +27,7 @@ for square boxes with side length given by \code{boxes}.
 }
 \description{
 Can be used to estimate the gliding box lacunarity (GBL) of a stationary RACS from a binary map
- using the traditional covariance estimate.
+ using the traditional covariance estimate (Hingee et al., 2017).
  It can also calculate the GBL of a RACS from a provided covariance and coverage probability.
 }
 \details{
@@ -57,6 +57,9 @@ discboxes <- lapply(sidelengths / 2, disc)
 discgbls <- gblc(discboxes, covar, p)
 # points(sidelengths, discgbls$GBL)
 
+}
+\references{
+Hingee K, Baddeley A, Caccetta P, Nair G (2017). Computation of lacunarity from covariance of spatial binary maps. \emph{Journal of Agricultural, Biological and Environmental Statistics}. Submitted.
 }
 \keyword{nonparametric}
 \keyword{spatial}

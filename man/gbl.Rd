@@ -41,7 +41,7 @@ If NULL is supplied (default) then 1E-6 is used.}
 An \code{fv} object.
 }
 \description{
-Estimates gliding box lacunarity (GBL) using all estimators described in [Hingee2019**] from binary maps for square boxes.
+Estimates gliding box lacunarity (GBL) using all estimators described in (Hingee et al., 2017) from binary maps for square boxes.
 It calls the functions \code{gblc}, \code{gblg}, \code{gblcc} and \code{gbltrad}.
 }
 \details{
@@ -54,7 +54,7 @@ If \code{xi} is in \code{owin} format then \code{obswin} and \code{xi} are conve
 The estimators available are
 \itemize{
 \item{\code{"GBLc"}} The unmodified (unbalanced) covariance estimator provided by \code{\link{gblc}}
-\item{\code{"GBLgb"}} The Gliding-Box estimator of Allain and Cloitre [allain1991ch]. Calls \code{\link{gbltrad}}
+\item{\code{"GBLgb"}} The Gliding-Box estimator of Allain and Cloitre (1991). Calls \code{\link{gbltrad}}
 \item{\code{"GBLg.mattfeldt"}} See help for \code{\link{gblg}}
 \item{\code{"GBLg.pickaint"}} See help for \code{\link{gblg}}
 \item{\code{"GBLg.pickaH"}} See help for \code{\link{gblg}}
@@ -75,4 +75,9 @@ Picka's reduced window coverage probability estimates and the traditional covera
 xi <- heather$coarse
 xi <- as.im(xi, value = TRUE, na.replace = FALSE)
 gblests <- gbl(xi, seq(1, 10, by = 0.1))
+}
+\references{
+Allain, C. and Cloitre, M. (1991) Characterizing the lacunarity of random and deterministic fractal sets. \emph{Physical Review A}, 44, 3552-3558.
+
+Hingee K, Baddeley A, Caccetta P, Nair G (2017). Computation of lacunarity from covariance of spatial binary maps. \emph{Journal of Agricultural, Biological and Environmental Statistics}. Submitted.
 }

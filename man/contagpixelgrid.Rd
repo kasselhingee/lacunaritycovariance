@@ -20,7 +20,7 @@ If \code{xi} is an owin object it must be of \code{mask} type.}
 \item{normalise}{If \code{TRUE} will divide result by \eqn{2 ln(2)} and add 1 to make contagion between 0 and 1 for any binary map}
 }
 \description{
-Function for calculating the traditional contagion LPI from a binary map [cite fragstats manual].
+Function for calculating the traditional contagion LPI from a binary map (O'Neill, 1988).
 }
 \details{
 The unnormalised contagion LPI of categorical map is defined as
@@ -59,4 +59,7 @@ xi <- heather$medium
 obswin <- owin(xrange = c(0,7),yrange=c(0,16))
 contagion <- contagpixelgrid(xi,obswin)
 contagion
+}
+\references{
+O'Neill, R.V., Krummel, J.R., Gardner, R.H., Sugihara, G., Jackson, B., DeAngelis, D.L., et al. (1988) Indices of landscape pattern. \emph{Landscape Ecology}, 1, 153-162.
 }

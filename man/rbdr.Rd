@@ -29,7 +29,7 @@ Depends on the function used (see Functions section).
 \description{
 Functions for simulating a Boolean model with grains that are deterministic rectangles.
 A Boolean model is a two stage model, first the locations (called germs) of grains are randomly distributed according to a Poisson point process, then a random grain is placed on each germ independently.
-A thorough introduction can be found in [1].
+An introduction can be found in (Chiu et al., 2013).
 Also described in this help file are functions for calculating the coverage probability and covariance.
 }
 \section{Functions}{
@@ -64,7 +64,7 @@ xy <- as.mask(dilationAny(win, win), eps = c(1, 1))
 cvc <- bdrcovar(lambda, grain, xy)
 }
 \references{
-[1] Chiu, S.N., Stoyan, D., Kendall, W.S. and Mecke, J. (2013) Stochastic Geometry and Its Applications, 3rd ed. Chichester, United Kingdom: John Wiley & Sons.
+Chiu, S.N., Stoyan, D., Kendall, W.S. and Mecke, J. (2013) \emph{Stochastic Geometry and Its Applications}, 3rd ed. Chichester, United Kingdom: John Wiley & Sons.
 }
 \keyword{datagen}
 \keyword{spatial}

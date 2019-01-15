@@ -23,7 +23,8 @@ You can also request to}
 If TRUE then average covariance and pair-correlation over all directions will be returned as \code{fv} objects.}
 }
 \description{
-Estimates many second order properties of RACS, gliding box lacunarity, covariance, centred covariance,#' and pair-correlation.
+Estimates many second order properties of RACS, gliding box lacunarity, covariance, centred covariance,
+and pair-correlation.
 This can be faster than computing estimates of multiple second order properties separately as  
 Fourier transforms of the binary map are not repeated.
 }

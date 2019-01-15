@@ -20,13 +20,13 @@ is smaller than this threshold is given a covariance of NA to avoid instabilitie
 A \pkg{SpatStat} \code{im} object containing the estimated covariance.
 }
 \description{
-This function computes the traditional covarience estimate of a stationary RACS from a binary map.
+This function computes the traditional covariance estimate of a stationary RACS from a binary map.
 For a stationary RACS, \eqn{\Xi}, the covariance 
 for a vector \eqn{v} is the probability of two points separated by a vector \eqn{v} are covered by \eqn{\Xi}
 \deqn{C(v) = P(\{x,x+v\}\subseteq \Xi).}{C(v) = P({x, x+ v} in Xi).}
 }
 \details{
-The traditional covariance estimator is [1]
+The traditional covariance estimator is (Serra, 1982)
 \deqn{ \hat{C}(v) = \frac{\gamma_{W\cap X}(v)}{\gamma_W(v)}}{ C(v) = gammaWX(v) / gammaW(v) }
 where \eqn{\gamma_{W}(v)}{gammaW(v)} is the set covariance of the observation window \eqn{W} 
 and \eqn{\gamma_{W\cap X}(v)}{gammaWX(v)} is the set covariance of the foreground within \eqn{W}.
@@ -42,7 +42,7 @@ covar <- tradcovarest(xi)
 covar <- tradcovarest(as.im(heather$coarse, na.replace = 0))
 }
 \references{
-[1] Serra, J.P. (1982) Image Analysis and Mathematical Morphology. London; New York: Academic Press.
+Serra, J.P. (1982) \emph{Image Analysis and Mathematical Morphology}. London; New York: Academic Press.
 }
 \author{
 {Kassel Liam Hingee}

@@ -46,22 +46,22 @@ If \code{drop = TRUE} and a single estimator requested then a
 }
 \description{
 Estimates the pair-correlation function of a stationary RACS. 
-The traditional pair-correlation estimator and three 'balanced' estimators suggested by Picka
+The traditional pair-correlation estimator and three 'balanced' estimators suggested by Picka (2000)
 are available.
 }
 \details{
 The pair-correlation of a stationary RACS is 
 \deqn{g(v) = C(v) / p^2.}
 
-  The estimators available are (see [Chapter 4, hingee2019thesis] for
+  The estimators available are (see (Hingee, 2019) for
   more information): 
   \itemize{ 
   \item{\code{trad}} the traditional pair-correlation estimator which is \eqn{Chat(v) / (phat^2)}, where \eqn{Chat} and \eqn{phat} are 
 the traditional estimates of coverage probability and covariance respectively. 
-  \item{\code{mattfeldt}} an `intrinsically' balanced pair-correlation estimator suggested by Picka.
-  A similar isotropic pair-correlation estimator was later studied by Mattfeldt and Stoyan [mattfeldt2000im].
-  \item{\code{pickaint}} Picka's 'intrinsically' balanced pair-correlation estimator [picka2000va]. 
-  \item{\code{pickaH}} Picka's 'additively' balanced pair-correlation estimator [picka2000va].
+  \item{\code{mattfeldt}} an `intrinsically' balanced pair-correlation estimator suggested by Picka (1997).
+  A similar isotropic pair-correlation estimator was later studied by Mattfeldt and Stoyan (2000).
+  \item{\code{pickaint}} Picka's 'intrinsically' balanced pair-correlation estimator (Picka, 2000). 
+  \item{\code{pickaH}} Picka's 'additively' balanced pair-correlation estimator (Picka, 2000).
   }
 }
 \section{Functions}{
@@ -87,6 +87,15 @@ phat <- coverageprob(xi, obswin = Frame(xi))
 cvchat <- tradcovarest(xi)
 cpp1 <- cppicka(xi, obswin = Frame(heather$coarse))
 pclns_frcvc <- paircorr.cvchat(cvchat, cpp1, phat, estimators = "all")
+}
+\references{
+Hingee, K.L. (2019) \emph{Spatial Statistics of Random Closed Sets for Earth Observations}. PhD: Perth, Western Australia: University of Western Australia. Submitted.
+
+Mattfeldt, T. and Stoyan, D. (2000) Improved estimation of the pair correlation function of random sets. \emph{Journal of Microscopy}, 200, 158-173.
+
+Picka, J.D. (1997) \emph{Variance-Reducing Modifications for Estimators of Dependence in Random Sets}. Ph.D.: Illinois, USA: The University of Chicago.
+
+Picka, J.D. (2000) Variance reducing modifications for estimators of standardized moments of random sets. \emph{Advances in Applied Probability}, 32, 682-700.
 }
 \author{
 {Kassel Liam Hingee}

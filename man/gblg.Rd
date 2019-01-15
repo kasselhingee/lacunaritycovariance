@@ -21,7 +21,7 @@ If \code{boxes} is a list of numerical values then GBL is estimated for square b
  Note if NA or NaN values in the \code{paircorr} object are used then \code{gblg} will return NA or NaN instead of an GBL value.
 }
 \description{
-Estimates the gliding box lacunarity (GBL) of a stationary RACS by estimating pair-correlation from a binary map.
+Estimates the gliding box lacunarity (GBL) of a stationary RACS by estimating pair-correlation from a binary map (Hingee et al., 2017).
  It can also calculate the GBL of a RACS from a provided pair-correlation function.
 }
 \details{
@@ -38,6 +38,9 @@ discboxes <- lapply(sidelengths / 2, disc)
 discgbls <- gblg(discboxes, pcln)
 # points(sidelengths, discgbls)
 
+}
+\references{
+Hingee K, Baddeley A, Caccetta P, Nair G (2017). Computation of lacunarity from covariance of spatial binary maps. \emph{Journal of Agricultural, Biological and Environmental Statistics}. Submitted.
 }
 \keyword{nonparametric}
 \keyword{spatial}

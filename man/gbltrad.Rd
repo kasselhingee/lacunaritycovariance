@@ -19,10 +19,10 @@ An \code{fv} object containing estimates of GBL, box mass variance and box mass 
  The box widths (labelled \code{s}) are always odd multiples of the pixel width.
 }
 \description{
-Calculates the gliding box estimate [1] of gliding box lacunarity from a binary map.
+Calculates the gliding box estimate, proposed by Allain and Cloitre (1991), of gliding box lacunarity from a binary map.
 }
 \details{
-Calculates the gliding box estimate [1] of gliding box lacunarity for a given range of square box sizes. 
+Calculates the gliding box estimate (Allain and Cloitre, 1991) of gliding box lacunarity for a given range of square box sizes. 
 The algorithm uses the pixel locations in \code{xiim} as an array of box centre locations to compute
  the mean and variance of the area in a random box of a given size.
 Locations where the box is not completely within the observation window are ignored.
@@ -41,7 +41,7 @@ gblest <- gbltrad(boxwidths, xiim)
 
 }
 \references{
-[1] Allain, C. and Cloitre, M. (1991) Characterizing the lacunarity of random and deterministic fractal sets. Physical Review A, 44, 3552-3558.
+Allain, C. and Cloitre, M. (1991) Characterizing the lacunarity of random and deterministic fractal sets. \emph{Physical Review A}, 44, 3552-3558.
 }
 \keyword{nonparametric}
 \keyword{spatial}
