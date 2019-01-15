@@ -7,8 +7,9 @@
 cppicka(xi, obswin = NULL, setcov_boundarythresh = NULL)
 }
 \arguments{
-\item{xi}{A binary map of an observation of a RACS of interest. See
-\code{\link{stationaryracsinference-package}} for details.}
+\item{xi}{An observation of a RACS of interest as a full binary map (in \code{im} format) or as the foreground set (in \code{owin} format).
+In the latter case the observation window, \code{obswin}, must be supplied.
+See \code{\link{stationaryracsinference-package}} for details.}
 
 \item{obswin}{If \code{xi} is an \code{owin} object then \code{obswin} is an
 \code{owin} object that specifies the observation window.}

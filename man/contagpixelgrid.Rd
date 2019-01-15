@@ -10,9 +10,10 @@ contagpixelgrid(xi, obswin, normalise = FALSE)
 adjacency(xi, obswin = NULL)
 }
 \arguments{
-\item{xi}{A binary map of an observation of a RACS of interest. See
-\code{\link{stationaryracsinference-package}} for details.
-If \code{xi} is an owin object it must be of \code{mask} type.}
+\item{xi}{An observation of a RACS of interest as a full binary map (in \code{im} format) or as the foreground set (in \code{owin} format).
+In the latter case the observation window, \code{obswin}, must be supplied.
+See \code{\link{stationaryracsinference-package}} for details.
+  If \code{xi} is an owin object it must be of \code{mask} type.}
 
 \item{obswin}{If \code{xi} is an \code{owin} object then \code{obswin} is an
 \code{owin} object that specifies the observation window.}
@@ -32,9 +33,6 @@ Here \eqn{m = 2} as \eqn{xi} is a binary map and we have defined 'adjacent'
 pixels using the 4-neighbourhood regime.
 
 Contagion is calculated from an adjacency matrix created using \code{adjacency}.
-
-**What is the `double count' method as described in the
-FRAGSTATS manual on adjacency matrix?
 }
 \section{Functions}{
 \itemize{

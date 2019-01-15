@@ -15,8 +15,9 @@ gbl.cvchat(boxwidths, estimators = c("GBLg.mattfeldt", "GBLg.pickaint",
   phat = NULL, cvchat = NULL, cpp1 = NULL)
 }
 \arguments{
-\item{xi}{A binary map of an observation of a RACS of interest. See
-\code{\link{stationaryracsinference-package}} for details.}
+\item{xi}{An observation of a RACS of interest as a full binary map (in \code{im} format) or as the foreground set (in \code{owin} format).
+In the latter case the observation window, \code{obswin}, must be supplied.
+See \code{\link{stationaryracsinference-package}} for details.}
 
 \item{boxwidths}{A list of box widths}
 

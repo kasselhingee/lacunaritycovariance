@@ -60,9 +60,6 @@ Functions for simulation and computing theoretical values of a
 \details{
 The parameters xm and alpha are such that the CDF of the Pareto distribuion is \eqn{P(s <= x) = 1 - (xm / x)^{alpha}}.
 The distribution of grains scales is a step-function approximation to the CDF with steps at \code{lengthscales}.
-
-
-**is truncated the right word in the title?
 }
 \section{Functions}{
 \itemize{

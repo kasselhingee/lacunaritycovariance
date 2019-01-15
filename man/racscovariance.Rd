@@ -26,7 +26,7 @@ is smaller than this threshold is given a covariance of NA to avoid instabilitie
 
 \item{estimators}{A list of strings specifying covariance estimators to use. 
 See details.
-\code{estimators = "all"} will select all available estimators.}
+Passing \code{estimators = "all"} will select all available estimators.}
 
 \item{drop}{If TRUE and one estimator is selected then the returned value will be a single \code{im} object and not a list of \code{im} object.}
 
@@ -114,7 +114,8 @@ harmonised <- harmonise.im(cvchat = cvchat, cpp1 = cpp1)
 cvchat <- harmonised$cvchat
 cpp1 <- harmonised$cpp1
 
-balancedcvchats <- racscovariance.cvchat(cvchat, cpp1, phat, estimators = "pickaH", drop = TRUE)
+balancedcvchats <- racscovariance.cvchat(cvchat,
+                         cpp1, phat, estimators = "pickaH", drop = TRUE)
 
 }
 \references{

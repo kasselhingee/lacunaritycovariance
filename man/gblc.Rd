@@ -43,7 +43,7 @@ covariance and coverage probability of the model.
 
 If a binary map is supplied then \eqn{p} and \eqn{C(v)} are estimated using
  the traditional coverage probability and covariance estimators respectively 
- (see \code{link{coverageprob}} and \code{\link{tradcovarest}}).
+ (see \code{\link{coverageprob}} and \code{\link{tradcovarest}}).
 }
 \examples{
 xi <- heather$coarse

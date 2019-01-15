@@ -57,10 +57,6 @@ The result must then be cropped to \eqn{W} to acheive a realistation of the germ
 \code{placegrainsfromlib} randomly samples from a library of grains (\code{grainlib}) and places these on the points in \code{pp}.
 Sampling of the grain is independent of the location of the point in \code{pp}.
 It can be used to simulate the grain process in some germ-grain models.
-
-**tests needed for summary properties
-
-**covar.grainlib is out of place!
 }
 \section{Functions}{
 \itemize{
