@@ -1,9 +1,9 @@
 TO DO BEFORE PUBLISHING:
 ___________________________
 Really required:
-- Maintainer field
+D- Maintainer field
 
-- version number with non-leading zeros
+D- version number with non-leading zeros
 
 - examples took a long time to process. Some 32 seconds!
 gbl              32.728  0.056  32.821
@@ -17,25 +17,24 @@ rblnd             5.504  0.000   5.510
 
 - A citation command that links to my paper or thesis ACT 1h
 
+- Fill in references. ACT 1h
+
+- p13 error: see link{}. ACT 10min
+
+- fix overfull lines (about 10 of them). ACT 30min
+
+- glbtrad description to: empirical Gliding Box, proposed by A and C [1]. And else where ACT 1h
+
 - Change function names to reflect names `empirical GBL' or gliding box estimator, and plugin moment estimators  ACT 2h
 
 - consistent naming ACT 1h
 
-- Fill in references. ACT 1h
-
 - More Picka references ACT: 30min
 
-- p13 error: see link{}. ACT 10min
-
-- glbtrad description to: empirical Gliding Box, proposed by A and C [1]. And else where ACT 1h
-
-- fix overfull lines (about 10 of them). ACT 30min
 
 - tradcovarest require obswin. ACT 1h
 
-- anything Adrian or another reviewer suggests. ACT 5h
-
-Total ACT: 8h + whatever Adrian suggests
+Total ACT: 8h 
 ___________________________
 Great for more polished publication:
 - better indexing of topics. ACT 1h

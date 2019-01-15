@@ -1,0 +1,17 @@
+bibentry(bibtype="Article", 
+  title = "Computation of lacunarity from covariance of spatial binary maps",
+  author = c(person("Kassel", "Hingee"),
+             person("Adrian", "Baddeley"),
+             person("Peter", "Caccetta"),
+             person("Gopalan", "Nair")),
+  year = 2019,
+  journal = "Journal of Agricultural, Biological and Environmental Statistics",
+  note = "Submitted")
+
+bibentry(bibtype="PhDThesis", 
+  title = "Spatial Statistics of Random Closed Sets for Earth Observations",
+  author = person("Kassel", "Hingee"),
+  year = 2019,
+  note = "Submitted thesis",
+  school = "School of Physics, Computing and Mathematics",
+  institution = "The University of Western Australia")
