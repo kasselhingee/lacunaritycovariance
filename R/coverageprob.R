@@ -10,8 +10,9 @@
 #' @references [1] Chiu, S.N., Stoyan, D., Kendall, W.S. and Mecke, J. (2013) Stochastic Geometry and Its Applications, 3rd ed. Chichester, United Kingdom: John Wiley & Sons.
  
 #' 
-#' @param xi A binary map of an observation of a RACS of interest. See
-#'   \code{\link{stationaryracsinference-package}} for details.
+#' @param xi An observation of a RACS of interest as a full binary map (in \code{im} format) or as the foreground set (in \code{owin} format).
+#' In the latter case the observation window, \code{obswin}, must be supplied.
+#' See \code{\link{stationaryracsinference-package}} for details.
 #' @param obswin The window of observation (not necessarily rectangular) also in \code{owin} format.
 #' @return An estimate of the coverage probability
 #' @details

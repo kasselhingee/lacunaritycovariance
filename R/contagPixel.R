@@ -3,8 +3,9 @@
 #' 
 #' @description Function for calculating the traditional contagion LPI from a binary map (O'Neill, 1988).
 #' 
-#' @param xi A binary map of an observation of a RACS of interest. See
-#'   \code{\link{stationaryracsinference-package}} for details.
+##' @param xi An observation of a RACS of interest as a full binary map (in \code{im} format) or as the foreground set (in \code{owin} format).
+#' In the latter case the observation window, \code{obswin}, must be supplied.
+#' See \code{\link{stationaryracsinference-package}} for details.
 #'   If \code{xi} is an owin object it must be of \code{mask} type.
 #' @param obswin If \code{xi} is an \code{owin} object then \code{obswin} is an
 #'   \code{owin} object that specifies the observation window.
@@ -20,8 +21,6 @@
 #' 
 #' Contagion is calculated from an adjacency matrix created using \code{adjacency}.
 #' 
-#' **What is the `double count' method as described in the
-#' FRAGSTATS manual on adjacency matrix? 
 
 #' @references
 #' O'Neill, R.V., Krummel, J.R., Gardner, R.H., Sugihara, G., Jackson, B., DeAngelis, D.L., et al. (1988) Indices of landscape pattern. \emph{Landscape Ecology}, 1, 153-162.

@@ -22,7 +22,7 @@
 #' 
 #' If a binary map is supplied then \eqn{p} and \eqn{C(v)} are estimated using
 #'  the traditional coverage probability and covariance estimators respectively 
-#'  (see \code{link{coverageprob}} and \code{\link{tradcovarest}}).
+#'  (see \code{\link{coverageprob}} and \code{\link{tradcovarest}}).
 
 #' @param boxes Either a list of sidelengths for square boxes or a list of \code{owin} objects of any shape.
 #' @param covariance  A \code{im} object containing the covariance function
