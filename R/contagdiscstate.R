@@ -9,7 +9,7 @@
 #'   \eqn{\Xi} \item the disc intersects \eqn{\Xi} but the centre is outside
 #'   \eqn{\Xi} }
 #'
-#'   Dics-state contagion is a function of the disc radius.
+#'   Disc-state contagion is a function of the disc radius.
 #'
 #'   The main difference to classical contagion (O'Neill, 1988) is that disc-state contagion
 #'   is based on the spherical contact distribution instead of pixel neighbours.

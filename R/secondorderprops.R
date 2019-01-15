@@ -5,7 +5,7 @@
 #' Fourier transforms of the binary map are not repeated.
 
 #' @export secondorderprops
-#' @param xiim A \pkg{spatstat} \code{im} object with pixel values that are either TRUE, FALSE or NA. TRUE represents foreground, FALSE respresents background and NA represents unobserved locations.
+#' @param xiim A \pkg{spatstat} \code{im} object with pixel values that are either TRUE, FALSE or NA. TRUE represents foreground, FALSE represents background and NA represents unobserved locations.
 #' @param gblargs Arguments passed to \code{gbltrad} and \code{gbl.cvchat}. If NULL then GBL will not be estimated.
 #' You can also request to 
 #' @param covarargs Arguments passed to \code{racscovariance.cvchat}. If NULL then covariance will not be returned.

@@ -1,4 +1,4 @@
-#' @title Gliding box lacunarity estimatation using all estimators
+#' @title Gliding box lacunarity estimation using all estimators
 #' @export gbl gbl.cvchat
 #' @description Estimates gliding box lacunarity (GBL) using all estimators described in (Hingee et al., 2017) from binary maps for square boxes.
 #' It calls the functions \code{gblc}, \code{gblg}, \code{gblcc} and \code{gbltrad}.

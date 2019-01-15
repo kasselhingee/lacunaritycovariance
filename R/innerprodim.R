@@ -19,7 +19,7 @@
 #' domain of \code{B} is larger than \code{A}'s domain then the inner product
 #' can still be computed. However if \code{A} is \code{NA} outside (e.g. not
 #' known/not provided) and the domain of \code{B} is larger than \code{A}'s
-#' domain then the inner product is not computable and the returned value is \code{NA}
+#' domain then the inner product can not be computed and the returned value is \code{NA}
 
 #' @return 
 #' If the inner product can be computed then returns sum(\code{A} * \code{B}), otherwise returns \code{NA}.
