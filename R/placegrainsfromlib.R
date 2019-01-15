@@ -35,10 +35,7 @@
 #' Sampling of the grain is independent of the location of the point in \code{pp}.
 #' It can be used to simulate the grain process in some germ-grain models.
 #' 
-#' **tests needed for summary properties
 #' 
-#' **covar.grainlib is out of place!
-#'   
 #' @return Returns an \code{owin} object.
 #' 
 #' @examples

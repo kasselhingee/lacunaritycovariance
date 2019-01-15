@@ -19,7 +19,7 @@ D- A citation command that links to my paper or thesis ACT 1h
 
 D- Fill in references. ACT 1h
 
-- p13 error: see link{}. ACT 10min
+D- p13 error: see link{}. ACT 10min
 
 - fix overfull lines (about 10 of them). ACT 30min
 
@@ -35,12 +35,13 @@ D- Fill in references. ACT 1h
 
 - More Picka references ACT: 30min
 
-
 - tradcovarest require obswin. ACT 1h
 
 Total ACT: 8h 
 ___________________________
 Great for more polished publication:
+- In pixel contag, what is the `double count' method as described in the FRAGSTATS manual on adjacency matrix, and is it different to what is in this package? 
+
 - better indexing of topics. ACT 1h
 
 - tests of summary properties of grain.lib. ACT 3h
