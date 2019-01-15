@@ -49,7 +49,8 @@ This binary map is a small subset of a tree canopy map with a spatial resolution
 For now \code{stationaryracsinference} only has functions for estimating coverage probability, disc-state contagion, covariance and gliding box lacunarity, with the spherical contact distribution and conditional core probability estimated using \code{Hest} from \code{spatstat}.
  Conditional core probability is defined in Hingee (2016) is the probability that a point in the foreground (tree canopy) is in the core of the foreground, and is equivalent to the spherical contact distribution of the complement of the set.
  Coverage probability and disc-state contagion are also described in Hingee (2016), the former is a very common property that is also known as the coverage fraction.
- A simple estimator of covariance, and theory and estimation of gliding box lacunarity described in Hingee (2018).
+ Covariance estimators are summarised in Hingee (2019).
+ Theory and estimation of gliding box lacunarity is described in Hingee et al. (2017).
  
  Below we estimate the coverage probability, spherical contact distribution, conditional core probability, disc-state contagion, covariance and gliding box lacunarity of the tree cover.
   The isotropic covariance function standardised by coverage probability, which is also known as the isotropic pair-correlation function is shown alongside the covariance estimate.
@@ -66,7 +67,7 @@ phat <- coverageprob(egbinarymap)
 phat
 @
 
-The following estimates the conditional spherical contact distribution [ref], conditional core probability [ref] and the disc state contagion [ref] of a stationary RACS. 
+The following estimates the conditional spherical contact distribution, conditional core probability (Hingee, 2016) and the disc state contagion (Hingee, 2016) of a stationary RACS. 
 
 \begin{figure}[H]
 \centering
@@ -106,7 +107,7 @@ plot(add = TRUE, coreprob.sm, "hazard ~ r")
 \caption{Estimates of Spherical Contact Hazard (left) and Core Probability Hazard (right). The estimates smoothed using \code{smooth.spline} are shown in black. }
 \end{figure}
 
-Covariance estimates using the balanced estimator inspired by Picka's additively modified estimator of centred covariance are shown below.
+Covariance estimates using the balanced estimator inspired by Picka's additively modified estimator of centred covariance (Picka, 2000) are shown below.
 This estimator has smaller variance than the traditional estimator of covariance from binary maps and is consistent with estimates made from the complement of the observed set. 
 
 \begin{figure}[H]
@@ -153,16 +154,25 @@ Caccetta, P., Collings, S., Devereux, A., Hingee, K., McFarlane, D., Traylen, A.
 \
 
 \noindent
+Foroutan-pour, K., Dutilleul, P. and Smith, D.L. (1999) \emph{Advances in the implementation of the box-counting method of fractal dimension estimation.} Applied Mathematics and Computation, 105, 195-210.
+
+\
+
+\noindent
 Hingee, K.L. (2016) \emph{Statistics for Patch Observations.} ISPRS Congress Proceedings. ISPRS.
 
 \
-
 \noindent
-Hingee, K.L. (2018) \emph{Computation of Lacunarity from Covariance.} Submitted to JABES.
+Hingee, K.L. (2019) \emph{Spatial Statistics of Random Closed Sets for Earth Observations}. PhD: Perth, Western Australia: University of Western Australia. Submitted.
 
 \
 
 \noindent
-Foroutan-pour, K., Dutilleul, P. and Smith, D.L. (1999) \emph{Advances in the implementation of the box-counting method of fractal dimension estimation.} Applied Mathematics and Computation, 105, 195-210.
+Hingee K, Baddeley A, Caccetta P, Nair G (2017). Computation of lacunarity from covariance of spatial binary maps. \emph{Journal of Agricultural, Biological and Environmental Statistics}. Submitted.
+
+\
+
+\noindent
+Picka, J.D. (2000) Variance reducing modifications for estimators of standardized moments of random sets. \emph{Advances in Applied Probability}, 32, 682-700.
 
 \end{document}
