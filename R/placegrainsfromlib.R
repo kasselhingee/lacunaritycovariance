@@ -148,7 +148,7 @@ meansetcov.grainlib <- function(grainlib, weights = rep(1/length(grainlib), leng
 covar.grainlib <- function(lambda, grainlib, weights, xy){
   p <- 1 - exp(- lambda * meanarea.grainlib(grainlib, weights))
   meangsetcov <- meansetcov.grainlib(grainlib, weights, xy)
-  racscov <- 2 * p - 1 + (1 - p)^2 * exp(lambda * meangsetcov) #this formula from 47 of Bohm 2004 Kernel Estimation of Stationary RACS paper
+  racscov <- 2 * p - 1 + (1 - p)^2 * exp(lambda * meangsetcov) #this formula from 47 of Bohm 2004 Kernel Estimation of Stationary RACS paper. Holds for any stationary Boolean model and any grain distribution - including ones that are anisotropic
   return(racscov)
 }
 

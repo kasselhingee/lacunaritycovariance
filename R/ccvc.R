@@ -2,7 +2,7 @@
 #' @export cencovariance  cencovariance.cvchat
 #' @description 
 #' This function estimates the centred covariance of a stationary RACS. 
-#' The traditional centred covariance estimator, two 'balanced' estimators suggested by Picka
+#' The traditional centred covariance estimator, two 'balanced' estimators suggested by Picka (2000)
 #'  and a third 'balanced' estimator inspired by one of Picka's pair-correlation estimators.
 #' @author{Kassel Liam Hingee}
 
@@ -34,22 +34,31 @@
 #' @details The centred covariance of a stationary RACS is \deqn{\kappa(v) =
 #'   C(v) - p^2.}
 #'
-#'   The estimators available are (see [Chapter 4, hingee2019thesis] for
+#'   The estimators available are (see (Section 3.4, Hingee, 2019) for
 #'   information): 
 #'   \itemize{ 
 #'   \item{\code{trad}} the traditional centred
 #'   covariance estimator 
 #'   \item{\code{mattfeldt}} an estimator inspired by an
-#'   `intrinsically' balanced pair-correlation estimator from Picka that was
+#'   `intrinsically' balanced pair-correlation estimator from Picka (1997) that was
 #'   later studied in an isotropic situation by Mattfeldt and Stoyan
-#'   [mattfeldt2000im] 
+#'   (Mattfeldt and Stoyan, 2000) 
 #'   \item{\code{pickaint}} Picka's intrinsically' balanced
-#'   centred covariance estimator [picka2000va]. 
+#'   centred covariance estimator (Picka, 2000). 
 #'   \item{\code{pickaH}} Picka's
-#'   additively' balanced centred covariance estimator [picka2000va].
+#'   additively' balanced centred covariance estimator (Picka, 2000).
 #'   }
 #'
 #'   Currently computes centred covariance using \code{\link{racscovariance}}.
+#'
+#' @references
+#' Hingee, K.L. (2019) \emph{Spatial Statistics of Random Closed Sets for Earth Observations}. PhD: Perth, Western Australia: University of Western Australia. Submitted.
+#'
+#' Mattfeldt, T. and Stoyan, D. (2000) Improved estimation of the pair correlation function of random sets. \emph{Journal of Microscopy}, 200, 158–173.
+#'
+#' Picka, J.D. (1997) \emph{Variance-Reducing Modifications for Estimators of Dependence in Random Sets}. Ph.D.: Illinois, USA: The University of Chicago.
+#' 
+#' Picka, J.D. (2000) Variance reducing modifications for estimators of standardized moments of random sets. \emph{Advances in Applied Probability}, 32, 682–700.
 #'
 #' @examples
 #' xi <- heather$coarse

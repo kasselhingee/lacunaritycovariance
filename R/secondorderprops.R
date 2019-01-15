@@ -1,5 +1,6 @@
 #' @title Estimate Second-Order Properties of a RACS
-#' @description Estimates many second order properties of RACS, gliding box lacunarity, covariance, centred covariance,#' and pair-correlation.
+#' @description Estimates many second order properties of RACS, gliding box lacunarity, covariance, centred covariance,
+#' and pair-correlation.
 #' This can be faster than computing estimates of multiple second order properties separately as  
 #' Fourier transforms of the binary map are not repeated.
 

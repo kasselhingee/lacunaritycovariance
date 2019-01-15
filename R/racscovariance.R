@@ -3,7 +3,7 @@
 #' @description 
 #' Estimates the covariance of a stationary RACS. 
 #' The traditional covariance estimator and
-#' new estimators based on [**picka2000va**, picka1997va] are available.
+#' new estimators based on (Picka, 1997; Picka, 2000) are available.
 #' @author{Kassel Liam Hingee}
 
 
@@ -28,6 +28,13 @@
 #' See details.
 #' \code{estimators = "all"} will select all available estimators.  
 #' @param drop If TRUE and one estimator is selected then the returned value will be a single \code{im} object and not a list of \code{im} object.
+
+#' @references
+#' Hingee, K.L. (2019) \emph{Spatial Statistics of Random Closed Sets for Earth Observations}. PhD: Perth, Western Australia: University of Western Australia. Submitted.
+#' 
+#' Picka, J.D. (1997) \emph{Variance-Reducing Modifications for Estimators of Dependence in Random Sets}. Ph.D.: Illinois, USA: The University of Chicago.
+#' 
+#' Picka, J.D. (2000) Variance reducing modifications for estimators of standardized moments of random sets. \emph{Advances in Applied Probability}, 32, 682–700.
 
 #' @return 
 #' If \code{drop = TRUE} and only one estimator is requested then 

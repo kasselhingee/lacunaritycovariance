@@ -1,11 +1,12 @@
 Type: Package
 Package: stationaryracsinference
-Title: Some inference tools for remotely sensed random closed
-    sets in 2D
+Title: Gliding Box Lacunarity and Other Estimators for Random
+    Closed Sets in 2D
 Version: 0.4-01
-Date: 2018-09-16
+Date: 2019-01-16
 Author: Kassel Liam Hingee
-Maintainer: <kassel.hingee@research.uwa.edu.au>
+Maintainer: Kassel Liam Hingee
+    <kassel.hingee@research.uwa.edu.au>
 Description:  Functions for estimating properties of random
     closed sets in 2D from binary maps and for simulating 2D Boolean
     models.  Here a binary maps are usually taken to be a rasterised image
