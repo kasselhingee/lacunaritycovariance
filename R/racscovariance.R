@@ -49,7 +49,7 @@
 #' \eqn{x} and \eqn{x+v} are observed to be in the foreground of \code{xi}
 #' relative to the volume of points, \eqn{x}, for which both \eqn{x} and \eqn{x+v}
 #' are in the observation window (Hingee, 2019).
-#' Picka [picka1997va,picka2000va] suggested a number of improvements to centred
+#' Picka (1997, 2000) suggested a number of improvements to centred
 #' covariance estimation (see \code{\link{cencovariance}}) that `balanced' the
 #' data used to estimate covariance with the data used to estimate coverage
 #' probability. These lead to covariance estimators that give
@@ -66,7 +66,7 @@
 #' was studied by Mattfeldt and Stoyan (2000).
 #' 
 
-#' The estimators available are (see [Chapter 4, hingee2019thesis] for information): 
+#' The estimators available are (see (Hingee, 2019) for information): 
 #' \itemize{
 #' \item{\code{trad}} the traditional covariance estimator
 #' \item{\code{mattfeldt}} an estimator inspired by an 

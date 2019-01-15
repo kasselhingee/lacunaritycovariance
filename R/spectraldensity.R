@@ -3,8 +3,8 @@
 #' @importFrom stats fft
 #' 
 #' @description 
-#' \code{unsmoothedspectraldensity} estimates the spectral density of a RACS without any kernal smoothing.
-#' \code{spectraldensity} smoothes the estimate and is my recommended function due to known asymptotoic properties [1].
+#' \code{unsmoothedspectraldensity} estimates the spectral density of a RACS without any kernel smoothing.
+#' \code{spectraldensity} smoothes the estimate and is my recommended function due to known asymptotic properties [1].
 #' 
 #' @details 
 #' Applies FFT to the input image and takes the square of the magnitude to estimate the non-smoothed spectral density (sometimes known as the periodogram)
@@ -21,7 +21,7 @@
 #'
 #' Fan, J., Kreutzberger, E., 1998. Automatic Local Smoothing for Spectral Density Estimation. Scandinavian Journal of Statistics 25 (2): 359-69. doi:10.1111/1467-9469.00109.
 #' 
-#' @param Xi A rectangular observation of \eqn{Xi}. NA's are assumed to mean outside \eqn{\Xi} rather than missing data. Xi must be pixel mask owin object. (**I haven't assesed the theory/computations for non-rectangular windows but its probably the same)
+#' @param Xi A rectangular observation of \eqn{Xi}. NA's are assumed to mean outside \eqn{\Xi} rather than missing data. Xi must be pixel mask owin object. (**I haven't assessed the theory/computations for non-rectangular windows but its probably the same)
 #' @param w Observation window (must be rectangular for now)
 #' @param bandwidth Bandwidth for the kernel smoothing (in the units of spectral units of \code{Xi} which are \eqn{2\pi/width(\code{Xi})}**)
 #' @param kernel Specifies the kernel to use. Currently only Epanechnikov is supported (and is the default).
