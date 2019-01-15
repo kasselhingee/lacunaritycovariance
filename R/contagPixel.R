@@ -21,8 +21,6 @@
 #' 
 #' Contagion is calculated from an adjacency matrix created using \code{adjacency}.
 #' 
-#' **What is the `double count' method as described in the
-#' FRAGSTATS manual on adjacency matrix? 
 
 #' @references
 #' O'Neill, R.V., Krummel, J.R., Gardner, R.H., Sugihara, G., Jackson, B., DeAngelis, D.L., et al. (1988) Indices of landscape pattern. \emph{Landscape Ecology}, 1, 153-162.

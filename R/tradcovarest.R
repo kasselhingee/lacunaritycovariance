@@ -37,7 +37,6 @@
 #' Vectors with small \eqn{\gamma_W(v)}{ gammaW(v) } are eliminated using \code{setcov_boundarythresh} 
 #' as division by small values is numerically unstable.
 #' 
-#' **require obswin if xi is owin.
 # I suspect this instabilities are because the fourier transforms are only approximately correct, and 0 is within the approximately correct range.
 
 #' @references 
