@@ -1,6 +1,18 @@
 TO DO BEFORE PUBLISHING:
 ___________________________
 Really required:
+- Maintainer field
+
+- version number with non-leading zeros
+
+- examples took a long time to process. Some 32 seconds!
+gbl              32.728  0.056  32.821
+gblcc            14.589  0.052  14.660
+gblg              9.841  0.024   9.876
+gblc              9.441  0.016   9.468
+secondorderprops  5.889  0.000   5.895
+rblnd             5.504  0.000   5.510
+
 - A citation command that links to my paper or thesis ACT 1h
 
 - Change function names to reflect names `empirical GBL' or gliding box estimator, and plugin moment estimators  ACT 2h
