@@ -15,13 +15,15 @@ rblnd             5.504  0.000   5.510
 
 - build using R CMD build --compact-vignettes=gs+qpdf  ...
 
-- A citation command that links to my paper or thesis ACT 1h
+D- A citation command that links to my paper or thesis ACT 1h
 
 - Fill in references. ACT 1h
 
 - p13 error: see link{}. ACT 10min
 
 - fix overfull lines (about 10 of them). ACT 30min
+
+--STOP for paper submission--
 
 - glbtrad description to: empirical Gliding Box, proposed by A and C [1]. And else where ACT 1h
 
