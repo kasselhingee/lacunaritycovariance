@@ -26,7 +26,7 @@
 #' Can be generated using \code{\link{cppicka}}.
 #' @param estimators A list of strings specifying covariance estimators to use. 
 #' See details.
-#' \code{estimators = "all"} will select all available estimators.  
+#' Passing \code{estimators = "all"} will select all available estimators.  
 #' @param drop If TRUE and one estimator is selected then the returned value will be a single \code{im} object and not a list of \code{im} object.
 
 #' @return 
@@ -101,7 +101,8 @@
 #' cvchat <- harmonised$cvchat
 #' cpp1 <- harmonised$cpp1
 #' 
-#' balancedcvchats <- racscovariance.cvchat(cvchat, cpp1, phat, estimators = "pickaH", drop = TRUE)
+#' balancedcvchats <- racscovariance.cvchat(cvchat,
+#'                          cpp1, phat, estimators = "pickaH", drop = TRUE)
 #' 
 #' @describeIn racscovariance Estimates covariance from a binary map.
 racscovariance <- function(xi, obswin = NULL,

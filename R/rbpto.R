@@ -33,7 +33,6 @@
 #' The distribution of grains scales is a step-function approximation to the CDF with steps at \code{lengthscales}.
 #' 
 #'
-#' **is truncated the right word in the title?
 #' 
 #' @return 
 #' An owin object.

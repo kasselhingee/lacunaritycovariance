@@ -37,7 +37,7 @@ Key function for simulating RACS are:
 \itemize{
 \item{\code{rbdd}}{simulates a Boolean model with grains that are discs with fixed radius (deterministic discs).}
 \item{\code{rbdr}}{simulates a Boolean model with grains that are rectangles of fixed size and orientation.}
-\item{\code{rbpto}}{simulates a Boolean model with grains that of fixed shape and random scale distributed according to a truncated (approximage)** Pareto distribution.}
+\item{\code{rbpto}}{simulates a Boolean model with grains that of fixed shape and random scale distributed according to a truncated Pareto distribution.}
 \item{\code{placegrainsfromlib}}{randomly places grains on a set of points (used to simulate Boolean models and other germ-grain models).}
 }
 
