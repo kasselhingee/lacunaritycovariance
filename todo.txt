@@ -21,9 +21,9 @@ D- Fill in references. ACT 1h
 
 D- p13 error: see link{}. ACT 10min
 
-- fix overfull lines (about 10 of them). ACT 30min
+D- fix overfull lines (about 10 of them). ACT 30min
 
-- spell check using devtools
+D- spell check using devtools
 
 --STOP for paper submission--
 
