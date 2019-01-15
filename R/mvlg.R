@@ -1,8 +1,11 @@
 #' @title Pair-correlation based estimates of gliding box lacunarity
 #' @export gblg
 #'
-#' @description Estimates the gliding box lacunarity (GBL) of a stationary RACS by estimating pair-correlation from a binary map.
+#' @description Estimates the gliding box lacunarity (GBL) of a stationary RACS by estimating pair-correlation from a binary map (Hingee et al., 2017).
 #'  It can also calculate the GBL of a RACS from a provided pair-correlation function. 
+
+#' @references
+#' Hingee K, Baddeley A, Caccetta P, Nair G (2017). Computation of lacunarity from covariance of spatial binary maps. \emph{Journal of Agricultural, Biological and Environmental Statistics}. Submitted.
 
 #' @details
 #' If we denoted the estimated pair-correlation by \eqn{\hat{g}(v)}{g(v)} then the estimate of GBL is

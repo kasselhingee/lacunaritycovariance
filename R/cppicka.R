@@ -19,15 +19,20 @@
 #' 
 #' @details
 #' The traditional covariance estimator uses less of the observation window than the traditional coverage probability.
-#' Picka [picka1997va,picka2000va] created new 'balanced' estimators of centred covariance and pair-correlation
+#' Picka (1997, 2000) created new 'balanced' estimators of centred covariance and pair-correlation
 #' that accounted for this difference.
 #' A key component of Picka's estimators is an estimate of the coverage probability from the subregion of the binary map that is
-#' the intersection between \eqn{W} and \eqn{W} shifted by vector \eqn{v}, where \eqn{W} is the observation window [picka2000va, p687].
+#' the intersection between \eqn{W} and \eqn{W} shifted by vector \eqn{v}, where \eqn{W} is the observation window (p.~687, Picka, 2000).
 #' If we treat \eqn{X} and \eqn{W} as indicator functions representing the foreground and observation window respectively,
 #'  this coverage probability estimator used by Picka is
 #' \deqn{ \frac{\int X(u) W(u) W(u - v) du} {\int W(u) W(u - v) du}. }{integral(X(u) W(u) W(u - v) du)  /  integral(W(u) W(u - v) du).}
 #' 
 #' \code{cppicka} produces these estimates for an array of vectors \eqn{v} using fast Fourier transforms.
+
+#' @references
+#' Picka, J.D. (1997) \emph{Variance-Reducing Modifications for Estimators of Dependence in Random Sets}. Ph.D.: Illinois, USA: The University of Chicago.
+#' 
+#' Picka, J.D. (2000) Variance reducing modifications for estimators of standardized moments of random sets. \emph{Advances in Applied Probability}, 32, 682–700.
 
 #' @examples
 #' xi <- heather$coarse

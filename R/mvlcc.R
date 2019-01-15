@@ -1,7 +1,7 @@
 #' @title Centred covariance based estimates of gliding box lacunarity
 #' @export gblcc
 #'
-#' @description Estimates the gliding box lacunarity (GBL) of a stationary RACS using centred covariance estimates.
+#' @description Estimates the gliding box lacunarity (GBL) of a stationary RACS using centred covariance estimates (Hingee et al., 2017).
 #'  The centred covariance and coverage probability can be provided or estimated from binary map.
 
 #' @details If we denoted the estimated centred covariance by
@@ -20,6 +20,9 @@
 #'  
 #'  If \code{boxes} is a list of owin objects then \code{gblcc} returns a dataframe of with columns corresponding to estimates of GBL, box mass variance and box mass mean.
 #'  Note if NA or NaN values in the \code{covariance} object are used then \code{gblc} will return NA or NaN instead of an GBL value. 
+
+#' @references
+#' Hingee K, Baddeley A, Caccetta P, Nair G (2017). Computation of lacunarity from covariance of spatial binary maps. \emph{Journal of Agricultural, Biological and Environmental Statistics}. Submitted.
 
 #' @examples
 #' xi <- heather$coarse
