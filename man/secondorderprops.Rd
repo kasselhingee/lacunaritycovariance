@@ -8,7 +8,7 @@ secondorderprops(xiim, gblargs = NULL, covarargs = NULL,
   cencovarargs = NULL, paircorrargs = NULL, returnrotmean = FALSE)
 }
 \arguments{
-\item{xiim}{A \pkg{spatstat} \code{im} object with pixel values that are either TRUE, FALSE or NA. TRUE represents foreground, FALSE respresents background and NA represents unobserved locations.}
+\item{xiim}{A \pkg{spatstat} \code{im} object with pixel values that are either TRUE, FALSE or NA. TRUE represents foreground, FALSE represents background and NA represents unobserved locations.}
 
 \item{gblargs}{Arguments passed to \code{gbltrad} and \code{gbl.cvchat}. If NULL then GBL will not be estimated.
 You can also request to}

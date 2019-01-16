@@ -3,7 +3,7 @@
 \name{gbl}
 \alias{gbl}
 \alias{gbl.cvchat}
-\title{Gliding box lacunarity estimatation using all estimators}
+\title{Gliding box lacunarity estimation using all estimators}
 \usage{
 gbl(xi, boxwidths, estimators = c("GBLg.mattfeldt", "GBLg.pickaint",
   "GBLg.pickaH", "GBLcc.mattfeldt", "GBLcc.pickaint", "GBLc", "GBLgb"),

@@ -15,7 +15,7 @@ bdrcovar(lambda, grain, xy)
 \arguments{
 \item{lambda}{Intensity of the germ process (which is a Poisson point process)}
 
-\item{grain}{Recantangle object specifying the grain}
+\item{grain}{Rectangle object specifying the grain}
 
 \item{win}{The window to simulate in (an owin object)}
 

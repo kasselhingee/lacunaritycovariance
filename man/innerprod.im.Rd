@@ -33,7 +33,7 @@ values outside the domain of A or B. For example if \code{outsideA=0} and the
 domain of \code{B} is larger than \code{A}'s domain then the inner product
 can still be computed. However if \code{A} is \code{NA} outside (e.g. not
 known/not provided) and the domain of \code{B} is larger than \code{A}'s
-domain then the inner product is not computable and the returned value is \code{NA}
+domain then the inner product can not be computed and the returned value is \code{NA}
 }
 \examples{
 xi <- heather$coarse
