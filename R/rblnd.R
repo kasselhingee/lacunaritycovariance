@@ -22,7 +22,7 @@
 
 #' @examples
 #' w <- owin(xrange = c(0, 10), yrange = c(0, 10))
-#' xi <- rblnd(w, 2, 1, -1, 0.5)
+#' xi <- rblnd(w, 2, 0.6, -1, 0.5)
 #' 
 #' # plot(w)
 #' # plot(xi, add = TRUE)
