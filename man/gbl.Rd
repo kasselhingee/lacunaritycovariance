@@ -75,7 +75,12 @@ Picka's reduced window coverage probability estimates and the traditional covera
 \examples{
 xi <- heather$coarse
 xi <- as.im(xi, value = TRUE, na.replace = FALSE)
-gblests <- gbl(xi, seq(1, 10, by = 0.1))
+if (interactive()) {
+boxwidths <- seq(1, 10, by = 0.5)
+} else {
+boxwidths <- seq(1, 10, by = 1)
+}
+gblests <- gbl(xi, boxwidths)
 }
 \references{
 Allain, C. and Cloitre, M. (1991) Characterizing the lacunarity of random and deterministic fractal sets. \emph{Physical Review A}, 44, 3552-3558.
