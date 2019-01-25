@@ -45,8 +45,11 @@
 #' grain <- disc(r = 0.2)
 #' xm <- 0.01
 #' alpha <- 2
+#' if (interactive()){
 #' lengthscales <- seq(1, 10, by = 0.1)
-#' 
+#' } else {
+#' lengthscales <- seq(1, 5, by = 0.1)
+#' }
 #' xi <- rbpto(lambda, grain, win, xm, alpha, lengthscales = lengthscales)
 #' # plot(xi, col = "black")
 #' # plot(win, add = TRUE)

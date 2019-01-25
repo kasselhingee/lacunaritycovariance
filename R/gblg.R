@@ -24,7 +24,11 @@
 #' @examples
 #' xi <- heather$coarse
 #' pcln <- paircorr(as.im(xi, na.replace = 0), estimators = "pickaH", drop = TRUE)
+#' if (interactive()) {
 #' sidelengths <- seq(0.3, 14, by = 0.2)
+#' } else {
+#' sidelengths <- seq(0.3, 14, by = 1)
+#' }
 #' gblgest <- gblg(sidelengths, pcln)
 #' # what is the GBL estimates for boxes that are discs?
 #' discboxes <- lapply(sidelengths / 2, disc)

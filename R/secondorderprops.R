@@ -17,7 +17,7 @@
 #' @examples 
 #' xi <- heather$coarse
 #' xiim <- as.im(xi, value = TRUE, na.replace = FALSE)
-#' gblargs = list(boxwidths = seq(1, 10, by = 0.1), estimators = c("GBLgb", "GBLc"))
+#' gblargs = list(boxwidths = seq(1, 10, by = 1), estimators = c("GBLgb", "GBLc"))
 #' covarargs = list(estimators = "all")
 #' paircorrargs = list(estimators = "pickaH")
 #' returnrotmean = TRUE
