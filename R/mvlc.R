@@ -42,7 +42,11 @@
 #' xi <- heather$coarse
 #' covar <- tradcovarest(xi)
 #' p <- area(xi) / area(Frame(xi))
+#' if(interactive){
 #' sidelengths <- seq(0.3, 14, by = 0.2)
+#' } else {
+#' sidelengths <- seq(0.3, 14, by = 1)
+#' }
 #' gblest <- gblc(sidelengths, covar, p)
 #' # plot(gblest)
 #' # what is the GBL estimates for boxes that are discs?
