@@ -42,7 +42,7 @@
 #' xi <- heather$coarse
 #' covar <- tradcovarest(xi)
 #' p <- area(xi) / area(Frame(xi))
-#' if(interactive){
+#' if(interactive()){
 #' sidelengths <- seq(0.3, 14, by = 0.2)
 #' } else {
 #' sidelengths <- seq(0.3, 14, by = 1)
