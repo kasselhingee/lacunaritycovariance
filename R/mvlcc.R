@@ -28,7 +28,11 @@
 #' xi <- heather$coarse
 #' cencovar <- cencovariance(xi, obswin = Frame(xi), estimators = c("pickaH"), drop = TRUE)
 #' p <- area(xi) / area(Frame(xi))
+#' if (interactive()) {
 #' sidelengths <- seq(0.3, 14, by = 0.2)
+#' } else {
+#' sidelengths <- seq(0.3, 14, by = 1)
+#' }
 #' gblccest <- gblcc(sidelengths, cencovar, p)
 #' # what is the GBL estimates for boxes that are discs?
 #' discboxes <- lapply(sidelengths / 2, disc)
