@@ -1,31 +1,10 @@
-TO DO BEFORE PUBLISHING:
-___________________________
-Really required:
-D- Maintainer field
+# TO DO BEFORE PUBLISHING:
 
-D- version number with non-leading zeros
+----
 
-- examples took a long time to process. Some 32 seconds!
-gbl              32.728  0.056  32.821
-gblcc            14.589  0.052  14.660
-gblg              9.841  0.024   9.876
-gblc              9.441  0.016   9.468
-secondorderprops  5.889  0.000   5.895
-rblnd             5.504  0.000   5.510
+## Really required:
 
 - build using R CMD build --compact-vignettes=gs+qpdf  ...
-
-D- A citation command that links to my paper or thesis ACT 1h
-
-D- Fill in references. ACT 1h
-
-D- p13 error: see link{}. ACT 10min
-
-D- fix overfull lines (about 10 of them). ACT 30min
-
-D- spell check using devtools
-
---STOP for paper submission--
 
 - glbtrad description to: empirical Gliding Box, proposed by A and C [1]. And else where ACT 1h
 
@@ -37,9 +16,14 @@ D- spell check using devtools
 
 - tradcovarest require obswin. ACT 1h
 
+- version number with non-leading zeros
+
+
 Total ACT: 8h 
-___________________________
-Great for more polished publication:
+
+----
+
+## Great for more polished publication:
 - In pixel contag, what is the `double count' method as described in the FRAGSTATS manual on adjacency matrix, and is it different to what is in this package? 
 
 - better indexing of topics. ACT 1h
