@@ -6,9 +6,9 @@
 
 - build using R CMD build --compact-vignettes=gs+qpdf  ...
 
-- glbtrad description to: empirical Gliding Box, proposed by A and C [1]. And else where ACT 1h
-
 - Change function names to reflect names `empirical GBL' or gliding box estimator, and plugin moment estimators  ACT 2h
+
+- glbtrad description to: empirical Gliding Box, proposed by A and C [1]. And else where ACT 1h
 
 - consistent naming ACT 1h
 
@@ -16,8 +16,11 @@
 
 - tradcovarest require obswin. ACT 1h
 
+- change function file names!
+
 - version number with non-leading zeros
 
+- check vignettes and paper source code still run smoothly
 
 Total ACT: 8h 
 
