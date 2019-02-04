@@ -55,12 +55,12 @@ test_that("paircorr operates when passed im (logical and numeric) and fails corr
   expect_error(paircorr(xiim.n3), regexp = "has values other than")
 })
 
-test_that("gbltrad operates as expected when pass im object", {
+test_that("gblemp operates as expected when pass im object", {
   boxwidths <- seq(1, 5, by = 1)
-  gbltrad.l <- gbltrad(boxwidths, xiim.l)
-  gbltrad.n <- gbltrad(boxwidths, xiim.n)
-  expect_equal(max(abs(gbltrad.l - gbltrad.n)), 0)
-  expect_error(gbltrad(boxwidths, xiim.n3), regexp = "has values other than")
+  gblemp.l <- gblemp(boxwidths, xiim.l)
+  gblemp.n <- gblemp(boxwidths, xiim.n)
+  expect_equal(max(abs(gblemp.l - gblemp.n)), 0)
+  expect_error(gblemp(boxwidths, xiim.n3), regexp = "has values other than")
 })
 
 test_that("gbl() operates well when passed im or owin boxes", {
