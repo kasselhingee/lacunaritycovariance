@@ -6,7 +6,13 @@
 
 - build using R CMD build --compact-vignettes=gs+qpdf  ...
 
-- Change function names to reflect names `empirical GBL' or gliding box estimator, and plugin moment estimators  ACT 2h
+D- Change function names to reflect names `empirical GBL' or gliding box estimator, and plugin moment estimators  ACT 2h
+
+D- tradcovarest --> plugincvc
+
+D- 'trad' method name changed to 'plugin'
+
+- 'mvlgb or GBLgb to gblemp'
 
 - glbtrad description to: empirical Gliding Box, proposed by A and C [1]. And else where ACT 1h
 
@@ -16,7 +22,11 @@
 
 - tradcovarest require obswin. ACT 1h
 
-- change function file names!
+- change function file names to match function names. (e.g. MVL and tradcovarest)
+
+- update lacunarity paper reference (e.g. it is published..)
+
+- watch use of GBL when it should be gliding box lacunarity
 
 - version number with non-leading zeros
 
@@ -27,6 +37,10 @@ Total ACT: 8h
 ----
 
 ## Great for more polished publication:
+- Clean up mix ups between estimates and estimator in language.
+
+- Referencing in coverageprob.R is numeric, whilst most of other pages are using author-year
+
 - In pixel contag, what is the `double count' method as described in the FRAGSTATS manual on adjacency matrix, and is it different to what is in this package? 
 
 - better indexing of topics. ACT 1h
