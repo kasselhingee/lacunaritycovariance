@@ -92,7 +92,7 @@ varCovProb_ests <- function(Xi, obswin = NULL,
 }
 
 
-cpvariance.trad <- function(Xi, obswin){
+cpvariance.plugin <- function(Xi, obswin){
    Xiinside <- intersect.owin(Xi,obswin)
    setcovXi <- setcov(Xiinside)
    setcovB <- setcov(obswin)

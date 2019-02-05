@@ -169,5 +169,5 @@ gbl.cvchat <- function(boxwidths,
 
 
 
-GBLgestimatornames <- c("GBLg.trad", "GBLg.mattfeldt", "GBLg.pickaint", "GBLg.pickaH")
-GBLccestimatornames <- c("GBLcc.trad", "GBLcc.mattfeldt", "GBLcc.pickaint", "GBLcc.pickaH")
+GBLgestimatornames <- c("GBLg.plugin", "GBLg.mattfeldt", "GBLg.pickaint", "GBLg.pickaH")
+GBLccestimatornames <- c("GBLcc.plugin", "GBLcc.mattfeldt", "GBLcc.pickaint", "GBLcc.pickaH")

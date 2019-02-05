@@ -41,7 +41,7 @@
 #'   The estimators available are (see (Hingee, 2019) for
 #'   more information): 
 #'   \itemize{ 
-#'   \item{\code{trad}} the plug-in moment pair-correlation estimator which is \eqn{Chat(v) / (phat^2)}, where \eqn{Chat} and \eqn{phat} are 
+#'   \item{\code{plugin}} the plug-in moment pair-correlation estimator which is \eqn{Chat(v) / (phat^2)}, where \eqn{Chat} and \eqn{phat} are 
 #' the plug-in moment estimate of covariance and the usual estimate of coverage probability, respectively.
 #'   \item{\code{mattfeldt}} an `intrinsically' balanced pair-correlation estimator suggested by Picka (1997).
 #'   A similar isotropic pair-correlation estimator was later studied by Mattfeldt and Stoyan (2000).
@@ -97,7 +97,7 @@ paircorr.cvchat <- function(cvchat, cpp1 = NULL, phat = NULL, estimators = "all"
   cvchat <- harmonised$cvchat
   cpp1 <- harmonised$cpp1
   fcns <- list(
-         trad = pcln_trad,
+         plugin = pcln_plugin,
          symm = pcln_symm,
          mattfeldt = pcln_mattfeldt,
          pickaint = pcln_picka_intr,
@@ -118,7 +118,7 @@ paircorr.cvchat <- function(cvchat, cpp1 = NULL, phat = NULL, estimators = "all"
 }
 
 
-pcln_trad <- function(cvchat, cpp1 = NULL, phat = NULL){
+pcln_plugin <- function(cvchat, cpp1 = NULL, phat = NULL){
   return(cvchat / (phat^2)) 
 }
 

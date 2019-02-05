@@ -67,7 +67,7 @@
 
 #' The estimators available are (see (Hingee, 2019) for information): 
 #' \itemize{
-#' \item{\code{trad}} the plug-in moment covariance estimator
+#' \item{\code{plugin}} the plug-in moment covariance estimator
 #' \item{\code{mattfeldt}} an estimator inspired by an 
 #' `intrinsically' balanced pair-correlation estimator from Picka that was later studied in an
 #' isotropic situation by Mattfeldt and Stoyan (2000) 
@@ -125,7 +125,7 @@ racscovariance.cvchat <- function(cvchat, cpp1 = NULL, phat = NULL, estimators =
   cvchat <- harmonised$cvchat
   cpp1 <- harmonised$cpp1
   fcns <- list(
-         trad = function(cvchat, cpp1 = NULL, phat = NULL) cvchat,
+         plugin = function(cvchat, cpp1 = NULL, phat = NULL) cvchat,
          mattfeldt = balancedracscovariance_mattfeldt_add,
          pickaint = balancedracscovariance_picka_int,
          pickaH = balancedracscovariance_picka_H

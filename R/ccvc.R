@@ -38,7 +38,7 @@
 #'   The estimators available are (see (Section 3.4, Hingee, 2019) for
 #'   information): 
 #'   \itemize{ 
-#'   \item{\code{trad}} the plug-in moment centred
+#'   \item{\code{plugin}} the plug-in moment centred
 #'   covariance estimator 
 #'   \item{\code{mattfeldt}} an estimator inspired by an
 #'   `intrinsically' balanced pair-correlation estimator from Picka (1997) that was
