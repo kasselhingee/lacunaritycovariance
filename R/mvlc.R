@@ -22,7 +22,7 @@
 #' 
 #' If a binary map is supplied then \eqn{p} and \eqn{C(v)} are estimated using
 #'  the usual coverage probability estimator and the plug-in moment covariance estimator, respectively 
-#'  (see \code{\link{coverageprob}} and \code{\link{plugincovarest}}).
+#'  (see \code{\link{coverageprob}} and \code{\link{plugincvc}}).
 
 #' @param boxes Either a list of sidelengths for square boxes or a list of \code{owin} objects of any shape.
 #' @param covariance  A \code{im} object containing the covariance function
@@ -40,7 +40,7 @@
 
 #' @examples
 #' xi <- heather$coarse
-#' covar <- plugincovarest(xi)
+#' covar <- plugincvc(xi)
 #' p <- area(xi) / area(Frame(xi))
 #' if(interactive()){
 #' sidelengths <- seq(0.3, 14, by = 0.2)
@@ -64,7 +64,7 @@ gblc <- function(boxes, covariance = NULL, p = NULL, xiim = NULL){
     p <- sum(xiim) / sum(is.finite(xiim$v))
     w <- as.owin(xiim) #w is observation window - only the non NA values end up in window
     xiim[is.na(xiim$v)] <- 0
-    covar <- plugincovarest(xiim, obswin = w)
+    covar <- plugincvc(xiim, obswin = w)
     lacv <- gblc.inputcovar(boxes, covar, p)
     unitname <- unitname(xiim)
   } else {

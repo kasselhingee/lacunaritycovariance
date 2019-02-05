@@ -1,5 +1,5 @@
 #' @title Plug-in moment covariance estimator
-#' @export plugincovarest
+#' @export plugincvc
 #' @description 
 #' This function computes the plug-in moment covariance estimate of a stationary RACS from a binary map.
 #' For a stationary RACS, \eqn{\Xi}, the covariance 
@@ -22,8 +22,8 @@
 
 #' @examples
 #' xi <- heather$coarse
-#' covar <- plugincovarest(xi)
-#' covar <- plugincovarest(as.im(heather$coarse, na.replace = 0))
+#' covar <- plugincvc(xi)
+#' covar <- plugincvc(as.im(heather$coarse, na.replace = 0))
 
 #' @keywords spatial nonparametric
 
@@ -33,7 +33,7 @@
 #' where \eqn{\gamma_{W}(v)}{gammaW(v)} is the set covariance of the observation window \eqn{W} 
 #' and \eqn{\gamma_{W\cap X}(v)}{gammaWX(v)} is the set covariance of the foreground within \eqn{W}.
 
-#' \code{plugincovarest} uses Fourier transforms to calculate the set covariance (using the \code{\link[spatstat]{setcov}} of the foreground and observation window.
+#' \code{plugincvc} uses Fourier transforms to calculate the set covariance (using the \code{\link[spatstat]{setcov}} of the foreground and observation window.
 #' Vectors with small \eqn{\gamma_W(v)}{ gammaW(v) } are eliminated using \code{setcov_boundarythresh} 
 #' as division by small values is numerically unstable.
 #' 
@@ -42,7 +42,7 @@
 #' @references 
 #' Serra, J.P. (1982) \emph{Image Analysis and Mathematical Morphology}. London; New York: Academic Press.
 
-plugincovarest <- function(xi,
+plugincvc <- function(xi,
         obswin = NULL,
         setcov_boundarythresh = NULL) {
   if (is.owin(xi)) {

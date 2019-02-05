@@ -15,7 +15,7 @@
 #' is given a covariance estimate (and other similar estimate) of NA to avoid instabilities caused by dividing by very small areas.
 #' If NULL is supplied (default) then 1E-6 is used.
 #' @param phat  The fraction foreground area in the observation window, which is the usual estimator of coverage probability.
-#' @param cvchat The plug-in moment covariance estimate (often from \code{plugincovarest}).
+#' @param cvchat The plug-in moment covariance estimate (often from \code{plugincvc}).
 #' @param cpp1 Picka's estimate of coverage probability for subsets of the observation window. See \code{\link{cppicka}}.
 
 #' @return An \code{fv} object.
@@ -85,7 +85,7 @@ gbl <- function(xi, boxwidths,
   
   phat <- coverageprob(xi)
   if(sum(gblgestimaterequests) + sum(gblccestimaterequests) + ("GBLc" %in% estimators) > 0){
-    cvchat <- plugincovarest(xi, setcov_boundarythresh = setcov_boundarythresh)
+    cvchat <- plugincvc(xi, setcov_boundarythresh = setcov_boundarythresh)
   }
   if (sum(gblgestimaterequests) + sum(gblccestimaterequests) > 0){
     cpp1 <- cppicka(xi, setcov_boundarythresh = setcov_boundarythresh)

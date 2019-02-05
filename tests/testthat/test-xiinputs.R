@@ -30,11 +30,11 @@ test_that("cppicka operates when passed im (logical and numeric) and fails corre
 })
 
 
-test_that("plugincovarest operates when passed im (logical and numeric) and fails correctly when im values not binary", {
-  cvcest <- plugincovarest(xiowin, obswin = w)
-  expect_equal(max(abs(cvcest - plugincovarest(xiim.l))), 0)
-  expect_equal(max(abs(cvcest - plugincovarest(xiim.n))), 0)
-  expect_error(plugincovarest(xiim.n3), regexp = "has values other than")
+test_that("plugincvc operates when passed im (logical and numeric) and fails correctly when im values not binary", {
+  cvcest <- plugincvc(xiowin, obswin = w)
+  expect_equal(max(abs(cvcest - plugincvc(xiim.l))), 0)
+  expect_equal(max(abs(cvcest - plugincvc(xiim.n))), 0)
+  expect_error(plugincvc(xiim.n3), regexp = "has values other than")
 })
 
 test_that("balancedracscovariance operates when passed im (logical and numeric) and fails correctly when im values not binary", {
