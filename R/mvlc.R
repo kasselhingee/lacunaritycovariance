@@ -1,10 +1,10 @@
-#' @title Gliding box lacunarity estimates from traditional covariance estimator
+#' @title Gliding box lacunarity estimator using plug-in moment covariance estimator
 #' @export gblc
 #'
 #' @description 
 #' Can be used to estimate the gliding box lacunarity (GBL) of a stationary RACS from a binary map
-#'  using the traditional covariance estimate (Hingee et al., 2017).
-#'  It can also calculate the GBL of a RACS from a provided covariance and coverage probability. 
+#'  using the plug-in moment covariance covariance estimator (Hingee et al., 2017).
+#'  It can also calculate the GBL of a RACS from a given covariance function and coverage probability. 
 
 #' @references
 #' Hingee K, Baddeley A, Caccetta P, Nair G (2017). Computation of lacunarity from covariance of spatial binary maps. \emph{Journal of Agricultural, Biological and Environmental Statistics}. Submitted.
@@ -21,7 +21,7 @@
 #' covariance and coverage probability of the model.
 #' 
 #' If a binary map is supplied then \eqn{p} and \eqn{C(v)} are estimated using
-#'  the traditional coverage probability and covariance estimators respectively 
+#'  the usual coverage probability estimator and the plug-in moment covariance estimator, respectively 
 #'  (see \code{\link{coverageprob}} and \code{\link{tradcovarest}}).
 
 #' @param boxes Either a list of sidelengths for square boxes or a list of \code{owin} objects of any shape.

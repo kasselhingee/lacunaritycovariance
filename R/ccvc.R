@@ -2,7 +2,7 @@
 #' @export cencovariance  cencovariance.cvchat
 #' @description 
 #' This function estimates the centred covariance of a stationary RACS. 
-#' The traditional centred covariance estimator, two 'balanced' estimators suggested by Picka (2000)
+#' Available estimators are the plug-in moment centred covariance estimator, two 'balanced' estimators suggested by Picka (2000),
 #'  and a third 'balanced' estimator inspired by one of Picka's pair-correlation estimators.
 #' @author{Kassel Liam Hingee}
 
@@ -13,10 +13,10 @@
 #'   \code{owin} object that specifies the observation window.
 #' @param setcov_boundarythresh Any vector \eqn{v} such that set covariance of the observation window
 #'  is smaller than this threshold is given a covariance of NA to avoid instabilities caused by dividing by very small areas, 
-#' @param phat The traditional estimate of coverage probability,
+#' @param phat The usual estimate of coverage probability,
 #'  which is the observed foreground area in \code{xi} divided by the total area of the observation window.
 #'  See \code{\link{coverageprob}} for more information.
-#' @param cvchat The traditional estimate of covariance in \code{im} format. 
+#' @param cvchat The plug-in moment estimate of covariance in \code{im} format. 
 #' Typically created with \code{\link{tradcovarest}}.
 #' @param cpp1 Picka's reduced window estimate of coverage probability in \code{im} format - used in improved (balanced) covariance estimators.
 #' Can be generated using \code{\link{cppicka}}.
@@ -38,7 +38,7 @@
 #'   The estimators available are (see (Section 3.4, Hingee, 2019) for
 #'   information): 
 #'   \itemize{ 
-#'   \item{\code{trad}} the traditional centred
+#'   \item{\code{trad}} the plug-in moment centred
 #'   covariance estimator 
 #'   \item{\code{mattfeldt}} an estimator inspired by an
 #'   `intrinsically' balanced pair-correlation estimator from Picka (1997) that was
@@ -81,8 +81,8 @@ cencovariance <- function(xi, obswin = NULL,
 }
 
 #' @describeIn cencovariance Generates centred covariances estimates from
-#'   a traditional estimate of covariance, Picka's reduced window estimate of coverage probability,
-#'   and the traditional estimate of coverage probability.
+#'   a plug-in moment estimate of covariance, Picka's reduced window estimate of coverage probability,
+#'   and the plug-in moment estimate of coverage probability.
 #'   If these estimates already exist then \code{cencovariance.cvchat} can save significant computation time.
 cencovariance.cvchat <- function(cvchat, cpp1 = NULL, phat = NULL,
         setcov_boundarythresh = NULL,

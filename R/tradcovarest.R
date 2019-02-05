@@ -1,7 +1,7 @@
-#' @title Traditional covariance estimator
+#' @title Plug-in moment covariance estimator
 #' @export tradcovarest
 #' @description 
-#' This function computes the traditional covariance estimate of a stationary RACS from a binary map.
+#' This function computes the plug-in moment covariance estimate of a stationary RACS from a binary map.
 #' For a stationary RACS, \eqn{\Xi}, the covariance 
 #' for a vector \eqn{v} is the probability of two points separated by a vector \eqn{v} are covered by \eqn{\Xi}
 #' \deqn{C(v) = P(\{x,x+v\}\subseteq \Xi).}{C(v) = P({x, x+ v} in Xi).}
@@ -28,7 +28,7 @@
 #' @keywords spatial nonparametric
 
 #' @details 
-#' The traditional covariance estimator is (Serra, 1982)
+#' The plug-in moment covariance estimator is (Serra, 1982)
 #' \deqn{ \hat{C}(v) = \frac{\gamma_{W\cap X}(v)}{\gamma_W(v)}}{ C(v) = gammaWX(v) / gammaW(v) }
 #' where \eqn{\gamma_{W}(v)}{gammaW(v)} is the set covariance of the observation window \eqn{W} 
 #' and \eqn{\gamma_{W\cap X}(v)}{gammaWX(v)} is the set covariance of the foreground within \eqn{W}.

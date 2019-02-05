@@ -14,9 +14,9 @@
 #' @param setcov_boundarythresh Any vector \eqn{v} such that set covariance of the observation window is smaller than this threshold
 #' is given a covariance estimate (and other similar estimate) of NA to avoid instabilities caused by dividing by very small areas.
 #' If NULL is supplied (default) then 1E-6 is used.
-#' @param phat Traditional estimate of coverage probability.
-#' @param cvchat Traditional estimate of covariance (often from \code{tradcovarest}).
-#' @param cpp1 Picka's estimate of coverage probability (often from \code{cppicka}).
+#' @param phat  The fraction foreground area in the observation window, which is the usual estimator of coverage probability.
+#' @param cvchat The plug-in moment covariance estimate (often from \code{tradcovarest}).
+#' @param cpp1 Picka's estimate of coverage probability for subsets of the observation window. See \code{\link{cppicka}}.
 
 #' @return An \code{fv} object.
 
@@ -129,8 +129,8 @@ gbl <- function(xi, boxwidths,
   return(allfvs)
 }
 
-#' @describeIn gbl Computes covariance-based estimator of GBL from the traditional estimate of covariance,
-#'  Picka's reduced window coverage probability estimates and the traditional coverage probability estimate.
+#' @describeIn gbl Computes covariance-based estimator of GBL from the plug-in moment estimate of covariance,
+#'  Picka's reduced window coverage probability estimates (see \code{\link{cppicka}}) and the usual coverage probability estimate, \code{phat}.
 gbl.cvchat <- function(boxwidths,
                       estimators = c("GBLg.mattfeldt", "GBLg.pickaint", "GBLg.pickaH",
                                      "GBLcc.mattfeldt", "GBLcc.pickaint",

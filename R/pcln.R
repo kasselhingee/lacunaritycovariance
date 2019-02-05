@@ -2,7 +2,7 @@
 #' @export paircorr  paircorr.cvchat
 #' @description 
 #' Estimates the pair-correlation function of a stationary RACS. 
-#' The traditional pair-correlation estimator and three 'balanced' estimators suggested by Picka (2000)
+#' The plug-in moment pair-correlation estimator and three 'balanced' estimators suggested by Picka (2000)
 #' are available.
 #' @author{Kassel Liam Hingee}
 
@@ -13,10 +13,10 @@
 #'   \code{owin} object that specifies the observation window.
 #' @param setcov_boundarythresh Any vector \eqn{v} such that set covariance of the observation window
 #'  is smaller than this threshold is given a covariance of NA to avoid instabilities caused by dividing by very small areas, 
-#' @param phat The traditional estimate of coverage probability,
+#' @param phat The plug-in moment estimate of coverage probability,
 #'  which is the observed foreground area in \code{xi} divided by the total area of the observation window.
 #'  See \code{\link{coverageprob}} for more information.
-#' @param cvchat The traditional estimate of covariance in \code{im} format. 
+#' @param cvchat The plug-in moment estimate of covariance in \code{im} format. 
 #' Typically created with \code{\link{tradcovarest}}.
 #' @param cpp1 Picka's reduced window estimate of coverage probability in \code{im} format - used in improved (balanced) covariance estimators.
 #' Can be generated using \code{\link{cppicka}}.
@@ -41,8 +41,8 @@
 #'   The estimators available are (see (Hingee, 2019) for
 #'   more information): 
 #'   \itemize{ 
-#'   \item{\code{trad}} the traditional pair-correlation estimator which is \eqn{Chat(v) / (phat^2)}, where \eqn{Chat} and \eqn{phat} are 
-#' the traditional estimates of coverage probability and covariance respectively. 
+#'   \item{\code{trad}} the plug-in moment pair-correlation estimator which is \eqn{Chat(v) / (phat^2)}, where \eqn{Chat} and \eqn{phat} are 
+#' the plug-in moment estimate of covariance and the usual estimate of coverage probability, respectively.
 #'   \item{\code{mattfeldt}} an `intrinsically' balanced pair-correlation estimator suggested by Picka (1997).
 #'   A similar isotropic pair-correlation estimator was later studied by Mattfeldt and Stoyan (2000).
 #'   \item{\code{pickaint}} Picka's 'intrinsically' balanced pair-correlation estimator (Picka, 2000). 
@@ -65,7 +65,7 @@
 #' #estimate directly from a binary map
 #' pclns_direst <- paircorr(as.im(xi, na.replace = 0), estimators = "all")
 #' 
-#' #estimate using traditional covariance estimates, traditional coverage
+#' #estimate using plug-in moment covariance estimates, coverage
 #' #probability estimate and Picka's reduced window coverage probability
 #' #estimates.
 #' obswin <- Frame(xi)
@@ -89,8 +89,8 @@ paircorr <- function(xi, obswin = NULL,
 }
 
 #' @describeIn paircorr Generates pair-correlation estimates from
-#'   a traditional estimate of covariance, Picka's reduced window estimate of coverage probability,
-#'   and the traditional estimate of coverage probability.
+#'   the plug-in moment estimates of covariance, Picka's reduced window estimate of coverage probability,
+#'   and the coverage fraction (which is an unbiased estimate of the coverage probability).
 #'   If these estimates already exist then \code{paircorr.cvchat} can save significant computation time.
 paircorr.cvchat <- function(cvchat, cpp1 = NULL, phat = NULL, estimators = "all", drop = FALSE){
   harmonised <- harmonise.im(cvchat = cvchat, cpp1 = cpp1)

@@ -2,8 +2,8 @@
 #' @export racscovariance racscovariance.cvchat
 #' @description 
 #' Estimates the covariance of a stationary RACS. 
-#' The traditional covariance estimator and
-#' new estimators based on (Picka, 1997; Picka, 2000) are available.
+#' The plug-in moment covariance estimator and
+#' newer balanced estimators based on (Picka, 1997; Picka, 2000) are available.
 #' @author{Kassel Liam Hingee}
 
 
@@ -20,7 +20,7 @@
 #' @param phat The classical estimate of coverage probability,
 #'  which is the observed area in \code{xi} divided by the total area of the observation window.
 #'  See \code{coverageprob} for more information.
-#' @param cvchat The traditional estimate of covariance in \code{im} format. 
+#' @param cvchat The plug-in moment estimate of covariance in \code{im} format. 
 #' Typically created with \code{\link{tradcovarest}}.
 #' @param cpp1 Picka's reduced window estimate of coverage probability in \code{im} format - used in improved (balanced) covariance estimators.
 #' Can be generated using \code{\link{cppicka}}.
@@ -44,9 +44,8 @@
 #' the probability that two points separated by a vector \eqn{v} are covered by
 #' \eqn{\Xi}.
 #' 
-#' Traditionally covariance for vector \eqn{v} is estimated from a binary map,
-#' \eqn{xi}, using the volume of the set of points, \eqn{x}, such that both
-#' \eqn{x} and \eqn{x+v} are observed to be in the foreground of \code{xi}
+#' Given a vector \eqn{v}, the plug-in moment covariance estimate from a binary map is the volume of the set of points, \eqn{x}, such that both
+#' \eqn{x} and \eqn{x+v} are observed to be in the foreground
 #' relative to the volume of points, \eqn{x}, for which both \eqn{x} and \eqn{x+v}
 #' are in the observation window (Hingee, 2019).
 #' Picka (1997, 2000) suggested a number of improvements to centred
@@ -56,7 +55,7 @@
 #' estimates for the covariance of \eqn{Xi} that are a constant offset from
 #' covariance estimates for the complement of \eqn{Xi} (note the constant offset
 #' depends on the coverage probability), which
-#' appears to avoid some surprising behaviour that the traditional estimator
+#' appears to avoid some surprising behaviour that the plug-in moment covariance estimator
 #' suffers (Hingee, 2019).
 #' These estimators are called \code{pickaint} and \code{pickaH} in this package.
 #' 
@@ -68,7 +67,7 @@
 
 #' The estimators available are (see (Hingee, 2019) for information): 
 #' \itemize{
-#' \item{\code{trad}} the traditional covariance estimator
+#' \item{\code{trad}} the plug-in moment covariance estimator
 #' \item{\code{mattfeldt}} an estimator inspired by an 
 #' `intrinsically' balanced pair-correlation estimator from Picka that was later studied in an
 #' isotropic situation by Mattfeldt and Stoyan (2000) 
@@ -93,7 +92,7 @@
 #' obswin <- Frame(xi)
 #' balancedcvchats <- racscovariance(xi, obswin = Frame(xi), estimators = "all")
 #' 
-#' # from coverage probability estimates and traditional covariance estimate.
+#' # from a coverage probability estimate and a plug-in moment covariance estimate.
 #' phat <- coverageprob(xi, obswin = Frame(xi))
 #' cvchat <- tradcovarest(xi)
 #' cpp1 <- cppicka(xi, obswin = Frame(heather$coarse))
@@ -117,9 +116,9 @@ racscovariance <- function(xi, obswin = NULL,
   return(cvchats)
 }
 
-#' @describeIn racscovariance Generates covariances estimates from
-#'   a traditional estimate of covariance, Picka's reduced window estimate of coverage probability,
-#'   and the traditional estimate of coverage probability.
+#' @describeIn racscovariance Computes covariance estimates from
+#'   a plug-in moment estimate of covariance, Picka's reduced window estimate of coverage probability,
+#'   and the usual estimate of coverage probability.
 #'   If these estimates already exist then \code{racscovariance.cvchat} can save significant computation time.
 racscovariance.cvchat <- function(cvchat, cpp1 = NULL, phat = NULL, estimators = "all", drop = FALSE){
   harmonised <- harmonise.im(cvchat = cvchat, cpp1 = cpp1)
