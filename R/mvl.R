@@ -21,7 +21,7 @@
 #' @return An \code{fv} object.
 
 #' @details
-#' The function is not able to estimate GBL for non-square boxes as the gliding box estimator is included.
+#' As empirical GBL is one of the GBL estimators available through this function, non-square boxes are not allowed.
 #' To estimate GBL for non-square boxes use \code{gblcc} or \code{gblg} directly.
 #' 
 #' If \code{xi} is in \code{owin} format then \code{obswin} and \code{xi} are converted
@@ -30,7 +30,7 @@
 #' The estimators available are
 #' \itemize{
 #' \item{\code{"GBLc"}} The unmodified (unbalanced) covariance estimator provided by \code{\link{gblc}}
-#' \item{\code{"GBLgb"}} The Gliding-Box estimator of Allain and Cloitre (1991). Calls \code{\link{gblemp}}
+#' \item{\code{"GBLgb"}} Empirical gliding box lacunarity (Allain and Cloitre, 1991). Calls \code{\link{gblemp}}
 #' \item{\code{"GBLg.mattfeldt"}} See help for \code{\link{gblg}}
 #' \item{\code{"GBLg.pickaint"}} See help for \code{\link{gblg}}
 #' \item{\code{"GBLg.pickaH"}} See help for \code{\link{gblg}}
