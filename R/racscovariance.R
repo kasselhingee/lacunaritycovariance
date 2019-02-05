@@ -21,7 +21,7 @@
 #'  which is the observed area in \code{xi} divided by the total area of the observation window.
 #'  See \code{coverageprob} for more information.
 #' @param cvchat The plug-in moment estimate of covariance in \code{im} format. 
-#' Typically created with \code{\link{tradcovarest}}.
+#' Typically created with \code{\link{plugincovarest}}.
 #' @param cpp1 Picka's reduced window estimate of coverage probability in \code{im} format - used in improved (balanced) covariance estimators.
 #' Can be generated using \code{\link{cppicka}}.
 #' @param estimators A list of strings specifying covariance estimators to use. 
@@ -94,7 +94,7 @@
 #' 
 #' # from a coverage probability estimate and a plug-in moment covariance estimate.
 #' phat <- coverageprob(xi, obswin = Frame(xi))
-#' cvchat <- tradcovarest(xi)
+#' cvchat <- plugincovarest(xi)
 #' cpp1 <- cppicka(xi, obswin = Frame(heather$coarse))
 #' harmonised <- harmonise.im(cvchat = cvchat, cpp1 = cpp1)
 #' cvchat <- harmonised$cvchat
@@ -108,7 +108,7 @@ racscovariance <- function(xi, obswin = NULL,
         setcov_boundarythresh = NULL,
         estimators = "all",
         drop = FALSE){
-  cvchat <- tradcovarest(xi, obswin, setcov_boundarythresh = setcov_boundarythresh)
+  cvchat <- plugincovarest(xi, obswin, setcov_boundarythresh = setcov_boundarythresh)
   cpp1 <- cppicka(xi, obswin, setcov_boundarythresh = setcov_boundarythresh)
   phat <- coverageprob(xi, obswin)
   

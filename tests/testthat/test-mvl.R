@@ -1,7 +1,7 @@
 context("Estimation - GBL")
 
 test_that("gblc() warns of unexpected inputs", {
-  covar <- tradcovarest(heather$coarse)
+  covar <- plugincovarest(heather$coarse)
   p <- area(heather$coarse) / area(Frame(heather$coarse))
   sidelengths <- 2.2
   img <- as.im(heather$coarse, eps = heather$coarse$xstep, na.replace = 0)
@@ -27,7 +27,7 @@ test_that("gblemp() warns of unexpected inputs", {
 })
 
 test_that("GBLc estimates are historically consistent", {
-  covar <- tradcovarest(heather$coarse)
+  covar <- plugincovarest(heather$coarse)
   p <- area(heather$coarse) / area(Frame(heather$coarse))
   sidelengths <- 2.2
   lac <- gblc(sidelengths, covar, p)
@@ -42,7 +42,7 @@ test_that("GBLgb estimates are historically consistent", {
 })
 
 test_that("GBLc estimates are consistent for input side lengths or owin squares", {
-  covar <- tradcovarest(heather$coarse)
+  covar <- plugincovarest(heather$coarse)
   p <- area(heather$coarse) / area(Frame(heather$coarse))
   sidelengths <- 2.2
   lac <- gblc(sidelengths, covar, p)
@@ -72,7 +72,7 @@ test_that("gblg estimates operate on lists of owin objects", {
 
 test_that("GBLc estimates are the same from estimated covariance or original image", {
   img <- as.im(heather$coarse, eps = heather$coarse$xstep, na.replace = 0)
-  covar <- tradcovarest(img)
+  covar <- plugincovarest(img)
   p <- sum(img) / sum(is.finite(img$v))
   sidelengths <- seq(1, 5, by = heather$coarse$xstep*2)
   gblc.covar <- gblc(sidelengths, covar, p)

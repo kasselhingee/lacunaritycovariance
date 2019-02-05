@@ -34,7 +34,7 @@ secondorderprops <- function(xiim,
                              paircorrargs = NULL,
                              returnrotmean = FALSE
                             ){
-  cvchatT <- tradcovarest(xiim)
+  cvchatT <- plugincovarest(xiim)
   cpp1 <- cppicka(xiim)
   phat <- coverageprob(xiim)
   

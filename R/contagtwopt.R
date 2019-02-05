@@ -26,7 +26,7 @@
 
 #' @examples 
 #' xi <- heather$coarse
-#' covariance <- tradcovarest(xi,Frame(xi))
+#' covariance <- plugincovarest(xi,Frame(xi))
 #' twoptcontagion <- contagtwopt(covariance)
 #' p <- coveragefrac(xi,Frame(xi))
 #' twoptcontagion <- contagtwopt(covariance,p)

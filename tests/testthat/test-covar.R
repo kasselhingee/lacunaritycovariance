@@ -80,12 +80,12 @@ test_that("racscovariance errors correctly", {
                  obswin = shift.owin(disc(), vec = c(3, 3))))
 })
 
-test_that("tradcovarest() errors properly", {
+test_that("plugincovarest() errors properly", {
   lambda <- 4 * 2.2064E-3
   discr <- 5
   w <- owin(xrange = c(0, 100), yrange = c(0, 100))
   xi <- rbdd(lambda, discr, w)
   xiimg <- as.im(xi, W = w, eps = c(0.1, 0.1), na.replace = 0)
   xiimg[10, 10] <- 1.1
-  expect_error(tradcovarest(xiimg), regexp = "Input xi has values other than 0, 1 or NA")
+  expect_error(plugincovarest(xiimg), regexp = "Input xi has values other than 0, 1 or NA")
 })
