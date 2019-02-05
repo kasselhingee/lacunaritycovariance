@@ -1,9 +1,13 @@
-#' @title Gliding Box estimation of gliding box lacunarity
+#' @title Empirical Gliding Box Lacunarity
 #' @export gblemp
 #' @importFrom utils installed.packages
 #'
-#' @description Calculates the gliding box estimate, proposed by Allain and Cloitre (1991), of gliding box lacunarity from a binary map.
-#' @details Calculates the gliding box estimate (Allain and Cloitre, 1991) of gliding box lacunarity for a given range of square box sizes. 
+#' @description Calculates empirical gliding box lacunarity of a binary map, which was proposed by Allain and Cloitre (1991). 
+#' @details Calculates empirical gliding box lacunarity (Allain and Cloitre, 1991) for a given range of square box sizes,
+#' \deqn{1 + Var(area(B . xi)) / E[area(B . xi)]^2, }
+#' where \eqn{B} is a box that has a random location in the observation window and \eqn{area(B . xi)} is the (random) area of the foreground in \eqn{B}. 
+#' This is an estimate of the gliding box lacunarity of a RACS (Hingee et al., 2017).
+#' 
 #' The algorithm uses the pixel locations in \code{xiim} as an array of box centre locations to compute
 #'  the mean and variance of the area in a random box of a given size.
 #' Locations where the box is not completely within the observation window are ignored.
@@ -15,8 +19,10 @@
 #' 
 #' @references 
 #' Allain, C. and Cloitre, M. (1991) Characterizing the lacunarity of random and deterministic fractal sets. \emph{Physical Review A}, 44, 3552-3558.
+#' 
+#' Hingee K, Baddeley A, Caccetta P, Nair G (2017). Computation of lacunarity from covariance of spatial binary maps. \emph{Journal of Agricultural, Biological and Environmental Statistics}. Submitted.
 #'
-#' @return An \code{fv} object containing estimates of GBL, box mass variance and box mass mean computed using the gliding box estimator described in [1]. 
+#' @return An \code{fv} object containing empirical GBL, variance of the area in the box and mean of the area in the box. 
 #'  The box widths (labelled \code{s}) are always odd multiples of the pixel width.
 #'  
 #' @param xiim An image of pixels valued either \code{0}, \code{1} or \code{NA}. \code{NA} valued pixels are assumed to be outside the observation window.
@@ -47,7 +53,7 @@ gblemp <- function(boxwidths, xiim, obswin = Frame(xiim)){
   if (class(obswin) == "owin"){obsvd <- intersect.owin(obsvd, obswin)}
 
   if (!("RcppRoll" %in% installed.packages()[, 1])){
-     stop("RcppRoll must be installed to calculate gliding box lacunarity")
+     stop("RcppRoll must be installed to calculate empirical gliding box lacunarity")
   }
 
 xiim[(complement.owin(intersect.owin(obswin, Frame(xiim)), frame = Frame(xiim)))] <- NA  #make sure the pixels outside obswin are set to NA so that reduce sampling happens naturally ##NOTE: this a time consuming operation that may never be needed
@@ -72,9 +78,9 @@ lacs <- mapply(gblemp_intern.rcpproll, sidep = 2 * rpix + 1, MoreArgs = list(xii
                     "Var(BoxMass)",
                     "Avg[BoxMass]"),
            desc = c("side lengths of boxes", 
-                    "Gliding box GBL estimate that only uses boxes entirely within the observation",
-                    "Variance of box mass - used in the gliding box estimate",
-                    "Average box mass - used in the gliding box estimate"
+                    "Empirical GBL",
+                    "Variance of foreground area in the randomly placed box in empirical GBL",
+                    "Mean foreground area in the randomly placed box in empirical GBL"
                     ),
            fname = "GBL"
            )
