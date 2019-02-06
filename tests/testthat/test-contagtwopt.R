@@ -3,7 +3,7 @@ context("Estimation - Contagion")
 
 test_that("Two Point (Covariance) Contagion is consitent with past computations", {
 xi <- heather$coarse
-covariance <- tradcovarest(xi,Frame(xi))
+covariance <- plugincvc(xi,Frame(xi))
 twoptcontagion <- contagtwopt(covariance)
 p <- coveragefrac(xi,Frame(xi))
 twoptcontagion <- contagtwopt(covariance,p)

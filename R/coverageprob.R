@@ -4,8 +4,7 @@
 #' @export coveragefrac coverageprob cp
 #' 
 #' @description 
-#' Estimates the coverage probability of a stationary RACS from a binary map using the traditional estimator,
-#'  which is the proportion of the observation window that is foreground.
+#' Computes the proportion of the observation window that is foreground, which is the usual estimate for the coverage probability of a stationary RACS from a binary map.
 #' 
 #' @references [1] Chiu, S.N., Stoyan, D., Kendall, W.S. and Mecke, J. (2013) Stochastic Geometry and Its Applications, 3rd ed. Chichester, United Kingdom: John Wiley & Sons.
  

@@ -1,7 +1,7 @@
 #' @title Gliding box lacunarity estimation using all estimators
 #' @export gbl gbl.cvchat
 #' @description Estimates gliding box lacunarity (GBL) using all estimators described in (Hingee et al., 2017) from binary maps for square boxes.
-#' It calls the functions \code{gblc}, \code{gblg}, \code{gblcc} and \code{gbltrad}.
+#' It calls the functions \code{\link{gblc}}, \code{\link{gblg}}, \code{\link{gblcc}} and \code{\link{gblemp}}.
 
 #' @param xi An observation of a RACS of interest as a full binary map (in \code{im} format) or as the foreground set (in \code{owin} format).
 #' In the latter case the observation window, \code{obswin}, must be supplied.
@@ -14,14 +14,14 @@
 #' @param setcov_boundarythresh Any vector \eqn{v} such that set covariance of the observation window is smaller than this threshold
 #' is given a covariance estimate (and other similar estimate) of NA to avoid instabilities caused by dividing by very small areas.
 #' If NULL is supplied (default) then 1E-6 is used.
-#' @param phat Traditional estimate of coverage probability.
-#' @param cvchat Traditional estimate of covariance (often from \code{tradcovarest}).
-#' @param cpp1 Picka's estimate of coverage probability (often from \code{cppicka}).
+#' @param phat  The fraction foreground area in the observation window, which is the usual estimator of coverage probability.
+#' @param cvchat The plug-in moment covariance estimate (often from \code{\link{plugincvc}}).
+#' @param cpp1 Picka's estimate of coverage probability for subsets of the observation window. See \code{\link{cppicka}}.
 
 #' @return An \code{fv} object.
 
 #' @details
-#' The function is not able to estimate GBL for non-square boxes as the gliding box estimator is included.
+#' As empirical GBL is one of the GBL estimators available through this function, non-square boxes are not allowed.
 #' To estimate GBL for non-square boxes use \code{gblcc} or \code{gblg} directly.
 #' 
 #' If \code{xi} is in \code{owin} format then \code{obswin} and \code{xi} are converted
@@ -30,7 +30,7 @@
 #' The estimators available are
 #' \itemize{
 #' \item{\code{"GBLc"}} The unmodified (unbalanced) covariance estimator provided by \code{\link{gblc}}
-#' \item{\code{"GBLgb"}} The Gliding-Box estimator of Allain and Cloitre (1991). Calls \code{\link{gbltrad}}
+#' \item{\code{"GBLemp"}} Empirical gliding box lacunarity (Allain and Cloitre, 1991). Calls \code{\link{gblemp}}
 #' \item{\code{"GBLg.mattfeldt"}} See help for \code{\link{gblg}}
 #' \item{\code{"GBLg.pickaint"}} See help for \code{\link{gblg}}
 #' \item{\code{"GBLg.pickaH"}} See help for \code{\link{gblg}}
@@ -59,21 +59,21 @@
 gbl <- function(xi, boxwidths,
                            estimators = c("GBLg.mattfeldt", "GBLg.pickaint", "GBLg.pickaH",
                                           "GBLcc.mattfeldt", "GBLcc.pickaint",
-                                          "GBLc", "GBLgb"),
+                                          "GBLc", "GBLemp"),
                 obswin = NULL,
                 includenormed = FALSE,
                 setcov_boundarythresh = 1E-6){
   if ("all" %in% estimators){
     estimators = c("GBLg.mattfeldt", "GBLg.pickaint", "GBLg.pickaH",
      "GBLcc.mattfeldt", "GBLcc.pickaint", "GBLcc.pickaH",
-     "GBLc", "GBLgb")
+     "GBLc", "GBLemp")
   }
   gblgestimaterequests <- estimators %in% GBLgestimatornames
   gblccestimaterequests <- estimators %in% GBLccestimatornames
   
   gbl.ests <- list()
   cpp1 <- cvchat <- NULL
-  gblcovarbased <- gbltrad.est <- NULL
+  gblcovarbased <- gblemp.est <- NULL
   
   #if an owin is passed convert to an im object 
   if (is.owin(xi)) {
@@ -85,7 +85,7 @@ gbl <- function(xi, boxwidths,
   
   phat <- coverageprob(xi)
   if(sum(gblgestimaterequests) + sum(gblccestimaterequests) + ("GBLc" %in% estimators) > 0){
-    cvchat <- tradcovarest(xi, setcov_boundarythresh = setcov_boundarythresh)
+    cvchat <- plugincvc(xi, setcov_boundarythresh = setcov_boundarythresh)
   }
   if (sum(gblgestimaterequests) + sum(gblccestimaterequests) > 0){
     cpp1 <- cppicka(xi, setcov_boundarythresh = setcov_boundarythresh)
@@ -96,14 +96,14 @@ gbl <- function(xi, boxwidths,
     gbl.ests <- c(gbl.ests, gblcovarbased)
   }
   
-  #the GBLgb estimate
-  if ("GBLgb" %in% estimators){
-    gbltrad.est <- gbltrad(boxwidths = boxwidths, xiim = xi)
-    if (sum(!vapply(gbltrad.est[,fvnames(gbltrad.est), drop = TRUE], is.na, FUN.VALUE = TRUE)) < 2){
-      warning("gbltrad() returns estimates for 1 or fewer of the provided box widths. Results from gbltrad() will be ignored from the final results.")
-      gbltrad.est <- NULL
+  #the GBLemp estimate
+  if ("GBLemp" %in% estimators){
+    gblemp.est <- gblemp(boxwidths = boxwidths, xiim = xi)
+    if (sum(!vapply(gblemp.est[,fvnames(gblemp.est), drop = TRUE], is.na, FUN.VALUE = TRUE)) < 2){
+      warning("gblemp() returns estimates for 1 or fewer of the provided box widths. Results from gblemp() will be ignored from the final results.")
+      gblemp.est <- NULL
     }
-    gbl.ests <- c(gbl.ests, list(gbltrad = gbltrad.est))
+    gbl.ests <- c(gbl.ests, list(gblemp = gblemp.est))
   }
   
   gbl.ests <- gbl.ests[!vapply(gbl.ests, is.null, FUN.VALUE = FALSE)]
@@ -129,8 +129,8 @@ gbl <- function(xi, boxwidths,
   return(allfvs)
 }
 
-#' @describeIn gbl Computes covariance-based estimator of GBL from the traditional estimate of covariance,
-#'  Picka's reduced window coverage probability estimates and the traditional coverage probability estimate.
+#' @describeIn gbl Computes covariance-based estimator of GBL from the plug-in moment estimate of covariance,
+#'  Picka's reduced window coverage probability estimates (see \code{\link{cppicka}}) and the usual coverage probability estimate, \code{phat}.
 gbl.cvchat <- function(boxwidths,
                       estimators = c("GBLg.mattfeldt", "GBLg.pickaint", "GBLg.pickaH",
                                      "GBLcc.mattfeldt", "GBLcc.pickaint",
@@ -145,7 +145,7 @@ gbl.cvchat <- function(boxwidths,
   }
   gblgestimaterequests <- estimators %in% GBLgestimatornames
   gblccestimaterequests <- estimators %in% GBLccestimatornames
-  gblgs <- gblccs <- gblc.est <- gbltrad.est <- NULL
+  gblgs <- gblccs <- gblc.est <- gblemp.est <- NULL
   
   if (sum(gblgestimaterequests) + sum(gblccestimaterequests) > 0){
     stopifnot(!is.null(cpp1), !is.null(cvchat), !is.null(phat))
@@ -169,5 +169,5 @@ gbl.cvchat <- function(boxwidths,
 
 
 
-GBLgestimatornames <- c("GBLg.trad", "GBLg.mattfeldt", "GBLg.pickaint", "GBLg.pickaH")
-GBLccestimatornames <- c("GBLcc.trad", "GBLcc.mattfeldt", "GBLcc.pickaint", "GBLcc.pickaH")
+GBLgestimatornames <- c("GBLg.plugin", "GBLg.mattfeldt", "GBLg.pickaint", "GBLg.pickaH")
+GBLccestimatornames <- c("GBLcc.plugin", "GBLcc.mattfeldt", "GBLcc.pickaint", "GBLcc.pickaH")

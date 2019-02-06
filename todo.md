@@ -1,45 +1,30 @@
-TO DO BEFORE PUBLISHING:
-___________________________
-Really required:
-D- Maintainer field
+# TO DO BEFORE PUBLISHING:
 
-D- version number with non-leading zeros
+----
 
-- examples took a long time to process. Some 32 seconds!
-gbl              32.728  0.056  32.821
-gblcc            14.589  0.052  14.660
-gblg              9.841  0.024   9.876
-gblc              9.441  0.016   9.468
-secondorderprops  5.889  0.000   5.895
-rblnd             5.504  0.000   5.510
+## Really required:
 
 - build using R CMD build --compact-vignettes=gs+qpdf  ...
 
-D- A citation command that links to my paper or thesis ACT 1h
-
-D- Fill in references. ACT 1h
-
-D- p13 error: see link{}. ACT 10min
-
-D- fix overfull lines (about 10 of them). ACT 30min
-
-D- spell check using devtools
-
---STOP for paper submission--
-
-- glbtrad description to: empirical Gliding Box, proposed by A and C [1]. And else where ACT 1h
-
-- Change function names to reflect names `empirical GBL' or gliding box estimator, and plugin moment estimators  ACT 2h
-
-- consistent naming ACT 1h
-
 - More Picka references ACT: 30min
 
-- tradcovarest require obswin. ACT 1h
+- watch use of GBL when it should be gliding box lacunarity
+
+- update lacunarity paper reference (e.g. it is published..)
+
+- version number with non-leading zeros
+
+- check vignettes and paper source code still run smoothly
 
 Total ACT: 8h 
-___________________________
-Great for more polished publication:
+
+----
+
+## Great for more polished publication:
+- Clean up mix ups between estimates and estimator in language.
+
+- Referencing in coverageprob.R is numeric, whilst most of other pages are using author-year
+
 - In pixel contag, what is the `double count' method as described in the FRAGSTATS manual on adjacency matrix, and is it different to what is in this package? 
 
 - better indexing of topics. ACT 1h
@@ -60,6 +45,9 @@ Great for more polished publication:
 
 - polish vignette? ACT 2h (to first smooth draft)
 
+- caps incorrect thing in ccvc_byconv
+
+
 
 Total ACT: 37h
 
@@ -76,4 +64,22 @@ D- syphon off helper functions never for release ACT 1.5h
 D- scdcontag() --> contagdiscstate()? ACT 0.5h
 
 D- setcov and imcov maintain units of input image - pass on to spatstat ACT 1h
+
+D- Change function names to reflect names `empirical GBL' or gliding box estimator, and plugin moment estimators  ACT 2h
+
+D- tradcovarest --> plugincvc
+
+D- 'trad' method name changed to 'plugin'
+
+D- glbtrad description to: empirical Gliding Box, proposed by A and C [1]. And else where ACT 1h
+
+D- tradcovarest require obswin. ACT 1h
+
+D- 'mvlgb or GBLgb to gblemp'
+
+D- second order props has a notyetimplemented argument
+
+D- cross references (links) rather than just code{}
+
+D- change function file names to match function names. (e.g. MVL and tradcovarest)
 

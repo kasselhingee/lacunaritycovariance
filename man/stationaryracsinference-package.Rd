@@ -24,21 +24,21 @@ A short example of estimating RACS properties can be found in the vignette \code
 
 The key functions within this package for estimating properties of RACS are:
 \itemize{
-\item{\code{coverageprob}}{estimates the coverage probability of a stationary RACS}
-\item{\code{racscovariance}}{ estimates the covariance of a stationary RACS}
-\item{\code{gbl}} {estimates the GBL of a stationary RACS}
-\item{\code{cencovariance}} {estimates the centred covariance of a stationary RACS}
-\item{\code{paircorr}} {estimates the pair-correlation of a stationary RACS}
-\item{\code{secondorderprops}} {estimates GBL, covariance and other second order properties of stationary RACS}
-\item{\code{contagdiscstate}} {estimates the disc-state contagion of a stationary RACS}
+\item{\code{\link{coverageprob}}}{ estimates the coverage probability of a stationary RACS}
+\item{\code{\link{racscovariance}}}{ estimates the covariance of a stationary RACS}
+\item{\code{\link{gbl}}} { estimates the GBL of a stationary RACS}
+\item{\code{\link{cencovariance}}} { estimates the centred covariance of a stationary RACS}
+\item{\code{\link{paircorr}}} { estimates the pair-correlation of a stationary RACS}
+\item{\code{\link{secondorderprops}}} { estimates GBL, covariance and other second order properties of stationary RACS}
+\item{\code{\link{contagdiscstate}}} { estimates the disc-state contagion of a stationary RACS}
 }
 
 Key function for simulating RACS are:
 \itemize{
-\item{\code{rbdd}}{simulates a Boolean model with grains that are discs with fixed radius (deterministic discs).}
-\item{\code{rbdr}}{simulates a Boolean model with grains that are rectangles of fixed size and orientation.}
-\item{\code{rbpto}}{simulates a Boolean model with grains that of fixed shape and random scale distributed according to a truncated Pareto distribution.}
-\item{\code{placegrainsfromlib}}{randomly places grains on a set of points (used to simulate Boolean models and other germ-grain models).}
+\item{\code{\link{rbdd}}}{ simulates a Boolean model with grains that are discs with fixed radius (deterministic discs).}
+\item{\code{\link{rbdr}}}{ simulates a Boolean model with grains that are rectangles of fixed size and orientation.}
+\item{\code{\link{rbpto}}}{ simulates a Boolean model with grains that of fixed shape and random scale distributed according to a truncated Pareto distribution.}
+\item{\code{\link{placegrainsfromlib}}}{ randomly places grains on a set of points (used to simulate Boolean models and other germ-grain models).}
 }
 
 }

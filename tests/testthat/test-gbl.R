@@ -1,7 +1,7 @@
 context("Estimation - GBL")
 
 test_that("gblc() warns of unexpected inputs", {
-  covar <- tradcovarest(heather$coarse)
+  covar <- plugincvc(as.im(heather$coarse, na.replace = FALSE))
   p <- area(heather$coarse) / area(Frame(heather$coarse))
   sidelengths <- 2.2
   img <- as.im(heather$coarse, eps = heather$coarse$xstep, na.replace = 0)
@@ -15,34 +15,34 @@ test_that("gblc() warns of unexpected inputs", {
                  regexp = "Either covariance and p must be supplied or xiim supplied.")
 })
 
-test_that("gbltrad() warns of unexpected inputs", {
+test_that("gblemp() warns of unexpected inputs", {
   sidel <- c(2.2)
   img <- as.im(heather$coarse,eps=c(heather$coarse$xstep, 2 * heather$coarse$xstep), na.replace = 0)
-  expect_error(gbltrad(sidel, img),
+  expect_error(gblemp(sidel, img),
                  regexp = "image pixels must be square")
 
-  expect_error(gbltrad(sidel, 13),
+  expect_error(gblemp(sidel, 13),
                  regexp = "input xiim must be of class im")
 
 })
 
 test_that("GBLc estimates are historically consistent", {
-  covar <- tradcovarest(heather$coarse)
+  covar <- plugincvc(as.im(heather$coarse, na.replace = FALSE))
   p <- area(heather$coarse) / area(Frame(heather$coarse))
   sidelengths <- 2.2
   lac <- gblc(sidelengths, covar, p)
   expect_equal(lac$GBL, 1 + 0.05855459, tolerance = 1E-6)
 })
 
-test_that("GBLgb estimates are historically consistent", {
+test_that("GBLemp estimates are historically consistent", {
   img <- as.im(heather$coarse, eps = heather$coarse$xstep, na.replace = 0)
   sidel <- c(2.2)
-  lac <- gbltrad(sidel, img)
+  lac <- gblemp(sidel, img)
   expect_equal(lac$GBL, 1 + 0.03253836)
 })
 
 test_that("GBLc estimates are consistent for input side lengths or owin squares", {
-  covar <- tradcovarest(heather$coarse)
+  covar <- plugincvc(as.im(heather$coarse, na.replace = FALSE))
   p <- area(heather$coarse) / area(Frame(heather$coarse))
   sidelengths <- 2.2
   lac <- gblc(sidelengths, covar, p)
@@ -72,7 +72,7 @@ test_that("gblg estimates operate on lists of owin objects", {
 
 test_that("GBLc estimates are the same from estimated covariance or original image", {
   img <- as.im(heather$coarse, eps = heather$coarse$xstep, na.replace = 0)
-  covar <- tradcovarest(img)
+  covar <- plugincvc(img)
   p <- sum(img) / sum(is.finite(img$v))
   sidelengths <- seq(1, 5, by = heather$coarse$xstep*2)
   gblc.covar <- gblc(sidelengths, covar, p)
@@ -90,17 +90,17 @@ test_that("integration when covar is constant gives squared area (i.e. gbl = 1)"
   expect_equal(gblc(lapply(c(0.5, 1, 2, 3), disc), covar, p)$GBL, rep(1, 4), tolerance = 0.01)
 })
 
-test_that("GBLc and GBLgb produce similar results for large square observation windows", {
+test_that("GBLc and GBLemp produce similar results for large square observation windows", {
   #xiimg and covarest.frim is pregenerated in helper-calccovar
   sidelengths <- seq(xiimg$xstep * 3, 15, by = xiimg$xstep * 2) #odd pixel widths!
   lac.gblcc.picakHest <- gblc(sidelengths, covar = covarest.frim, p = xi.p)
-  lac.gbltradest <- gbltrad(sidelengths, xiimg)
+  lac.gblempest <- gblemp(sidelengths, xiimg)
 
-  expect_equal(lac.gblcc.picakHest$s, lac.gbltradest$s)
-  expect_equal(lac.gblcc.picakHest$GBL, lac.gbltradest$GBL, tolerance = 5E-2)
+  expect_equal(lac.gblcc.picakHest$s, lac.gblempest$s)
+  expect_equal(lac.gblcc.picakHest$GBL, lac.gblempest$GBL, tolerance = 5E-2)
 })
 
-test_that("gbl() fails nicely when GBLgb can't estimate anything", {
+test_that("gbl() fails nicely when GBLemp can't estimate anything", {
   xiim <- as.im(heather$coarse, value = TRUE, na.replace = FALSE)
   #fake lots of missing data
   xiim[shift.owin(reflect(heather$coarse), vec = c(10, 20))] <- NA

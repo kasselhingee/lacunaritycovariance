@@ -66,7 +66,7 @@ cvchats_convolves <- function(xixi, winwin, xiwin = NULL, phat = NULL, estimator
   winwin <- harmonised$winwin
   xiwin <- harmonised$xiwin
   fcns <- list(
-         trad = cvchat_trad,
+         plugin = cvchat_plugin,
          mattfeldt = cvchat_mattfeldt_add,
          pickaint = cvchat_picka_int,
          pickaH = cvchat_picka_H
@@ -87,7 +87,7 @@ cvchats_convolves <- function(xixi, winwin, xiwin = NULL, phat = NULL, estimator
 
 
 
-cvchat_trad <- function(xixi, winwin, xiwin = NULL, phat = NULL){
+cvchat_plugin <- function(xixi, winwin, xiwin = NULL, phat = NULL){
   return(xixi / winwin)
 }
 

@@ -1,7 +1,7 @@
-#' @title Traditional covariance estimator
-#' @export tradcovarest
+#' @title Plug-in moment covariance estimator
+#' @export plugincvc
 #' @description 
-#' This function computes the traditional covariance estimate of a stationary RACS from a binary map.
+#' This function computes the plug-in moment covariance estimate of a stationary RACS from a binary map.
 #' For a stationary RACS, \eqn{\Xi}, the covariance 
 #' for a vector \eqn{v} is the probability of two points separated by a vector \eqn{v} are covered by \eqn{\Xi}
 #' \deqn{C(v) = P(\{x,x+v\}\subseteq \Xi).}{C(v) = P({x, x+ v} in Xi).}
@@ -22,18 +22,18 @@
 
 #' @examples
 #' xi <- heather$coarse
-#' covar <- tradcovarest(xi)
-#' covar <- tradcovarest(as.im(heather$coarse, na.replace = 0))
+#' covar <- plugincvc(xi)
+#' covar <- plugincvc(as.im(heather$coarse, na.replace = 0))
 
 #' @keywords spatial nonparametric
 
 #' @details 
-#' The traditional covariance estimator is (Serra, 1982)
+#' The plug-in moment covariance estimator is (Serra, 1982)
 #' \deqn{ \hat{C}(v) = \frac{\gamma_{W\cap X}(v)}{\gamma_W(v)}}{ C(v) = gammaWX(v) / gammaW(v) }
 #' where \eqn{\gamma_{W}(v)}{gammaW(v)} is the set covariance of the observation window \eqn{W} 
 #' and \eqn{\gamma_{W\cap X}(v)}{gammaWX(v)} is the set covariance of the foreground within \eqn{W}.
 
-#' \code{tradcovarest} uses Fourier transforms to calculate the set covariance (using the \code{\link[spatstat]{setcov}} of the foreground and observation window.
+#' \code{plugincvc} uses Fourier transforms to calculate the set covariance (using the \code{\link[spatstat]{setcov}} of the foreground and observation window.
 #' Vectors with small \eqn{\gamma_W(v)}{ gammaW(v) } are eliminated using \code{setcov_boundarythresh} 
 #' as division by small values is numerically unstable.
 #' 
@@ -42,18 +42,10 @@
 #' @references 
 #' Serra, J.P. (1982) \emph{Image Analysis and Mathematical Morphology}. London; New York: Academic Press.
 
-tradcovarest <- function(xi,
+plugincvc <- function(xi,
         obswin = NULL,
         setcov_boundarythresh = NULL) {
-  if (is.owin(xi)) {
-    if (!is.null(obswin)) {xi <- intersect.owin(xi, obswin)}
-    else {obswin <- Frame(xi)}
-    Frame(xi) <- Frame(obswin)
-    setcovxi <- setcov(xi)
-    unitname(setcovxi) <- unitname(xi)
-    setcovwindow <- setcov(obswin, eps = c(setcovxi$xstep, setcovxi$ystep))
-    unitname(setcovwindow) <- unitname(obswin)
-  } else if (is.im(xi)) {
+  if (is.im(xi)) {
     if (!is.null(obswin)) {
         winim <- as.im(obswin, xy = xi)
         xi <- eval.im(xi * winim)
@@ -64,11 +56,15 @@ tradcovarest <- function(xi,
     obswin <- as.owin(xi) #only the non-NA pixels will be in the window
     xi[is.na(as.matrix(xi))] <- 0 #turn all NA's in xi to 0s
     setcovxi <- imcov(xi)
-    unitname(setcovxi) <- unitname(xi)
     setcovwindow <- setcov(obswin, eps = c(setcovxi$xstep, setcovxi$ystep))
-    unitname(setcovwindow) <- unitname(obswin)
-  }
-  else {
+  } else if (is.owin(xi)) {
+    stopifnot(is.owin(obswin))
+    xi <- intersect.owin(xi, obswin)
+    Frame(xi) <- Frame(obswin)  #I think rebound.owin, used in Frame<-.owin removes the unitname
+    unitname(xi) <- unitname(obswin) #this line fixes the issue of lost unitname until spatstat is updated
+    setcovxi <- setcov(xi)
+    setcovwindow <- setcov(obswin, eps = c(setcovxi$xstep, setcovxi$ystep))
+  } else {
     stop("Input xi is not an image or owin object")
   }
   #make NA any values that are too small and lead to division to close to 0

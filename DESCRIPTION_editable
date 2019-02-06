@@ -1,7 +1,7 @@
 Type: Package
 Package: stationaryracsinference
 Title: Gliding Box Lacunarity and Other Estimators for Random Closed Sets in 2D
-Version: 0.4-01
+Version: 0.5-01
 Date: 2019-01-16
 Author: Kassel Liam Hingee
 Maintainer: Kassel Liam Hingee <kassel.hingee@research.uwa.edu.au>
@@ -10,7 +10,7 @@ Description:
     Here a binary maps are usually taken to be a rasterised image with each pixel labelled TRUE, FALSE or NA, with NA representing unobserved pixels.
     A demo for extracting a such a binary map from geospatial data formats (e.g. presence-absence maps or two-class landcover maps) is provided.
     The binary map may also be represented in non-rasterised form using a polygonal set as the foreground.
-    The gliding box estimator of gliding box lacunarity with improved estimators of gliding box lacunarity are included.
+    Empirical gliding box lacunarity and improved, covariance-based, estimators of gliding box lacunarity are included.
     Also included are anisotropic estimators of covariance, centred covariance and pair-correlation based on estimators proposed by Picka.
     Additional estimators for properties of random closed sets are available in the spatstat package.
     The package is based on research conducted during the author's PhD studies.

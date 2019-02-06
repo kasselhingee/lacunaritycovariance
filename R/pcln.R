@@ -2,7 +2,7 @@
 #' @export paircorr  paircorr.cvchat
 #' @description 
 #' Estimates the pair-correlation function of a stationary RACS. 
-#' The traditional pair-correlation estimator and three 'balanced' estimators suggested by Picka (2000)
+#' The plug-in moment pair-correlation estimator and three `balanced' estimators suggested by Picka (2000)
 #' are available.
 #' @author{Kassel Liam Hingee}
 
@@ -13,18 +13,18 @@
 #'   \code{owin} object that specifies the observation window.
 #' @param setcov_boundarythresh Any vector \eqn{v} such that set covariance of the observation window
 #'  is smaller than this threshold is given a covariance of NA to avoid instabilities caused by dividing by very small areas, 
-#' @param phat The traditional estimate of coverage probability,
+#' @param phat The plug-in moment estimate of coverage probability,
 #'  which is the observed foreground area in \code{xi} divided by the total area of the observation window.
 #'  See \code{\link{coverageprob}} for more information.
-#' @param cvchat The traditional estimate of covariance in \code{im} format. 
-#' Typically created with \code{\link{tradcovarest}}.
+#' @param cvchat The plug-in moment estimate of covariance in \code{im} format. 
+#' Typically created with \code{\link{plugincvc}}.
 #' @param cpp1 Picka's reduced window estimate of coverage probability in \code{im} format - used in improved (balanced) covariance estimators.
 #' Can be generated using \code{\link{cppicka}}.
 #' @param estimators A list of strings specifying estimators to use. 
 #' See details.
 #' \code{estimators = "all"} will select all available estimators.  
 #' @param drop If TRUE and one estimator selected then the returned value will be a single \code{im} object and not a list of \code{im} object.
-#'  estimators = "all" will select all inbuilt estimators. See details. 
+#'  \code{estimators = "all"} will select all inbuilt estimators. See details. 
 
 #' @return If \code{drop = TRUE} and a single estimator requested then a
 #'   \code{im} object containing the pair-correlation estimate. Otherwise a
@@ -41,8 +41,8 @@
 #'   The estimators available are (see (Hingee, 2019) for
 #'   more information): 
 #'   \itemize{ 
-#'   \item{\code{trad}} the traditional pair-correlation estimator which is \eqn{Chat(v) / (phat^2)}, where \eqn{Chat} and \eqn{phat} are 
-#' the traditional estimates of coverage probability and covariance respectively. 
+#'   \item{\code{plugin}} the plug-in moment pair-correlation estimator which is \eqn{Chat(v) / (phat^2)}, where \eqn{Chat} and \eqn{phat} are 
+#' the plug-in moment estimate of covariance and the usual estimate of coverage probability, respectively.
 #'   \item{\code{mattfeldt}} an `intrinsically' balanced pair-correlation estimator suggested by Picka (1997).
 #'   A similar isotropic pair-correlation estimator was later studied by Mattfeldt and Stoyan (2000).
 #'   \item{\code{pickaint}} Picka's 'intrinsically' balanced pair-correlation estimator (Picka, 2000). 
@@ -65,12 +65,12 @@
 #' #estimate directly from a binary map
 #' pclns_direst <- paircorr(as.im(xi, na.replace = 0), estimators = "all")
 #' 
-#' #estimate using traditional covariance estimates, traditional coverage
+#' #estimate using plug-in moment covariance estimates, coverage
 #' #probability estimate and Picka's reduced window coverage probability
 #' #estimates.
 #' obswin <- Frame(xi)
 #' phat <- coverageprob(xi, obswin = Frame(xi))
-#' cvchat <- tradcovarest(xi)
+#' cvchat <- plugincvc(xi)
 #' cpp1 <- cppicka(xi, obswin = Frame(heather$coarse))
 #' pclns_frcvc <- paircorr.cvchat(cvchat, cpp1, phat, estimators = "all")
 
@@ -79,7 +79,7 @@ paircorr <- function(xi, obswin = NULL,
                   setcov_boundarythresh = NULL,
                   estimators = "all",
                   drop = FALSE){
-  cvchat <- tradcovarest(xi, obswin, setcov_boundarythresh = setcov_boundarythresh)
+  cvchat <- plugincvc(xi, obswin, setcov_boundarythresh = setcov_boundarythresh)
   cpp1 <- cppicka(xi, obswin, setcov_boundarythresh = setcov_boundarythresh)
   phat <- coverageprob(xi, obswin)
   
@@ -89,15 +89,15 @@ paircorr <- function(xi, obswin = NULL,
 }
 
 #' @describeIn paircorr Generates pair-correlation estimates from
-#'   a traditional estimate of covariance, Picka's reduced window estimate of coverage probability,
-#'   and the traditional estimate of coverage probability.
+#'   the plug-in moment estimates of covariance, Picka's reduced window estimate of coverage probability,
+#'   and the coverage fraction (which is an unbiased estimate of the coverage probability).
 #'   If these estimates already exist then \code{paircorr.cvchat} can save significant computation time.
 paircorr.cvchat <- function(cvchat, cpp1 = NULL, phat = NULL, estimators = "all", drop = FALSE){
   harmonised <- harmonise.im(cvchat = cvchat, cpp1 = cpp1)
   cvchat <- harmonised$cvchat
   cpp1 <- harmonised$cpp1
   fcns <- list(
-         trad = pcln_trad,
+         plugin = pcln_plugin,
          symm = pcln_symm,
          mattfeldt = pcln_mattfeldt,
          pickaint = pcln_picka_intr,
@@ -118,7 +118,7 @@ paircorr.cvchat <- function(cvchat, cpp1 = NULL, phat = NULL, estimators = "all"
 }
 
 
-pcln_trad <- function(cvchat, cpp1 = NULL, phat = NULL){
+pcln_plugin <- function(cvchat, cpp1 = NULL, phat = NULL){
   return(cvchat / (phat^2)) 
 }
 

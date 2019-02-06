@@ -1,17 +1,17 @@
-#' @title Gliding box lacunarity estimates from traditional covariance estimator
+#' @title Gliding box lacunarity estimator using plug-in moment covariance estimator
 #' @export gblc
 #'
 #' @description 
 #' Can be used to estimate the gliding box lacunarity (GBL) of a stationary RACS from a binary map
-#'  using the traditional covariance estimate (Hingee et al., 2017).
-#'  It can also calculate the GBL of a RACS from a provided covariance and coverage probability. 
+#'  using the plug-in moment covariance covariance estimator (Hingee et al., 2017).
+#'  It can also calculate the GBL of a RACS from a given covariance function and coverage probability. 
 
 #' @references
 #' Hingee K, Baddeley A, Caccetta P, Nair G (2017). Computation of lacunarity from covariance of spatial binary maps. \emph{Journal of Agricultural, Biological and Environmental Statistics}. Submitted.
 
 #' @details
 #' Computes a numerical approximation of 
-#' \deqn{\int \gamma_B C(v) dv / (p^2 |B|^2).}{\int gammaB C(v) dv / (p^2 |B|^2),}
+#' \deqn{\int \gamma_B(v) C(v) dv / (p^2 |B|^2).}{\int gammaB(v) C(v) dv / (p^2 |B|^2),}
 #' where \eqn{B} is a given set (often called a box),
 #' \eqn{\gamma_B}{gammaB} is the set covariance of \eqn{B},
 #' \eqn{|B|} is the area of \eqn{B},
@@ -21,8 +21,8 @@
 #' covariance and coverage probability of the model.
 #' 
 #' If a binary map is supplied then \eqn{p} and \eqn{C(v)} are estimated using
-#'  the traditional coverage probability and covariance estimators respectively 
-#'  (see \code{\link{coverageprob}} and \code{\link{tradcovarest}}).
+#'  the usual coverage probability estimator and the plug-in moment covariance estimator, respectively 
+#'  (see \code{\link{coverageprob}} and \code{\link{plugincvc}}).
 
 #' @param boxes Either a list of sidelengths for square boxes or a list of \code{owin} objects of any shape.
 #' @param covariance  A \code{im} object containing the covariance function
@@ -40,7 +40,7 @@
 
 #' @examples
 #' xi <- heather$coarse
-#' covar <- tradcovarest(xi)
+#' covar <- plugincvc(xi)
 #' p <- area(xi) / area(Frame(xi))
 #' if(interactive()){
 #' sidelengths <- seq(0.3, 14, by = 0.2)
@@ -64,7 +64,7 @@ gblc <- function(boxes, covariance = NULL, p = NULL, xiim = NULL){
     p <- sum(xiim) / sum(is.finite(xiim$v))
     w <- as.owin(xiim) #w is observation window - only the non NA values end up in window
     xiim[is.na(xiim$v)] <- 0
-    covar <- tradcovarest(xiim, obswin = w)
+    covar <- plugincvc(xiim, obswin = w)
     lacv <- gblc.inputcovar(boxes, covar, p)
     unitname <- unitname(xiim)
   } else {

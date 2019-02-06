@@ -1,7 +1,7 @@
 #' @title Pixel Adjacency Contagion
 #' @export contagpixelgrid adjacency
 #' 
-#' @description Function for calculating the traditional contagion LPI from a binary map (O'Neill, 1988).
+#' @description Function for calculating the classic pixel-adjacency contagion LPI from a binary map (O'Neill, 1988).
 #' 
 ##' @param xi An observation of a RACS of interest as a full binary map (in \code{im} format) or as the foreground set (in \code{owin} format).
 #' In the latter case the observation window, \code{obswin}, must be supplied.
@@ -40,7 +40,7 @@
 #' contagion
 
 #' @section Warning: Will fail if map is either all foreground or all background.
-#' @describeIn contagpixelgrid Traditional contagion LPI of a binary map.
+#' @describeIn contagpixelgrid Pixel-adjacency contagion LPI of a binary map.
 contagpixelgrid <- function(xi, obswin, normalise=FALSE){
   if("im" %in% class(xi)){isbinarymap(xi, requiretrue = TRUE)
   }  else if (is.owin(xi) && is.null(obswin)){stop("obswin must be included if xi is an owin object.")}
