@@ -37,7 +37,7 @@ domain then the inner product can not be computed and the returned value is \cod
 }
 \examples{
 xi <- heather$coarse
-covar <- plugincvc(xi)
+covar <- plugincvc(xi, Frame(xi))
 B <- setcov(square(1))
 innerprod.im(covar, B, outsideB = 0)
 }

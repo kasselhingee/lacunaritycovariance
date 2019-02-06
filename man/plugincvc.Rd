@@ -37,7 +37,7 @@ as division by small values is numerically unstable.
 }
 \examples{
 xi <- heather$coarse
-covar <- plugincvc(xi)
+covar <- plugincvc(xi, Frame(xi))
 covar <- plugincvc(as.im(heather$coarse, na.replace = 0))
 }
 \references{

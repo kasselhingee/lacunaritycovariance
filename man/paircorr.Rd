@@ -85,7 +85,7 @@ pclns_direst <- paircorr(as.im(xi, na.replace = 0), estimators = "all")
 #estimates.
 obswin <- Frame(xi)
 phat <- coverageprob(xi, obswin = Frame(xi))
-cvchat <- plugincvc(xi)
+cvchat <- plugincvc(xi, obswin)
 cpp1 <- cppicka(xi, obswin = Frame(heather$coarse))
 pclns_frcvc <- paircorr.cvchat(cvchat, cpp1, phat, estimators = "all")
 }

@@ -15,7 +15,7 @@ You can also request to}
 
 \item{covarargs}{Arguments passed to \code{\link{racscovariance.cvchat}}. If NULL then covariance will not be returned.}
 
-\item{cencovarargs}{Arguments passed to \code{\link{cenconvariance.cvchat}}. If NULL then pair correlation will not be returned.}
+\item{cencovarargs}{Arguments passed to \code{\link{cencovariance.cvchat}}. If NULL then pair correlation will not be returned.}
 
 \item{paircorrargs}{Arguments passed to \code{\link{paircorr.cvchat}}. If NULL then pair correlation will not be returned.}
 
