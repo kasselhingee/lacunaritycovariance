@@ -1,7 +1,7 @@
 #' @title Gliding box lacunarity estimation using all estimators
 #' @export gbl gbl.cvchat
 #' @description Estimates gliding box lacunarity (GBL) using all estimators described in (Hingee et al., 2017) from binary maps for square boxes.
-#' It calls the functions \code{gblc}, \code{gblg}, \code{gblcc} and \code{gblemp}.
+#' It calls the functions \code{\link{gblc}}, \code{\link{gblg}}, \code{\link{gblcc}} and \code{\link{gblemp}}.
 
 #' @param xi An observation of a RACS of interest as a full binary map (in \code{im} format) or as the foreground set (in \code{owin} format).
 #' In the latter case the observation window, \code{obswin}, must be supplied.
@@ -15,7 +15,7 @@
 #' is given a covariance estimate (and other similar estimate) of NA to avoid instabilities caused by dividing by very small areas.
 #' If NULL is supplied (default) then 1E-6 is used.
 #' @param phat  The fraction foreground area in the observation window, which is the usual estimator of coverage probability.
-#' @param cvchat The plug-in moment covariance estimate (often from \code{plugincvc}).
+#' @param cvchat The plug-in moment covariance estimate (often from \code{\link{plugincvc}}).
 #' @param cpp1 Picka's estimate of coverage probability for subsets of the observation window. See \code{\link{cppicka}}.
 
 #' @return An \code{fv} object.

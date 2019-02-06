@@ -2,8 +2,8 @@
 #' @export cencovariance  cencovariance.cvchat
 #' @description 
 #' This function estimates the centred covariance of a stationary RACS. 
-#' Available estimators are the plug-in moment centred covariance estimator, two 'balanced' estimators suggested by Picka (2000),
-#'  and a third 'balanced' estimator inspired by one of Picka's pair-correlation estimators.
+#' Available estimators are the plug-in moment centred covariance estimator, two `balanced' estimators suggested by Picka (2000),
+#'  and a third `balanced' estimator inspired by one of Picka's pair-correlation estimators.
 #' @author{Kassel Liam Hingee}
 
 #' @param xi An observation of a RACS of interest as a full binary map (in \code{im} format) or as the foreground set (in \code{owin} format).
@@ -83,7 +83,7 @@ cencovariance <- function(xi, obswin = NULL,
 #' @describeIn cencovariance Generates centred covariances estimates from
 #'   a plug-in moment estimate of covariance, Picka's reduced window estimate of coverage probability,
 #'   and the plug-in moment estimate of coverage probability.
-#'   If these estimates already exist then \code{cencovariance.cvchat} can save significant computation time.
+#'   If these estimates already exist then \code{\link{cencovariance.cvchat}} can save significant computation time.
 cencovariance.cvchat <- function(cvchat, cpp1 = NULL, phat = NULL,
         setcov_boundarythresh = NULL,
         estimators = "all",

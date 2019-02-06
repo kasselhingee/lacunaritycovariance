@@ -2,7 +2,7 @@
 #' @export paircorr  paircorr.cvchat
 #' @description 
 #' Estimates the pair-correlation function of a stationary RACS. 
-#' The plug-in moment pair-correlation estimator and three 'balanced' estimators suggested by Picka (2000)
+#' The plug-in moment pair-correlation estimator and three `balanced' estimators suggested by Picka (2000)
 #' are available.
 #' @author{Kassel Liam Hingee}
 
@@ -24,7 +24,7 @@
 #' See details.
 #' \code{estimators = "all"} will select all available estimators.  
 #' @param drop If TRUE and one estimator selected then the returned value will be a single \code{im} object and not a list of \code{im} object.
-#'  estimators = "all" will select all inbuilt estimators. See details. 
+#'  \code{estimators = "all"} will select all inbuilt estimators. See details. 
 
 #' @return If \code{drop = TRUE} and a single estimator requested then a
 #'   \code{im} object containing the pair-correlation estimate. Otherwise a

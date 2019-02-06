@@ -11,7 +11,7 @@
 
 #' @details
 #' Computes a numerical approximation of 
-#' \deqn{\int \gamma_B C(v) dv / (p^2 |B|^2).}{\int gammaB C(v) dv / (p^2 |B|^2),}
+#' \deqn{\int \gamma_B(v) C(v) dv / (p^2 |B|^2).}{\int gammaB(v) C(v) dv / (p^2 |B|^2),}
 #' where \eqn{B} is a given set (often called a box),
 #' \eqn{\gamma_B}{gammaB} is the set covariance of \eqn{B},
 #' \eqn{|B|} is the area of \eqn{B},

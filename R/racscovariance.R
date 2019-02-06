@@ -19,7 +19,7 @@
 #'  is smaller than this threshold is given a covariance of NA to avoid instabilities caused by dividing by very small areas, 
 #' @param phat The classical estimate of coverage probability,
 #'  which is the observed area in \code{xi} divided by the total area of the observation window.
-#'  See \code{coverageprob} for more information.
+#'  See \code{\link{coverageprob}} for more information.
 #' @param cvchat The plug-in moment estimate of covariance in \code{im} format. 
 #' Typically created with \code{\link{plugincvc}}.
 #' @param cpp1 Picka's reduced window estimate of coverage probability in \code{im} format - used in improved (balanced) covariance estimators.
@@ -59,8 +59,8 @@
 #' suffers (Hingee, 2019).
 #' These estimators are called \code{pickaint} and \code{pickaH} in this package.
 #' 
-#' Another improved estimator inspired by an `intrinsic modification' briefly mentioned by Picka (1997)
-#' for pair-correlation estimators`is also available.
+#' Another improved estimator, inspired by an `intrinsic modification' briefly mentioned by Picka (1997)
+#' for pair-correlation estimators, is also available.
 #' We have called this estimator \code{mattfeldt} as a similar isotropic estimator for pair-correlation
 #' was studied by Mattfeldt and Stoyan (2000).
 #' 
