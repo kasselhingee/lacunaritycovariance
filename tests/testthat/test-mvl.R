@@ -1,7 +1,7 @@
 context("Estimation - GBL")
 
 test_that("gblc() warns of unexpected inputs", {
-  covar <- plugincvc(heather$coarse)
+  covar <- plugincvc(as.im(heather$coarse, na.replace = FALSE))
   p <- area(heather$coarse) / area(Frame(heather$coarse))
   sidelengths <- 2.2
   img <- as.im(heather$coarse, eps = heather$coarse$xstep, na.replace = 0)
@@ -27,7 +27,7 @@ test_that("gblemp() warns of unexpected inputs", {
 })
 
 test_that("GBLc estimates are historically consistent", {
-  covar <- plugincvc(heather$coarse)
+  covar <- plugincvc(as.im(heather$coarse, na.replace = FALSE))
   p <- area(heather$coarse) / area(Frame(heather$coarse))
   sidelengths <- 2.2
   lac <- gblc(sidelengths, covar, p)
@@ -42,7 +42,7 @@ test_that("GBLemp estimates are historically consistent", {
 })
 
 test_that("GBLc estimates are consistent for input side lengths or owin squares", {
-  covar <- plugincvc(heather$coarse)
+  covar <- plugincvc(as.im(heather$coarse, na.replace = FALSE))
   p <- area(heather$coarse) / area(Frame(heather$coarse))
   sidelengths <- 2.2
   lac <- gblc(sidelengths, covar, p)
