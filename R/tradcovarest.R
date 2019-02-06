@@ -45,15 +45,7 @@
 plugincvc <- function(xi,
         obswin = NULL,
         setcov_boundarythresh = NULL) {
-  if (is.owin(xi)) {
-    if (!is.null(obswin)) {xi <- intersect.owin(xi, obswin)}
-    else {obswin <- Frame(xi)}
-    Frame(xi) <- Frame(obswin)
-    setcovxi <- setcov(xi)
-    unitname(setcovxi) <- unitname(xi)
-    setcovwindow <- setcov(obswin, eps = c(setcovxi$xstep, setcovxi$ystep))
-    unitname(setcovwindow) <- unitname(obswin)
-  } else if (is.im(xi)) {
+  if (is.im(xi)) {
     if (!is.null(obswin)) {
         winim <- as.im(obswin, xy = xi)
         xi <- eval.im(xi * winim)
@@ -64,11 +56,14 @@ plugincvc <- function(xi,
     obswin <- as.owin(xi) #only the non-NA pixels will be in the window
     xi[is.na(as.matrix(xi))] <- 0 #turn all NA's in xi to 0s
     setcovxi <- imcov(xi)
-    unitname(setcovxi) <- unitname(xi)
     setcovwindow <- setcov(obswin, eps = c(setcovxi$xstep, setcovxi$ystep))
-    unitname(setcovwindow) <- unitname(obswin)
-  }
-  else {
+  } else if (is.owin(xi)) {
+    stopifnot(is.owin(obswin))
+    xi <- intersect.owin(xi, obswin)
+    Frame(xi) <- Frame(obswin)
+    setcovxi <- setcov(xi)
+    setcovwindow <- setcov(obswin, eps = c(setcovxi$xstep, setcovxi$ystep))
+  } else   else {
     stop("Input xi is not an image or owin object")
   }
   #make NA any values that are too small and lead to division to close to 0
