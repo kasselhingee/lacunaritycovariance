@@ -9,7 +9,7 @@
 #' @param gblargs Arguments passed to \link{\code{gblemp}} and \link{\code{gbl.cvchat}}. If NULL then GBL will not be estimated.
 #' You can also request to 
 #' @param covarargs Arguments passed to \code{racscovariance.cvchat}. If NULL then covariance will not be returned.
-#' @param cencovarargs NOT YET IMPLEMENTED
+#' @param cencovarargs Arguments passed to \link{\code{cenconvariance.cvchat}}. If NULL then pair correlation will not be returned.
 #' @param paircorrargs Arguments passed to \code{paircorr.cvchat}. If NULL then pair correlation will not be returned.
 #' @param returnrotmean Logical. If FALSE the anisotropic estimates of covariance and pair-correlation will be returned as \code{im} objects.
 #' If TRUE then average covariance and pair-correlation over all directions will be returned as \code{fv} objects.
@@ -19,11 +19,13 @@
 #' xiim <- as.im(xi, value = TRUE, na.replace = FALSE)
 #' gblargs = list(boxwidths = seq(1, 10, by = 1), estimators = c("GBLemp", "GBLc"))
 #' covarargs = list(estimators = "all")
+#' cencovarargs = list(estimators = "pickaH")
 #' paircorrargs = list(estimators = "pickaH")
 #' returnrotmean = TRUE
 #' secondests <- secondorderprops(xiim,
 #'    gblargs = gblargs,
 #'    covarargs = covarargs,
+#'    cencovarargs = cencovarargs,
 #'    paircorrargs = paircorrargs, 
 #'    returnrotmean = FALSE)
 
@@ -86,9 +88,24 @@ secondorderprops <- function(xiim,
     outlist <- c(outlist, list(covariance = cvchats))
   }
   
+#centred covariance computations
+  if (!is.null(covarargs)) {
+    ccvchats <- do.call(cencovariance.cvchat, args = c(list(cvchat = cvchatT, cpp1 = cpp1, phat = phat), cencovarargs, drop = FALSE))
+    if (returnrotmean){
+      isocencovars <- lapply(ccvchats, rotmean, padzero = FALSE, Xname = "cencovar", result = "fv")
+      isocencovars <- lapply(isocencovars, function(x) {
+        x <- tweak.fv.entry(x, "f", new.labl = "k(r)", new.desc = "isotropic centred covariance", new.tag = "C")
+        return(x)
+      })
+      isocencovars <- collapse.fv(isocencovars, different = "C")
+      ccvchats <- isocencovars
+    }
+    outlist <- c(outlist, list(cencovariance = ccvchats))
+  }
+  
   if (!is.null(paircorrargs)){
-    #compute isotropic pair correlation
     pclnests <- do.call(paircorr.cvchat, c(list(cvchat = cvchatT, cpp1 = cpp1, phat = phat), paircorrargs, drop = FALSE))
+    #compute isotropic pair correlation
     if (returnrotmean){
       isopclns <- lapply(pclnests, rotmean, padzero = FALSE, Xname = "covar", result = "fv")
       isopclns <- lapply(isopclns, function(x) {
