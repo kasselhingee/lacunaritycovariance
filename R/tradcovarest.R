@@ -63,7 +63,7 @@ plugincvc <- function(xi,
     Frame(xi) <- Frame(obswin)
     setcovxi <- setcov(xi)
     setcovwindow <- setcov(obswin, eps = c(setcovxi$xstep, setcovxi$ystep))
-  } else   else {
+  } else {
     stop("Input xi is not an image or owin object")
   }
   #make NA any values that are too small and lead to division to close to 0
