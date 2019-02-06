@@ -40,7 +40,7 @@
 
 #' @examples
 #' xi <- heather$coarse
-#' covar <- plugincvc(xi)
+#' covar <- plugincvc(xi, Frame(xi))
 #' p <- area(xi) / area(Frame(xi))
 #' if(interactive()){
 #' sidelengths <- seq(0.3, 14, by = 0.2)
