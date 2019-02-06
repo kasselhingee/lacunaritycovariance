@@ -60,7 +60,8 @@ plugincvc <- function(xi,
   } else if (is.owin(xi)) {
     stopifnot(is.owin(obswin))
     xi <- intersect.owin(xi, obswin)
-    Frame(xi) <- Frame(obswin)
+    Frame(xi) <- Frame(obswin)  #I think rebound.owin, used in Frame<-.owin removes the unitname
+    unitname(xi) <- unitname(obswin) #this line fixes the issue of lost unitname until spatstat is updated
     setcovxi <- setcov(xi)
     setcovwindow <- setcov(obswin, eps = c(setcovxi$xstep, setcovxi$ystep))
   } else {
