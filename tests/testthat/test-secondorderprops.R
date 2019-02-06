@@ -110,7 +110,7 @@ test_that("secondorderprop() gives data frame for discs", {
     regexp = "non-numeric")
 })
 
-  test_that("secondorderprop() ignores centred covariance when requested to" {
+  test_that("secondorderprop() ignores centred covariance when requested to", {
   secondests <- secondorderprops(xiim, 
     gblargs = list(boxwidths = seq(1, 10, by = 0.1), estimators = "GBLcc.pickaH"),
     covarargs = list(estimators = "pickaH"),
