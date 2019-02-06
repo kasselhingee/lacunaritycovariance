@@ -1,7 +1,7 @@
 Type: Package
 Package: stationaryracsinference
 Title: Gliding Box Lacunarity and Other Estimators for Random Closed Sets in 2D
-Version: 0.4-01
+Version: 0.5-01
 Date: 2019-01-16
 Author: Kassel Liam Hingee
 Maintainer: Kassel Liam Hingee <kassel.hingee@research.uwa.edu.au>
