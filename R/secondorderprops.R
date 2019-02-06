@@ -89,7 +89,7 @@ secondorderprops <- function(xiim,
   }
   
 #centred covariance computations
-  if (!is.null(covarargs)) {
+  if (!is.null(cencovarargs)) {
     ccvchats <- do.call(cencovariance.cvchat, args = c(list(cvchat = cvchatT, cpp1 = cpp1, phat = phat), cencovarargs, drop = FALSE))
     if (returnrotmean){
       isocencovars <- lapply(ccvchats, rotmean, padzero = FALSE, Xname = "cencovar", result = "fv")
