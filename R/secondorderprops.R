@@ -17,7 +17,7 @@
 #' @examples 
 #' xi <- heather$coarse
 #' xiim <- as.im(xi, value = TRUE, na.replace = FALSE)
-#' gblargs = list(boxwidths = seq(1, 10, by = 1), estimators = c("GBLgb", "GBLc"))
+#' gblargs = list(boxwidths = seq(1, 10, by = 1), estimators = c("GBLemp", "GBLc"))
 #' covarargs = list(estimators = "all")
 #' paircorrargs = list(estimators = "pickaH")
 #' returnrotmean = TRUE
@@ -43,11 +43,11 @@ secondorderprops <- function(xiim,
   #first compute GBL ests copying GBL()
   if (!is.null(gblargs)){
     gbl.ests <- list()
-    if  (any("GBLgb" != gblargs[["estimators"]]) || is.null(gblargs[["estimators"]]) || ("all" %in% gblargs[["estimators"]])){
+    if  (any("GBLemp" != gblargs[["estimators"]]) || is.null(gblargs[["estimators"]]) || ("all" %in% gblargs[["estimators"]])){
       gblcovarbased <- do.call(gbl.cvchat, args = c(gblargs, list(phat = phat, cvchat = cvchatT, cpp1 = cpp1)))
       gbl.ests <- c(gbl.ests, gblcovarbased)
     }
-    if (("GBLgb" %in% gblargs[["estimators"]]) || is.null(gblargs[["estimators"]]) || ("all" %in% gblargs[["estimators"]])) {
+    if (("GBLemp" %in% gblargs[["estimators"]]) || is.null(gblargs[["estimators"]]) || ("all" %in% gblargs[["estimators"]])) {
       gblemp.est <- gblemp(boxwidths = gblargs[["boxwidths"]], xiim = xiim)
       if (sum(!vapply(gblemp.est[,fvnames(gblemp.est), drop = TRUE], is.na, FUN.VALUE = TRUE)) < 2){
         warning("gblemp() returns estimates for 1 or fewer of the provided box widths. Results from gblemp() will be ignored from the final results.")

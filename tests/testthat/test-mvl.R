@@ -34,7 +34,7 @@ test_that("GBLc estimates are historically consistent", {
   expect_equal(lac$GBL, 1 + 0.05855459, tolerance = 1E-6)
 })
 
-test_that("GBLgb estimates are historically consistent", {
+test_that("GBLemp estimates are historically consistent", {
   img <- as.im(heather$coarse, eps = heather$coarse$xstep, na.replace = 0)
   sidel <- c(2.2)
   lac <- gblemp(sidel, img)
@@ -90,7 +90,7 @@ test_that("integration when covar is constant gives squared area (i.e. gbl = 1)"
   expect_equal(gblc(lapply(c(0.5, 1, 2, 3), disc), covar, p)$GBL, rep(1, 4), tolerance = 0.01)
 })
 
-test_that("GBLc and GBLgb produce similar results for large square observation windows", {
+test_that("GBLc and GBLemp produce similar results for large square observation windows", {
   #xiimg and covarest.frim is pregenerated in helper-calccovar
   sidelengths <- seq(xiimg$xstep * 3, 15, by = xiimg$xstep * 2) #odd pixel widths!
   lac.gblcc.picakHest <- gblc(sidelengths, covar = covarest.frim, p = xi.p)
@@ -100,7 +100,7 @@ test_that("GBLc and GBLgb produce similar results for large square observation w
   expect_equal(lac.gblcc.picakHest$GBL, lac.gblempest$GBL, tolerance = 5E-2)
 })
 
-test_that("gbl() fails nicely when GBLgb can't estimate anything", {
+test_that("gbl() fails nicely when GBLemp can't estimate anything", {
   xiim <- as.im(heather$coarse, value = TRUE, na.replace = FALSE)
   #fake lots of missing data
   xiim[shift.owin(reflect(heather$coarse), vec = c(10, 20))] <- NA

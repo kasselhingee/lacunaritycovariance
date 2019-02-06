@@ -63,20 +63,20 @@ test_that("secondorderprop() produces output of the expected classes given diffe
   expect_length(secondests$covariance, 1)
   expect_length(secondests$paircorr, 1)
 
-  #test with only GBLgb and partially NULL for the other ones
+  #test with only GBLemp and partially NULL for the other ones
   secondests <- secondorderprops(xiim, 
-    gblargs = list(boxwidths = seq(1, 10, by = 0.1), estimators = "GBLgb"))
+    gblargs = list(boxwidths = seq(1, 10, by = 0.1), estimators = "GBLemp"))
   expect_s3_class(secondests$GBL, "fv")
   expect_length(secondests, 1)
   
-  #test with discs and no GBLgb
+  #test with discs and no GBLemp
   discs <- lapply(seq(1, 10, by = 0.5), function(x) disc(r = x))
   secondests <- secondorderprops(xiim, 
     gblargs = list(boxwidths = discs, estimators = "GBLc"))
   expect_s3_class(secondests$GBL, "data.frame")
   expect_length(secondests, 1)
   
-  #test with discs and multpile estimators,and no GBLgb
+  #test with discs and multpile estimators,and no GBLemp
   discs <- lapply(seq(1, 10, by = 0.5), function(x) disc(r = x))
   secondests <- secondorderprops(xiim, 
     gblargs = list(boxwidths = discs, estimators = c("GBLc", "GBLcc.pickaH", "GBLcc.mattfeldt", "GBLcc.pickaint", "GBLg.pickaint", "GBLg.mattfeldt")))
@@ -84,10 +84,10 @@ test_that("secondorderprop() produces output of the expected classes given diffe
   expect_equal(nrow(secondests$GBL), length(discs))
   
   
-  #test with discs and GBLgb - expect error
+  #test with discs and GBLemp - expect error
   discs <- lapply(seq(1, 10, by = 0.5), function(x) disc(r = x))
   expect_error(secondorderprops(xiim, 
-    gblargs = list(boxwidths = discs, estimators = "GBLgb")),
+    gblargs = list(boxwidths = discs, estimators = "GBLemp")),
     regexp = "non-numeric")
 })
 

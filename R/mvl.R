@@ -30,7 +30,7 @@
 #' The estimators available are
 #' \itemize{
 #' \item{\code{"GBLc"}} The unmodified (unbalanced) covariance estimator provided by \code{\link{gblc}}
-#' \item{\code{"GBLgb"}} Empirical gliding box lacunarity (Allain and Cloitre, 1991). Calls \code{\link{gblemp}}
+#' \item{\code{"GBLemp"}} Empirical gliding box lacunarity (Allain and Cloitre, 1991). Calls \code{\link{gblemp}}
 #' \item{\code{"GBLg.mattfeldt"}} See help for \code{\link{gblg}}
 #' \item{\code{"GBLg.pickaint"}} See help for \code{\link{gblg}}
 #' \item{\code{"GBLg.pickaH"}} See help for \code{\link{gblg}}
@@ -59,14 +59,14 @@
 gbl <- function(xi, boxwidths,
                            estimators = c("GBLg.mattfeldt", "GBLg.pickaint", "GBLg.pickaH",
                                           "GBLcc.mattfeldt", "GBLcc.pickaint",
-                                          "GBLc", "GBLgb"),
+                                          "GBLc", "GBLemp"),
                 obswin = NULL,
                 includenormed = FALSE,
                 setcov_boundarythresh = 1E-6){
   if ("all" %in% estimators){
     estimators = c("GBLg.mattfeldt", "GBLg.pickaint", "GBLg.pickaH",
      "GBLcc.mattfeldt", "GBLcc.pickaint", "GBLcc.pickaH",
-     "GBLc", "GBLgb")
+     "GBLc", "GBLemp")
   }
   gblgestimaterequests <- estimators %in% GBLgestimatornames
   gblccestimaterequests <- estimators %in% GBLccestimatornames
@@ -96,8 +96,8 @@ gbl <- function(xi, boxwidths,
     gbl.ests <- c(gbl.ests, gblcovarbased)
   }
   
-  #the GBLgb estimate
-  if ("GBLgb" %in% estimators){
+  #the GBLemp estimate
+  if ("GBLemp" %in% estimators){
     gblemp.est <- gblemp(boxwidths = boxwidths, xiim = xi)
     if (sum(!vapply(gblemp.est[,fvnames(gblemp.est), drop = TRUE], is.na, FUN.VALUE = TRUE)) < 2){
       warning("gblemp() returns estimates for 1 or fewer of the provided box widths. Results from gblemp() will be ignored from the final results.")
