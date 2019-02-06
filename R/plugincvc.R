@@ -22,7 +22,7 @@
 
 #' @examples
 #' xi <- heather$coarse
-#' covar <- plugincvc(xi)
+#' covar <- plugincvc(xi, Frame(xi))
 #' covar <- plugincvc(as.im(heather$coarse, na.replace = 0))
 
 #' @keywords spatial nonparametric
