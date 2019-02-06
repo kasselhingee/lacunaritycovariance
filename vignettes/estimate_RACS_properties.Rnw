@@ -111,7 +111,7 @@ plot(add = TRUE, coreprob.sm, "hazard ~ r")
 \end{figure}
 
 Covariance estimates using the balanced estimator inspired by Picka's additively modified estimator of centred covariance (Picka, 2000) are shown below.
-This estimator has smaller variance than the traditional estimator of covariance from binary maps and is consistent with estimates made from the complement of the observed set. 
+This estimator has smaller variance than the traditional (plug-in moment) estimator of covariance from binary maps and is consistent with estimates made from the complement of the observed set. 
 
 \begin{figure}[H]
 \centering

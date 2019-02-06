@@ -19,7 +19,7 @@
 #' @param coverp Coverage probability of the Boolean model
 #' @param window The window to simulate in (an owin object)
 #' @param seed Optional input (default in NULL). Is an integer passed to
-#'   \code{\link{base}{set.seed}}. Used to reproduce patterns exactly.
+#'   \code{\link[base]{set.seed}}. Used to reproduce patterns exactly.
 
 #' @return 
 #' See Functions section.

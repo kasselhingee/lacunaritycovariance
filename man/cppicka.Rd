@@ -26,7 +26,7 @@ This function provides estimates of coverage probability from subsets of the obs
  which are a key component of balanced estimators of covariance, centred covariance, pair-correlation and gliding box lacunarity.
 }
 \details{
-The traditional covariance estimator uses less of the observation window than the traditional coverage probability.
+The plug-in moment covariance estimators uses less of the observation window than the usual coverage probability estimators.
 Picka (1997, 2000) created new 'balanced' estimators of centred covariance and pair-correlation
 that accounted for this difference.
 A key component of Picka's estimators is an estimate of the coverage probability from the subregion of the binary map that is

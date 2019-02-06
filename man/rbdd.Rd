@@ -30,7 +30,7 @@ process)}
 \item{window}{The window to simulate in (an owin object)}
 
 \item{seed}{Optional input (default in NULL). Is an integer passed to
-\code{\link{base}{set.seed}}. Used to reproduce patterns exactly.}
+\code{\link[base]{set.seed}}. Used to reproduce patterns exactly.}
 
 \item{coverp}{Coverage probability of the Boolean model}
 

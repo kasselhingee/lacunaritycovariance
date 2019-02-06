@@ -10,14 +10,14 @@ secondorderprops(xiim, gblargs = NULL, covarargs = NULL,
 \arguments{
 \item{xiim}{A \pkg{spatstat} \code{im} object with pixel values that are either TRUE, FALSE or NA. TRUE represents foreground, FALSE represents background and NA represents unobserved locations.}
 
-\item{gblargs}{Arguments passed to \code{gbltrad} and \code{gbl.cvchat}. If NULL then GBL will not be estimated.
+\item{gblargs}{Arguments passed to \code{\link{gblemp}} and \code{\link{gbl.cvchat}}. If NULL then GBL will not be estimated.
 You can also request to}
 
-\item{covarargs}{Arguments passed to \code{racscovariance.cvchat}. If NULL then covariance will not be returned.}
+\item{covarargs}{Arguments passed to \code{\link{racscovariance.cvchat}}. If NULL then covariance will not be returned.}
 
-\item{cencovarargs}{NOT YET IMPLEMENTED}
+\item{cencovarargs}{Arguments passed to \code{\link{cenconvariance.cvchat}}. If NULL then pair correlation will not be returned.}
 
-\item{paircorrargs}{Arguments passed to \code{paircorr.cvchat}. If NULL then pair correlation will not be returned.}
+\item{paircorrargs}{Arguments passed to \code{\link{paircorr.cvchat}}. If NULL then pair correlation will not be returned.}
 
 \item{returnrotmean}{Logical. If FALSE the anisotropic estimates of covariance and pair-correlation will be returned as \code{im} objects.
 If TRUE then average covariance and pair-correlation over all directions will be returned as \code{fv} objects.}
@@ -31,13 +31,15 @@ Fourier transforms of the binary map are not repeated.
 \examples{
 xi <- heather$coarse
 xiim <- as.im(xi, value = TRUE, na.replace = FALSE)
-gblargs = list(boxwidths = seq(1, 10, by = 1), estimators = c("GBLgb", "GBLc"))
+gblargs = list(boxwidths = seq(1, 10, by = 1), estimators = c("GBLemp", "GBLc"))
 covarargs = list(estimators = "all")
+cencovarargs = list(estimators = "pickaH")
 paircorrargs = list(estimators = "pickaH")
 returnrotmean = TRUE
 secondests <- secondorderprops(xiim,
    gblargs = gblargs,
    covarargs = covarargs,
+   cencovarargs = cencovarargs,
    paircorrargs = paircorrargs, 
    returnrotmean = FALSE)
 }

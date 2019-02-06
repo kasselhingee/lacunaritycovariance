@@ -19,7 +19,7 @@ bdrcovar(lambda, grain, xy)
 
 \item{win}{The window to simulate in (an owin object)}
 
-\item{seed}{Optional input (default in NULL). Is an integer passed to \code{\link{base}{set.seed}}. Used to reproduce patterns exactly.}
+\item{seed}{Optional input (default in NULL). Is an integer passed to \code{\link[base]{set.seed}}. Used to reproduce patterns exactly.}
 
 \item{xy}{A raster object that specifies the pixel coordinates of the desired covariance image. In the same vein and as.mask in spatstat.}
 }

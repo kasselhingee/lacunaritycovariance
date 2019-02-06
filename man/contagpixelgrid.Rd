@@ -21,7 +21,7 @@ See \code{\link{stationaryracsinference-package}} for details.
 \item{normalise}{If \code{TRUE} will divide result by \eqn{2 ln(2)} and add 1 to make contagion between 0 and 1 for any binary map}
 }
 \description{
-Function for calculating the traditional contagion LPI from a binary map (O'Neill, 1988).
+Function for calculating the classic pixel-adjacency contagion LPI from a binary map (O'Neill, 1988).
 }
 \details{
 The unnormalised contagion LPI of categorical map is defined as
@@ -36,7 +36,7 @@ Contagion is calculated from an adjacency matrix created using \code{adjacency}.
 }
 \section{Functions}{
 \itemize{
-\item \code{contagpixelgrid}: Traditional contagion LPI of a binary map.
+\item \code{contagpixelgrid}: Pixel-adjacency contagion LPI of a binary map.
 
 \item \code{adjacency}: Calculates the adjacency matrix used in the pixel contagion
 }}

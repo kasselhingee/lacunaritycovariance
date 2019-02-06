@@ -30,11 +30,11 @@ test_that("cppicka operates when passed im (logical and numeric) and fails corre
 })
 
 
-test_that("tradcovarest operates when passed im (logical and numeric) and fails correctly when im values not binary", {
-  cvcest <- tradcovarest(xiowin, obswin = w)
-  expect_equal(max(abs(cvcest - tradcovarest(xiim.l))), 0)
-  expect_equal(max(abs(cvcest - tradcovarest(xiim.n))), 0)
-  expect_error(tradcovarest(xiim.n3), regexp = "has values other than")
+test_that("plugincvc operates when passed im (logical and numeric) and fails correctly when im values not binary", {
+  cvcest <- plugincvc(xiowin, obswin = w)
+  expect_equal(max(abs(cvcest - plugincvc(xiim.l))), 0)
+  expect_equal(max(abs(cvcest - plugincvc(xiim.n))), 0)
+  expect_error(plugincvc(xiim.n3), regexp = "has values other than")
 })
 
 test_that("balancedracscovariance operates when passed im (logical and numeric) and fails correctly when im values not binary", {
@@ -55,12 +55,12 @@ test_that("paircorr operates when passed im (logical and numeric) and fails corr
   expect_error(paircorr(xiim.n3), regexp = "has values other than")
 })
 
-test_that("gbltrad operates as expected when pass im object", {
+test_that("gblemp operates as expected when pass im object", {
   boxwidths <- seq(1, 5, by = 1)
-  gbltrad.l <- gbltrad(boxwidths, xiim.l)
-  gbltrad.n <- gbltrad(boxwidths, xiim.n)
-  expect_equal(max(abs(gbltrad.l - gbltrad.n)), 0)
-  expect_error(gbltrad(boxwidths, xiim.n3), regexp = "has values other than")
+  gblemp.l <- gblemp(boxwidths, xiim.l)
+  gblemp.n <- gblemp(boxwidths, xiim.n)
+  expect_equal(max(abs(gblemp.l - gblemp.n)), 0)
+  expect_error(gblemp(boxwidths, xiim.n3), regexp = "has values other than")
 })
 
 test_that("gbl() operates well when passed im or owin boxes", {

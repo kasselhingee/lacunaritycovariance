@@ -23,8 +23,7 @@ See \code{\link{stationaryracsinference-package}} for details.}
 An estimate of the coverage probability
 }
 \description{
-Estimates the coverage probability of a stationary RACS from a binary map using the traditional estimator,
- which is the proportion of the observation window that is foreground.
+Computes the proportion of the observation window that is foreground, which is the usual estimate for the coverage probability of a stationary RACS from a binary map.
 }
 \details{
 The coverage probability of a stationary RACS is the probability that an arbitrary point is covered by the RACS.

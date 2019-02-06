@@ -6,7 +6,7 @@
 \title{Gliding box lacunarity estimation using all estimators}
 \usage{
 gbl(xi, boxwidths, estimators = c("GBLg.mattfeldt", "GBLg.pickaint",
-  "GBLg.pickaH", "GBLcc.mattfeldt", "GBLcc.pickaint", "GBLc", "GBLgb"),
+  "GBLg.pickaH", "GBLcc.mattfeldt", "GBLcc.pickaint", "GBLc", "GBLemp"),
   obswin = NULL, includenormed = FALSE,
   setcov_boundarythresh = 1e-06)
 
@@ -32,21 +32,21 @@ See \code{\link{stationaryracsinference-package}} for details.}
 is given a covariance estimate (and other similar estimate) of NA to avoid instabilities caused by dividing by very small areas.
 If NULL is supplied (default) then 1E-6 is used.}
 
-\item{phat}{Traditional estimate of coverage probability.}
+\item{phat}{The fraction foreground area in the observation window, which is the usual estimator of coverage probability.}
 
-\item{cvchat}{Traditional estimate of covariance (often from \code{tradcovarest}).}
+\item{cvchat}{The plug-in moment covariance estimate (often from \code{\link{plugincvc}}).}
 
-\item{cpp1}{Picka's estimate of coverage probability (often from \code{cppicka}).}
+\item{cpp1}{Picka's estimate of coverage probability for subsets of the observation window. See \code{\link{cppicka}}.}
 }
 \value{
 An \code{fv} object.
 }
 \description{
 Estimates gliding box lacunarity (GBL) using all estimators described in (Hingee et al., 2017) from binary maps for square boxes.
-It calls the functions \code{gblc}, \code{gblg}, \code{gblcc} and \code{gbltrad}.
+It calls the functions \code{\link{gblc}}, \code{\link{gblg}}, \code{\link{gblcc}} and \code{\link{gblemp}}.
 }
 \details{
-The function is not able to estimate GBL for non-square boxes as the gliding box estimator is included.
+As empirical GBL is one of the GBL estimators available through this function, non-square boxes are not allowed.
 To estimate GBL for non-square boxes use \code{gblcc} or \code{gblg} directly.
 
 If \code{xi} is in \code{owin} format then \code{obswin} and \code{xi} are converted
@@ -55,7 +55,7 @@ If \code{xi} is in \code{owin} format then \code{obswin} and \code{xi} are conve
 The estimators available are
 \itemize{
 \item{\code{"GBLc"}} The unmodified (unbalanced) covariance estimator provided by \code{\link{gblc}}
-\item{\code{"GBLgb"}} The Gliding-Box estimator of Allain and Cloitre (1991). Calls \code{\link{gbltrad}}
+\item{\code{"GBLemp"}} Empirical gliding box lacunarity (Allain and Cloitre, 1991). Calls \code{\link{gblemp}}
 \item{\code{"GBLg.mattfeldt"}} See help for \code{\link{gblg}}
 \item{\code{"GBLg.pickaint"}} See help for \code{\link{gblg}}
 \item{\code{"GBLg.pickaH"}} See help for \code{\link{gblg}}
@@ -68,8 +68,8 @@ The estimators available are
 \itemize{
 \item \code{gbl}: Computes GBL estimates from a binary map.
 
-\item \code{gbl.cvchat}: Computes covariance-based estimator of GBL from the traditional estimate of covariance,
-Picka's reduced window coverage probability estimates and the traditional coverage probability estimate.
+\item \code{gbl.cvchat}: Computes covariance-based estimator of GBL from the plug-in moment estimate of covariance,
+Picka's reduced window coverage probability estimates (see \code{\link{cppicka}}) and the usual coverage probability estimate, \code{phat}.
 }}
 
 \examples{

@@ -1,35 +1,41 @@
-#' @title Gliding Box estimation of gliding box lacunarity
-#' @export gbltrad
+#' @title Empirical Gliding Box Lacunarity
+#' @export gblemp
 #' @importFrom utils installed.packages
 #'
-#' @description Calculates the gliding box estimate, proposed by Allain and Cloitre (1991), of gliding box lacunarity from a binary map.
-#' @details Calculates the gliding box estimate (Allain and Cloitre, 1991) of gliding box lacunarity for a given range of square box sizes. 
+#' @description Calculates empirical gliding box lacunarity of a binary map, which was proposed by Allain and Cloitre (1991). 
+#' @details Calculates empirical gliding box lacunarity (Allain and Cloitre, 1991) for a given range of square box sizes,
+#' \deqn{1 + Var(area(B . xi)) / E[area(B . xi)]^2, }
+#' where \eqn{B} is a box that has a random location in the observation window and \eqn{area(B . xi)} is the (random) area of the foreground in \eqn{B}. 
+#' This is an estimate of the gliding box lacunarity of a RACS (Hingee et al., 2017).
+#' 
 #' The algorithm uses the pixel locations in \code{xiim} as an array of box centre locations to compute
 #'  the mean and variance of the area in a random box of a given size.
 #' Locations where the box is not completely within the observation window are ignored.
 #'  
-#' @section WARNING: \code{gbltrad} uses the \code{\link[RcppRoll]{roll_sum}} function in \pkg{RcppRoll} to operate.
+#' @section WARNING: \code{gblemp} uses the \code{\link[RcppRoll]{roll_sum}} function in \pkg{RcppRoll} to operate.
 #' \pkg{RcppRoll} must be installed.
 #' 
 #' Note: The side lengths are rounded such that they are an odd number of pixels across.
 #' 
 #' @references 
 #' Allain, C. and Cloitre, M. (1991) Characterizing the lacunarity of random and deterministic fractal sets. \emph{Physical Review A}, 44, 3552-3558.
+#' 
+#' Hingee K, Baddeley A, Caccetta P, Nair G (2017). Computation of lacunarity from covariance of spatial binary maps. \emph{Journal of Agricultural, Biological and Environmental Statistics}. Submitted.
 #'
-#' @return An \code{fv} object containing estimates of GBL, box mass variance and box mass mean computed using the gliding box estimator described in [1]. 
+#' @return An \code{fv} object containing empirical GBL, variance of the area in the box and mean of the area in the box. 
 #'  The box widths (labelled \code{s}) are always odd multiples of the pixel width.
 #'  
 #' @param xiim An image of pixels valued either \code{0}, \code{1} or \code{NA}. \code{NA} valued pixels are assumed to be outside the observation window.
 #' @param boxwidths A list of suggested box widths in the same units as \code{xiim}. 
-#' Note the actual box widths used by \code{gbltrad} will be the closest multiple of an odd number of pixel widths.
+#' Note the actual box widths used by \code{gblemp} will be the closest multiple of an odd number of pixel widths.
 #' @param obswin Optional observation window. The observation window used for the estimator will be the intersection of \code{obswin} and the pixels that are not \code{NA} in \code{xiim}.
 #' @examples
 #' xiim <- as.im(heather$coarse, na.replace = 0)
 #' boxwidths <- seq(0.2, 14, by = 0.2) #in units of xiim
-#' gblest <- gbltrad(boxwidths, xiim)
+#' gblest <- gblemp(boxwidths, xiim)
 #'
 #' @keywords spatial nonparametric 
-gbltrad <- function(boxwidths, xiim, obswin = Frame(xiim)){
+gblemp <- function(boxwidths, xiim, obswin = Frame(xiim)){
   if (!is.im(xiim)){stop("input xiim must be of class im")}
   if (abs(xiim$xstep - xiim$ystep) > 1E-2 * xiim$xstep){stop("image pixels must be square")}
   isbinarymap(xiim, requiretrue = TRUE)
@@ -47,11 +53,11 @@ gbltrad <- function(boxwidths, xiim, obswin = Frame(xiim)){
   if (class(obswin) == "owin"){obsvd <- intersect.owin(obsvd, obswin)}
 
   if (!("RcppRoll" %in% installed.packages()[, 1])){
-     stop("RcppRoll must be installed to calculate gliding box lacunarity")
+     stop("RcppRoll must be installed to calculate empirical gliding box lacunarity")
   }
 
 xiim[(complement.owin(intersect.owin(obswin, Frame(xiim)), frame = Frame(xiim)))] <- NA  #make sure the pixels outside obswin are set to NA so that reduce sampling happens naturally ##NOTE: this a time consuming operation that may never be needed
-lacs <- mapply(gbltrad_intern.rcpproll, sidep = 2 * rpix + 1, MoreArgs = list(xiim = xiim, obswin = obsvd), SIMPLIFY = FALSE)
+lacs <- mapply(gblemp_intern.rcpproll, sidep = 2 * rpix + 1, MoreArgs = list(xiim = xiim, obswin = obsvd), SIMPLIFY = FALSE)
 
   #converting results in fv objects
     valsdf <- matrix(unlist(lacs), ncol = length(lacs[[1]]), byrow = TRUE)
@@ -72,9 +78,9 @@ lacs <- mapply(gbltrad_intern.rcpproll, sidep = 2 * rpix + 1, MoreArgs = list(xi
                     "Var(BoxMass)",
                     "Avg[BoxMass]"),
            desc = c("side lengths of boxes", 
-                    "Gliding box GBL estimate that only uses boxes entirely within the observation",
-                    "Variance of box mass - used in the gliding box estimate",
-                    "Average box mass - used in the gliding box estimate"
+                    "Empirical GBL",
+                    "Variance of foreground area in the randomly placed box in empirical GBL",
+                    "Mean foreground area in the randomly placed box in empirical GBL"
                     ),
            fname = "GBL"
            )
@@ -84,14 +90,14 @@ lacs <- mapply(gbltrad_intern.rcpproll, sidep = 2 * rpix + 1, MoreArgs = list(xi
 
 
 ##########################
-##The following function estimates gliding box lacunarity for a box with side lengths 2*bX+1 and 2*bY+1 (in pixels). The RS version is automatically calculated by ignoring those boxes that have sums that includa NA values. 
-#eg gbltrad_intern.rcpproll(xiim,5,5,5*0.8)
+##The following function calculates lacunarity for a box with side lengths 2*bX+1 and 2*bY+1 (in pixels). The RS version is automatically calculated by ignoring those boxes that have sums that includa NA values. 
+#eg gblemp_intern.rcpproll(xiim,5,5,5*0.8)
 #the obswin is only for the raw version and must be an owin object. 
 #uses rcpproll
-gbltrad_intern.rcpproll <- function(xiim, sidep, obswin = Frame(xiim)){
+gblemp_intern.rcpproll <- function(xiim, sidep, obswin = Frame(xiim)){
   mat <- as.matrix(xiim)
   if ( (sidep > nrow(mat)) | (sidep > ncol(mat))){
-    gbltrad.rs <- NA
+    gblemp.rs <- NA
     sampmean.rs <- NA
     samp2ndmom.rs <- NA
   }
@@ -100,11 +106,11 @@ gbltrad_intern.rcpproll <- function(xiim, sidep, obswin = Frame(xiim)){
     movline.overrowthencols <- RcppRoll::roll_sum(t(movline.overrows), sidep) * xiim$xstep * xiim$ystep
     sampmean.rs <- mean(movline.overrowthencols, na.rm = TRUE) #sample mean
     samp2ndmom.rs <- mean(movline.overrowthencols ^ 2, na.rm = TRUE) #biased sample second moment
-    gbltrad.rs <- samp2ndmom.rs / (sampmean.rs ^ 2) 
+    gblemp.rs <- samp2ndmom.rs / (sampmean.rs ^ 2) 
   }
 
     return(list(
-      GBL = gbltrad.rs,
+      GBL = gblemp.rs,
       s2 = samp2ndmom.rs - sampmean.rs^2,
       xbar = sampmean.rs
       ))

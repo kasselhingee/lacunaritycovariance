@@ -2,7 +2,7 @@
 % Please edit documentation in R/gblc.R
 \name{gblc}
 \alias{gblc}
-\title{Gliding box lacunarity estimates from traditional covariance estimator}
+\title{Gliding box lacunarity estimator using plug-in moment covariance estimator}
 \usage{
 gblc(boxes, covariance = NULL, p = NULL, xiim = NULL)
 }
@@ -27,12 +27,12 @@ for square boxes with side length given by \code{boxes}.
 }
 \description{
 Can be used to estimate the gliding box lacunarity (GBL) of a stationary RACS from a binary map
- using the traditional covariance estimate (Hingee et al., 2017).
- It can also calculate the GBL of a RACS from a provided covariance and coverage probability.
+ using the plug-in moment covariance covariance estimator (Hingee et al., 2017).
+ It can also calculate the GBL of a RACS from a given covariance function and coverage probability.
 }
 \details{
 Computes a numerical approximation of 
-\deqn{\int \gamma_B C(v) dv / (p^2 |B|^2).}{\int gammaB C(v) dv / (p^2 |B|^2),}
+\deqn{\int \gamma_B(v) C(v) dv / (p^2 |B|^2).}{\int gammaB(v) C(v) dv / (p^2 |B|^2),}
 where \eqn{B} is a given set (often called a box),
 \eqn{\gamma_B}{gammaB} is the set covariance of \eqn{B},
 \eqn{|B|} is the area of \eqn{B},
@@ -42,12 +42,12 @@ This can be used to compute the GBL from model parameters by passing \code{gblc}
 covariance and coverage probability of the model.
 
 If a binary map is supplied then \eqn{p} and \eqn{C(v)} are estimated using
- the traditional coverage probability and covariance estimators respectively 
- (see \code{\link{coverageprob}} and \code{\link{tradcovarest}}).
+ the usual coverage probability estimator and the plug-in moment covariance estimator, respectively 
+ (see \code{\link{coverageprob}} and \code{\link{plugincvc}}).
 }
 \examples{
 xi <- heather$coarse
-covar <- tradcovarest(xi)
+covar <- plugincvc(xi)
 p <- area(xi) / area(Frame(xi))
 if(interactive()){
 sidelengths <- seq(0.3, 14, by = 0.2)

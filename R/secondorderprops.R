@@ -6,24 +6,26 @@
 
 #' @export secondorderprops
 #' @param xiim A \pkg{spatstat} \code{im} object with pixel values that are either TRUE, FALSE or NA. TRUE represents foreground, FALSE represents background and NA represents unobserved locations.
-#' @param gblargs Arguments passed to \code{gbltrad} and \code{gbl.cvchat}. If NULL then GBL will not be estimated.
+#' @param gblargs Arguments passed to \code{\link{gblemp}} and \code{\link{gbl.cvchat}}. If NULL then GBL will not be estimated.
 #' You can also request to 
-#' @param covarargs Arguments passed to \code{racscovariance.cvchat}. If NULL then covariance will not be returned.
-#' @param cencovarargs NOT YET IMPLEMENTED
-#' @param paircorrargs Arguments passed to \code{paircorr.cvchat}. If NULL then pair correlation will not be returned.
+#' @param covarargs Arguments passed to \code{\link{racscovariance.cvchat}}. If NULL then covariance will not be returned.
+#' @param cencovarargs Arguments passed to \code{\link{cenconvariance.cvchat}}. If NULL then pair correlation will not be returned.
+#' @param paircorrargs Arguments passed to \code{\link{paircorr.cvchat}}. If NULL then pair correlation will not be returned.
 #' @param returnrotmean Logical. If FALSE the anisotropic estimates of covariance and pair-correlation will be returned as \code{im} objects.
 #' If TRUE then average covariance and pair-correlation over all directions will be returned as \code{fv} objects.
 
 #' @examples 
 #' xi <- heather$coarse
 #' xiim <- as.im(xi, value = TRUE, na.replace = FALSE)
-#' gblargs = list(boxwidths = seq(1, 10, by = 1), estimators = c("GBLgb", "GBLc"))
+#' gblargs = list(boxwidths = seq(1, 10, by = 1), estimators = c("GBLemp", "GBLc"))
 #' covarargs = list(estimators = "all")
+#' cencovarargs = list(estimators = "pickaH")
 #' paircorrargs = list(estimators = "pickaH")
 #' returnrotmean = TRUE
 #' secondests <- secondorderprops(xiim,
 #'    gblargs = gblargs,
 #'    covarargs = covarargs,
+#'    cencovarargs = cencovarargs,
 #'    paircorrargs = paircorrargs, 
 #'    returnrotmean = FALSE)
 
@@ -34,7 +36,7 @@ secondorderprops <- function(xiim,
                              paircorrargs = NULL,
                              returnrotmean = FALSE
                             ){
-  cvchatT <- tradcovarest(xiim)
+  cvchatT <- plugincvc(xiim)
   cpp1 <- cppicka(xiim)
   phat <- coverageprob(xiim)
   
@@ -43,17 +45,17 @@ secondorderprops <- function(xiim,
   #first compute GBL ests copying GBL()
   if (!is.null(gblargs)){
     gbl.ests <- list()
-    if  (any("GBLgb" != gblargs[["estimators"]]) || is.null(gblargs[["estimators"]]) || ("all" %in% gblargs[["estimators"]])){
+    if  (any("GBLemp" != gblargs[["estimators"]]) || is.null(gblargs[["estimators"]]) || ("all" %in% gblargs[["estimators"]])){
       gblcovarbased <- do.call(gbl.cvchat, args = c(gblargs, list(phat = phat, cvchat = cvchatT, cpp1 = cpp1)))
       gbl.ests <- c(gbl.ests, gblcovarbased)
     }
-    if (("GBLgb" %in% gblargs[["estimators"]]) || is.null(gblargs[["estimators"]]) || ("all" %in% gblargs[["estimators"]])) {
-      gbltrad.est <- gbltrad(boxwidths = gblargs[["boxwidths"]], xiim = xiim)
-      if (sum(!vapply(gbltrad.est[,fvnames(gbltrad.est), drop = TRUE], is.na, FUN.VALUE = TRUE)) < 2){
-        warning("gbltrad() returns estimates for 1 or fewer of the provided box widths. Results from gbltrad() will be ignored from the final results.")
-        gbltrad.est <- NULL
+    if (("GBLemp" %in% gblargs[["estimators"]]) || is.null(gblargs[["estimators"]]) || ("all" %in% gblargs[["estimators"]])) {
+      gblemp.est <- gblemp(boxwidths = gblargs[["boxwidths"]], xiim = xiim)
+      if (sum(!vapply(gblemp.est[,fvnames(gblemp.est), drop = TRUE], is.na, FUN.VALUE = TRUE)) < 2){
+        warning("gblemp() returns estimates for 1 or fewer of the provided box widths. Results from gblemp() will be ignored from the final results.")
+        gblemp.est <- NULL
       }
-      gbl.ests <- c(gbl.ests, list(gbltrad = gbltrad.est))
+      gbl.ests <- c(gbl.ests, list(gblemp = gblemp.est))
     }
     #combind the gbl ests
     gbl.ests <- gbl.ests[!vapply(gbl.ests, is.null, FUN.VALUE = FALSE)]
@@ -86,9 +88,24 @@ secondorderprops <- function(xiim,
     outlist <- c(outlist, list(covariance = cvchats))
   }
   
+#centred covariance computations
+  if (!is.null(cencovarargs)) {
+    ccvchats <- do.call(cencovariance.cvchat, args = c(list(cvchat = cvchatT, cpp1 = cpp1, phat = phat), cencovarargs, drop = FALSE))
+    if (returnrotmean){
+      isocencovars <- lapply(ccvchats, rotmean, padzero = FALSE, Xname = "cencovar", result = "fv")
+      isocencovars <- lapply(isocencovars, function(x) {
+        x <- tweak.fv.entry(x, "f", new.labl = "k(r)", new.desc = "isotropic centred covariance", new.tag = "C")
+        return(x)
+      })
+      isocencovars <- collapse.fv(isocencovars, different = "C")
+      ccvchats <- isocencovars
+    }
+    outlist <- c(outlist, list(cencovariance = ccvchats))
+  }
+  
   if (!is.null(paircorrargs)){
-    #compute isotropic pair correlation
     pclnests <- do.call(paircorr.cvchat, c(list(cvchat = cvchatT, cpp1 = cpp1, phat = phat), paircorrargs, drop = FALSE))
+    #compute isotropic pair correlation
     if (returnrotmean){
       isopclns <- lapply(pclnests, rotmean, padzero = FALSE, Xname = "covar", result = "fv")
       isopclns <- lapply(isopclns, function(x) {
