@@ -6,27 +6,11 @@
 
 - build using R CMD build --compact-vignettes=gs+qpdf  ...
 
-D- Change function names to reflect names `empirical GBL' or gliding box estimator, and plugin moment estimators  ACT 2h
-
-D- tradcovarest --> plugincvc
-
-D- 'trad' method name changed to 'plugin'
-
-- 'mvlgb or GBLgb to gblemp'
-
-- glbtrad description to: empirical Gliding Box, proposed by A and C [1]. And else where ACT 1h
-
-- consistent naming ACT 1h
-
 - More Picka references ACT: 30min
 
-- tradcovarest require obswin. ACT 1h
-
-- change function file names to match function names. (e.g. MVL and tradcovarest)
+- watch use of GBL when it should be gliding box lacunarity
 
 - update lacunarity paper reference (e.g. it is published..)
-
-- watch use of GBL when it should be gliding box lacunarity
 
 - version number with non-leading zeros
 
@@ -61,6 +45,9 @@ Total ACT: 8h
 
 - polish vignette? ACT 2h (to first smooth draft)
 
+- caps incorrect thing in ccvc_byconv
+
+
 
 Total ACT: 37h
 
@@ -77,4 +64,22 @@ D- syphon off helper functions never for release ACT 1.5h
 D- scdcontag() --> contagdiscstate()? ACT 0.5h
 
 D- setcov and imcov maintain units of input image - pass on to spatstat ACT 1h
+
+D- Change function names to reflect names `empirical GBL' or gliding box estimator, and plugin moment estimators  ACT 2h
+
+D- tradcovarest --> plugincvc
+
+D- 'trad' method name changed to 'plugin'
+
+D- glbtrad description to: empirical Gliding Box, proposed by A and C [1]. And else where ACT 1h
+
+D- tradcovarest require obswin. ACT 1h
+
+D- 'mvlgb or GBLgb to gblemp'
+
+D- second order props has a notyetimplemented argument
+
+D- cross references (links) rather than just code{}
+
+D- change function file names to match function names. (e.g. MVL and tradcovarest)
 
