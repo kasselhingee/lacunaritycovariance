@@ -1,29 +1,34 @@
 # stationaryracsinference 
+*Author: Kassel Liam Hingee*
 
-This is an R package for estimating gliding box lacunarity and other RACS properties. This directory contains the source code of this package.
+This directory contains the source code of the R package *stationaryracsinference*. This R package is for estimating gliding box lacunarity and other RACS properties from spatial binary maps (images composed of binary-valued pixels). 
 
 ## Installation
-Install from .tar.gz form of this directory: Inside an R session run
-    install.packages("<PATH>", repos = NULL, type = "source")
+### From GitHub using devtools package:
+From inside an R interactive session run:
 
-where <PATH> is the path to the .tar.gz file.
-
-*or*
-
-To install from this source code in uncompressed form:
-    R CMD build . 
-This should create a file "stationaryracsinference-***.tar.gz"
-Then run 
-    R CMD INSTALL stationaryracsinference-***.tar.gz
-
-*or* 
-
-Install from GitHub using devtools package:
     library(devtools)
     install_github("kasselhingee/racsstats", ref = "release", auth_token = "****")
 
 where auth_token is required until the GitHub repository is made public. If you have a GitHub account then, after getting permission from Kassel Hingee, you can obtain an auth_token by going to this website: https://github.com/settings/tokens.
  Copy the personal access token from your browser and use it as the auth_token argument of install_github.
+
+### From .tar.gz file
+Inside an R session run
+
+    install.packages("PATH", repos = NULL, type = "source")
+
+where PATH is the path to a .tar.gz file containing the contents of this repository.
+
+### Install from source code not in .tar.gz form
+First run the following to build a .tar.gz file.
+
+    R CMD build . 
+
+This should create a file "stationaryracsinference-VERSION.tar.gz".
+Then run 
+
+    R CMD INSTALL stationaryracsinference-VERSION.tar.gz
 
 ## Further Notes
 ### Manual pages
@@ -31,5 +36,5 @@ The manual pages for each function (in man/) and the file NAMESPACE have been ge
 
 
 ### Git repository branches
-This source code is the release branch of a git repository. For those familiar with git, it is intended that all developments and modifications of the code are performed in the *working* branch and then merged into this *release* branch.
+This source code is the release branch of a git repository. For those familiar with git: it is intended that all developments and modifications of the code are performed in the *working* branch and then merged into this *release* branch.
 

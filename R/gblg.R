@@ -5,7 +5,7 @@
 #'  It can also calculate the GBL of a RACS from a provided pair-correlation function. 
 
 #' @references
-#' Hingee K, Baddeley A, Caccetta P, Nair G (2017). Computation of lacunarity from covariance of spatial binary maps. \emph{Journal of Agricultural, Biological and Environmental Statistics}. Submitted.
+#' Hingee K, Baddeley A, Caccetta P, Nair G (2017). Computation of lacunarity from covariance of spatial binary maps. \emph{Journal of Agricultural, Biological and Environmental Statistics}. DOI: 10.1007/s13253-019-00351-9. Online First.
 
 #' @details
 #' If we denoted the estimated pair-correlation by \eqn{\hat{g}(v)}{g(v)} then the estimate of GBL is

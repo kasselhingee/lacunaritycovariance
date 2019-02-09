@@ -44,7 +44,7 @@ discgbls <- gblg(discboxes, pcln)
 
 }
 \references{
-Hingee K, Baddeley A, Caccetta P, Nair G (2017). Computation of lacunarity from covariance of spatial binary maps. \emph{Journal of Agricultural, Biological and Environmental Statistics}. Submitted.
+Hingee K, Baddeley A, Caccetta P, Nair G (2017). Computation of lacunarity from covariance of spatial binary maps. \emph{Journal of Agricultural, Biological and Environmental Statistics}. DOI: 10.1007/s13253-019-00351-9. Online First.
 }
 \keyword{nonparametric}
 \keyword{spatial}
