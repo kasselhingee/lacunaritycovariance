@@ -2,9 +2,12 @@
 % Please edit documentation in R/gblemp.R
 \name{gblemp}
 \alias{gblemp}
+\alias{gbltrad}
 \title{Empirical Gliding Box Lacunarity}
 \usage{
 gblemp(boxwidths, xiim, obswin = Frame(xiim))
+
+gbltrad(boxwidths, xiim, obswin = Frame(xiim))
 }
 \arguments{
 \item{boxwidths}{A list of suggested box widths in the same units as \code{xiim}. 
@@ -31,6 +34,11 @@ The algorithm uses the pixel locations in \code{xiim} as an array of box centre 
  the mean and variance of the area in a random box of a given size.
 Locations where the box is not completely within the observation window are ignored.
 }
+\section{Functions}{
+\itemize{
+\item \code{gbltrad}: An alias of \code{gblemp} used in past versions of this package. This alias may be removed in future versions.
+}}
+
 \section{WARNING}{
  \code{gblemp} uses the \code{\link[RcppRoll]{roll_sum}} function in \pkg{RcppRoll} to operate.
 \pkg{RcppRoll} must be installed.
