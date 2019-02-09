@@ -1,5 +1,5 @@
 #' @title Empirical Gliding Box Lacunarity
-#' @export gblemp
+#' @export gblemp  gbltrad
 #' @importFrom utils installed.packages
 #'
 #' @description Calculates empirical gliding box lacunarity of a binary map, which was proposed by Allain and Cloitre (1991). 
@@ -115,3 +115,10 @@ gblemp_intern.rcpproll <- function(xiim, sidep, obswin = Frame(xiim)){
       xbar = sampmean.rs
       ))
 }
+
+#' @describeIn gblemp An alias of \code{gblemp} used in past versions of this package. This alias may be removed in future versions.
+gbltrad <- function(boxwidths, xiim, obswin = Frame(xiim)){
+  warning("`gbltrad' function name has been changed to `gblemp'. Please use `gblemp' instead of `gbltrad'.")
+  gblemp(boxwidths, xiim, obswin)
+}
+
