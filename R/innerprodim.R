@@ -26,7 +26,7 @@
 
 #' @examples
 #' xi <- heather$coarse
-#' covar <- plugincvc(xi)
+#' covar <- plugincvc(xi, Frame(xi))
 #' B <- setcov(square(1))
 #' innerprod.im(covar, B, outsideB = 0)
 innerprod.im <- function(A, B, outsideA = NA, outsideB = NA, na.rm = FALSE){

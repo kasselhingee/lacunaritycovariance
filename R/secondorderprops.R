@@ -9,7 +9,7 @@
 #' @param gblargs Arguments passed to \code{\link{gblemp}} and \code{\link{gbl.cvchat}}. If NULL then GBL will not be estimated.
 #' You can also request to 
 #' @param covarargs Arguments passed to \code{\link{racscovariance.cvchat}}. If NULL then covariance will not be returned.
-#' @param cencovarargs Arguments passed to \code{\link{cenconvariance.cvchat}}. If NULL then pair correlation will not be returned.
+#' @param cencovarargs Arguments passed to \code{\link{cencovariance.cvchat}}. If NULL then pair correlation will not be returned.
 #' @param paircorrargs Arguments passed to \code{\link{paircorr.cvchat}}. If NULL then pair correlation will not be returned.
 #' @param returnrotmean Logical. If FALSE the anisotropic estimates of covariance and pair-correlation will be returned as \code{im} objects.
 #' If TRUE then average covariance and pair-correlation over all directions will be returned as \code{fv} objects.

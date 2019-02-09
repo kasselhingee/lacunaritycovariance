@@ -7,7 +7,7 @@
 #'  It can also calculate the GBL of a RACS from a given covariance function and coverage probability. 
 
 #' @references
-#' Hingee K, Baddeley A, Caccetta P, Nair G (2017). Computation of lacunarity from covariance of spatial binary maps. \emph{Journal of Agricultural, Biological and Environmental Statistics}. Submitted.
+#' Hingee K, Baddeley A, Caccetta P, Nair G (2017). Computation of lacunarity from covariance of spatial binary maps. \emph{Journal of Agricultural, Biological and Environmental Statistics}. DOI: 10.1007/s13253-019-00351-9. Online First.
 
 #' @details
 #' Computes a numerical approximation of 
@@ -40,7 +40,7 @@
 
 #' @examples
 #' xi <- heather$coarse
-#' covar <- plugincvc(xi)
+#' covar <- plugincvc(xi, Frame(xi))
 #' p <- area(xi) / area(Frame(xi))
 #' if(interactive()){
 #' sidelengths <- seq(0.3, 14, by = 0.2)
