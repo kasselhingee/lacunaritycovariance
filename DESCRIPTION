@@ -8,8 +8,8 @@ Author: Kassel Liam Hingee
 Maintainer: Kassel Liam Hingee
     <kassel.hingee@research.uwa.edu.au>
 Description:  The package contains functions for estimating
-    the gliding box lacunarity (GBL), covariance and pair-correlation of a
-    random closed set (RACS) in 2D from a binary coverage map.  It also
+    the gliding box lacunarity (GBL), covariance, and pair-correlation of
+    a random closed set (RACS) in 2D from a binary coverage map.  It also
     includes methods for estimating contagion-like properties of RACS and
     simulating 2D Boolean models.  Binary coverage maps are usually taken
     to be a rasterised image with each pixel labelled TRUE, FALSE or NA,
@@ -20,10 +20,9 @@ Description:  The package contains functions for estimating
     foreground.  A number of newly-developed covariance-based estimators
     of GBL are available in this package along with empirical GBL.  The
     balanced estimators of covariance, centred covariance and
-    pair-correlation proposed by Picka are available in this package.
-    Further estimators for properties of random closed sets are available
-    in the spatstat package.  The package is based on research conducted
-    during the author's PhD studies.
+    pair-correlation proposed by Picka are also available in this package.
+    The package is based on research conducted during the author's PhD
+    studies.
 License: GNU General Public License
 Depends:
     spatstat
