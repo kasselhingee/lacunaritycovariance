@@ -22,7 +22,7 @@
 #'  Note if NA or NaN values in the \code{covariance} object are used then \code{gblc} will return NA or NaN instead of an GBL value. 
 
 #' @references
-Hingee K, Baddeley A, Caccetta P, Nair G (2019). Computation of lacunarity from covariance of spatial binary maps. \emph{Journal of Agricultural, Biological and Environmental Statistics}, 24, 264-288. DOI: 10.1007/s13253-019-00351-9.
+#' Hingee K, Baddeley A, Caccetta P, Nair G (2019). Computation of lacunarity from covariance of spatial binary maps. \emph{Journal of Agricultural, Biological and Environmental Statistics}, 24, 264-288. DOI: 10.1007/s13253-019-00351-9.
 
 #' @examples
 #' xi <- heather$coarse
