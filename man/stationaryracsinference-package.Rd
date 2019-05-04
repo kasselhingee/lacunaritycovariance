@@ -61,18 +61,19 @@ Molchanov, I.S. (2005) \emph{Theory of Random Sets}. USA: Springer.
 \keyword{ package }
 \keyword{ spatial }
 \examples{
-#Estimates using the heather data in spatstat
+#Estimates from the heather data in spatstat
 xi_owin <- heather$coarse
 xi_owin_obswin <- Frame(heather$coarse)
 
-#convert to an im object (optional)
+#convert binary map to an im object (optional)
 xi <- as.im(xi_owin, value = TRUE, na.replace = FALSE)
 
+#estimate coverage probability, covariance, GBL, and disc-state contagion
 cphat <- coverageprob(xi)
 cvchat <- racscovariance(xi, estimator = "pickaH")
 gblhat <- gbl(xi, seq(0.1, 5, by = 0.1), estimators = "GBLcc.pickaH")
 contagds <- contagdiscstate(Hest(xi), Hest(!xi), p = cphat)
 
-#simulate a Boolean model with deterministic discs in a square window
+#simulate a Boolean model with grains that discs of fixed radius:
 xi_sim <- rbdd(10, 0.1, owin())
 }

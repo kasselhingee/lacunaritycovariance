@@ -52,8 +52,8 @@
 #' covariance estimation (see \code{\link{cencovariance}}) that `balanced' the
 #' data used to estimate covariance with the data used to estimate coverage
 #' probability. These lead to covariance estimators that give
-#' estimates for the covariance of \eqn{Xi} that are a constant offset from
-#' covariance estimates for the complement of \eqn{Xi} (note the constant offset
+#' estimates for the covariance of \eqn{\Xi} that are a constant offset from
+#' covariance estimates for the complement of \eqn{\Xi} (note the constant offset
 #' depends on the coverage probability), which
 #' appears to avoid some surprising behaviour that the plug-in moment covariance estimator
 #' suffers (Hingee, 2019).
@@ -65,7 +65,7 @@
 #' was studied by Mattfeldt and Stoyan (2000).
 #' 
 
-#' The estimators available are (see (Hingee, 2019) for information): 
+#' The estimators available are (see (Hingee, 2019) for more information): 
 #' \itemize{
 #' \item{\code{plugin}} the plug-in moment covariance estimator
 #' \item{\code{mattfeldt}} an estimator inspired by an 

@@ -8,7 +8,7 @@
 #' Hingee K, Baddeley A, Caccetta P, Nair G (2017). Computation of lacunarity from covariance of spatial binary maps. \emph{Journal of Agricultural, Biological and Environmental Statistics}. DOI: 10.1007/s13253-019-00351-9. Online First.
 
 #' @details
-#' If we denoted the estimated pair-correlation by \eqn{\hat{g}(v)}{g(v)} then the estimate of GBL is
+#' If we denote the estimated pair-correlation by \eqn{\hat{g}(v)}{g(v)} then the estimate of GBL is
 #' \deqn{\frac{1}{|B|^2}\int \gamma_B(v)\hat{g}(v)dv. }{  \int gammaB(v) g(v) dv  /  (|B|^2) .  }
 
 #' @param boxes Either a list of sidelengths for square boxes or a list of \code{owin} objects of any shape.
@@ -19,7 +19,7 @@
 #'  The returned object is then an \code{fv} object containing estimates of GBL.
 #'  If \code{boxes} is a list of owin objects then \code{gblg} returns a dataframe of with columns corresponding to estimates of GBL.
 #'  
-#'  Note if NA or NaN values in the \code{paircorr} object are used then \code{gblg} will return NA or NaN instead of an GBL value. 
+#'  Note if value in the \code{paircorr} object that are needed for \code{gblg} are \code{NA} or \code{NaN} then \code{gblg} will return \code{NA} or \code{NaN}. 
 
 #' @examples
 #' xi <- heather$coarse

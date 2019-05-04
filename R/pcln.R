@@ -26,8 +26,8 @@
 #' @param drop If TRUE and one estimator selected then the returned value will be a single \code{im} object and not a list of \code{im} object.
 #'  \code{estimators = "all"} will select all inbuilt estimators. See details. 
 
-#' @return If \code{drop = TRUE} and a single estimator requested then a
-#'   \code{im} object containing the pair-correlation estimate. Otherwise a
+#' @return If \code{drop = TRUE} and a single estimator is requested then an
+#'   \code{im} object containing the pair-correlation estimate is returned. Otherwise a
 #'   named \code{imlist} of \code{im} objects containing the pair-correlation
 #'   estimates for each requested estimator.
 #'
@@ -45,8 +45,8 @@
 #' the plug-in moment estimate of covariance and the usual estimate of coverage probability, respectively.
 #'   \item{\code{mattfeldt}} an `intrinsically' balanced pair-correlation estimator suggested by Picka (1997).
 #'   A similar isotropic pair-correlation estimator was later studied by Mattfeldt and Stoyan (2000).
-#'   \item{\code{pickaint}} Picka's 'intrinsically' balanced pair-correlation estimator (Picka, 2000). 
-#'   \item{\code{pickaH}} Picka's 'additively' balanced pair-correlation estimator (Picka, 2000).
+#'   \item{\code{pickaint}} Picka's `intrinsically' balanced pair-correlation estimator (Picka, 2000). 
+#'   \item{\code{pickaH}} Picka's `additively' balanced pair-correlation estimator (Picka, 2000).
 #'   }
 #'
 #' @references

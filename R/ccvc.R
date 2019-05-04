@@ -36,7 +36,7 @@
 #'   C(v) - p^2.}
 #'
 #'   The estimators available are (see (Section 3.4, Hingee, 2019) for
-#'   information): 
+#'   more information): 
 #'   \itemize{ 
 #'   \item{\code{plugin}} the plug-in moment centred
 #'   covariance estimator 

@@ -1,5 +1,24 @@
 # TO DO BEFORE PUBLISHING:
 
+change package filename to something narrower: covargbl  ? lacunaritycovariance
+- I'm doing this because it is now clearer that I won't be expanding on the capacity of the package in the next few years.
+- The more descriptive name here the better.
+- A zinger of a name would be nice. lacunaritycovariance?
+- But contagion estimators are included?
+
+Remake description file
+
+Change all refs of journal paper to include issue etc.
+Hingee K, Baddeley A, Caccetta P, Nair G (2017). Computation of lacunarity from covariance of spatial binary maps. \emph{Journal of Agricultural, Biological and Environmental Statistics}. DOI: 10.1007/s13253-019-00351-9. Online First.
+-->
+Hingee K, Baddeley A, Caccetta P, Nair G (2019). Computation of lacunarity from covariance of spatial binary maps. \emph{Journal of Agricultural, Biological and Environmental Statistics}, 24, 264–288. DOI: 10.1007/s13253-019-00351-9.
+
+In centred covariance (and other places) the quotation marks are not in the write direction.
+
+in !im! format --> as an !im! object
+
+delete the plotting things in examples
+
 ----
 
 ## Really required:
