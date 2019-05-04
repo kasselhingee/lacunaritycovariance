@@ -10,10 +10,6 @@ Remake description file
 
 In centred covariance (and other places) the quotation marks are not in the write direction.
 
-in !im! format --> as an !im! object
-sed -i "s/in \\\code{im} format/as an \\\code{im} object/g"
-sed -i "s/in \\\code{owin} format/as an \\\code{im} object/g"
-
 delete the plotting things in examples
 
 ----
