@@ -6,9 +6,8 @@
 #'  and a third `balanced' estimator inspired by one of Picka's pair-correlation estimators.
 #' @author{Kassel Liam Hingee}
 
-#' @param xi An observation of a RACS of interest as a full binary map (in \code{im} format) or as the foreground set (in \code{owin} format).
+#' @param xi An observation of a RACS of interest as a full binary map (as an \code{im} object) or as the foreground set (as an \code{owin} object).
 #' In the latter case the observation window, \code{obswin}, must be supplied.
-#' See \code{\link{stationaryracsinference-package}} for details.
 #' @param obswin If \code{xi} is an \code{owin} object then \code{obswin} is an
 #'   \code{owin} object that specifies the observation window.
 #' @param setcov_boundarythresh Any vector \eqn{v} such that set covariance of the observation window
@@ -16,9 +15,9 @@
 #' @param phat The usual estimate of coverage probability,
 #'  which is the observed foreground area in \code{xi} divided by the total area of the observation window.
 #'  See \code{\link{coverageprob}} for more information.
-#' @param cvchat The plug-in moment estimate of covariance in \code{im} format. 
+#' @param cvchat The plug-in moment estimate of covariance as an \code{im} object. 
 #' Typically created with \code{\link{plugincvc}}.
-#' @param cpp1 Picka's reduced window estimate of coverage probability in \code{im} format - used in improved (balanced) covariance estimators.
+#' @param cpp1 Picka's reduced window estimate of coverage probability as an \code{im} object - used in improved (balanced) covariance estimators.
 #' Can be generated using \code{\link{cppicka}}.
 #' @param estimators A list of strings specifying estimators to use. 
 #' See details.
@@ -36,7 +35,7 @@
 #'   C(v) - p^2.}
 #'
 #'   The estimators available are (see (Section 3.4, Hingee, 2019) for
-#'   information): 
+#'   more information): 
 #'   \itemize{ 
 #'   \item{\code{plugin}} the plug-in moment centred
 #'   covariance estimator 

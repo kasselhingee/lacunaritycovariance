@@ -12,7 +12,7 @@
 #' @param outsideB The value of \eqn{g} outside the domain of \code{B}. Typically will be \code{0} or \code{NA}. Default is \code{NA}.
 #' @param na.rm Logical. If TRUE NA values are skipped in the summation of the product of the images.
 
-#' @details Harmonises the two input images, multiplies them together and returns the
+#' @details This function harmonises the two input images, multiplies them together and returns the
 #' integral of the resulting image.
 #'  \code{outsideA} and \code{outsideB} are used to determine result if the inner product requires
 #' values outside the domain of A or B. For example if \code{outsideA=0} and the

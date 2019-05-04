@@ -5,21 +5,21 @@
 #'  It can also calculate the GBL of a RACS from a provided pair-correlation function. 
 
 #' @references
-#' Hingee K, Baddeley A, Caccetta P, Nair G (2017). Computation of lacunarity from covariance of spatial binary maps. \emph{Journal of Agricultural, Biological and Environmental Statistics}. DOI: 10.1007/s13253-019-00351-9. Online First.
+Hingee K, Baddeley A, Caccetta P, Nair G (2019). Computation of lacunarity from covariance of spatial binary maps. \emph{Journal of Agricultural, Biological and Environmental Statistics}, 24, 264-288. DOI: 10.1007/s13253-019-00351-9.
 
 #' @details
-#' If we denoted the estimated pair-correlation by \eqn{\hat{g}(v)}{g(v)} then the estimate of GBL is
+#' If we denote the estimated pair-correlation by \eqn{\hat{g}(v)}{g(v)} then the estimate of GBL is
 #' \deqn{\frac{1}{|B|^2}\int \gamma_B(v)\hat{g}(v)dv. }{  \int gammaB(v) g(v) dv  /  (|B|^2) .  }
 
 #' @param boxes Either a list of sidelengths for square boxes or a list of \code{owin} objects of any shape.
 #' @param paircorr  A \code{im} object containing the pair-correlation function
-#' @param xiim An observation of a stationary RACS in \code{im} format. \code{xiim} must have values of either 1, 0 or NA; 1 denotes inside the RACS, 0 denotes outside, and NA denotes unobserved.
+#' @param xiim An observation of a stationary RACS as an \code{im} object. \code{xiim} must have values of either 1, 0 or NA; 1 denotes inside the RACS, 0 denotes outside, and NA denotes unobserved.
 
 #' @return If \code{boxes} is a list of numerical values then GBL is estimated for square boxes with side length given by \code{boxes}.
 #'  The returned object is then an \code{fv} object containing estimates of GBL.
 #'  If \code{boxes} is a list of owin objects then \code{gblg} returns a dataframe of with columns corresponding to estimates of GBL.
 #'  
-#'  Note if NA or NaN values in the \code{paircorr} object are used then \code{gblg} will return NA or NaN instead of an GBL value. 
+#'  Note if value in the \code{paircorr} object that are needed for \code{gblg} are \code{NA} or \code{NaN} then \code{gblg} will return \code{NA} or \code{NaN}. 
 
 #' @examples
 #' xi <- heather$coarse

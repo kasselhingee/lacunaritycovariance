@@ -1,4 +1,4 @@
-#' @title Simulate Boolean Model with Grains Scaled According to a truncated
+#' @title Simulate Boolean Model with Grains Scaled According to a Truncated
 #'   Pareto Distribution
 #' @export rbpto bpto.coverageprob bpto.covar bpto.germintensity
 #' @description Functions for simulation and computing theoretical values of a
@@ -29,13 +29,14 @@
 #'   \code{win} are polygonal then computations may be all polygonal.
 
 #' @details
-#' The parameters xm and alpha are such that the CDF of the Pareto distribution is \eqn{P(s <= x) = 1 - (xm / x)^{alpha}}.
+#' The parameters \code{xm} and \code{alpha} are such that the CDF of the Pareto distribution is \eqn{P(s <= x) = 1 - (xm / x)^{alpha}}.
 #' The distribution of grains scales is a step-function approximation to the CDF with steps at \code{lengthscales}.
 #' 
 #'
 #' 
 #' @return 
 #' An owin object.
+#' @keywords spatial datagen
 
 
 #' @examples
