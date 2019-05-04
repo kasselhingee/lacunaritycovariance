@@ -47,7 +47,7 @@ The point process of germs is generated using spatstat's \code{\link[spatstat]{r
 
 \section{WARNING}{
 
-The returned object of \code{rbdr} is only the contents of Xi and thus could be much smaller than the window (e.g. when the simulated set is empty).
+The returned object of \code{rbdr} is only the foreground of a binary map and thus can have much smaller extent than the simulation window (e.g. when the simulated set is empty).
 }
 
 \examples{

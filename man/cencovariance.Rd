@@ -18,8 +18,8 @@ In the latter case the observation window, \code{obswin}, must be supplied.}
 \item{obswin}{If \code{xi} is an \code{owin} object then \code{obswin} is an
 \code{owin} object that specifies the observation window.}
 
-\item{setcov_boundarythresh}{Any vector \eqn{v} such that set covariance of the observation window
-is smaller than this threshold is given a covariance of NA to avoid instabilities caused by dividing by very small areas,}
+\item{setcov_boundarythresh}{To avoid instabilities caused by dividing by very small quantities, if the set covariance of the observation window
+is smaller than \code{setcov_boundarythresh}, then the covariance is given a value of NA.}
 
 \item{estimators}{A list of strings specifying estimators to use. 
 See details.
@@ -38,8 +38,8 @@ which is the observed foreground area in \code{xi} divided by the total area of 
 See \code{\link{coverageprob}} for more information.}
 }
 \value{
-If \code{drop = TRUE} and a single estimator requested then a
-  \code{im} object containing the centred covariance estimate. Otherwise a
+If \code{drop = TRUE} and only one estimator is requested then a
+  \code{im} object containing the centred covariance estimate is returned. Otherwise a
   named \code{imlist} of \code{im} objects containing the centred covariance
   estimates for each requested estimator.
 }
@@ -61,10 +61,10 @@ The centred covariance of a stationary RACS is \deqn{\kappa(v) =
   `intrinsically' balanced pair-correlation estimator from Picka (1997) that was
   later studied in an isotropic situation by Mattfeldt and Stoyan
   (Mattfeldt and Stoyan, 2000) 
-  \item{\code{pickaint}} Picka's intrinsically' balanced
+  \item{\code{pickaint}} Picka's `intrinsically' balanced
   centred covariance estimator (Picka, 2000). 
   \item{\code{pickaH}} Picka's
-  additively' balanced centred covariance estimator (Picka, 2000).
+  `additively' balanced centred covariance estimator (Picka, 2000).
   }
 
   Currently computes centred covariance using \code{\link{racscovariance}}.
@@ -76,7 +76,7 @@ The centred covariance of a stationary RACS is \deqn{\kappa(v) =
 \item \code{cencovariance.cvchat}: Generates centred covariances estimates from
 a plug-in moment estimate of covariance, Picka's reduced window estimate of coverage probability,
 and the plug-in moment estimate of coverage probability.
-If these estimates already exist then \code{\link{cencovariance.cvchat}} can save significant computation time.
+If these estimates already exist, then \code{\link{cencovariance.cvchat}} saves significant computation time over \code{cencovariance}.
 }}
 
 \examples{

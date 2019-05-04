@@ -30,7 +30,7 @@ Estimates the gliding box lacunarity (GBL) of a stationary RACS using centred co
  The centred covariance and coverage probability can be provided or estimated from binary map.
 }
 \details{
-If we denoted the estimated centred covariance by
+If we denote the estimated centred covariance by
 \eqn{\hat{\kappa}(v)}{k(v)} and coverage probability \eqn{\hat{p}}{p} then
 the estimate of GBL is
 \deqn{1 + \frac{1}{\hat{p}^2 |B|^2}\int \gamma_B(v)\hat{\kappa}(v)dv }{1 + \int gammaB(v) k(v) dv  /  (p^2 |B|^2).}

@@ -13,8 +13,8 @@ In the latter case the observation window, \code{obswin}, must be supplied.}
 \item{obswin}{If \code{xi} is an \code{owin} object then \code{obswin} is an
 \code{owin} object that specifies the observation window.}
 
-\item{setcov_boundarythresh}{Any vector \eqn{v} such that set covariance of the observation window
-is smaller than this threshold is given a covariance of NA to avoid instabilities caused by dividing by very small areas,}
+\item{setcov_boundarythresh}{To avoid instabilities caused by dividing by very small quantities, if the set covariance of the observation window
+is smaller than \code{setcov_boundarythresh}, then the returned pixel value is NA.}
 }
 \value{
 An \code{im} object. Pixel values correspond to estimates of the coverage probability
@@ -25,7 +25,7 @@ This function provides estimates of coverage probability from subsets of the obs
  which are a key component of balanced estimators of covariance, centred covariance, pair-correlation and gliding box lacunarity.
 }
 \details{
-The plug-in moment covariance estimators uses less of the observation window than the usual coverage probability estimators.
+The plug-in moment covariance estimator (\code{\link{plugincvc}}) uses less of the observation window than the usual coverage probability estimators.
 Picka (1997, 2000) created new `balanced' estimators of centred covariance and pair-correlation
 that accounted for this difference.
 A key component of Picka's estimators is an estimate of the coverage probability from the subregion of the binary map that is

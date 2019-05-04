@@ -13,8 +13,8 @@ In the latter case the observation window, \code{obswin}, must be supplied.}
 \item{obswin}{If \code{xi} is an \code{owin} object then \code{obswin} is an
 \code{owin} object that specifies the observation window.}
 
-\item{setcov_boundarythresh}{Any vector \eqn{v} such that set covariance of the observation window
-is smaller than this threshold is given a covariance of NA to avoid instabilities caused by dividing by very small areas,}
+\item{setcov_boundarythresh}{To avoid instabilities caused by dividing by very small quantities, if the set covariance of the observation window
+is smaller than \code{setcov_boundarythresh}, then the covariance is given a value of NA.}
 }
 \value{
 A \pkg{SpatStat} \code{im} object containing the estimated covariance.

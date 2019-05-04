@@ -21,8 +21,8 @@ the observation window.}
 
 \item{obswin}{The observation window as an \code{owin} object if \code{xi} is also as an \code{owin} object.}
 
-\item{setcov_boundarythresh}{Any vector \eqn{v} such that set covariance of the observation window
-is smaller than this threshold is given a covariance of NA to avoid instabilities caused by dividing by very small areas,}
+\item{setcov_boundarythresh}{To avoid instabilities caused by dividing by very small quantities, if the set covariance of the observation window
+is smaller than \code{setcov_boundarythresh}, then the covariance is given a value of NA.}
 
 \item{estimators}{A list of strings specifying covariance estimators to use. 
 See details.

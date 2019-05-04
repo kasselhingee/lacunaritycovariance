@@ -27,11 +27,11 @@ In the latter case the observation window, \code{obswin}, must be supplied.}
 
 \item{includenormed}{A logical value. If TRUE then GBL estimates normalised by the GBL values at zero will be included in a returned list of fv objects}
 
-\item{setcov_boundarythresh}{Any vector \eqn{v} such that set covariance of the observation window is smaller than this threshold
-is given a covariance estimate (and other similar estimate) of NA to avoid instabilities caused by dividing by very small areas.
-If NULL is supplied (default) then 1E-6 is used.}
+\item{setcov_boundarythresh}{To avoid instabilities caused by dividing by very small quantities, if the set covariance of the observation window
+ is smaller than \code{setcov_boundarythresh}, then the covariance is given a value of NA. 
+If NULL is supplied (default) then \code{setcov_boundarythresh} is set to 1E-6.}
 
-\item{phat}{The fraction foreground area in the observation window, which is the usual estimator of coverage probability.}
+\item{phat}{The fraction of foreground area in the observation window, which is the usual estimator of coverage probability given by \code{\link{coverageprob}}.}
 
 \item{cvchat}{The plug-in moment covariance estimate (often from \code{\link{plugincvc}}).}
 
@@ -41,7 +41,7 @@ If NULL is supplied (default) then 1E-6 is used.}
 An \code{fv} object.
 }
 \description{
-Estimates gliding box lacunarity (GBL) using all estimators described in (Hingee et al., 2017) from binary maps for square boxes.
+Estimates gliding box lacunarity (GBL) for square boxes using all estimators described in (Hingee et al., 2017).
 It calls the functions \code{\link{gblc}}, \code{\link{gblg}}, \code{\link{gblcc}} and \code{\link{gblemp}}.
 }
 \details{
@@ -49,7 +49,7 @@ As empirical GBL is one of the GBL estimators available through this function, n
 To estimate GBL for non-square boxes use \code{gblcc} or \code{gblg} directly.
 
 If \code{xi} is an \code{owin} object then \code{obswin} and \code{xi} are converted
- into a binary map as an \code{im} object using \code{\link[spatstat]{as.im}}
+ into an \code{im} object using \code{\link[spatstat]{as.im}}
 
 The estimators available are
 \itemize{
@@ -65,9 +65,9 @@ The estimators available are
 }
 \section{Functions}{
 \itemize{
-\item \code{gbl}: Computes GBL estimates from a binary map.
+\item \code{gbl}: computes GBL estimates from a binary map.
 
-\item \code{gbl.cvchat}: Computes covariance-based estimator of GBL from the plug-in moment estimate of covariance,
+\item \code{gbl.cvchat}: computes covariance-based estimator of GBL from the plug-in moment estimate of covariance,
 Picka's reduced window coverage probability estimates (see \code{\link{cppicka}}) and the usual coverage probability estimate, \code{phat}.
 }}
 

@@ -29,7 +29,7 @@ The coverage probability of a stationary RACS is the probability that an arbitra
 Given a binary map, \code{xi}, of a realisation of stationary RACS \eqn{\Xi} in a window \eqn{W},
  this function computes the fraction of \eqn{W} covered by foreground,
 which is an estimate of the coverage probability.
-See [1, section 6.4.2] for more details.
+See (Chiu et al., 2013, Section 6.4.2) for more details.
 
 If \code{xi} is an \code{im} object then \code{xi} must be an image of 1s, 0s and NAs
  representing inside the set, outside the set and outside the observation window respectively.
@@ -41,7 +41,7 @@ obswindow <- Frame(heather$coarse)
 cp <- coverageprob(xi, obswindow)
 }
 \references{
-[1] Chiu, S.N., Stoyan, D., Kendall, W.S. and Mecke, J. (2013) Stochastic Geometry and Its Applications, 3rd ed. Chichester, United Kingdom: John Wiley & Sons.
+Chiu, S.N., Stoyan, D., Kendall, W.S. and Mecke, J. (2013) Stochastic Geometry and Its Applications, 3rd ed. Chichester, United Kingdom: John Wiley & Sons.
 }
 \author{
 Kassel Liam Hingee
