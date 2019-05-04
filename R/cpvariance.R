@@ -19,7 +19,8 @@
 #' @param Xi is an observation (in owin) format of a RACS or an image of 0, 1 and NA values.
 #' @param obswin is the corresponding observation window. 
 #' @param covar A covariance image for the RACS (could be estimated from Xi)
-#' @param setcov_boundarythresh When estimating covariance the threshold at which the set covariance of the observation window is deemed too small and estimation doesn't occur. See \code{\link{plugincvc}}.
+#' @param setcov_boundarythresh To avoid instabilities caused by dividing by very small quantities, if the set covariance of the observation window
+#'  is smaller than \code{setcov_boundarythresh}, then the covariance is given a value of NA. 
 #' @param estimators A list of estimators of centred covariance estimation to use - see \code{ccvc()}.
 
 #' @examples 

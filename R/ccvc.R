@@ -10,8 +10,8 @@
 #' In the latter case the observation window, \code{obswin}, must be supplied.
 #' @param obswin If \code{xi} is an \code{owin} object then \code{obswin} is an
 #'   \code{owin} object that specifies the observation window.
-#' @param setcov_boundarythresh Any vector \eqn{v} such that set covariance of the observation window
-#'  is smaller than this threshold is given a covariance of NA to avoid instabilities caused by dividing by very small areas, 
+#' @param setcov_boundarythresh To avoid instabilities caused by dividing by very small quantities, if the set covariance of the observation window
+#'  is smaller than \code{setcov_boundarythresh}, then the covariance is given a value of NA. 
 #' @param phat The usual estimate of coverage probability,
 #'  which is the observed foreground area in \code{xi} divided by the total area of the observation window.
 #'  See \code{\link{coverageprob}} for more information.
@@ -25,8 +25,8 @@
 #' @param drop If TRUE and one estimator selected then the returned value will be a single \code{im} object and not a list of \code{im} object.
 
 
-#' @return If \code{drop = TRUE} and a single estimator requested then a
-#'   \code{im} object containing the centred covariance estimate. Otherwise a
+#' @return If \code{drop = TRUE} and only one estimator is requested then a
+#'   \code{im} object containing the centred covariance estimate is returned. Otherwise a
 #'   named \code{imlist} of \code{im} objects containing the centred covariance
 #'   estimates for each requested estimator.
 #'
@@ -43,10 +43,10 @@
 #'   `intrinsically' balanced pair-correlation estimator from Picka (1997) that was
 #'   later studied in an isotropic situation by Mattfeldt and Stoyan
 #'   (Mattfeldt and Stoyan, 2000) 
-#'   \item{\code{pickaint}} Picka's intrinsically' balanced
+#'   \item{\code{pickaint}} Picka's `intrinsically' balanced
 #'   centred covariance estimator (Picka, 2000). 
 #'   \item{\code{pickaH}} Picka's
-#'   additively' balanced centred covariance estimator (Picka, 2000).
+#'   `additively' balanced centred covariance estimator (Picka, 2000).
 #'   }
 #'
 #'   Currently computes centred covariance using \code{\link{racscovariance}}.
@@ -82,7 +82,7 @@ cencovariance <- function(xi, obswin = NULL,
 #' @describeIn cencovariance Generates centred covariances estimates from
 #'   a plug-in moment estimate of covariance, Picka's reduced window estimate of coverage probability,
 #'   and the plug-in moment estimate of coverage probability.
-#'   If these estimates already exist then \code{\link{cencovariance.cvchat}} can save significant computation time.
+#'   If these estimates already exist, then \code{\link{cencovariance.cvchat}} saves significant computation time over \code{cencovariance}.
 cencovariance.cvchat <- function(cvchat, cpp1 = NULL, phat = NULL,
         setcov_boundarythresh = NULL,
         estimators = "all",

@@ -9,11 +9,12 @@
 \packageDescription{lacunaritycovariance}
 }
 \details{
-Background is available for RACS (Chiu et al., 2013; Molchanov, 2005), gliding box lacunarity (GBL) (Hingee et al., 2017) and contagion for RACS (Hingee, 2016).
-A forthcoming PhD thesis by (Hingee, 2019) will provide additional background for GBL, and for RACS in landscape metrics (which includes contagion).
+Random closed sets (RACS) (Chiu et al., 2013; Molchanov, 2005) are a well known tool for modelling binary coverage maps. 
+The package author recently developed new, improved estimators of gliding box lacunarity (GBL) for RACS (Hingee et al., 2017) and described contagion-like properties for RACS (Hingee, 2016).
+A forthcoming PhD thesis (Hingee, 2019) will provide additional background for GBL, and for RACS in landscape metrics (which includes contagion).
 
 This package expects RACS observations to be in the form of binary maps either in raster format, or as a set representing foreground with a second set giving the observation window.
-If in raster format, the object is expected to be a \pkg{spatstat} \code{im} object with pixel values that are only 1 and 0, or are logically valued (i.e. TRUE or FALSE). In both cases the observation window is taken to be the set of pixels with values that are not \code{NA} (i.e. \code{NA} values are considered outside the observation window).
+If in raster format, the binary map is expected to be a \pkg{spatstat} \code{im} object with pixel values that are only 1 and 0, or are logically valued (i.e. TRUE or FALSE). In both cases the observation window is taken to be the set of pixels with values that are not \code{NA} (i.e. \code{NA} values are considered outside the observation window).
 The foreground of the binary map, corresponding to locations within the realisation of the RACS, is taken to be pixels that have value 1 or TRUE.
 If the binary map is in set format then a \pkg{spatstat} \code{owin} object is used to represent foreground and a second \code{owin} object is used to represent the observation window.
 
@@ -33,7 +34,7 @@ The key functions within this package for estimating properties of RACS are:
 \item{\code{\link{contagdiscstate}}} { estimates the disc-state contagion of a stationary RACS}
 }
 
-Key function for simulating RACS are:
+Key functions for simulating RACS are:
 \itemize{
 \item{\code{\link{rbdd}}}{ simulates a Boolean model with grains that are discs with fixed radius (deterministic discs).}
 \item{\code{\link{rbdr}}}{ simulates a Boolean model with grains that are rectangles of fixed size and orientation.}
@@ -74,6 +75,6 @@ cvchat <- racscovariance(xi, estimator = "pickaH")
 gblhat <- gbl(xi, seq(0.1, 5, by = 0.1), estimators = "GBLcc.pickaH")
 contagds <- contagdiscstate(Hest(xi), Hest(!xi), p = cphat)
 
-#simulate a Boolean model with grains that discs of fixed radius:
+#simulate a Boolean model with grains that are discs of fixed radius:
 xi_sim <- rbdd(10, 0.1, owin())
 }

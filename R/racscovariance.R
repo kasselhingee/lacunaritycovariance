@@ -15,8 +15,8 @@
 #'   \code{xi} represents foreground and \code{obswin} is required to specify
 #'   the observation window.
 #' @param obswin The observation window as an \code{owin} object if \code{xi} is also as an \code{owin} object. 
-#' @param setcov_boundarythresh Any vector \eqn{v} such that set covariance of the observation window
-#'  is smaller than this threshold is given a covariance of NA to avoid instabilities caused by dividing by very small areas, 
+#' @param setcov_boundarythresh To avoid instabilities caused by dividing by very small quantities, if the set covariance of the observation window
+#'  is smaller than \code{setcov_boundarythresh}, then the covariance is given a value of NA. 
 #' @param phat The classical estimate of coverage probability,
 #'  which is the observed area in \code{xi} divided by the total area of the observation window.
 #'  See \code{\link{coverageprob}} for more information.

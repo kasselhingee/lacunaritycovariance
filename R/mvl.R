@@ -1,6 +1,6 @@
 #' @title Gliding box lacunarity estimation using all estimators
 #' @export gbl gbl.cvchat
-#' @description Estimates gliding box lacunarity (GBL) using all estimators described in (Hingee et al., 2017) from binary maps for square boxes.
+#' @description Estimates gliding box lacunarity (GBL) for square boxes using all estimators described in (Hingee et al., 2017).
 #' It calls the functions \code{\link{gblc}}, \code{\link{gblg}}, \code{\link{gblcc}} and \code{\link{gblemp}}.
 
 #' @param xi An observation of a RACS of interest as a full binary map (as an \code{im} object) or as the foreground set (as an \code{owin} object).
@@ -10,10 +10,10 @@
 #' @param boxwidths A list of box widths
 #' @param estimators A list of estimator names - see details for possibilities. \code{estimators = "all"} will select all estimators.
 #' @param includenormed A logical value. If TRUE then GBL estimates normalised by the GBL values at zero will be included in a returned list of fv objects
-#' @param setcov_boundarythresh Any vector \eqn{v} such that set covariance of the observation window is smaller than this threshold
-#' is given a covariance estimate (and other similar estimate) of NA to avoid instabilities caused by dividing by very small areas.
-#' If NULL is supplied (default) then 1E-6 is used.
-#' @param phat  The fraction foreground area in the observation window, which is the usual estimator of coverage probability.
+#' @param setcov_boundarythresh To avoid instabilities caused by dividing by very small quantities, if the set covariance of the observation window
+#'  is smaller than \code{setcov_boundarythresh}, then the covariance is given a value of NA. 
+#' If NULL is supplied (default) then \code{setcov_boundarythresh} is set to 1E-6.
+#' @param phat  The fraction of foreground area in the observation window, which is the usual estimator of coverage probability given by \code{\link{coverageprob}}.
 #' @param cvchat The plug-in moment covariance estimate (often from \code{\link{plugincvc}}).
 #' @param cpp1 Picka's estimate of coverage probability for subsets of the observation window. See \code{\link{cppicka}}.
 
@@ -24,7 +24,7 @@
 #' To estimate GBL for non-square boxes use \code{gblcc} or \code{gblg} directly.
 #' 
 #' If \code{xi} is an \code{owin} object then \code{obswin} and \code{xi} are converted
-#'  into a binary map as an \code{im} object using \code{\link[spatstat]{as.im}}
+#'  into an \code{im} object using \code{\link[spatstat]{as.im}}
 #' 
 #' The estimators available are
 #' \itemize{
@@ -54,7 +54,7 @@
 #' }
 #' gblests <- gbl(xi, boxwidths)
 
-#' @describeIn gbl Computes GBL estimates from a binary map.
+#' @describeIn gbl computes GBL estimates from a binary map.
 gbl <- function(xi, boxwidths,
                            estimators = c("GBLg.mattfeldt", "GBLg.pickaint", "GBLg.pickaH",
                                           "GBLcc.mattfeldt", "GBLcc.pickaint",
@@ -128,7 +128,7 @@ gbl <- function(xi, boxwidths,
   return(allfvs)
 }
 
-#' @describeIn gbl Computes covariance-based estimator of GBL from the plug-in moment estimate of covariance,
+#' @describeIn gbl computes covariance-based estimator of GBL from the plug-in moment estimate of covariance,
 #'  Picka's reduced window coverage probability estimates (see \code{\link{cppicka}}) and the usual coverage probability estimate, \code{phat}.
 gbl.cvchat <- function(boxwidths,
                       estimators = c("GBLg.mattfeldt", "GBLg.pickaint", "GBLg.pickaH",
