@@ -1,7 +1,7 @@
-# stationaryracsinference 
+# lacunaritycovariance 
 *Author: Kassel Liam Hingee*
 
-This directory contains the source code of the R package *stationaryracsinference*. This R package is for estimating gliding box lacunarity and other RACS properties from spatial binary maps (images composed of binary-valued pixels). 
+This directory contains the source code of the R package *lacunaritycovariance*. This R package is for estimating gliding box lacunarity and other RACS properties from spatial binary maps (images composed of binary-valued pixels). 
 
 ## Installation
 ### From GitHub using devtools package:
@@ -25,10 +25,10 @@ First run the following to build a .tar.gz file.
 
     R CMD build . 
 
-This should create a file "stationaryracsinference-VERSION.tar.gz".
+This should create a file "lacunaritycovariance-VERSION.tar.gz".
 Then run 
 
-    R CMD INSTALL stationaryracsinference-VERSION.tar.gz
+    R CMD INSTALL lacunaritycovariance-VERSION.tar.gz
 
 ## Further Notes
 ### Manual pages

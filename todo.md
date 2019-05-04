@@ -8,8 +8,6 @@ change package filename to something narrower: covargbl  ? lacunaritycovariance
 
 Remake description file
 
-In centred covariance (and other places) the quotation marks are not in the write direction.
-
 delete the plotting things in examples
 
 ----

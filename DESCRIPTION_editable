@@ -1,5 +1,5 @@
 Type: Package
-Package: stationaryracsinference
+Package: lacunaritycovariance 
 Title: Gliding Box Lacunarity and Other Estimators for Random Closed Sets in 2D
 Version: 0.5-02
 Date: 2019-05-04

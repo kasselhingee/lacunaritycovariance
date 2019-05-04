@@ -11,7 +11,6 @@
 #' 
 #' @param xi An observation of a RACS of interest as a full binary map (as an \code{im} object) or as the foreground set (as an \code{owin} object).
 #' In the latter case the observation window, \code{obswin}, must be supplied.
-#' See \code{\link{stationaryracsinference-package}} for details.
 #' @param obswin The window of observation (not necessarily rectangular) also as an \code{owin} object.
 #' @return An estimate of the coverage probability
 #' @details

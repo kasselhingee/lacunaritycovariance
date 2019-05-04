@@ -1,12 +1,12 @@
-\name{stationaryracsinference-package}
-\alias{stationaryracsinference-package}
-\alias{stationaryracsinference}
+\name{lacunaritycovariance-package}
+\alias{lacunaritycovariance-package}
+\alias{lacunaritycovariance}
 \docType{package}
 \title{
-\packageTitle{stationaryracsinference}
+\packageTitle{lacunaritycovariance}
 }
 \description{
-\packageDescription{stationaryracsinference}
+\packageDescription{lacunaritycovariance}
 }
 \details{
 Background is available for RACS (Chiu et al., 2013; Molchanov, 2005), gliding box lacunarity (GBL) (Hingee et al., 2017) and contagion for RACS (Hingee, 2016).
@@ -19,7 +19,7 @@ If the binary map is in set format then a \pkg{spatstat} \code{owin} object is u
 
 We will usually denote a RACS as \eqn{\Xi} and a realisation of \eqn{\Xi} observed as a binary map as \eqn{xi}. We will usually denote the observation window as \code{obswin}.
 
-A demonstration converting remotely sensed data into a binary map in \code{im} format can be accessed by typing \code{demo("import_remote_sense_data", package = "stationaryracsinference")}.
+A demonstration converting remotely sensed data into a binary map in \code{im} format can be accessed by typing \code{demo("import_remote_sense_data", package = "lacunaritycovariance")}.
 A short example of estimating RACS properties can be found in the vignette \code{estimate_RACS_properties}, which can be accessed with \code{vignette("estimate_RACS_properties")}.
 
 The key functions within this package for estimating properties of RACS are:
@@ -43,9 +43,9 @@ Key function for simulating RACS are:
 
 }
 \author{
-\packageAuthor{stationaryracsinference}
+\packageAuthor{lacunaritycovariance}
 
-Maintainer: \packageMaintainer{stationaryracsinference}
+Maintainer: \packageMaintainer{lacunaritycovariance}
 }
 \references{
 Chiu, S.N., Stoyan, D., Kendall, W.S. and Mecke, J. (2013) \emph{Stochastic Geometry and Its Applications}, 3rd ed. Chichester, United Kingdom: John Wiley & Sons.
