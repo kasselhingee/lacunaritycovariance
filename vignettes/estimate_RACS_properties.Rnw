@@ -20,14 +20,17 @@ This document demonstrates how to estimate various properties of a stationary RA
 \section{Preparing the Binary Map}
 We will need an image in \code{spatstat}'s \code{im} format with values of 1, 0 and NA representing foreground, background and outside the observation window respectively.
 For this vignette we will use a small image already prepared.
-You can see how we prepared it from remote sensing data in the demo \verb!import_remote_sense_data!, which can be run by \verb!demo("import_remote_sense_data", package = "lacunaritycovariance")!.
+You can see how we prepared it from remote sensing data in the demo:\\
+ \verb!import_remote_sense_data!.\\
+This demo can be run by typing the following in \code{R}:\\ \verb!demo("import_remote_sense_data", package = "lacunaritycovariance")!.
 
 \begin{figure}[H]
 \centering
 <<loadbinarymap, fig = TRUE>>=
 library(lacunaritycovariance)
-load(system.file("extdata/egbinarymap.RData", package="lacunaritycovariance"))
-# the following converts egbinarymap to a thing of logical type (**shouldn't be needed long term)
+load(system.file("extdata/egbinarymap.RData",
+     package="lacunaritycovariance"))
+# the following converts egbinarymap to pixel values with logical type
 egbinarymap <- eval.im(egbinarymap > 0.5)
 plot(egbinarymap, col = c("grey", "black"), main = "The Binary Map")
 @
@@ -162,6 +165,7 @@ Foroutan-pour, K., Dutilleul, P. and Smith, D.L. (1999) \emph{Advances in the im
 Hingee, K.L. (2016) \emph{Statistics for Patch Observations.} ISPRS Congress Proceedings. ISPRS.
 
 \
+
 \noindent
 Hingee, K.L. (2019) \emph{Spatial Statistics of Random Closed Sets for Earth Observations}. PhD: Perth, Western Australia: University of Western Australia. Submitted.
 
