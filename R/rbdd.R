@@ -7,11 +7,10 @@
 #'   model with Deterministic Discs). A Boolean model is a two stage model,
 #'   first the locations (called germs) of grains are randomly distributed
 #'   according to a Poisson point process, then a random grain is placed on each
-#'   germ independently. Introduction to Boolean models are available in many
+#'   germ independently. Introductions to Boolean models are available in many
 #'   stochastic geometry books (Chiu et al., 2013). Also described here are
 #'   functions for calculating the coverage probability, germ intensity, and
-#'   covariance of a Boolean model with deterministic discs from model
-#'   parameters.
+#'   covariance from model parameters for a Boolean model with deterministic discs.
 #'
 #' @param lambda Intensity of the germ process (which is a Poisson point
 #'   process)
@@ -25,7 +24,7 @@
 #' See Functions section.
 
 #' @section WARNING:
-#' The returned object of \code{rbdd} is only the contents of Xi and thus could be much smaller than the window (e.g. when the simulated set is empty).
+#' The returned object of \code{rbdd} is an owin specifying the realisation of the Boolean model within the simulation window. The simulation window is not included, thus the object returned by \code{rbdd} can have much smaller extent than the simulation window (e.g. when the simulated set is empty).
 #' 
 #' **remove bddspectral density.
 #' 

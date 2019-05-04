@@ -20,13 +20,13 @@ This document demonstrates how to estimate various properties of a stationary RA
 \section{Preparing the Binary Map}
 We will need an image in \code{spatstat}'s \code{im} format with values of 1, 0 and NA representing foreground, background and outside the observation window respectively.
 For this vignette we will use a small image already prepared.
-You can see how we prepared it from remote sensing data in the demo \verb!import_remote_sense_data!, which can be run by \verb!demo("import_remote_sense_data", package = "stationaryracsinference")!.
+You can see how we prepared it from remote sensing data in the demo \verb!import_remote_sense_data!, which can be run by \verb!demo("import_remote_sense_data", package = "lacunaritycovariance")!.
 
 \begin{figure}[H]
 \centering
 <<loadbinarymap, fig = TRUE>>=
-library(stationaryracsinference)
-load(system.file("extdata/egbinarymap.RData", package="stationaryracsinference"))
+library(lacunaritycovariance)
+load(system.file("extdata/egbinarymap.RData", package="lacunaritycovariance"))
 # the following converts egbinarymap to a thing of logical type (**shouldn't be needed long term)
 egbinarymap <- eval.im(egbinarymap > 0.5)
 plot(egbinarymap, col = c("grey", "black"), main = "The Binary Map")
@@ -46,7 +46,7 @@ This binary map is a small subset of a tree canopy map with a spatial resolution
 \end{itemize}
 
 \section{Estimate Properties of Stationary RACS}
-For now \code{stationaryracsinference} only has functions for estimating coverage probability, disc-state contagion, covariance and gliding box lacunarity, with the spherical contact distribution and conditional core probability estimated using \code{Hest} from \code{spatstat}.
+For now \code{lacunaritycovariance} only has functions for estimating coverage probability, disc-state contagion, covariance and gliding box lacunarity, with the spherical contact distribution and conditional core probability estimated using \code{Hest} from \code{spatstat}.
  Conditional core probability is defined in Hingee (2016) is the probability that a point in the foreground (tree canopy) is in the core of the foreground, and is equivalent to the spherical contact distribution of the complement of the set.
  Coverage probability and disc-state contagion are also described in Hingee (2016), the former is a very common property that is also known as the coverage fraction.
  Covariance estimators are summarised in Hingee (2019).
@@ -168,7 +168,7 @@ Hingee, K.L. (2019) \emph{Spatial Statistics of Random Closed Sets for Earth Obs
 \
 
 \noindent
-Hingee K, Baddeley A, Caccetta P, Nair G (2017). Computation of lacunarity from covariance of spatial binary maps. \emph{Journal of Agricultural, Biological and Environmental Statistics}. DOI: 10.1007/s13253-019-00351-9. Online First.
+Hingee K, Baddeley A, Caccetta P, Nair G (2019). Computation of lacunarity from covariance of spatial binary maps. \emph{Journal of Agricultural, Biological and Environmental Statistics}, 24, 264-288. DOI: 10.1007/s13253-019-00351-9.
 
 \
 

@@ -1,3 +1,3 @@
 library(testthat)
-#library(stationaryracsinference)
-test_check("stationaryracsinference")
+#library(lacunaritycovariance)
+test_check("lacunaritycovariance")
