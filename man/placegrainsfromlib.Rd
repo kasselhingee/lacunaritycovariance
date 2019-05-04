@@ -43,7 +43,7 @@ Returns an \code{owin} object.
 \description{
 Places subsets (grains) of two dimension space randomly on a given point pattern.
 This is useful for simulating germ-grain models such as Boolean models.
-Also described here a functions for computing summary properties of the a list of grains.
+Also described here are functions for computing summary properties of the a list of grains.
 }
 \details{
 Germ-grain models have two components, a point process (called germs) and a process that creates

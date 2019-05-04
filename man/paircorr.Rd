@@ -12,9 +12,9 @@ paircorr.cvchat(cvchat, cpp1 = NULL, phat = NULL, estimators = "all",
   drop = FALSE)
 }
 \arguments{
-\item{xi}{An observation of a RACS of interest as a full binary map (in \code{im} format) or as the foreground set (in \code{owin} format).
+\item{xi}{An observation of a RACS of interest as a full binary map (as an \code{im} object) or as the foreground set (as an \code{owin} object).
 In the latter case the observation window, \code{obswin}, must be supplied.
-See \code{\link{stationaryracsinference-package}} for details.}
+See \code{\link{lacunaritycovariance-package}} for details.}
 
 \item{obswin}{If \code{xi} is an \code{owin} object then \code{obswin} is an
 \code{owin} object that specifies the observation window.}
@@ -29,10 +29,10 @@ See details.
 \item{drop}{If TRUE and one estimator selected then the returned value will be a single \code{im} object and not a list of \code{im} object.
 \code{estimators = "all"} will select all inbuilt estimators. See details.}
 
-\item{cvchat}{The plug-in moment estimate of covariance in \code{im} format. 
+\item{cvchat}{The plug-in moment estimate of covariance as an \code{im} object. 
 Typically created with \code{\link{plugincvc}}.}
 
-\item{cpp1}{Picka's reduced window estimate of coverage probability in \code{im} format - used in improved (balanced) covariance estimators.
+\item{cpp1}{Picka's reduced window estimate of coverage probability as an \code{im} object - used in improved (balanced) covariance estimators.
 Can be generated using \code{\link{cppicka}}.}
 
 \item{phat}{The plug-in moment estimate of coverage probability,
@@ -40,8 +40,8 @@ which is the observed foreground area in \code{xi} divided by the total area of 
 See \code{\link{coverageprob}} for more information.}
 }
 \value{
-If \code{drop = TRUE} and a single estimator requested then a
-  \code{im} object containing the pair-correlation estimate. Otherwise a
+If \code{drop = TRUE} and a single estimator is requested then an
+  \code{im} object containing the pair-correlation estimate is returned. Otherwise a
   named \code{imlist} of \code{im} objects containing the pair-correlation
   estimates for each requested estimator.
 }
@@ -61,8 +61,8 @@ The pair-correlation of a stationary RACS is
 the plug-in moment estimate of covariance and the usual estimate of coverage probability, respectively.
   \item{\code{mattfeldt}} an `intrinsically' balanced pair-correlation estimator suggested by Picka (1997).
   A similar isotropic pair-correlation estimator was later studied by Mattfeldt and Stoyan (2000).
-  \item{\code{pickaint}} Picka's 'intrinsically' balanced pair-correlation estimator (Picka, 2000). 
-  \item{\code{pickaH}} Picka's 'additively' balanced pair-correlation estimator (Picka, 2000).
+  \item{\code{pickaint}} Picka's `intrinsically' balanced pair-correlation estimator (Picka, 2000). 
+  \item{\code{pickaH}} Picka's `additively' balanced pair-correlation estimator (Picka, 2000).
   }
 }
 \section{Functions}{

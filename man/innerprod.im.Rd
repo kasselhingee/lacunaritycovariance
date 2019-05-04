@@ -26,7 +26,7 @@ Given two functions, f and g, that map from 2D space to 1D, and values of f and 
 \deqn{\int f(v) g(v) dv.}
 }
 \details{
-Harmonises the two input images, multiplies them together and returns the
+This function harmonises the two input images, multiplies them together and returns the
 integral of the resulting image.
  \code{outsideA} and \code{outsideB} are used to determine result if the inner product requires
 values outside the domain of A or B. For example if \code{outsideA=0} and the

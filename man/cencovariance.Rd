@@ -12,9 +12,8 @@ cencovariance.cvchat(cvchat, cpp1 = NULL, phat = NULL,
   setcov_boundarythresh = NULL, estimators = "all", drop = FALSE)
 }
 \arguments{
-\item{xi}{An observation of a RACS of interest as a full binary map (in \code{im} format) or as the foreground set (in \code{owin} format).
-In the latter case the observation window, \code{obswin}, must be supplied.
-See \code{\link{stationaryracsinference-package}} for details.}
+\item{xi}{An observation of a RACS of interest as a full binary map (as an \code{im} object) or as the foreground set (as an \code{owin} object).
+In the latter case the observation window, \code{obswin}, must be supplied.}
 
 \item{obswin}{If \code{xi} is an \code{owin} object then \code{obswin} is an
 \code{owin} object that specifies the observation window.}
@@ -28,10 +27,10 @@ See details.
 
 \item{drop}{If TRUE and one estimator selected then the returned value will be a single \code{im} object and not a list of \code{im} object.}
 
-\item{cvchat}{The plug-in moment estimate of covariance in \code{im} format. 
+\item{cvchat}{The plug-in moment estimate of covariance as an \code{im} object. 
 Typically created with \code{\link{plugincvc}}.}
 
-\item{cpp1}{Picka's reduced window estimate of coverage probability in \code{im} format - used in improved (balanced) covariance estimators.
+\item{cpp1}{Picka's reduced window estimate of coverage probability as an \code{im} object - used in improved (balanced) covariance estimators.
 Can be generated using \code{\link{cppicka}}.}
 
 \item{phat}{The usual estimate of coverage probability,
@@ -54,7 +53,7 @@ The centred covariance of a stationary RACS is \deqn{\kappa(v) =
   C(v) - p^2.}
 
   The estimators available are (see (Section 3.4, Hingee, 2019) for
-  information): 
+  more information): 
   \itemize{ 
   \item{\code{plugin}} the plug-in moment centred
   covariance estimator 

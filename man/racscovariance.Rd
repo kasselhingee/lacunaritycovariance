@@ -19,7 +19,7 @@ represent outside the  observation window. If an \code{owin} object then
 \code{xi} represents foreground and \code{obswin} is required to specify
 the observation window.}
 
-\item{obswin}{The observation window in \code{owin} format if \code{xi} is also in \code{owin} format.}
+\item{obswin}{The observation window as an \code{owin} object if \code{xi} is also as an \code{owin} object.}
 
 \item{setcov_boundarythresh}{Any vector \eqn{v} such that set covariance of the observation window
 is smaller than this threshold is given a covariance of NA to avoid instabilities caused by dividing by very small areas,}
@@ -28,12 +28,12 @@ is smaller than this threshold is given a covariance of NA to avoid instabilitie
 See details.
 Passing \code{estimators = "all"} will select all available estimators.}
 
-\item{drop}{If TRUE and one estimator is selected then the returned value will be a single \code{im} object and not a list of \code{im} object.}
+\item{drop}{If TRUE and one estimator is selected then the returned value will be a single \code{im} object and not a list of \code{im} objects.}
 
-\item{cvchat}{The plug-in moment estimate of covariance in \code{im} format. 
+\item{cvchat}{The plug-in moment estimate of covariance as an \code{im} object. 
 Typically created with \code{\link{plugincvc}}.}
 
-\item{cpp1}{Picka's reduced window estimate of coverage probability in \code{im} format - used in improved (balanced) covariance estimators.
+\item{cpp1}{Picka's reduced window estimate of coverage probability as an \code{im} object - used in improved (balanced) covariance estimators.
 Can be generated using \code{\link{cppicka}}.}
 
 \item{phat}{The classical estimate of coverage probability,
@@ -65,8 +65,8 @@ Picka (1997, 2000) suggested a number of improvements to centred
 covariance estimation (see \code{\link{cencovariance}}) that `balanced' the
 data used to estimate covariance with the data used to estimate coverage
 probability. These lead to covariance estimators that give
-estimates for the covariance of \eqn{Xi} that are a constant offset from
-covariance estimates for the complement of \eqn{Xi} (note the constant offset
+estimates for the covariance of \eqn{\Xi} that are a constant offset from
+covariance estimates for the complement of \eqn{\Xi} (note the constant offset
 depends on the coverage probability), which
 appears to avoid some surprising behaviour that the plug-in moment covariance estimator
 suffers (Hingee, 2019).
@@ -77,7 +77,7 @@ for pair-correlation estimators, is also available.
 We have called this estimator \code{mattfeldt} as a similar isotropic estimator for pair-correlation
 was studied by Mattfeldt and Stoyan (2000).
 
-The estimators available are (see (Hingee, 2019) for information): 
+The estimators available are (see (Hingee, 2019) for more information): 
 \itemize{
 \item{\code{plugin}} the plug-in moment covariance estimator
 \item{\code{mattfeldt}} an estimator inspired by an 

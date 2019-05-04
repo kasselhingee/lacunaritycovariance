@@ -7,9 +7,8 @@
 cppicka(xi, obswin = NULL, setcov_boundarythresh = NULL)
 }
 \arguments{
-\item{xi}{An observation of a RACS of interest as a full binary map (in \code{im} format) or as the foreground set (in \code{owin} format).
-In the latter case the observation window, \code{obswin}, must be supplied.
-See \code{\link{stationaryracsinference-package}} for details.}
+\item{xi}{An observation of a RACS of interest as a full binary map (as an \code{im} object) or as the foreground set (as an \code{owin} object).
+In the latter case the observation window, \code{obswin}, must be supplied.}
 
 \item{obswin}{If \code{xi} is an \code{owin} object then \code{obswin} is an
 \code{owin} object that specifies the observation window.}
@@ -27,7 +26,7 @@ This function provides estimates of coverage probability from subsets of the obs
 }
 \details{
 The plug-in moment covariance estimators uses less of the observation window than the usual coverage probability estimators.
-Picka (1997, 2000) created new 'balanced' estimators of centred covariance and pair-correlation
+Picka (1997, 2000) created new `balanced' estimators of centred covariance and pair-correlation
 that accounted for this difference.
 A key component of Picka's estimators is an estimate of the coverage probability from the subregion of the binary map that is
 the intersection between \eqn{W} and \eqn{W} shifted by vector \eqn{v}, where \eqn{W} is the observation window (p.~687, Picka, 2000).

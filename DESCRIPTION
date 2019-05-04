@@ -7,7 +7,7 @@ Date: 2019-05-04
 Author: Kassel Liam Hingee
 Maintainer: Kassel Liam Hingee
     <kassel.hingee@research.uwa.edu.au>
-Description:  The package contains functions for estimating
+Description: The package contains functions for estimating
     the gliding box lacunarity (GBL), covariance, and pair-correlation of
     a random closed set (RACS) in 2D from a binary coverage map.  It also
     includes methods for estimating contagion-like properties of RACS and
@@ -34,4 +34,4 @@ Suggests:
     rgdal,
     testthat
 ByteCompile: true
-RoxygenNote: 6.1.0
+RoxygenNote: 6.1.1

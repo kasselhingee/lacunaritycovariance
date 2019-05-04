@@ -15,9 +15,8 @@ gbl.cvchat(boxwidths, estimators = c("GBLg.mattfeldt", "GBLg.pickaint",
   phat = NULL, cvchat = NULL, cpp1 = NULL)
 }
 \arguments{
-\item{xi}{An observation of a RACS of interest as a full binary map (in \code{im} format) or as the foreground set (in \code{owin} format).
-In the latter case the observation window, \code{obswin}, must be supplied.
-See \code{\link{stationaryracsinference-package}} for details.}
+\item{xi}{An observation of a RACS of interest as a full binary map (as an \code{im} object) or as the foreground set (as an \code{owin} object).
+In the latter case the observation window, \code{obswin}, must be supplied.}
 
 \item{boxwidths}{A list of box widths}
 
@@ -49,8 +48,8 @@ It calls the functions \code{\link{gblc}}, \code{\link{gblg}}, \code{\link{gblcc
 As empirical GBL is one of the GBL estimators available through this function, non-square boxes are not allowed.
 To estimate GBL for non-square boxes use \code{gblcc} or \code{gblg} directly.
 
-If \code{xi} is in \code{owin} format then \code{obswin} and \code{xi} are converted
- into a binary map in \code{im} format using \code{\link[spatstat]{as.im}}
+If \code{xi} is an \code{owin} object then \code{obswin} and \code{xi} are converted
+ into a binary map as an \code{im} object using \code{\link[spatstat]{as.im}}
 
 The estimators available are
 \itemize{
@@ -85,5 +84,5 @@ gblests <- gbl(xi, boxwidths)
 \references{
 Allain, C. and Cloitre, M. (1991) Characterizing the lacunarity of random and deterministic fractal sets. \emph{Physical Review A}, 44, 3552-3558.
 
-Hingee K, Baddeley A, Caccetta P, Nair G (2017). Computation of lacunarity from covariance of spatial binary maps. \emph{Journal of Agricultural, Biological and Environmental Statistics}. DOI: 10.1007/s13253-019-00351-9. Online First.
+Hingee K, Baddeley A, Caccetta P, Nair G (2019). Computation of lacunarity from covariance of spatial binary maps. \emph{Journal of Agricultural, Biological and Environmental Statistics}, 24, 264-288. DOI: 10.1007/s13253-019-00351-9.
 }

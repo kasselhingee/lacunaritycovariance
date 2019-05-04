@@ -13,7 +13,7 @@ gblc(boxes, covariance = NULL, p = NULL, xiim = NULL)
 
 \item{p}{The coverage probability. Typically estimated by the fraction of the observation window covered by the set of interest.}
 
-\item{xiim}{An observation of a stationary RACS in \code{im} format. \code{xiim} must have values of either 1, 0 or NA; 1 denotes inside the RACS, 0 denotes outside, and NA denotes unobserved.}
+\item{xiim}{An observation of a stationary RACS as an \code{im} object. \code{xiim} must have values of either 1, 0 or NA; 1 denotes inside the RACS, 0 denotes outside, and NA denotes unobserved.}
 }
 \value{
 If \code{boxes} is a list of numerical values then GBL is estimated 
@@ -63,7 +63,7 @@ discgbls <- gblc(discboxes, covar, p)
 
 }
 \references{
-Hingee K, Baddeley A, Caccetta P, Nair G (2017). Computation of lacunarity from covariance of spatial binary maps. \emph{Journal of Agricultural, Biological and Environmental Statistics}. DOI: 10.1007/s13253-019-00351-9. Online First.
+Hingee K, Baddeley A, Caccetta P, Nair G (2019). Computation of lacunarity from covariance of spatial binary maps. \emph{Journal of Agricultural, Biological and Environmental Statistics}, 24, 264-288. DOI: 10.1007/s13253-019-00351-9.
 }
 \keyword{nonparametric}
 \keyword{spatial}

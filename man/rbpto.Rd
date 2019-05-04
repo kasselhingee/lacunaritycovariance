@@ -5,7 +5,7 @@
 \alias{bpto.coverageprob}
 \alias{bpto.germintensity}
 \alias{bpto.covar}
-\title{Simulate Boolean Model with Grains Scaled According to a truncated
+\title{Simulate Boolean Model with Grains Scaled According to a Truncated
   Pareto Distribution}
 \usage{
 rbpto(lambda, grain, win, xm, alpha, lengthscales, seed = NULL,
@@ -58,7 +58,7 @@ Functions for simulation and computing theoretical values of a
   truncated Pareto distribution.
 }
 \details{
-The parameters xm and alpha are such that the CDF of the Pareto distribution is \eqn{P(s <= x) = 1 - (xm / x)^{alpha}}.
+The parameters \code{xm} and \code{alpha} are such that the CDF of the Pareto distribution is \eqn{P(s <= x) = 1 - (xm / x)^{alpha}}.
 The distribution of grains scales is a step-function approximation to the CDF with steps at \code{lengthscales}.
 }
 \section{Functions}{
@@ -93,3 +93,5 @@ bpto.coverageprob(lambda, grain, xm, alpha, lengthscales = lengthscales)
 covar <- bpto.covar(lambda, grain, xm, alpha, lengthscales = lengthscales,
    xy = as.mask(win, eps = 0.1))
 }
+\keyword{datagen}
+\keyword{spatial}

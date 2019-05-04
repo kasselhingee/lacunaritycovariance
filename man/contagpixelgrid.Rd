@@ -10,9 +10,9 @@ contagpixelgrid(xi, obswin, normalise = FALSE)
 adjacency(xi, obswin = NULL)
 }
 \arguments{
-\item{xi}{An observation of a RACS of interest as a full binary map (in \code{im} format) or as the foreground set (in \code{owin} format).
+\item{xi}{An observation of a RACS of interest as a full binary map (as an \code{im} object) or as the foreground set (as an \code{owin} object).
 In the latter case the observation window, \code{obswin}, must be supplied.
-See \code{\link{stationaryracsinference-package}} for details.
+See \code{\link{lacunaritycovariance-package}} for details.
   If \code{xi} is an owin object it must be of \code{mask} type.}
 
 \item{obswin}{If \code{xi} is an \code{owin} object then \code{obswin} is an
@@ -29,7 +29,7 @@ The unnormalised contagion LPI of categorical map is defined as
 randomly selected adjacent pixels being in class \eqn{i} and class \eqn{j}
 respectively, and \eqn{m} is the number of classes.
 
-Here \eqn{m = 2} as \eqn{xi} is a binary map and we have defined 'adjacent'
+Here \eqn{m = 2} as \eqn{xi} is a binary map and we have defined `adjacent'
 pixels using the 4-neighbourhood regime.
 
 Contagion is calculated from an adjacency matrix created using \code{adjacency}.
