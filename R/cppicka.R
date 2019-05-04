@@ -6,7 +6,7 @@
 #' @description 
 #' This function provides estimates of coverage probability from subsets of the observation window,
 #'  which are a key component of balanced estimators of covariance, centred covariance, pair-correlation and gliding box lacunarity.
-#' @param xi An observation of a RACS of interest as a full binary map (in \code{im} format) or as the foreground set (in \code{owin} format).
+#' @param xi An observation of a RACS of interest as a full binary map (as an \code{im} object) or as the foreground set (as an \code{owin} object).
 #' In the latter case the observation window, \code{obswin}, must be supplied.
 #' See \code{\link{stationaryracsinference-package}} for details.
 #' @param obswin If \code{xi} is an \code{owin} object then \code{obswin} is an

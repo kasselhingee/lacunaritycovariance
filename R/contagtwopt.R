@@ -16,7 +16,7 @@
 #'  
 #' @section Warning: there might be some instability for covariance at estimates that are very close to p (**where is this comment coming from!?)
 #
-#' @param covariance (estimated) covariance in \code{im} format
+#' @param covariance (estimated) covariance as an \code{im} object
 #' @param p is an estimated coverage fraction. If none is provided an estimate is made using covariance (see details).
 #' @param v is an optional input. It is a vector in format c(x,y)
 #' @param normalise If true normalises the results so that all RACS return a value between 0 and 1

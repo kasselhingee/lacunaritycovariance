@@ -27,7 +27,7 @@ Hingee K, Baddeley A, Caccetta P, Nair G (2019). Computation of lacunarity from 
 #' @param boxes Either a list of sidelengths for square boxes or a list of \code{owin} objects of any shape.
 #' @param covariance  A \code{im} object containing the covariance function
 #' @param p The coverage probability. Typically estimated by the fraction of the observation window covered by the set of interest.
-#' @param xiim An observation of a stationary RACS in \code{im} format. \code{xiim} must have values of either 1, 0 or NA; 1 denotes inside the RACS, 0 denotes outside, and NA denotes unobserved.
+#' @param xiim An observation of a stationary RACS as an \code{im} object. \code{xiim} must have values of either 1, 0 or NA; 1 denotes inside the RACS, 0 denotes outside, and NA denotes unobserved.
 
 #' @return If \code{boxes} is a list of numerical values then GBL is estimated 
 #' for square boxes with side length given by \code{boxes}.

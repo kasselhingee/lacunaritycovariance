@@ -3,7 +3,7 @@
 #' 
 #' @description Function for calculating the classic pixel-adjacency contagion LPI from a binary map (O'Neill, 1988).
 #' 
-##' @param xi An observation of a RACS of interest as a full binary map (in \code{im} format) or as the foreground set (in \code{owin} format).
+##' @param xi An observation of a RACS of interest as a full binary map (as an \code{im} object) or as the foreground set (as an \code{owin} object).
 #' In the latter case the observation window, \code{obswin}, must be supplied.
 #' See \code{\link{stationaryracsinference-package}} for details.
 #'   If \code{xi} is an owin object it must be of \code{mask} type.

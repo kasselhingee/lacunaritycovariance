@@ -8,14 +8,11 @@ change package filename to something narrower: covargbl  ? lacunaritycovariance
 
 Remake description file
 
-Change all refs of journal paper to include issue etc.
-Hingee K, Baddeley A, Caccetta P, Nair G (2017). Computation of lacunarity from covariance of spatial binary maps. \emph{Journal of Agricultural, Biological and Environmental Statistics}. DOI: 10.1007/s13253-019-00351-9. Online First.
--->
-Hingee K, Baddeley A, Caccetta P, Nair G (2019). Computation of lacunarity from covariance of spatial binary maps. \emph{Journal of Agricultural, Biological and Environmental Statistics}, 24, 264-288. DOI: 10.1007/s13253-019-00351-9.
-
 In centred covariance (and other places) the quotation marks are not in the write direction.
 
 in !im! format --> as an !im! object
+sed -i "s/in \\\code{im} format/as an \\\code{im} object/g"
+sed -i "s/in \\\code{owin} format/as an \\\code{im} object/g"
 
 delete the plotting things in examples
 

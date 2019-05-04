@@ -9,10 +9,10 @@
 #' @references [1] Chiu, S.N., Stoyan, D., Kendall, W.S. and Mecke, J. (2013) Stochastic Geometry and Its Applications, 3rd ed. Chichester, United Kingdom: John Wiley & Sons.
  
 #' 
-#' @param xi An observation of a RACS of interest as a full binary map (in \code{im} format) or as the foreground set (in \code{owin} format).
+#' @param xi An observation of a RACS of interest as a full binary map (as an \code{im} object) or as the foreground set (as an \code{owin} object).
 #' In the latter case the observation window, \code{obswin}, must be supplied.
 #' See \code{\link{stationaryracsinference-package}} for details.
-#' @param obswin The window of observation (not necessarily rectangular) also in \code{owin} format.
+#' @param obswin The window of observation (not necessarily rectangular) also as an \code{owin} object.
 #' @return An estimate of the coverage probability
 #' @details
 #' The coverage probability of a stationary RACS is the probability that an arbitrary point is covered by the RACS.
@@ -21,9 +21,9 @@
 #' which is an estimate of the coverage probability.
 #' See [1, section 6.4.2] for more details.
 #' 
-#' If \code{xi} is in \code{im} format then \code{xi} must be an image of 1s, 0s and NAs
+#' If \code{xi} is as an \code{im} object then \code{xi} must be an image of 1s, 0s and NAs
 #'  representing inside the set, outside the set and outside the observation window respectively.
-#'  \code{coverageprob} will not accept a \code{obswin} argument if \code{xi} is in \code{im} format.
+#'  \code{coverageprob} will not accept a \code{obswin} argument if \code{xi} is as an \code{im} object.
 #' 
 #' @examples
 #' xi <- heather$coarse
