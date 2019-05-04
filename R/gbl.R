@@ -23,7 +23,7 @@
 #' As empirical GBL is one of the GBL estimators available through this function, non-square boxes are not allowed.
 #' To estimate GBL for non-square boxes use \code{gblcc} or \code{gblg} directly.
 #' 
-#' If \code{xi} is as an \code{owin} object then \code{obswin} and \code{xi} are converted
+#' If \code{xi} is an \code{owin} object then \code{obswin} and \code{xi} are converted
 #'  into a binary map as an \code{im} object using \code{\link[spatstat]{as.im}}
 #' 
 #' The estimators available are

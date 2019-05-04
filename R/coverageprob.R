@@ -20,9 +20,9 @@
 #' which is an estimate of the coverage probability.
 #' See [1, section 6.4.2] for more details.
 #' 
-#' If \code{xi} is as an \code{im} object then \code{xi} must be an image of 1s, 0s and NAs
+#' If \code{xi} is an \code{im} object then \code{xi} must be an image of 1s, 0s and NAs
 #'  representing inside the set, outside the set and outside the observation window respectively.
-#'  \code{coverageprob} will not accept a \code{obswin} argument if \code{xi} is as an \code{im} object.
+#'  \code{coverageprob} will not accept a \code{obswin} argument if \code{xi} is an \code{im} object.
 #' 
 #' @examples
 #' xi <- heather$coarse
