@@ -16,7 +16,7 @@
 #'   One impact of this design is that the distance with which to quantify the
 #'   mixing between \eqn{\Xi} and the background may be chosen by the user by
 #'   choosing the disc radius (for classical contagion this distance is fixed by
-#'   the image resolution).
+#'   the map resolution).
 #'
 #' @param XiH Conditional spherical contact distribution function for \eqn{\Xi}.
 #'   Typically this is an \code{fv} object but could also be a vector of values.
@@ -25,18 +25,15 @@
 #' @param XicH Conditional spherical contact distribution for the complement of
 #'   \eqn{\Xi}. This is called the Conditional Core Probability in Hingee 2016.
 #'   Typically this is an \code{fv} object but could also be a vector of values.
-#'   In applications \code{XiH} would likely be estimated from an image using
+#'   In applications \code{XiH} would likely be estimated from a binary map using
 #'   \code{\link[spatstat]{Hest}} in \pkg{spatstat}.
-#' @param p  The coverage probability of \eqn{\Xi}. In applications to images an
-#'   estimate of the coverage probability can be obtained using
-#'   \code{\link{coverageprob}}.
-#' @param normalise Optional. If TRUE \code{contagdiscstate} normalises the
+#' @param p  The coverage probability of \eqn{\Xi}. Can be estimated from binary maps using #' @param normalise Optional. If TRUE \code{contagdiscstate} normalises the
 #'   results so that all RACS return a value between 0 and 1. Default is FALSE.
 #'
-#' @details XiH should be a function of radius that gives (or estimates) the
+#' @details XiH should be a function of radius that contains (estimates of) the
 #'   probability of a disc of radius \eqn{r} not intersecting \eqn{\Xi} if the
 #'   disc's centre is not in \eqn{\Xi} \deqn{\code{XiH}(r) = P(B_r(x) \subseteq
-#'   \Xi^c | x \in \Xi^c).} Similarly \code{XicH} should be an estimate of the
+#'   \Xi^c | x \in \Xi^c).} Similarly \code{XicH} should be (an estimate of) the
 #'   probability of a disc being fully contained in \eqn{\Xi} given its centre
 #'   is in \eqn{\Xi} \deqn{\code{XicH}(r)\approx P(B_r(x) \subseteq \Xi | x \in
 #'   \Xi).} These can both be obtained using \code{\link{Hest}} in
@@ -47,8 +44,8 @@
 #'   \eqn{-2ln(2)} and increased by 1 so that contagion will always be between 0
 #'   and 1.
 #'
-#' @return If \code{XiH} is an \code{fv} object then an \code{fv} object is returned,
-#' otherwise if \code{XiH} is a vector then returns a vector the same length as \code{XiH}
+#' @return If \code{XiH} is an \code{fv} object then an \code{fv} object is returned.
+#' If \code{XiH} is a vector then the returned object is a vector the same length as \code{XiH} with each element
 #'   corresponding to the contagion at each \code{r} value of \code{XiH}.
 
 #' @references 
@@ -64,11 +61,8 @@
 #' p <- coverageprob(xi, Frame(xi))
 #' xiH <- Hest(xi, W = obswindow) #Sph. Contact Distrution Estimate
 #' xicH <- Hest(complement.owin(xi), W = obswindow) #Conditional Core Prob. Estimate
-#' # plot(xiH, type = "l", col = "red") 
-#' # lines(xicH, type = "l", col = "black") 
 #' 
 #' contagion <- contagdiscstate(xiH, xicH, p)
-#' # plot(contagion)
 #' 
 #' @keywords spatial nonparametric 
 contagdiscstate <- function(XiH, XicH, p, normalise=FALSE){

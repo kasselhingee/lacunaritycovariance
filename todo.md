@@ -1,15 +1,5 @@
 # TO DO BEFORE PUBLISHING:
 
-change package filename to something narrower: covargbl  ? lacunaritycovariance
-- I'm doing this because it is now clearer that I won't be expanding on the capacity of the package in the next few years.
-- The more descriptive name here the better.
-- A zinger of a name would be nice. lacunaritycovariance?
-- But contagion estimators are included?
-
-Remake description file
-
-delete the plotting things in examples
-
 ----
 
 ## Really required:
