@@ -7,22 +7,21 @@ Date: 2019-05-04
 Author: Kassel Liam Hingee
 Maintainer: Kassel Liam Hingee
     <kassel.hingee@research.uwa.edu.au>
-Description: The package contains functions for estimating
-    the gliding box lacunarity (GBL), covariance, and pair-correlation of
-    a random closed set (RACS) in 2D from a binary coverage map.  It also
-    includes methods for estimating contagion-like properties of RACS and
-    simulating 2D Boolean models.  Binary coverage maps are usually taken
-    to be a rasterised image with each pixel labelled TRUE, FALSE or NA,
-    with NA representing unobserved pixels.  A demo for extracting a such
-    a binary map from geospatial data formats (e.g. presence-absence maps
-    or two-class landcover maps) is provided.  The binary map may also be
-    represented in non-rasterised form using a polygonal set as the
-    foreground.  A number of newly-developed covariance-based estimators
-    of GBL are available in this package along with empirical GBL.  The
-    balanced estimators of covariance, centred covariance and
-    pair-correlation proposed by Picka are also available in this package.
-    The package is based on research conducted during the author's PhD
-    studies.
+Description:  This package contains functions for
+    estimating the gliding box lacunarity (GBL), covariance, and
+    pair-correlation of a random closed set (RACS) in 2D from a binary
+    coverage map.  A number of newly-developed covariance-based estimators
+    of GBL and balanced estimators, proposed by Picka for covariance,
+    centred covariance, and pair-correlation, are implemented in this
+    package.  Methods for estimating contagion-like properties of RACS and
+    simulating 2D Boolean models are also included.  In this package
+    binary coverage maps are usually taken to be a rasterised image with
+    each pixel labelled TRUE, FALSE or NA, with NA representing unobserved
+    pixels.  A demo for extracting a such a binary map from geospatial
+    data formats (e.g. presence-absence maps or two-class landcover maps)
+    is provided.  The binary map may also be represented in non-rasterised
+    form using a polygonal set as the foreground.  This package is based
+    on research conducted during the author's PhD studies.
 License: GNU General Public License
 Depends:
     spatstat

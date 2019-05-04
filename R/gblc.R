@@ -12,7 +12,7 @@
 #' @details
 #' Computes a numerical approximation of 
 #' \deqn{\int \gamma_B(v) C(v) dv / (p^2 |B|^2).}{\int gammaB(v) C(v) dv / (p^2 |B|^2),}
-#' where \eqn{B} is a given set (often called a box),
+#' where \eqn{B} is each of the sets (often called a box) specified by \code{boxes},
 #' \eqn{\gamma_B}{gammaB} is the set covariance of \eqn{B},
 #' \eqn{|B|} is the area of \eqn{B},
 #' \eqn{p} is the coverage probability of a stationary RACS, and
@@ -27,14 +27,14 @@
 #' @param boxes Either a list of sidelengths for square boxes or a list of \code{owin} objects of any shape.
 #' @param covariance  A \code{im} object containing the covariance function
 #' @param p The coverage probability. Typically estimated by the fraction of the observation window covered by the set of interest.
-#' @param xiim An observation of a stationary RACS as an \code{im} object. \code{xiim} must have values of either 1, 0 or NA; 1 denotes inside the RACS, 0 denotes outside, and NA denotes unobserved.
+#' @param xiim A binary coverage map as an \code{im} object. \code{xiim} must have values of either 1, 0 or NA; 1 denotes inside the RACS, 0 denotes outside, and NA denotes unobserved.
 
 #' @return If \code{boxes} is a list of numerical values then GBL is estimated 
 #' for square boxes with side length given by \code{boxes}.
 #'  The returned object is then an \code{fv} object containing estimates of GBL,
 #'   box mass variance and box mass mean.
 #'  If \code{boxes} is a list of owin objects then \code{gblc} returns a 
-#'  dataframe of with columns corresponding to estimates of GBL, box mass variance and box mass mean.
+#'  dataframe with columns corresponding to estimates of GBL, box mass variance and box mass mean.
 #' 
 #'   Note if NA or NaN values in the \code{covariance} object are used then \code{gblc} will return NA or NaN. 
 
@@ -48,11 +48,10 @@
 #' sidelengths <- seq(0.3, 14, by = 1)
 #' }
 #' gblest <- gblc(sidelengths, covar, p)
-#' # plot(gblest)
-#' # what is the GBL estimates for boxes that are discs?
+#' 
+#' # The GBL estimates for `boxes' that are discs?
 #' discboxes <- lapply(sidelengths / 2, disc)
 #' discgbls <- gblc(discboxes, covar, p)
-#' # points(sidelengths, discgbls$GBL)
 #' 
 #' @keywords spatial nonparametric 
 gblc <- function(boxes, covariance = NULL, p = NULL, xiim = NULL){

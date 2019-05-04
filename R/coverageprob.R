@@ -6,7 +6,7 @@
 #' @description 
 #' Computes the proportion of the observation window that is foreground, which is the usual estimate for the coverage probability of a stationary RACS from a binary map.
 #' 
-#' @references [1] Chiu, S.N., Stoyan, D., Kendall, W.S. and Mecke, J. (2013) Stochastic Geometry and Its Applications, 3rd ed. Chichester, United Kingdom: John Wiley & Sons.
+#' @references Chiu, S.N., Stoyan, D., Kendall, W.S. and Mecke, J. (2013) Stochastic Geometry and Its Applications, 3rd ed. Chichester, United Kingdom: John Wiley & Sons.
  
 #' 
 #' @param xi An observation of a RACS of interest as a full binary map (as an \code{im} object) or as the foreground set (as an \code{owin} object).
@@ -18,7 +18,7 @@
 #' Given a binary map, \code{xi}, of a realisation of stationary RACS \eqn{\Xi} in a window \eqn{W},
 #'  this function computes the fraction of \eqn{W} covered by foreground,
 #' which is an estimate of the coverage probability.
-#' See [1, section 6.4.2] for more details.
+#' See (Chiu et al., 2013, Section 6.4.2) for more details.
 #' 
 #' If \code{xi} is an \code{im} object then \code{xi} must be an image of 1s, 0s and NAs
 #'  representing inside the set, outside the set and outside the observation window respectively.
