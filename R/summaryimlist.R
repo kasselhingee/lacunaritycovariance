@@ -1,15 +1,15 @@
-#' @title Pointwise summary of a list of im objects
+#' @title Pointwise summary of a list of \code{im} objects
 #' @export summary.imlist
 #' @description
-#' This function assumes that im objects are each realisations of the same (stochastic) object. 
+#' This function assumes that \code{im} objects are each realisations of the same (stochastic) object. 
 #' It returns pointwise summaries such as observed sample mean and sample variance.
 
 #' @author Kassel Hingee
 
-#' @param  object A list of im objects
+#' @param  object A list of \code{im} objects
 #' @param  harmonizeobject If TRUE (default) the pixel dimensions of the images will be harmonized. Otherwise the object will be tested for compatibility.
 #' @param  ... Ignored
-#' @return A list im objects containing the pointwise mean, variance and maxima and minima.
+#' @return A list \code{im} objects containing the pointwise mean, variance and maxima and minima.
 
 #' @examples
 #' obspatterns <- replicate(5, rbdd(10, 0.05, window = square(1)), simplify = FALSE)

@@ -7,7 +7,7 @@
 #'
 #' @param lambda Intensity of the germ process (which is a Poisson point
 #'   process)
-#' @param grain A single owin object that gives the shape and size of the grain
+#' @param grain A single \code{owin} object that gives the shape and size of the grain
 #'   at scale 1
 #' @param xm A parameter governing the shape of the Pareto distribution used -
 #'   see details
@@ -19,7 +19,7 @@
 #'   specifies the possible scales and the Pareto distribution is used to
 #'   specify the probability of selection of each scale.
 #' @param coverp Coverage probability of the Boolean model.
-#' @param win The window to simulate in (an owin object)
+#' @param win The window to simulate in (an \code{owin} object)
 #' @param seed Optional input (default in NULL). Is an integer passed to
 #'   \code{\link[base]{set.seed}}. Used to reproduce patterns exactly.
 #' @param xy A raster object that specifies pixel coordinates of the final
@@ -35,7 +35,7 @@
 #'
 #' 
 #' @return 
-#' An owin object.
+#' An \code{owin} object.
 #' @keywords spatial datagen
 
 
@@ -122,7 +122,7 @@ bpto.germintensity <- function(coverp, grain, xm, alpha,
 }
 
 #' @describeIn rbpto  The covariance of the Boolean model with grain size distributed according to a truncated Pareto distribution.
-#' xy is required to specify resolution and offset of pixel grid.
+#' \code{xy} is required to specify resolution and offset of pixel grid.
 bpto.covar <- function(lambda, grain, xm, alpha, lengthscales = 1:500, xy){
   #check that smallest scale is larger than xm
   stopifnot(lengthscales[1] >= xm)

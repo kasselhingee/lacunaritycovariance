@@ -1,8 +1,8 @@
-#' @title Test if an im object is a binary map
+#' @title Test if an \code{im} object is a binary map
 #' @export isbinarymap
 #' @import spatstat
 #' @param xi an image object
-#' @param requiretrue Logical. If TRUE then isbinarymap will error if xi is NOT a binary map.
+#' @param requiretrue Logical. If TRUE then \code{isbinarymap} will error if xi is NOT a binary map.
 #' @description
 #' Tests whether \code{xi} is a binary map. 
 #' The pixel values must be of logical type (\code{TRUE}, \code{FALSE} and \code{NA} only), or numerical (1, 0 or \code{NA}).

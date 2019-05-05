@@ -33,10 +33,10 @@
 #' for square boxes with side length given by \code{boxes}.
 #'  The returned object is then an \code{fv} object containing estimates of GBL,
 #'   box mass variance and box mass mean.
-#'  If \code{boxes} is a list of owin objects then \code{gblc} returns a 
+#'  If \code{boxes} is a list of \code{owin} objects then \code{gblc} returns a 
 #'  dataframe with columns corresponding to estimates of GBL, box mass variance and box mass mean.
 #' 
-#'   Note if NA or NaN values in the \code{covariance} object are used then \code{gblc} will return NA or NaN. 
+#'   Note if \code{NA} or \code{NaN} values in the \code{covariance} object are used then \code{gblc} will return \code{NA} or \code{NaN}. 
 
 #' @examples
 #' xi <- heather$coarse

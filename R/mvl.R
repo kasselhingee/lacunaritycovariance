@@ -9,7 +9,7 @@
 #'   \code{owin} object that specifies the observation window.
 #' @param boxwidths A list of box widths
 #' @param estimators A list of estimator names - see details for possibilities. \code{estimators = "all"} will select all estimators.
-#' @param includenormed A logical value. If TRUE then GBL estimates normalised by the GBL values at zero will be included in a returned list of fv objects
+#' @param includenormed A logical value. If TRUE then GBL estimates normalised by the GBL values at zero will be included in a returned list of \code{fv} objects
 #' @param setcov_boundarythresh To avoid instabilities caused by dividing by very small quantities, if the set covariance of the observation window
 #'  is smaller than \code{setcov_boundarythresh}, then the covariance is given a value of NA. 
 #' If NULL is supplied (default) then \code{setcov_boundarythresh} is set to 1E-6.

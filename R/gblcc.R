@@ -18,8 +18,8 @@
 #' @return If \code{boxes} is a list of numerical values then GBL is estimated for square boxes with side length given by \code{boxes}.
 #'  The returned object is then an \code{fv} object containing estimates of GBL, box mass variance and box mass mean.
 #'  
-#'  If \code{boxes} is a list of owin objects then \code{gblcc} returns a dataframe of with columns corresponding to estimates of GBL, box mass variance and box mass mean.
-#'  Note if NA or NaN values in the \code{covariance} object are used then \code{gblc} will return NA or NaN instead of an GBL value. 
+#'  If \code{boxes} is a list of \code{owin} objects then \code{gblcc} returns a dataframe of with columns corresponding to estimates of GBL, box mass variance and box mass mean.
+#'  Note if \code{NA} or \code{NaN} values in the \code{covariance} object are used then \code{gblc} will return \code{NA} or \code{NaN} instead of an GBL value. 
 
 #' @references
 #' Hingee K, Baddeley A, Caccetta P, Nair G (2019). Computation of lacunarity from covariance of spatial binary maps. \emph{Journal of Agricultural, Biological and Environmental Statistics}, 24, 264-288. DOI: 10.1007/s13253-019-00351-9.
