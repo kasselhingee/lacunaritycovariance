@@ -18,7 +18,9 @@ Typically this is an \code{fv} object but could also be a vector of values.
 In applications \code{XiH} would likely be estimated from a binary map using
 \code{\link[spatstat]{Hest}} in \pkg{spatstat}.}
 
-\item{p}{The coverage probability of \eqn{\Xi}. Can be estimated from binary maps using #' @param normalise Optional. If TRUE \code{contagdiscstate} normalises the
+\item{p}{The coverage probability of \eqn{\Xi}. Can be estimated from binary maps using \code{\link{coverageprob}}.}
+
+\item{normalise}{Optional. If TRUE \code{contagdiscstate} normalises the
 results so that all RACS return a value between 0 and 1. Default is FALSE.}
 }
 \value{
