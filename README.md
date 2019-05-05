@@ -25,7 +25,7 @@ where `<PATH>` is the path to a .tar.gz file containing the contents of this rep
 ### Install from source code not in .tar.gz form
 First run the following to build a .tar.gz file.
 
-    R CMD build . 
+    R CMD build --compact-vignettes=gs+qpdf . 
 
 This should create a file `lacunaritycovariance-<VERSION>.tar.gz`. 
 Where `<VERSION>` is a string on numbers separated by periods and hyphens, for example 0.5-2.
