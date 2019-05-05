@@ -27,7 +27,8 @@
 #'   Typically this is an \code{fv} object but could also be a vector of values.
 #'   In applications \code{XiH} would likely be estimated from a binary map using
 #'   \code{\link[spatstat]{Hest}} in \pkg{spatstat}.
-#' @param p  The coverage probability of \eqn{\Xi}. Can be estimated from binary maps using #' @param normalise Optional. If TRUE \code{contagdiscstate} normalises the
+#' @param p  The coverage probability of \eqn{\Xi}. Can be estimated from binary maps using \code{\link{coverageprob}}.
+#' @param normalise Optional. If TRUE \code{contagdiscstate} normalises the
 #'   results so that all RACS return a value between 0 and 1. Default is FALSE.
 #'
 #' @details XiH should be a function of radius that contains (estimates of) the
