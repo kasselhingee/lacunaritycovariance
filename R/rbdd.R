@@ -16,7 +16,7 @@
 #'   process)
 #' @param discr Radius of the discs
 #' @param coverp Coverage probability of the Boolean model
-#' @param window The window to simulate in (an owin object)
+#' @param window The window to simulate in (an \code{owin} object)
 #' @param seed Optional input (default in NULL). Is an integer passed to
 #'   \code{\link[base]{set.seed}}. Used to reproduce patterns exactly.
 
@@ -24,7 +24,7 @@
 #' See Functions section.
 
 #' @section WARNING:
-#' The returned object of \code{rbdd} is an owin specifying the realisation of the Boolean model within the simulation window. The simulation window is not included, thus the object returned by \code{rbdd} can have much smaller extent than the simulation window (e.g. when the simulated set is empty).
+#' The returned object of \code{rbdd} is an \code{owin} specifying the realisation of the Boolean model within the simulation window. The simulation window is not included, thus the object returned by \code{rbdd} can have much smaller extent than the simulation window (e.g. when the simulated set is empty).
 #' 
 #' 
 #' @examples 

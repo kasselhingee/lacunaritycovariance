@@ -6,7 +6,7 @@
 ##' @param xi An observation of a RACS of interest as a full binary map (as an \code{im} object) or as the foreground set (as an \code{owin} object).
 #' In the latter case the observation window, \code{obswin}, must be supplied.
 #' See \code{\link{lacunaritycovariance-package}} for details.
-#'   If \code{xi} is an owin object it must be of \code{mask} type.
+#'   If \code{xi} is an \code{owin} object it must be of \code{mask} type.
 #' @param obswin If \code{xi} is an \code{owin} object then \code{obswin} is an
 #'   \code{owin} object that specifies the observation window.
 #' @param normalise If \code{TRUE} will divide result by \eqn{2 ln(2)} and add 1 to make contagion between 0 and 1 for any binary map

@@ -18,7 +18,7 @@
 #'  If NULL the grains are selected with equal probability.
 #' @param w Optional desired observation window. If this is non-null then any grains with Frame outside the Frame of \code{w} will be ignored.
 #' This reduces polygonal intersection calculations for very large buffer distances
-#' @param xy An im or binary mask object that is used to specify the pixel array of objects.
+#' @param xy An \code{im} or binary mask object that is used to specify the pixel array of objects.
 #' @param weights Probability of selecting each grain in the library
 #' @param lambda Intensity of germs of a Boolean model - for computing the covariance of a Boolean model that has grain distribution given by \code{grainlib} and \code{weights}.
 
@@ -127,7 +127,7 @@ meanarea.grainlib <- function(grainlib, weights = rep(1/length(grainlib), length
 }
 
 #' @describeIn placegrainsfromlib Computes the mean of the set covariance of the grains in \code{grainlib}.
-#' xy is required because the set covariance function must rasterise the owin objects.
+#' \code{xy} is required because the set covariance function must rasterise the \code{owin} objects.
 meansetcov.grainlib <- function(grainlib, weights = rep(1/length(grainlib), length(grainlib)), xy){
   grainlib <- solapply(grainlib, tocompatiblepixelarray, xy = xy)
   setcovagrain <- solapply(grainlib, setcov)
