@@ -45,6 +45,8 @@ Calculates the disc-state contagion LPI as described in (Hingee, 2016; Hingee, 2
   mixing between \eqn{\Xi} and the background may be chosen by the user by
   choosing the disc radius (for classical contagion this distance is fixed by
   the map resolution).
+
+  Note: to create \code{fv} objects the function copies about 20 lines of code from the \pkg{spatstat} package.
 }
 \details{
 XiH should be a function of radius that contains (estimates of) the
