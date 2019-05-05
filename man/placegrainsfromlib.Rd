@@ -31,7 +31,7 @@ If NULL the grains are selected with equal probability.}
 \item{w}{Optional desired observation window. If this is non-null then any grains with Frame outside the Frame of \code{w} will be ignored.
 This reduces polygonal intersection calculations for very large buffer distances}
 
-\item{xy}{An im or binary mask object that is used to specify the pixel array of objects.}
+\item{xy}{An \code{im} or binary mask object that is used to specify the pixel array of objects.}
 
 \item{weights}{Probability of selecting each grain in the library}
 
@@ -52,7 +52,7 @@ The point process of germs can be easily simulated using a number of \pkg{spatst
 (e.g. \code{\link[spatstat]{rpoispp}} for Boolean models).
 To simulate a germ-grain model in a window \eqn{W} the germ process must be simulated in a larger window 
 because grains centred outside \eqn{W} can intersect \eqn{W}.
-The result must then be cropped to \eqn{W} to achieve a realistation of the germ-grain process within \eqn{W}.
+The result must then be cropped to \eqn{W} to achieve a realisation of the germ-grain process within \eqn{W}.
 
 \code{placegrainsfromlib} randomly samples from a library of grains (\code{grainlib}) and places these on the points in \code{pp}.
 Sampling of the grain is independent of the location of the point in \code{pp}.
@@ -65,7 +65,7 @@ It can be used to simulate the grain process in some germ-grain models.
 \item \code{meanarea.grainlib}: Compute mean area of a random grain given by the library
 
 \item \code{meansetcov.grainlib}: Computes the mean of the set covariance of the grains in \code{grainlib}.
-xy is required because the set covariance function must rasterise the owin objects.
+\code{xy} is required because the set covariance function must rasterise the \code{owin} objects.
 
 \item \code{covar.grainlib}: Compute the covariance of a Boolean model with random grain given by the library
 }}

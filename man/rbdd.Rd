@@ -27,7 +27,7 @@ process)}
 
 \item{discr}{Radius of the discs}
 
-\item{window}{The window to simulate in (an owin object)}
+\item{window}{The window to simulate in (an \code{owin} object)}
 
 \item{seed}{Optional input (default in NULL). Is an integer passed to
 \code{\link[base]{set.seed}}. Used to reproduce patterns exactly.}
@@ -78,7 +78,7 @@ The point process of germs is generated using \pkg{spatstat}'s \code{\link[spats
 
 \section{WARNING}{
 
-The returned object of \code{rbdd} is an owin specifying the realisation of the Boolean model within the simulation window. The simulation window is not included, thus the object returned by \code{rbdd} can have much smaller extent than the simulation window (e.g. when the simulated set is empty).
+The returned object of \code{rbdd} is an \code{owin} specifying the realisation of the Boolean model within the simulation window. The simulation window is not included, thus the object returned by \code{rbdd} can have much smaller extent than the simulation window (e.g. when the simulated set is empty).
 }
 
 \examples{

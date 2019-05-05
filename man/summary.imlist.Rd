@@ -2,22 +2,22 @@
 % Please edit documentation in R/summaryimlist.R
 \name{summary.imlist}
 \alias{summary.imlist}
-\title{Pointwise summary of a list of im objects}
+\title{Pointwise summary of a list of \code{im} objects}
 \usage{
 \method{summary}{imlist}(object, ..., harmonizeobject = TRUE)
 }
 \arguments{
-\item{object}{A list of im objects}
+\item{object}{A list of \code{im} objects}
 
 \item{...}{Ignored}
 
 \item{harmonizeobject}{If TRUE (default) the pixel dimensions of the images will be harmonized. Otherwise the object will be tested for compatibility.}
 }
 \value{
-A list im objects containing the pointwise mean, variance and maxima and minima.
+A list \code{im} objects containing the pointwise mean, variance and maxima and minima.
 }
 \description{
-This function assumes that im objects are each realisations of the same (stochastic) object. 
+This function assumes that \code{im} objects are each realisations of the same (stochastic) object. 
 It returns pointwise summaries such as observed sample mean and sample variance.
 }
 \examples{

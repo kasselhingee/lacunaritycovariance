@@ -7,7 +7,7 @@
 gblg(boxes, paircorr = NULL, xiim = NULL)
 }
 \arguments{
-\item{boxes}{Either a list of sidelengths for square boxes or a list of \code{owin} objects of any shape.}
+\item{boxes}{Either a list of side lengths for square boxes or a list of \code{owin} objects of any shape.}
 
 \item{paircorr}{A \code{im} object containing the pair-correlation function}
 
@@ -16,7 +16,7 @@ gblg(boxes, paircorr = NULL, xiim = NULL)
 \value{
 If \code{boxes} is a list of numerical values then GBL is estimated for square boxes with side length given by \code{boxes}.
  The returned object is then an \code{fv} object containing estimates of GBL.
- If \code{boxes} is a list of owin objects then \code{gblg} returns a dataframe of with columns corresponding to estimates of GBL.
+ If \code{boxes} is a list of \code{owin} objects then \code{gblg} returns a dataframe of with columns corresponding to estimates of GBL.
  
  Note if value in the \code{paircorr} object that are needed for \code{gblg} are \code{NA} or \code{NaN} then \code{gblg} will return \code{NA} or \code{NaN}.
 }

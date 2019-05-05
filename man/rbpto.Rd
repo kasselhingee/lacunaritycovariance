@@ -21,10 +21,10 @@ bpto.covar(lambda, grain, xm, alpha, lengthscales = 1:500, xy)
 \item{lambda}{Intensity of the germ process (which is a Poisson point
 process)}
 
-\item{grain}{A single owin object that gives the shape and size of the grain
+\item{grain}{A single \code{owin} object that gives the shape and size of the grain
 at scale 1}
 
-\item{win}{The window to simulate in (an owin object)}
+\item{win}{The window to simulate in (an \code{owin} object)}
 
 \item{xm}{A parameter governing the shape of the Pareto distribution used -
 see details}
@@ -43,14 +43,14 @@ specify the probability of selection of each scale.}
 
 \item{xy}{A raster object that specifies pixel coordinates of the final
 simulated binary map. It is used the same way as \code{xy} is
-\code{\link[spatstat]{as.mask}} in spatstat. If non-null then the
+\code{\link[spatstat]{as.mask}} in \pkg{spatstat}. If non-null then the
 computations will be performed using rasters. Otherwise if \code{grain} and
 \code{win} are polygonal then computations may be all polygonal.}
 
 \item{coverp}{Coverage probability of the Boolean model.}
 }
 \value{
-An owin object.
+An \code{owin} object.
 }
 \description{
 Functions for simulation and computing theoretical values of a
@@ -70,7 +70,7 @@ The distribution of grains scales is a step-function approximation to the CDF wi
 \item \code{bpto.germintensity}: The germ intensity of the Boolean model with grain size distributed according to a truncated Pareto distribution.
 
 \item \code{bpto.covar}: The covariance of the Boolean model with grain size distributed according to a truncated Pareto distribution.
-xy is required to specify resolution and offset of pixel grid.
+\code{xy} is required to specify resolution and offset of pixel grid.
 }}
 
 \examples{

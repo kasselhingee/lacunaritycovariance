@@ -2,14 +2,14 @@
 % Please edit documentation in R/isbinarymap.R
 \name{isbinarymap}
 \alias{isbinarymap}
-\title{Test if an im object is a binary map}
+\title{Test if an \code{im} object is a binary map}
 \usage{
 isbinarymap(xi, requiretrue = FALSE)
 }
 \arguments{
 \item{xi}{an image object}
 
-\item{requiretrue}{Logical. If TRUE then isbinarymap will error if xi is NOT a binary map.}
+\item{requiretrue}{Logical. If TRUE then \code{isbinarymap} will error if xi is NOT a binary map.}
 }
 \value{
 Logical value. \code{TRUE} if \code{xi} is a binary map. Otherwise \code{FALSE}.

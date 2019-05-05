@@ -25,7 +25,7 @@ In the latter case the observation window, \code{obswin}, must be supplied.}
 \item{obswin}{If \code{xi} is an \code{owin} object then \code{obswin} is an
 \code{owin} object that specifies the observation window.}
 
-\item{includenormed}{A logical value. If TRUE then GBL estimates normalised by the GBL values at zero will be included in a returned list of fv objects}
+\item{includenormed}{A logical value. If TRUE then GBL estimates normalised by the GBL values at zero will be included in a returned list of \code{fv} objects}
 
 \item{setcov_boundarythresh}{To avoid instabilities caused by dividing by very small quantities, if the set covariance of the observation window
  is smaller than \code{setcov_boundarythresh}, then the covariance is given a value of NA. 

@@ -17,7 +17,7 @@ bdrcovar(lambda, grain, xy)
 
 \item{grain}{Rectangle object specifying the grain}
 
-\item{win}{The window to simulate in (an owin object)}
+\item{win}{The window to simulate in (an \code{owin} object)}
 
 \item{seed}{Optional input (default in NULL). Is an integer passed to \code{\link[base]{set.seed}}. Used to reproduce patterns exactly.}
 
