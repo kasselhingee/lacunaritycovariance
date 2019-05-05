@@ -8,7 +8,7 @@
 #' 
 #' @param lambda Intensity of the germ process (which is a Poisson point process)
 #' @param grain Rectangle object specifying the grain
-#' @param win The window to simulate in (an owin object)
+#' @param win The window to simulate in (an \code{owin} object)
 #' @param seed Optional input (default in NULL). Is an integer passed to \code{\link[base]{set.seed}}. Used to reproduce patterns exactly.
 #' @param xy A raster object that specifies the pixel coordinates of the desired covariance image. \code{xy} works in similar fashion to passing an image or pixel mask through the \code{xy} argument of \code{\link[spatstat]{as.mask}} in \pkg{spatstat}.
 
