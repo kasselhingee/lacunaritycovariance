@@ -11,7 +11,7 @@
 #' If we denote the estimated pair-correlation by \eqn{\hat{g}(v)}{g(v)} then the estimate of GBL is
 #' \deqn{\frac{1}{|B|^2}\int \gamma_B(v)\hat{g}(v)dv. }{  \int gammaB(v) g(v) dv  /  (|B|^2) .  }
 
-#' @param boxes Either a list of sidelengths for square boxes or a list of \code{owin} objects of any shape.
+#' @param boxes Either a list of side lengths for square boxes or a list of \code{owin} objects of any shape.
 #' @param paircorr  A \code{im} object containing the pair-correlation function
 #' @param xiim An observation of a stationary RACS as an \code{im} object. \code{xiim} must have values of either 1, 0 or NA; 1 denotes inside the RACS, 0 denotes outside, and NA denotes unobserved.
 

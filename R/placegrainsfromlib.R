@@ -29,7 +29,7 @@
 #' (e.g. \code{\link[spatstat]{rpoispp}} for Boolean models).
 #' To simulate a germ-grain model in a window \eqn{W} the germ process must be simulated in a larger window 
 #' because grains centred outside \eqn{W} can intersect \eqn{W}.
-#' The result must then be cropped to \eqn{W} to achieve a realistation of the germ-grain process within \eqn{W}.
+#' The result must then be cropped to \eqn{W} to achieve a realisation of the germ-grain process within \eqn{W}.
 #' 
 #' \code{placegrainsfromlib} randomly samples from a library of grains (\code{grainlib}) and places these on the points in \code{pp}.
 #' Sampling of the grain is independent of the location of the point in \code{pp}.
