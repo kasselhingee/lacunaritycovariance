@@ -14,7 +14,7 @@ Description:
     A demo for extracting a such a binary map from geospatial data formats (e.g. presence-absence maps or two-class landcover maps) is provided.
     The binary map may also be represented in non-rasterised form using a polygonal set as the foreground.
     This package is based on research conducted during the author's PhD studies.
-License: GNU General Public License
+License: GPL (>= 2)
 Depends:
     spatstat
 Imports:
