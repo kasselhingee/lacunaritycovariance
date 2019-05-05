@@ -1,3 +1,5 @@
+# This file contains about 20 lines of code from the spatstat package. These lines are used for clean creation of fv objects.
+
 #' @title Disc State Contagion
 #' @export contagdiscstate
 #'
@@ -17,6 +19,8 @@
 #'   mixing between \eqn{\Xi} and the background may be chosen by the user by
 #'   choosing the disc radius (for classical contagion this distance is fixed by
 #'   the map resolution).
+#'
+#'   Note: to create \code{fv} objects the function copies about 20 lines of code from the \pkg{spatstat} package.
 #'
 #' @param XiH Conditional spherical contact distribution function for \eqn{\Xi}.
 #'   Typically this is an \code{fv} object but could also be a vector of values.
