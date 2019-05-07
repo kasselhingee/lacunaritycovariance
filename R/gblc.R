@@ -24,7 +24,7 @@
 #'  the usual coverage probability estimator and the plug-in moment covariance estimator, respectively 
 #'  (see \code{\link{coverageprob}} and \code{\link{plugincvc}}).
 
-#' @param boxes Either a list of sidelengths for square boxes or a list of \code{owin} objects of any shape.
+#' @param boxes Either a list of side lengths for square boxes or a list of \code{owin} objects of any shape.
 #' @param covariance  A \code{im} object containing the covariance function
 #' @param p The coverage probability. Typically estimated by the fraction of the observation window covered by the set of interest.
 #' @param xiim A binary coverage map as an \code{im} object. \code{xiim} must have values of either 1, 0 or NA; 1 denotes inside the RACS, 0 denotes outside, and NA denotes unobserved.
@@ -33,10 +33,10 @@
 #' for square boxes with side length given by \code{boxes}.
 #'  The returned object is then an \code{fv} object containing estimates of GBL,
 #'   box mass variance and box mass mean.
-#'  If \code{boxes} is a list of owin objects then \code{gblc} returns a 
+#'  If \code{boxes} is a list of \code{owin} objects then \code{gblc} returns a 
 #'  dataframe with columns corresponding to estimates of GBL, box mass variance and box mass mean.
 #' 
-#'   Note if NA or NaN values in the \code{covariance} object are used then \code{gblc} will return NA or NaN. 
+#'   Note if \code{NA} or \code{NaN} values in the \code{covariance} object are used then \code{gblc} will return \code{NA} or \code{NaN}. 
 
 #' @examples
 #' xi <- heather$coarse

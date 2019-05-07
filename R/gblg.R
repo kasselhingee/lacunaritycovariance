@@ -11,13 +11,13 @@
 #' If we denote the estimated pair-correlation by \eqn{\hat{g}(v)}{g(v)} then the estimate of GBL is
 #' \deqn{\frac{1}{|B|^2}\int \gamma_B(v)\hat{g}(v)dv. }{  \int gammaB(v) g(v) dv  /  (|B|^2) .  }
 
-#' @param boxes Either a list of sidelengths for square boxes or a list of \code{owin} objects of any shape.
+#' @param boxes Either a list of side lengths for square boxes or a list of \code{owin} objects of any shape.
 #' @param paircorr  A \code{im} object containing the pair-correlation function
 #' @param xiim An observation of a stationary RACS as an \code{im} object. \code{xiim} must have values of either 1, 0 or NA; 1 denotes inside the RACS, 0 denotes outside, and NA denotes unobserved.
 
 #' @return If \code{boxes} is a list of numerical values then GBL is estimated for square boxes with side length given by \code{boxes}.
 #'  The returned object is then an \code{fv} object containing estimates of GBL.
-#'  If \code{boxes} is a list of owin objects then \code{gblg} returns a dataframe of with columns corresponding to estimates of GBL.
+#'  If \code{boxes} is a list of \code{owin} objects then \code{gblg} returns a dataframe of with columns corresponding to estimates of GBL.
 #'  
 #'  Note if value in the \code{paircorr} object that are needed for \code{gblg} are \code{NA} or \code{NaN} then \code{gblg} will return \code{NA} or \code{NaN}. 
 
