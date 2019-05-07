@@ -28,7 +28,7 @@ First run the following to build a .tar.gz file.
     R CMD build --compact-vignettes=gs+qpdf . 
 
 This should create a file `lacunaritycovariance-<VERSION>.tar.gz`. 
-Where `<VERSION>` is a string on numbers separated by periods and hyphens, for example 0.5-2.
+Where `<VERSION>` is a string on numbers separated by periods and hyphens, for example 1.0-0.
 Then run 
 
     R CMD INSTALL lacunaritycovariance-<VERSION>.tar.gz
