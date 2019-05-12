@@ -1,6 +1,8 @@
 context("RACS Simulation")
 
 test_that("rbpto generates simulations that match covariance for big window", {
+  skip_on_cran() #skipping on CRAN as the test takes a long time
+
   win <- owin()
   grain <- disc(r = 0.01)
   lambda <- 500
