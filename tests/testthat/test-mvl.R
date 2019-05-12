@@ -1,23 +1,23 @@
 context("Estimation - GBL")
 
 test_that("gblc() warns of unexpected inputs", {
-  covar <- plugincvc(as.im(heather$coarse, na.replace = FALSE))
-  p <- area(heather$coarse) / area(Frame(heather$coarse))
+  xiim_verytoy <- as.im(heather$coarse, na.replace = FALSE, eps = 1)
+  covar <- plugincvc(xiim_verytoy)
+  p <- sum(xiim_verytoy) * xiim_verytoy$xstep * xiim_verytoy$ystep / area(Frame(xiim_verytoy))
   sidelengths <- 2.2
-  img <- as.im(heather$coarse, eps = heather$coarse$xstep, na.replace = 0)
-  expect_error(gblc(sidelengths, covariance = covar, p = p, xiim = img),
+  expect_error(gblc(sidelengths, covariance = covar, p = p, xiim = xiim_verytoy),
                  regexp = "Either covariance and p must be supplied or xiim supplied.")
 
-  expect_error(gblc(sidelengths, covariance = covar, xiim = img),
+  expect_error(gblc(sidelengths, covariance = covar, xiim = xiim_verytoy),
                  regexp = "Either covariance and p must be supplied or xiim supplied.")
 
-  expect_error(gblc(sidelengths, p = p, xiim = img),
+  expect_error(gblc(sidelengths, p = p, xiim = xiim_verytoy),
                  regexp = "Either covariance and p must be supplied or xiim supplied.")
 })
 
 test_that("gblemp() warns of unexpected inputs", {
   sidel <- c(2.2)
-  img <- as.im(heather$coarse,eps=c(heather$coarse$xstep, 2 * heather$coarse$xstep), na.replace = 0)
+  img <- as.im(heather$coarse,eps=c(2*heather$coarse$xstep, 4 * heather$coarse$xstep), na.replace = 0)
   expect_error(gblemp(sidel, img),
                  regexp = "image pixels must be square")
 
@@ -42,8 +42,9 @@ test_that("GBLemp estimates are historically consistent", {
 })
 
 test_that("GBLc estimates are consistent for input side lengths or owin squares", {
-  covar <- plugincvc(as.im(heather$coarse, na.replace = FALSE))
-  p <- area(heather$coarse) / area(Frame(heather$coarse))
+  xiim_verytoy <- as.im(heather$coarse, na.replace = FALSE, eps = 1)
+  covar <- plugincvc(xiim_verytoy)
+  p <- sum(xiim_verytoy) * xiim_verytoy$xstep * xiim_verytoy$ystep / area(Frame(xiim_verytoy))
   sidelengths <- 2.2
   lac <- gblc(sidelengths, covar, p)
   expect_equal(lac$GBL, gblc(list(square(2.2)), covar, p)$GBL)
@@ -51,27 +52,27 @@ test_that("GBLc estimates are consistent for input side lengths or owin squares"
 
 test_that("GBLc estimates are operate on lists of owin objects", {
   discs <- lapply(seq(1, 10, by = 0.5), function(x) disc(r = x))
-  lac <- gblc(discs, xiim = as.im(heather$coarse, na.replace = 0))
+  lac <- gblc(discs, xiim = as.im(heather$coarse, na.replace = 0, eps = 1))
   expect_s3_class(lac, "data.frame")
   expect_equal(nrow(lac), length(discs))
 })
 
 test_that("gblcc estimates operate on lists of owin objects", {
   discs <- lapply(seq(1, 10, by = 0.5), function(x) disc(r = x))
-  lac <- gblcc(discs, xiim = as.im(heather$coarse, na.replace = 0))
+  lac <- gblcc(discs, xiim = as.im(heather$coarse, na.replace = 0, eps = 1))
   expect_s3_class(lac, "data.frame")
   expect_equal(nrow(lac), length(discs))
 })
 
 test_that("gblg estimates operate on lists of owin objects", {
   discs <- lapply(seq(1, 10, by = 0.5), function(x) disc(r = x))
-  lac <- gblg(discs, xiim = as.im(heather$coarse, na.replace = 0))
+  lac <- gblg(discs, xiim = as.im(heather$coarse, na.replace = 0, eps = 1))
   expect_is(lac, "numeric")
   expect_length(lac, length(discs))
 })
 
 test_that("GBLc estimates are the same from estimated covariance or original image", {
-  img <- as.im(heather$coarse, eps = heather$coarse$xstep, na.replace = 0)
+  img <- as.im(heather$coarse, na.replace = 0, eps = 1)
   covar <- plugincvc(img)
   p <- sum(img) / sum(is.finite(img$v))
   sidelengths <- seq(1, 5, by = heather$coarse$xstep*2)

@@ -27,6 +27,7 @@ test_that("Covariance Estimation from an owin object matches the estimates from 
 #Test on a Boolean Model
 #takes a few minutes
 test_that("racscovariance pickaH method matches theoretical covariance for Boolean Model", {
+  skip_on_cran()
 
   #isotropise covar functions
   covarest.frim <- covarest.frim[owin(xrange = c(-1, 1) * 3.5 * discr, yrange = c(-1, 1) * 3.5 * discr), drop = TRUE]
