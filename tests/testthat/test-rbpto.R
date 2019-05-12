@@ -2,6 +2,14 @@ context("RACS Simulation")
 
 test_that("rbpto generates simulations that match covariance for big window", {
   win <- owin()
+  phattol <- 5E-2
+  cvcreltol <- 5E-2
+  if (!identical(Sys.getenv("NOT_CRAN"), "true")){
+    win <- scalardilate(win, 0.1)
+    phattol <- 5E-1
+    cvcreltol <- 5E-1
+  }
+
   grain <- disc(r = 0.01)
   lambda <- 500
   xm <- 0.01
@@ -13,7 +21,7 @@ test_that("rbpto generates simulations that match covariance for big window", {
 
   #compare coverage probability to phat
   expect_equal(mean(vapply(xis, coverageprob, obswin = win, FUN.VALUE = 0.0)),
-  cp, tol = 5E-2)
+  cp, tol = phattol)
 
   #compare covariance to estimated covariance
   xy <- as.mask(win, eps = 0.001)
@@ -26,8 +34,8 @@ test_that("rbpto generates simulations that match covariance for big window", {
   expect_warning(cvc.diff <- eval.im(cvc.th - cvc.est, harmonize = TRUE), regexp = "images .* were not compatible")
   #plot(solist(cvc.th, cvc.est, cvc.diff[Frame(cvc.th)]), axes = TRUE)
   # the differences make very beautiful patterns
-  expect_lt(max(abs(cvc.diff)), cp * 1E-1)
-  expect_lt(mean(abs(cvc.diff)), cp * 5E-2)
+  expect_lt(max(abs(cvc.diff)), cp * cvcreltol * 2)
+  expect_lt(mean(abs(cvc.diff)), cp * cvcreltol)
 })
 
 test_that("bpto.coverageprob is consistent with bpto.germintensity", {

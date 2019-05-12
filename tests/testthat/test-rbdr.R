@@ -3,6 +3,9 @@ context("RACS simulation")
 test_that("rbdr produces simulations with the correct coverage and covariance", {
   grain <- owin(xrange = c(-5, 5), yrange = c(-5, 5))
   win <- owin(xrange = c(0, 200), c(0, 200))
+  if (Sys.getenv("NOT_CRAN") == "false"){
+    win <- owin(xrange = c(0, 20), c(0, 20))
+  }
   lambda <- 4.2064E-3
   
   #calculate theoretical values of the model
