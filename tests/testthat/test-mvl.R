@@ -91,6 +91,7 @@ test_that("integration when covar is constant gives squared area (i.e. gbl = 1)"
 })
 
 test_that("GBLc and GBLemp produce similar results for large square observation windows", {
+  skip_on_cran()
   #xiimg and covarest.frim is pregenerated in helper-calccovar
   sidelengths <- seq(xiimg$xstep * 3, 15, by = xiimg$xstep * 2) #odd pixel widths!
   lac.gblcc.picakHest <- gblc(sidelengths, covar = covarest.frim, p = xi.p)
@@ -110,6 +111,8 @@ test_that("gbl() fails nicely when GBLemp can't estimate anything", {
 test_that("gbl() harmonises estimates to produce meaningful fv object", {
   xiim <- as.im(heather$coarse, value = TRUE, na.replace = FALSE)
   expect_warning(gblest <- gbl(xiim, seq(0.2, 10, by = 1)), regexp = "harmon")
+  expect_silent(lapply(gblest, plot.fv, limitsonly = TRUE))
+  skip_on_cran()
   expect_silent(lapply(gblest, plot.fv, type = "n"))
 })
 
