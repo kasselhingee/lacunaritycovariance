@@ -1,13 +1,13 @@
 context("RACS Simulation")
 
 test_that("rbpto generates simulations that match covariance for big window", {
-  win <- owin()
-  phattol <- 5E-2
-  cvcreltol <- 5E-2
-  if (!identical(Sys.getenv("NOT_CRAN"), "true")){
-    win <- scalardilate(win, 0.1)
-    phattol <- 5E-1
-    cvcreltol <- 5E-1
+  win <- owin(xrange = c(0, 0.1), yrange = c(0, 0.1))
+  phattol <- 5E-1
+  cvcreltol <- 5E-1
+  if (identical(Sys.getenv("NOT_CRAN"), "true")){
+    win <- owin()
+    phattol <- 5E-2
+    cvcreltol <- 5E-2
   }
 
   grain <- disc(r = 0.01)
