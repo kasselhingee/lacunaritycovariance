@@ -4,8 +4,8 @@ context("Estimation - Covariance")
     spatstat.options(npixel = 512) #to make default pixelisations higher resolution
     proptol = 0.1
   } else {
-    spatstat.options(npixel = 128) 
-    proptol = 0.5
+    spatstat.options(npixel = xiimg$dim[[1]])  #matches the number of pixels of the discretised xi
+    proptol = 0.1
   }
   #estimate covariance of owin (covariance of image already estimated in help code)
   covarest.frowin.all <- racscovariance(xi, obswin = w)
@@ -18,8 +18,8 @@ test_that("Covariance Estimation from an owin object matches the estimates from 
 
   covarest.diffs <- eval.im(a - b, harmonise.im(a = covarest.frowin, b = covarest.frim))
 
-  expect_lt(mean(covarest.diffs), proptol * max(abs(covarest.frim)))
-  expect_lt(max(abs(covarest.diffs)), proptol * max(abs(covarest.frim)))
+  expect_lt(mean(covarest.diffs) / max(abs(covarest.frim)), proptol)
+  expect_lt(max(abs(covarest.diffs)) / max(abs(covarest.frim)), proptol) 
 
 })
 
