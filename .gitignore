@@ -9,3 +9,5 @@ DESCRIPTION
 NAMESPACE
 man/*
 !man/*-package*
+doc
+Meta

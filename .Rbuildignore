@@ -9,3 +9,6 @@ codestyleconventions.txt
 scriptfortestingtests.R
 todo.txt
 DESCRIPTION_editable
+^CRAN-RELEASE$
+^doc$
+^Meta$
