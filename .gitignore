@@ -8,3 +8,5 @@ vignettes/*.*
 NAMESPACE
 man/*
 !man/*-package*
+doc
+Meta
