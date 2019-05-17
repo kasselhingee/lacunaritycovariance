@@ -1,4 +1,4 @@
-%\VignetteIndexEntry{Estimating RACS Summary Functions from data saved in Remote Sensing Formats}
+%\VignetteIndexEntry{Estimating RACS Summary Functions from Data Saved in Remote Sensing Formats}
 
 \documentclass{article}
 \usepackage{hyperref}
@@ -13,14 +13,15 @@
 
 \maketitle
 
-This document demonstrates how to estimate various properties of a stationary RACS from an observation that is a binary map.
+This document is a short demonstration of estimating various properties of a stationary RACS from an observation that is a binary map.
+See (Hingee, 2019; Hingee et al., 2019) for more rigorous discussion of the properties and estimators.
 
 \tableofcontents
 
 \section{Preparing the Binary Map}
 We will need an image in \code{spatstat}'s \code{im} format with values of 1, 0 and NA representing foreground, background and outside the observation window respectively.
 For this vignette we will use a small image already prepared.
-You can see how we prepared it from remote sensing data in the demo:\\
+You can see how we prepared it from remotely sensed data in the demo:\\
  \verb!import_remote_sense_data!.\\
 This demo can be run by typing the following in \code{R}:\\ \verb!demo("import_remote_sense_data", package = "lacunaritycovariance")!.
 
@@ -30,38 +31,37 @@ This demo can be run by typing the following in \code{R}:\\ \verb!demo("import_r
 library(lacunaritycovariance)
 load(system.file("extdata/egbinarymap.RData",
      package="lacunaritycovariance"))
-# the following converts egbinarymap to pixel values with logical type
+# the following converts egbinarymap to logically-valued pixels
 egbinarymap <- eval.im(egbinarymap > 0.5)
-plot(egbinarymap, col = c("grey", "black"), main = "The Binary Map")
+plot(egbinarymap,
+     col = c("grey", "black"),
+     main = "The Binary Map")
 @
 \caption{The binary map used in this example. Black (TRUE) is tree canopy, grey (FALSE) is not tree canopy and white (NA) is outside the observation window.}
+\label{binarymap:fig}
 \end{figure}
 
 This binary map is a small subset of a tree canopy map with a spatial resolution of 20cm derived from aerial stereophotography following the methods described by Caccetta et al.~(2015).
 
 \begin{itemize}
-  \item Spatial resolution is 0.2m
-  \item Year of capture was 2009
-  \item Location was a sparsely forested region just North of Perth, Australia
+  \item Spatial resolution is 0.2m.
+  \item Year of capture was 2009.
+  \item Location was a sparsely forested region just north of Perth, Western Australia.
   \item Data is approximately 300m x 300m in extent.
-  \item Values are either 1 if in tree canopy, or 0 if not in tree canopy.
-  \item Data format: ERMapper raster (.ers)
+  \item Data format: ERMapper raster (.ers).
 \end{itemize}
 
 \section{Estimate Properties of Stationary RACS}
-For now \code{lacunaritycovariance} only has functions for estimating coverage probability, disc-state contagion, covariance and gliding box lacunarity, with the spherical contact distribution and conditional core probability estimated using \code{Hest} from \code{spatstat}.
- Conditional core probability is defined in Hingee (2016) is the probability that a point in the foreground (tree canopy) is in the core of the foreground, and is equivalent to the spherical contact distribution of the complement of the set.
- Coverage probability and disc-state contagion are also described in Hingee (2016), the former is a very common property that is also known as the coverage fraction.
- Covariance estimators are summarised in Hingee (2019).
- Theory and estimation of gliding box lacunarity is described in Hingee et al. (2017).
+The package \code{lacunaritycovariance} has functions for estimating coverage probability, disc-state contagion, covariance and gliding box lacunarity (GBL).
+GBL is one of the most popular lacunarity indices, and theory and estimation of GBL was described by Hingee et al. (2019).
+ Covariance estimators were summarised by Hingee (2019) and Picka (2000).
+ Coverage probability and disc-state contagion were described by Hingee (2016, 2019), the former is a popular RACS property that is also known as the coverage fraction.
  
- Below we estimate the coverage probability, spherical contact distribution, conditional core probability, disc-state contagion, covariance and gliding box lacunarity of the tree cover.
-  The isotropic covariance function standardised by coverage probability, which is also known as the isotropic pair-correlation function is shown alongside the covariance estimate.
+ Below we estimate the coverage probability, disc-state contagion, covariance and gliding box lacunarity of a RACS from the binary map in Figure \ref{binarymap:fig}.
+We also estimate the spherical contact distribution and conditional core probability using the function \code{Hest} in the \code{R} package \code{spatstat}.
+ Conditional core probability was defined by Hingee (2016, 2019) as the probability that a point in the foreground is in the core of the foreground, and is equivalent to the spherical contact distribution of the complement of the foreground.
 
-There is no clear maximum distance for estimates of covariance and other summary functions to use.
-Ripley's rule of thumb for the K-function in spatial point processes suggests to estimate covariance for vectors $v$ no longer than 1/4 of the shortest width of the observation window.
-Foroutan-pour et al. (1999) also noticed that estimates of contact distributions then used for box-counting dimension estimates were less reliable for distances greater 1/4 of the shortest width of the observation window.
-  Beware that many factors influence the validity of estimates of RACS properties and estimates for shorter distances can be misleading (e.g.~if the observation window is much smaller than the range of dependence between locations).
+\
 
 The coverage probability is estimated by the proportion of the observation window covered by the foreground.
 It is an important first-order summary of a stationary RACS.
@@ -80,65 +80,67 @@ coreprob <- Hest(!egbinarymap)
 discstatecontag <- contagdiscstate(scdest, coreprob, phat)
 
 par(mfrow=c(1,3))
-plot(scdest, main="Conditional Spherical Contact Distribution Estimates\n
- Showing Estimates Using Various Border Corrections")
-plot(coreprob, main = "Conditional Core Probability Estimates\n
- Showing Estimates using various Border Corrections")
-plot(discstatecontag, main = "A Disc-State Contagion Estimate\n
- (Using the Reduced-Sample Border Correction)")
+plot(scdest, main="Cond. SCD\n
+ Various Estimators")
+plot(coreprob, main = "Cond. Core Probability\n
+ Various Estimators")
+plot(discstatecontag, main = "Disc-State Contagion\n
+ Reduced-Sample Correction")
 @
-\caption{Estimated conditional spherical contact distribution, conditional core probability and disc state contagion.}
+\caption{\emph{From left:} Estimated conditional spherical contact distribution, conditional core probability, and disc state contagion.}
+\label{scdrel:fig}
 \end{figure}
 
-The Kaplan-Meier estimates of spherical contact distribution and the core probability are automatically generated by Hest.
-We plot them here with smoothed versions.
-The spike at small values of the spherical contact hazard is likely a characteristic of the computations and not reflective of the hazard rate.
-The estimate of the hazard of the core probability fluctuates substantially and may not be reflective of the RACS.
+Kaplan-Meier estimates of spherical contact distribution hazard and the core probability hazard were automatically generated by \code{Hest} (Figure \ref{schaz:fig}).
+The spike at small values of the spherical contact hazard was likely caused by the pixel size, and is unlikely to represent the true hazard rate.
 
 \begin{figure}[H]
 \centering
 <<schazard, fig= TRUE>>=
-scdest.sm <- Smooth(scdest, which = "*", method = "smooth.spline", spar = 0.5)
-coreprob.sm <- Smooth(coreprob, which = "*", method = "smooth.spline", spar = 0.5)
+scdest.sm <- Smooth(scdest, which = "*",
+                    method = "smooth.spline", spar = 0.5)
+coreprob.sm <- Smooth(coreprob, which = "*",
+                      method = "smooth.spline", spar = 0.5)
 par(mfrow = c(1, 2))
-plot(scdest, hazard ~ r, col = "grey", main = "Spherical Contact Hazard")
+plot(scdest, hazard ~ r, col = "grey",
+     main = "Spherical Contact Hazard")
 plot(add = TRUE, scdest.sm, "hazard ~ r")
 
-plot(coreprob, hazard ~ r, col = "grey", main = "Core Probability Hazard")
+plot(coreprob, hazard ~ r, col = "grey",
+     main = "Core Probability Hazard")
 plot(add = TRUE, coreprob.sm, "hazard ~ r")
 @
 \caption{Estimates of Spherical Contact Hazard (left) and Core Probability Hazard (right). The estimates smoothed using \code{smooth.spline} are shown in black. }
+\label{schaz:fig}
 \end{figure}
 
 Covariance estimates using the balanced estimator inspired by Picka's additively modified estimator of centred covariance (Picka, 2000) are shown below.
-This estimator has smaller variance than the traditional (plug-in moment) estimator of covariance from binary maps and is consistent with estimates made from the complement of the observed set. 
+This estimator typically has smaller variance than the traditional (plug-in moment) estimator and is consistent with covariance estimates made from the complement of the binary map. 
 
 \begin{figure}[H]
 \centering
 <<estimatecovariance, fig = TRUE, include = TRUE, width = 5>>=
-cvchat <- racscovariance(egbinarymap, estimators = "pickaH", drop = TRUE)
+cvchat <- racscovariance(egbinarymap, estimators = "pickaH",
+                         drop = TRUE)
 plot(cvchat, main = "Estimated RACS Covariance", axes = TRUE)
 @
 \caption{Estimated Covariance}
 \end{figure}
 
-The additively modified estimate of pair-correlation (Picka, 2000) is shown below, along with the rotational mean of this estimate are shown below.
+The additively modified estimate of pair-correlation (Picka, 2000) is shown below.
+It was obtained from the earlier estimate of covariance, but can also be obtained directly using the function \code{paircorr}.
+The rotational mean of the pair correlation estimate is an estimate of isotropic pair correlation and can be obtained using the function \code{rotmean} in \code{spatstat}: \code{rotmean(pclnest, padzero = FALSE, result = "fv")}.
 
 \begin{figure}[H]
 \centering
-<<paircorr, fig = TRUE, width = 7, height = 4>>=
-par(mfrow = c(1, 2))
+<<paircorr, fig = TRUE, width = 5>>=
 pclnest <- eval.im(cvchat /  (phat^2))
-plot(pclnest, main = "Pair-Correlation Estimate")
-isopclnest <- rotmean(pclnest, padzero = FALSE, result = "fv")
-plot(isopclnest,
-     main = "Estimated Isotropic Pair Correlation",
-     xlim = c(0, 50))
+plot(pclnest, main = "Pair Correlation Estimate")
 @
-\caption{Estimated Pair-Correlation and Isotropic Pair-Correlation}
+\caption{Estimated Pair Correlation.}
 \end{figure}
 
-GBL can be estimated using a variety of method, including the gliding-box algorithm and our new covariance-based estimates of GBL, using the function \code{gbl}.
+The function \code{gbl} can give estimates of GBL using the empirical gliding-box method or our new covariance-based estimators (Figure \ref{gblest:fig}).
 \begin{figure}[H]
 \centering
 <<gblestimation, fig = TRUE>>=
@@ -146,18 +148,14 @@ gblest <- gbl(xi = egbinarymap, seq(1, 200/4, by = 1))
 plot(gblest[[1]], main = "GBL Estimate")
 @
 \caption{GBL Estimates.}
+\label{gblest:fig}
 \end{figure}
 
 \section{Summary}
-From the binary map of tree canopy we have estimated the conditional spherical contact distribution, conditional core probability, disc-state contagion, spherical contact hazard and core probability hazard, covariance, isotropic pair-correlation function and gliding box lacunarity of a stationary RACS model of the tree canopy pattern.
+From the binary map of tree canopy (Figure \ref{binarymap:fig}) we have estimated the conditional spherical contact distribution, conditional core probability, disc-state contagion, spherical contact hazard and core probability hazard, covariance, and GBL of a stationary RACS model for the tree canopy pattern.
 
 \section{References}
 Caccetta, P., Collings, S., Devereux, A., Hingee, K., McFarlane, D., Traylen, A., Wu, X., Zhou, Z. (2015) \emph{Monitoring land surface and cover in urban and peri-urban environments using digital aerial photography.} International Journal of Digital Earth, 1-19.
-
-\
-
-\noindent
-Foroutan-pour, K., Dutilleul, P. and Smith, D.L. (1999) \emph{Advances in the implementation of the box-counting method of fractal dimension estimation.} Applied Mathematics and Computation, 105, 195-210.
 
 \
 
