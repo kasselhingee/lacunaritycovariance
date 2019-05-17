@@ -1,10 +1,10 @@
 context("Estimation - second order properties")
 
 xi <- heather$coarse
-xiim <- as.im(xi, value = TRUE, na.replace = FALSE)
+xiim_verytoy <- as.im(xi, value = TRUE, na.replace = FALSE, eps = 1)
 
 test_that("secondorderprop() produces output of correct class with all estimators", { 
-  expect_warning(secondests <- secondorderprops(xiim, 
+  expect_warning(secondests <- secondorderprops(xiim_verytoy, 
     gblargs = list(boxwidths = seq(1, 10, by = 0.1)),
     covarargs = list(estimators = "all"),
     cencovarargs = list(estimators = "all"),
@@ -22,13 +22,13 @@ test_that("secondorderprop() produces output of correct class with all estimator
 })
 
 test_that("secondorderprop() produces empty list with full defaults", { 
-  secondests <- secondorderprops(xiim)
+  secondests <- secondorderprops(xiim_verytoy)
   expect_is(secondests, "list")
   expect_length(secondests, 0)
 })
 
 test_that("secondorderprop() produces of fv objects for rotmean with multiple estimators", { 
-  expect_warning(secondests <- secondorderprops(xiim, 
+  expect_warning(secondests <- secondorderprops(xiim_verytoy, 
     gblargs = list(boxwidths = seq(1, 10, by = 0.1)),
     covarargs = list(estimators = "all"),
     cencovarargs = list(estimators = "all"),
@@ -47,7 +47,7 @@ test_that("secondorderprop() produces of fv objects for rotmean with multiple es
   
 test_that("secondorderprop() produces of fv objects for rotmean with single estimators", { 
   #test with rotmean and single estimators
-  secondests <- secondorderprops(xiim, 
+  secondests <- secondorderprops(xiim_verytoy, 
     gblargs = list(boxwidths = seq(1, 10, by = 0.1), estimators = "GBLcc.pickaH"),
     covarargs = list(estimators = "pickaH"),
     cencovarargs = list(estimators = "pickaH"),
@@ -64,7 +64,7 @@ test_that("secondorderprop() produces of fv objects for rotmean with single esti
 })
   
 test_that("secondorderprop() single images without rotmean and when only one estimator requested", { 
-  secondests <- secondorderprops(xiim, 
+  secondests <- secondorderprops(xiim_verytoy, 
     gblargs = list(boxwidths = seq(1, 10, by = 0.1), estimators = "GBLcc.pickaH"),
     covarargs = list(estimators = "pickaH"),
     cencovarargs = list(estimators = "pickaH"),
@@ -81,7 +81,7 @@ test_that("secondorderprop() single images without rotmean and when only one est
 })
 
 test_that("secondorderprop() gives single fv object when only GBLemp", {
-  secondests <- secondorderprops(xiim, 
+  secondests <- secondorderprops(xiim_verytoy, 
     gblargs = list(boxwidths = seq(1, 10, by = 0.1), estimators = "GBLemp"))
   expect_s3_class(secondests$GBL, "fv")
   expect_length(secondests, 1)
@@ -89,7 +89,7 @@ test_that("secondorderprop() gives single fv object when only GBLemp", {
 
 test_that("secondorderprop() gives data frame for discs", {
   discs <- lapply(seq(1, 10, by = 0.5), function(x) disc(r = x))
-  secondests <- secondorderprops(xiim, 
+  secondests <- secondorderprops(xiim_verytoy, 
     gblargs = list(boxwidths = discs, estimators = "GBLc"))
   expect_s3_class(secondests$GBL, "data.frame")
   expect_length(secondests, 1)
@@ -97,7 +97,7 @@ test_that("secondorderprop() gives data frame for discs", {
 
   test_that("secondorderprop() gives data frame for discs, multiple estimators", {
   discs <- lapply(seq(1, 10, by = 0.5), function(x) disc(r = x))
-  secondests <- secondorderprops(xiim, 
+  secondests <- secondorderprops(xiim_verytoy, 
     gblargs = list(boxwidths = discs, estimators = c("GBLc", "GBLcc.pickaH", "GBLcc.mattfeldt", "GBLcc.pickaint", "GBLg.pickaint", "GBLg.mattfeldt")))
   expect_s3_class(secondests$GBL, "data.frame")
   expect_equal(nrow(secondests$GBL), length(discs))
@@ -105,13 +105,13 @@ test_that("secondorderprop() gives data frame for discs", {
   
   test_that("secondorderprop() gives error when discs and GBLemp", {
   discs <- lapply(seq(1, 10, by = 0.5), function(x) disc(r = x))
-  expect_error(secondorderprops(xiim, 
+  expect_error(secondorderprops(xiim_verytoy, 
     gblargs = list(boxwidths = discs, estimators = "GBLemp")),
     regexp = "non-numeric")
 })
 
   test_that("secondorderprop() ignores centred covariance when requested to", {
-  secondests <- secondorderprops(xiim, 
+  secondests <- secondorderprops(xiim_verytoy, 
     gblargs = list(boxwidths = seq(1, 10, by = 0.1), estimators = "GBLcc.pickaH"),
     covarargs = list(estimators = "pickaH"),
     paircorrargs = list(estimators = "pickaH"),

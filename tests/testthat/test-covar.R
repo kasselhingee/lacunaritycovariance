@@ -1,6 +1,12 @@
 context("Estimation - Covariance")
 
-  spatstat.options(npixel = 512) #to make default pixelisations higher resolution
+  if (identical(Sys.getenv("NOT_CRAN"), "true")){
+    spatstat.options(npixel = 512) #to make default pixelisations higher resolution
+    proptol = 0.1
+  } else {
+    spatstat.options(npixel = 128) 
+    proptol = 0.5
+  }
   #estimate covariance of owin (covariance of image already estimated in help code)
   covarest.frowin.all <- racscovariance(xi, obswin = w)
 
@@ -12,8 +18,8 @@ test_that("Covariance Estimation from an owin object matches the estimates from 
 
   covarest.diffs <- eval.im(a - b, harmonise.im(a = covarest.frowin, b = covarest.frim))
 
-  expect_lt(mean(covarest.diffs), 0.1 * max(abs(covarest.frim)))
-  expect_lt(max(abs(covarest.diffs)), 0.1 * max(abs(covarest.frim)))
+  expect_lt(mean(covarest.diffs), proptol * max(abs(covarest.frim)))
+  expect_lt(max(abs(covarest.diffs)), proptol * max(abs(covarest.frim)))
 
 })
 
@@ -21,6 +27,7 @@ test_that("Covariance Estimation from an owin object matches the estimates from 
 #Test on a Boolean Model
 #takes a few minutes
 test_that("racscovariance pickaH method matches theoretical covariance for Boolean Model", {
+  skip_on_cran()
 
   #isotropise covar functions
   covarest.frim <- covarest.frim[owin(xrange = c(-1, 1) * 3.5 * discr, yrange = c(-1, 1) * 3.5 * discr), drop = TRUE]
@@ -40,13 +47,13 @@ test_that("racscovariance pickaH method matches theoretical covariance for Boole
   #residual to theoretical covariance
   isocovarresid <- with.fv(covarest.all.iso, (. - truecovar) / truecovar, FUN = TRUE)
   #truncate residuals
-  isocovarresid <- isocovarresid[isocovarresid$r < 3 * discr, ]
+  isocovarresid <- isocovarresid[isocovarresid$r < max(isocovarresid$r/2), ]  #the condition removes large radii relative to window size
 
   #expect that this residual is smaller than 10% of the true covariance
-  expect_lt(max(isocovarresid$pickaH),  0.1)
-  expect_lt(max(isocovarresid$pickaint),  0.1)
-  expect_lt(max(isocovarresid$mattfeldt),  0.1)
-  expect_lt(max(isocovarresid[, fvnames(isocovarresid, a = "."), drop = TRUE]), 0.1)
+  expect_lt(max(isocovarresid$pickaH),  proptol)
+  expect_lt(max(isocovarresid$pickaint),  proptol)
+  expect_lt(max(isocovarresid$mattfeldt),  proptol)
+  expect_lt(max(isocovarresid[, fvnames(isocovarresid, a = "."), drop = TRUE]), proptol)
   #expect_lt(max(isocovarresid[, fvnames(isocovarresid, a = ".") != "plugin"]), 0.1)
   
 })
