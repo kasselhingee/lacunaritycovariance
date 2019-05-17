@@ -5,3 +5,5 @@ racsScratch/
 !vignettes/*.Rnw
 vignettes/*-*
 vignettes/*.*
+doc
+Meta
