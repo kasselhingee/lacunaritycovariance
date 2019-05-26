@@ -22,8 +22,8 @@
 #'  Note if value in the \code{paircorr} object that are needed for \code{gblg} are \code{NA} or \code{NaN} then \code{gblg} will return \code{NA} or \code{NaN}. 
 
 #' @examples
-#' xi <- heather$coarse
-#' pcln <- paircorr(as.im(xi, na.replace = 0), estimators = "pickaH", drop = TRUE)
+#' xi <- as.im(heather$coarse, na.replace = 0, eps = 4 * heather$coarse$xstep)
+#' pcln <- paircorr(xi, estimators = "pickaH", drop = TRUE)
 #' if (interactive()) {
 #' sidelengths <- seq(0.3, 14, by = 0.2)
 #' } else {

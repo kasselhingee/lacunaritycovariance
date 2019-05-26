@@ -45,8 +45,8 @@
 
 
 #' @examples 
-#' xi <- heather$coarse
-#' xi <- as.im(xi, value = TRUE, na.replace = FALSE)
+#' xi <- as.im(heather$coarse, value = TRUE,
+#'             na.replace = FALSE, eps = 4 * heather$coarse$xstep)
 #' if (interactive()) {
 #' boxwidths <- seq(1, 10, by = 0.5)
 #' } else {
