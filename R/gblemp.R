@@ -30,7 +30,7 @@
 #' Note the actual box widths used by \code{gblemp} will be the closest multiple of an odd number of pixel widths.
 #' @param obswin Optional observation window. The observation window used for the estimator will be the intersection of \code{obswin} and the pixels that are not \code{NA} in \code{xiim}.
 #' @examples
-#' xiim <- as.im(heather$coarse, na.replace = 0)
+#' xiim <- as.im(heather$coarse, na.replace = 0, eps = 4 * heather$coarse$xstep)
 #' boxwidths <- seq(0.2, 14, by = 0.2) #in units of xiim
 #' gblest <- gblemp(boxwidths, xiim)
 #'
