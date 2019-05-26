@@ -29,8 +29,8 @@ This can be faster than computing estimates of multiple second order properties 
 Fourier transforms of the binary map are not repeated.
 }
 \examples{
-xi <- heather$coarse
-xiim <- as.im(xi, value = TRUE, na.replace = FALSE)
+xiim <- as.im(heather$coarse, value = TRUE,
+              na.replace = FALSE, eps = 4 * heather$coarse$xstep)
 gblargs = list(boxwidths = seq(1, 10, by = 1), estimators = c("GBLemp", "GBLc"))
 covarargs = list(estimators = "all")
 cencovarargs = list(estimators = "pickaH")

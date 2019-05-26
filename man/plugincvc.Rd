@@ -35,9 +35,8 @@ Vectors with small \eqn{\gamma_W(v)}{ gammaW(v) } are eliminated using \code{set
 as division by small values is numerically unstable.
 }
 \examples{
-xi <- heather$coarse
-covar <- plugincvc(xi, Frame(xi))
-covar <- plugincvc(as.im(heather$coarse, na.replace = 0))
+xi <- as.im(heather$coarse, na.replace = 0, eps = 4 * heather$coarse$xstep)
+covar <- plugincvc(xi)
 }
 \references{
 Serra, J.P. (1982) \emph{Image Analysis and Mathematical Morphology}. London; New York: Academic Press.

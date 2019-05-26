@@ -29,8 +29,8 @@ If we denote the estimated pair-correlation by \eqn{\hat{g}(v)}{g(v)} then the e
 \deqn{\frac{1}{|B|^2}\int \gamma_B(v)\hat{g}(v)dv. }{  \int gammaB(v) g(v) dv  /  (|B|^2) .  }
 }
 \examples{
-xi <- heather$coarse
-pcln <- paircorr(as.im(xi, na.replace = 0), estimators = "pickaH", drop = TRUE)
+xi <- as.im(heather$coarse, na.replace = 0, eps = 4 * heather$coarse$xstep)
+pcln <- paircorr(xi, estimators = "pickaH", drop = TRUE)
 if (interactive()) {
 sidelengths <- seq(0.3, 14, by = 0.2)
 } else {

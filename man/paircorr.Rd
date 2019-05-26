@@ -76,17 +76,16 @@ If these estimates already exist then \code{paircorr.cvchat} can save significan
 }}
 
 \examples{
-xi <- heather$coarse
+xi <- as.im(heather$coarse, na.replace = 0, eps = 4 * heather$coarse$xstep)
 #estimate directly from a binary map
-pclns_direst <- paircorr(as.im(xi, na.replace = 0), estimators = "all")
+pclns_direst <- paircorr(xi, estimators = "all")
 
 #estimate using plug-in moment covariance estimates, coverage
 #probability estimate and Picka's reduced window coverage probability
 #estimates.
-obswin <- Frame(xi)
-phat <- coverageprob(xi, obswin = Frame(xi))
-cvchat <- plugincvc(xi, obswin)
-cpp1 <- cppicka(xi, obswin = Frame(heather$coarse))
+phat <- coverageprob(xi)
+cvchat <- plugincvc(xi)
+cpp1 <- cppicka(xi)
 pclns_frcvc <- paircorr.cvchat(cvchat, cpp1, phat, estimators = "all")
 }
 \references{
