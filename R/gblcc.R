@@ -40,7 +40,7 @@
 #' # points(sidelengths, discgbls)
 #' 
 #' #direct to an image
-#' xiim <- as.im(xi, na.replace = 0)
+#' xiim <- as.im(xi, na.replace = 0, eps = 4 * heather$coarse$xstep)
 #' gblccest <- gblcc(sidelengths, xiim = xiim, estimator = "pickaH")
 #' 
 #' @keywords spatial nonparametric 
