@@ -46,13 +46,9 @@
 
 #' @examples 
 #' xi <- as.im(heather$coarse, value = TRUE,
-#'             na.replace = FALSE, eps = 4 * heather$coarse$xstep)
-#' if (interactive()) {
+#'             na.replace = FALSE, eps = heather$coarse$xstep)
 #' boxwidths <- seq(1, 10, by = 0.5)
-#' } else {
-#' boxwidths <- seq(1, 10, by = 1)
-#' }
-#' gblests <- gbl(xi, boxwidths)
+#' gblests <- gbl(xi, boxwidths, estimators = "GBLg.pickaH")
 
 #' @describeIn gbl computes GBL estimates from a binary map.
 gbl <- function(xi, boxwidths,

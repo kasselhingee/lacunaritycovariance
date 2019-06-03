@@ -73,13 +73,9 @@ Picka's reduced window coverage probability estimates (see \code{\link{cppicka}}
 
 \examples{
 xi <- as.im(heather$coarse, value = TRUE,
-            na.replace = FALSE, eps = 4 * heather$coarse$xstep)
-if (interactive()) {
+            na.replace = FALSE, eps = heather$coarse$xstep)
 boxwidths <- seq(1, 10, by = 0.5)
-} else {
-boxwidths <- seq(1, 10, by = 1)
-}
-gblests <- gbl(xi, boxwidths)
+gblests <- gbl(xi, boxwidths, estimators = "GBLg.pickaH")
 }
 \references{
 Allain, C. and Cloitre, M. (1991) Characterizing the lacunarity of random and deterministic fractal sets. \emph{Physical Review A}, 44, 3552-3558.
