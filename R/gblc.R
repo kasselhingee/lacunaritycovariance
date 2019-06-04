@@ -42,16 +42,17 @@
 #' xi <- heather$coarse
 #' covar <- plugincvc(xi, Frame(xi))
 #' p <- area(xi) / area(Frame(xi))
-#' if(interactive()){
 #' sidelengths <- seq(0.3, 14, by = 0.2)
-#' } else {
-#' sidelengths <- seq(0.3, 14, by = 1)
-#' }
+#'
+#  #set low resolution for fast computations of set covariance of boxes (uses the function setcov() )
+#' spatstat.options("npixel" = 2^5) 
+#'
 #' gblest <- gblc(sidelengths, covar, p)
 #' 
 #' # The GBL estimates for `boxes' that are discs?
 #' discboxes <- lapply(sidelengths / 2, disc)
 #' discgbls <- gblc(discboxes, covar, p)
+#' reset.spatstat.options()
 #' 
 #' @keywords spatial nonparametric 
 gblc <- function(boxes, covariance = NULL, p = NULL, xiim = NULL){
@@ -104,8 +105,7 @@ gblc.inputcovar <- function(boxes, covariance, p){
   stopifnot(is.numeric(p))
   if (mode(boxes) %in% c("integer", "numeric")){
     squares <- lapply(boxes, square) #make into owin rectangles
-    boxcov <- lapply(squares, setcov) #setcov is analytic for squares according to help, couldn't see it in code though.
-                                     #regardless - it produces much better plots then my own function setcovsquare did
+    boxcov <- lapply(squares, setcov) #setcov is numerical but it produces much better plots then my own function, setcovsquare, did
     boxarea <- boxes ^ 2
   }
   else { #box must be a list of owin objects
