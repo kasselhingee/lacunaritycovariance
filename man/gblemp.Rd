@@ -47,7 +47,7 @@ Note: The side lengths are rounded such that they are an odd number of pixels ac
 }
 
 \examples{
-xiim <- as.im(heather$coarse, na.replace = 0, eps = 4 * heather$coarse$xstep)
+xiim <- as.im(heather$coarse, na.replace = 0)
 boxwidths <- seq(0.2, 14, by = 0.2) #in units of xiim
 gblest <- gblemp(boxwidths, xiim)
 

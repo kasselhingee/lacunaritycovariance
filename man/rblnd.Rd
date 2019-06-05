@@ -38,17 +38,12 @@ The point process of germs is generated using spatstat's \code{\link[spatstat]{r
 
 \examples{
 w <- owin(xrange = c(0, 10), yrange = c(0, 10))
-xi <- rblnd(w, 2, 0.6, -1, 0.5)
-
-# plot(w)
-# plot(xi, add = TRUE)
+xi <- rblnd(w, 2, 0.3, -1, 0.2)
 
 #or with seed set
 w <- owin(xrange = c(0, 10), yrange = c(0, 10))
-xi <- rblnd(w, 2, 1, -1, 0.5, seed = 36)
+xi <- rblnd(w, 2, 0.3, -1, 0.2, seed = 36)
 
-# plot(w)
-# plot(xi, add = TRUE)
 }
 \keyword{datagen}
 \keyword{spatial}

@@ -12,7 +12,8 @@
 #' @return A list \code{im} objects containing the pointwise mean, variance and maxima and minima.
 
 #' @examples
-#' obspatterns <- replicate(5, rbdd(10, 0.05, window = square(1)), simplify = FALSE)
+#' \dontshow{spatstat.options(npixel = 2^4)}
+#' obspatterns <- replicate(3, rbdd(10, 0.05, window = square(1)), simplify = FALSE)
 #' ims <- solapply(obspatterns,
 #'  function(x) racscovariance(x, obswin = square(1), estimators = "pickaH", drop = TRUE))
 #' summ <- summary.imlist(ims, harmonizeobject = FALSE)

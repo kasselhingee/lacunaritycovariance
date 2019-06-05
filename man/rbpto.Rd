@@ -75,8 +75,8 @@ The distribution of grains scales is a step-function approximation to the CDF wi
 
 \examples{
 lambda <- 1
+\dontshow{lambda <- 0.2}
 win <- square(r = 10)
-#grain <- owin(xrange = c(-0.2, 0.2), yrange = c(-0.2, 0.2))
 grain <- disc(r = 0.2)
 xm <- 0.01
 alpha <- 2
@@ -90,8 +90,11 @@ xi <- rbpto(lambda, grain, win, xm, alpha, lengthscales = lengthscales)
 # plot(win, add = TRUE)
 
 bpto.coverageprob(lambda, grain, xm, alpha, lengthscales = lengthscales)
+smalleps <- 0.1
+\dontshow{smalleps <- 2}
+\dontshow{spatstat.options(npixel = 2^5)}
 covar <- bpto.covar(lambda, grain, xm, alpha, lengthscales = lengthscales,
-   xy = as.mask(win, eps = 0.1))
+   xy = as.mask(win, eps = smalleps))
 }
 \keyword{datagen}
 \keyword{spatial}

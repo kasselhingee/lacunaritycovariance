@@ -40,12 +40,12 @@
 
 #' @examples
 #' xi <- heather$coarse
+#set low resolution for fast computations of set covariance of boxes (uses the function setcov() )
+#' \dontshow{spatstat.options("npixel" = 2^5)}
 #' covar <- plugincvc(xi, Frame(xi))
 #' p <- area(xi) / area(Frame(xi))
 #' sidelengths <- seq(0.3, 14, by = 0.2)
 #'
-#set low resolution for fast computations of set covariance of boxes (uses the function setcov() )
-#' \dontshow{spatstat.options("npixel" = 2^5)}
 #'
 #' gblest <- gblc(sidelengths, covar, p)
 #' 

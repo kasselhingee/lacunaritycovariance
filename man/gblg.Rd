@@ -31,11 +31,8 @@ If we denote the estimated pair-correlation by \eqn{\hat{g}(v)}{g(v)} then the e
 \examples{
 xi <- as.im(heather$coarse, na.replace = 0, eps = 4 * heather$coarse$xstep)
 pcln <- paircorr(xi, estimators = "pickaH", drop = TRUE)
-if (interactive()) {
-sidelengths <- seq(0.3, 14, by = 0.2)
-} else {
 sidelengths <- seq(0.3, 14, by = 1)
-}
+\dontshow{spatstat.options(npixel = 2^5)}
 gblgest <- gblg(sidelengths, pcln)
 # what is the GBL estimates for boxes that are discs?
 discboxes <- lapply(sidelengths / 2, disc)

@@ -39,11 +39,8 @@ the estimate of GBL is
 xi <- heather$coarse
 cencovar <- cencovariance(xi, obswin = Frame(xi), estimators = c("pickaH"), drop = TRUE)
 p <- area(xi) / area(Frame(xi))
-if (interactive()) {
-sidelengths <- seq(0.3, 14, by = 0.2)
-} else {
 sidelengths <- seq(0.3, 14, by = 1)
-}
+\dontshow{spatstat.options("npixel" = 2^5)}
 gblccest <- gblcc(sidelengths, cencovar, p)
 # what is the GBL estimates for boxes that are discs?
 discboxes <- lapply(sidelengths / 2, disc)
@@ -51,7 +48,7 @@ discgbls <- gblcc(discboxes, cencovar, p)
 # points(sidelengths, discgbls)
 
 #direct to an image
-xiim <- as.im(xi, na.replace = 0, eps = 4 * heather$coarse$xstep)
+xiim <- as.im(xi, na.replace = 0)
 gblccest <- gblcc(sidelengths, xiim = xiim, estimator = "pickaH")
 
 }
