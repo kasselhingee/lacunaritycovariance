@@ -1,8 +1,11 @@
 context("Internals")
 
+spatstat.options(npixel = 2^3)
+
 #creating a test that involves NA values in an image
-w <- setminus.owin(Frame(heather$coarse), square(5)) 
-xiowin <- intersect.owin(heather$coarse, w)
+xifull <- as.mask(heather$coarse, eps = 5 * heather$coarse$xstep)
+w <- setminus.owin(Frame(xifull), square(5)) 
+xiowin <- intersect.owin(xifull, w)
 phat <- coverageprob(xiowin, obswin = w)
   
 #creating logically valued image to pass
@@ -70,3 +73,5 @@ test_that("gbl() operates well when passed im or owin boxes", {
   expect_equal(gblest.l, gblest.n)
   expect_error(gbl(xiim.n3, boxwidths), regexp = "isbinarymap")
 })
+
+reset.spatstat.options()
