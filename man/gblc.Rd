@@ -50,7 +50,7 @@ xi <- heather$coarse
 \dontshow{spatstat.options("npixel" = 2^5)}
 covar <- plugincvc(xi, Frame(xi))
 p <- area(xi) / area(Frame(xi))
-sidelengths <- seq(0.3, 14, by = 0.2)
+sidelengths <- seq(0.3, 14, by = 1)
 
 
 gblest <- gblc(sidelengths, covar, p)
