@@ -100,13 +100,13 @@ discr <- 10
 weights <- c(0.9999, 0.0001)
 grainlib <- solist(disc(r = discr), disc(r = 2*discr))
 meanarea.grainlib(grainlib, weights)
-# plot(meansetcov.grainlib(grainlib, weights, xy = as.mask(w, eps = 0.1)))
-truecovartest <- covar.grainlib(lambda, grainlib, weights, xy = as.mask(w, eps = 0.1))
-truecovariance <- bddcovar(
-                   c(-10, 10), c(-10, 10), c(0.1, 0.1), lambda, discr)
-# plot(solist(truecovartest, truecovariance), clipwin = disc(r = 3))
-# plot(truecovartest - truecovariance, clipwin = disc(r = 3))
-range(truecovartest - truecovariance)
+smalleps = 0.1 #for pixel size when calculating covar.grainlib
+\dontshow{smalleps = 2}
+truecovar <- covar.grainlib(lambda, grainlib, weights, xy = as.mask(w, eps = smalleps))
+#as grains are discs the true covariance can also be calculated with the following:
+truecovar_alt <- bddcovar(
+                   c(-10, 10), c(-10, 10), c(smalleps, smalleps), lambda, discr)
+range(truecovar - truecovar_alt)
 }
 \author{
 Kassel Liam Hingee
