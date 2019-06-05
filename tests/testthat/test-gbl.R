@@ -1,7 +1,8 @@
 context("Estimation - GBL")
 
 test_that("gblc() warns of unexpected inputs", {
-  xiim_verytoy <- as.im(heather$coarse, na.replace = FALSE, eps = 1)
+  spatstat.options(npixel = 2^3)
+  xiim_verytoy <- as.im(heather$coarse, na.replace = FALSE, eps = 2)
   covar <- plugincvc(xiim_verytoy)
   p <- sum(xiim_verytoy) * xiim_verytoy$xstep * xiim_verytoy$ystep / area(Frame(xiim_verytoy))
   sidelengths <- 2.2
@@ -13,6 +14,7 @@ test_that("gblc() warns of unexpected inputs", {
 
   expect_error(gblc(sidelengths, p = p, xiim = xiim_verytoy),
                  regexp = "Either covariance and p must be supplied or xiim supplied.")
+  reset.spatstat.options()
 })
 
 test_that("gblemp() warns of unexpected inputs", {
@@ -42,46 +44,57 @@ test_that("GBLemp estimates are historically consistent", {
 })
 
 test_that("GBLc estimates are consistent for input side lengths or owin squares", {
-  xiim_verytoy <- as.im(heather$coarse, na.replace = FALSE, eps = 1)
+  spatstat.options(npixel = 2^3)
+  xiim_verytoy <- as.im(heather$coarse, na.replace = FALSE, eps = 2)
   covar <- plugincvc(xiim_verytoy)
   p <- sum(xiim_verytoy) * xiim_verytoy$xstep * xiim_verytoy$ystep / area(Frame(xiim_verytoy))
   sidelengths <- 2.2
   lac <- gblc(sidelengths, covar, p)
   expect_equal(lac$GBL, gblc(list(square(2.2)), covar, p)$GBL)
+  reset.spatstat.options()
 })
 
 test_that("GBLc estimates are operate on lists of owin objects", {
+  spatstat.options(npixel = 2^3)
   discs <- lapply(seq(1, 10, by = 0.5), function(x) disc(r = x))
-  lac <- gblc(discs, xiim = as.im(heather$coarse, na.replace = 0, eps = 1))
+  lac <- gblc(discs, xiim = as.im(heather$coarse, na.replace = 0, eps = 2))
   expect_s3_class(lac, "data.frame")
   expect_equal(nrow(lac), length(discs))
+  reset.spatstat.options()
 })
 
 test_that("gblcc estimates operate on lists of owin objects", {
+  spatstat.options(npixel = 2^3)
   discs <- lapply(seq(1, 10, by = 0.5), function(x) disc(r = x))
-  lac <- gblcc(discs, xiim = as.im(heather$coarse, na.replace = 0, eps = 1))
+  lac <- gblcc(discs, xiim = as.im(heather$coarse, na.replace = 0, eps = 2))
   expect_s3_class(lac, "data.frame")
   expect_equal(nrow(lac), length(discs))
+  reset.spatstat.options()
 })
 
 test_that("gblg estimates operate on lists of owin objects", {
-  discs <- lapply(seq(1, 10, by = 0.5), function(x) disc(r = x))
-  lac <- gblg(discs, xiim = as.im(heather$coarse, na.replace = 0, eps = 1))
+  spatstat.options(npixel = 2^3)
+  discs <- lapply(seq(1, 10, by = 2), function(x) disc(r = x))
+  lac <- gblg(discs, xiim = as.im(heather$coarse, na.replace = 0, eps = 2))
   expect_is(lac, "numeric")
   expect_length(lac, length(discs))
+  reset.spatstat.options()
 })
 
 test_that("GBLc estimates are the same from estimated covariance or original image", {
+  spatstat.options(npixel = 2^3)
   img <- as.im(heather$coarse, na.replace = 0, eps = 1)
   covar <- plugincvc(img)
   p <- sum(img) / sum(is.finite(img$v))
-  sidelengths <- seq(1, 5, by = heather$coarse$xstep*2)
+  sidelengths <- seq(1, 5, by = 2)
   gblc.covar <- gblc(sidelengths, covar, p)
   gblc.im <- gblc(sidelengths, xiim = img)
   expect_equal(gblc.covar, gblc.im)
+  reset.spatstat.options()
 })
 
 test_that("integration when covar is constant gives squared area (i.e. gbl = 1)", {
+  spatstat.options(npixel = 2^7)
   covar <- as.im(owin(c(-6, 6), c(-6, 6)), eps = 0.01)
   p <- 1
   sidelengths <- seq(1, 2.2, by = 0.1)
@@ -89,6 +102,7 @@ test_that("integration when covar is constant gives squared area (i.e. gbl = 1)"
   expect_equal(lac$GBL, rep(1, length(sidelengths)), tolerance = 0.01)
   
   expect_equal(gblc(lapply(c(0.5, 1, 2, 3), disc), covar, p)$GBL, rep(1, 4), tolerance = 0.01)
+  reset.spatstat.options()
 })
 
 test_that("GBLc and GBLemp produce similar results for large square observation windows", {
@@ -103,26 +117,34 @@ test_that("GBLc and GBLemp produce similar results for large square observation 
 })
 
 test_that("gbl() fails nicely when GBLemp can't estimate anything", {
-  xiim <- as.im(heather$coarse, value = TRUE, na.replace = FALSE)
+  spatstat.options(npixel = 2^3)
+  xiim <- as.im(heather$coarse, value = TRUE, na.replace = FALSE, eps = 2)
   #fake lots of missing data
   xiim[shift.owin(reflect(heather$coarse), vec = c(10, 20))] <- NA
   expect_warning(gbl(xiim, seq(1, 10, by = 1)), regexp = "1 or fewer of the provided box widths")
+  reset.spatstat.options()
 })
 
 test_that("gbl() harmonises estimates to produce meaningful fv object", {
-  xiim <- as.im(heather$coarse, value = TRUE, na.replace = FALSE)
-  expect_warning(gblest <- gbl(xiim, seq(0.2, 10, by = 1)), regexp = "harmon")
+  spatstat.options(npixel = 2^3)
+  xiim_verytoy <- as.im(heather$coarse, value = TRUE, na.replace = FALSE, eps = 2)
+  expect_warning(gblest <- gbl(xiim_verytoy, seq(0.2, 10, by = 1)), regexp = "harmon")
   expect_silent(lapply(gblest, plot.fv, limitsonly = TRUE))
   skip_on_cran()
   expect_silent(lapply(gblest, plot.fv, type = "n"))
+  reset.spatstat.options()
 })
 
 test_that("gbl() operates nicely when only one estimator requested", {
+  skip_on_cran() #less important test
+  spatstat.options(npixel = 2^3)
   xiim <- as.im(heather$coarse, value = TRUE, na.replace = FALSE)
   expect_silent(gbl(xiim, seq(0.1, 10, by = 1), estimators = "GBLc"))
+  reset.spatstat.options()
 })
 
 test_that("gbl() operates on owin style binary maps", {
+  spatstat.options(npixel = 2^3)
   xiim <- as.im(heather$coarse, value = TRUE, na.replace = FALSE)
   xi <- heather$coarse
   obswin <- setminus.owin(Frame(heather$coarse), square(5))
@@ -130,11 +152,13 @@ test_that("gbl() operates on owin style binary maps", {
   expect_warning(out <- gbl(xi, seq(0.1, 10, by = 1), obswin = obswin))
   expect_warning(out_im <- gbl(xiim, seq(0.1, 10, by = 1)))
   expect_equal(out, out_im)
-  
+
+  skip_on_cran() #less important tests mostly covered by above
   xiim <- as.im(heather$coarse, value = TRUE, na.replace = FALSE)
   xi <- heather$coarse
   obswin <- Frame(xi)
   expect_warning(out <- gbl(xi, seq(0.1, 10, by = 1), obswin = obswin))
   expect_warning(out_im <- gbl(xiim, seq(0.1, 10, by = 1)))
   expect_equal(out, out_im)
+  reset.spatstat.options()
 })
