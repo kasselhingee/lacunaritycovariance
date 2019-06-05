@@ -34,7 +34,7 @@ test_that("rbpto generates simulations that match covariance for big window", {
   expect_warning(cvc.diff <- eval.im(cvc.th - cvc.est, harmonize = TRUE), regexp = "images .* were not compatible")
   #plot(solist(cvc.th, cvc.est, cvc.diff[Frame(cvc.th)]), axes = TRUE)
   # the differences make very beautiful patterns
-  expect_lt(max(abs(cvc.diff)), cp * cvcreltol * 2)
+  expect_lt(max(abs(cvc.diff)), cp * cvcreltol * 2.5)
   expect_lt(mean(abs(cvc.diff)), cp * cvcreltol * 1.5)
 })
 
