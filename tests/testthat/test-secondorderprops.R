@@ -1,9 +1,11 @@
 context("Estimation - second order properties")
 
+spatstat.options(npixel = 2^3)
 xi <- heather$coarse
-xiim_verytoy <- as.im(xi, value = TRUE, na.replace = FALSE, eps = 1)
+xiim_verytoy <- as.im(xi, value = TRUE, na.replace = FALSE, eps = 2)
 
-test_that("secondorderprop() produces output of correct class with all estimators", { 
+test_that("secondorderprop() produces output of correct class with all estimators", {
+  skip_on_cran()  #takes 12 seconds on Kassel's laptop
   expect_warning(secondests <- secondorderprops(xiim_verytoy, 
     gblargs = list(boxwidths = seq(1, 10, by = 0.1)),
     covarargs = list(estimators = "all"),
@@ -27,7 +29,8 @@ test_that("secondorderprop() produces empty list with full defaults", {
   expect_length(secondests, 0)
 })
 
-test_that("secondorderprop() produces of fv objects for rotmean with multiple estimators", { 
+test_that("secondorderprop() produces of fv objects for rotmean with multiple estimators", {
+  skip_on_cran() #takes 13 seconds on Kassel's laptop
   expect_warning(secondests <- secondorderprops(xiim_verytoy, 
     gblargs = list(boxwidths = seq(1, 10, by = 0.1)),
     covarargs = list(estimators = "all"),
@@ -64,6 +67,7 @@ test_that("secondorderprop() produces of fv objects for rotmean with single esti
 })
   
 test_that("secondorderprop() single images without rotmean and when only one estimator requested", { 
+  skip_on_cran()  #non-important function doesn't need testing on CRAN
   secondests <- secondorderprops(xiim_verytoy, 
     gblargs = list(boxwidths = seq(1, 10, by = 0.1), estimators = "GBLcc.pickaH"),
     covarargs = list(estimators = "pickaH"),
@@ -81,6 +85,7 @@ test_that("secondorderprop() single images without rotmean and when only one est
 })
 
 test_that("secondorderprop() gives single fv object when only GBLemp", {
+  skip_on_cran()  #non-important function doesn't need testing on CRAN
   secondests <- secondorderprops(xiim_verytoy, 
     gblargs = list(boxwidths = seq(1, 10, by = 0.1), estimators = "GBLemp"))
   expect_s3_class(secondests$GBL, "fv")
@@ -88,6 +93,7 @@ test_that("secondorderprop() gives single fv object when only GBLemp", {
 })
 
 test_that("secondorderprop() gives data frame for discs", {
+  skip_on_cran()  #non-important function doesn't need testing on CRAN
   discs <- lapply(seq(1, 10, by = 0.5), function(x) disc(r = x))
   secondests <- secondorderprops(xiim_verytoy, 
     gblargs = list(boxwidths = discs, estimators = "GBLc"))
@@ -96,6 +102,7 @@ test_that("secondorderprop() gives data frame for discs", {
 })
 
   test_that("secondorderprop() gives data frame for discs, multiple estimators", {
+  skip_on_cran()  #non-important function doesn't need testing on CRAN
   discs <- lapply(seq(1, 10, by = 0.5), function(x) disc(r = x))
   secondests <- secondorderprops(xiim_verytoy, 
     gblargs = list(boxwidths = discs, estimators = c("GBLc", "GBLcc.pickaH", "GBLcc.mattfeldt", "GBLcc.pickaint", "GBLg.pickaint", "GBLg.mattfeldt")))
@@ -111,6 +118,7 @@ test_that("secondorderprop() gives data frame for discs", {
 })
 
   test_that("secondorderprop() ignores centred covariance when requested to", {
+  skip_on_cran()  #non-important function doesn't need testing on CRAN
   secondests <- secondorderprops(xiim_verytoy, 
     gblargs = list(boxwidths = seq(1, 10, by = 0.1), estimators = "GBLcc.pickaH"),
     covarargs = list(estimators = "pickaH"),
@@ -125,3 +133,4 @@ test_that("secondorderprop() gives data frame for discs", {
   expect_length(secondests$paircorr, 1)
 })
 
+reset.spatstat.options()
