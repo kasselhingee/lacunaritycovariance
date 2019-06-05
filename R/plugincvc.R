@@ -20,7 +20,7 @@
 
 
 #' @examples
-#' xi <- as.im(heather$coarse, na.replace = 0, eps = 4 * heather$coarse$xstep)
+#' xi <- as.im(heather$coarse, na.replace = 0)
 #' covar <- plugincvc(xi)
 
 #' @keywords spatial nonparametric

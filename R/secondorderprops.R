@@ -16,7 +16,7 @@
 
 #' @examples 
 #' xiim <- as.im(heather$coarse, value = TRUE,
-#'               na.replace = FALSE, eps = 4 * heather$coarse$xstep)
+#'               na.replace = FALSE)
 #' gblargs = list(boxwidths = seq(1, 10, by = 1), estimators = c("GBLemp", "GBLc"))
 #' covarargs = list(estimators = "all")
 #' cencovarargs = list(estimators = "pickaH")

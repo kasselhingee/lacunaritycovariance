@@ -72,7 +72,8 @@ xi <- as.im(xi_owin, value = TRUE, na.replace = FALSE)
 #estimate coverage probability, covariance, GBL, and disc-state contagion
 cphat <- coverageprob(xi)
 cvchat <- racscovariance(xi, estimator = "pickaH")
-gblhat <- gbl(xi, seq(0.1, 5, by = 0.1), estimators = "GBLcc.pickaH")
+\dontshow{spatstat.options(npixel = 2^5)}
+gblhat <- gbl(xi, seq(0.1, 5, by = 1), estimators = "GBLcc.pickaH")
 contagds <- contagdiscstate(Hest(xi), Hest(!xi), p = cphat)
 
 #simulate a Boolean model with grains that are discs of fixed radius:

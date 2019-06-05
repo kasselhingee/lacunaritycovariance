@@ -44,15 +44,15 @@
 #' p <- area(xi) / area(Frame(xi))
 #' sidelengths <- seq(0.3, 14, by = 0.2)
 #'
-#  #set low resolution for fast computations of set covariance of boxes (uses the function setcov() )
-#' spatstat.options("npixel" = 2^5) 
+#set low resolution for fast computations of set covariance of boxes (uses the function setcov() )
+#' \dontshow{spatstat.options("npixel" = 2^5)}
 #'
 #' gblest <- gblc(sidelengths, covar, p)
 #' 
 #' # The GBL estimates for `boxes' that are discs?
 #' discboxes <- lapply(sidelengths / 2, disc)
 #' discgbls <- gblc(discboxes, covar, p)
-#' reset.spatstat.options()
+#' \dontshow{reset.spatstat.options()}
 #' 
 #' @keywords spatial nonparametric 
 gblc <- function(boxes, covariance = NULL, p = NULL, xiim = NULL){

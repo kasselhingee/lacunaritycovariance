@@ -46,9 +46,13 @@
 
 #' @examples 
 #' xi <- as.im(heather$coarse, value = TRUE,
-#'             na.replace = FALSE, eps = heather$coarse$xstep)
+#'             na.replace = FALSE)
 #' boxwidths <- seq(1, 10, by = 0.5)
+#set low resolution for fast computations of set covariance of boxes (influences the function setcov() )
+#' \dontshow{spatstat.options("npixel" = 2^5)}
 #' gblests <- gbl(xi, boxwidths, estimators = "GBLg.pickaH")
+#' \dontshow{reset.spatstat.options()}
+
 
 #' @describeIn gbl computes GBL estimates from a binary map.
 gbl <- function(xi, boxwidths,
