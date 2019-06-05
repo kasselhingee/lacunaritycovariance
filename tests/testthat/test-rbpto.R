@@ -35,7 +35,7 @@ test_that("rbpto generates simulations that match covariance for big window", {
   #plot(solist(cvc.th, cvc.est, cvc.diff[Frame(cvc.th)]), axes = TRUE)
   # the differences make very beautiful patterns
   expect_lt(max(abs(cvc.diff)), cp * cvcreltol * 2)
-  expect_lt(mean(abs(cvc.diff)), cp * cvcreltol)
+  expect_lt(mean(abs(cvc.diff)), cp * cvcreltol * 1.5)
 })
 
 test_that("bpto.coverageprob is consistent with bpto.germintensity", {
