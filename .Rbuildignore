@@ -1,14 +1,13 @@
 ^.*\.Rproj$
 ^\.Rproj\.user$
 ^\.git*$
-^\racsScratch$
 ^\.gitignore$
 ^\.scriptfor*
-build_and_inst_hints_on_windows.txt
 codestyleconventions.txt
 scriptfortestingtests.R
 todo.txt
 DESCRIPTION_editable
+README_dev.md
 ^CRAN-RELEASE$
 ^doc$
 ^Meta$
