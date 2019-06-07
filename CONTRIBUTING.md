@@ -6,6 +6,7 @@ Thank you for helping to improve lacunaritycovariance. Please feel free to email
 [Files that are machine generated](#files-that-are-machine-generated)
 [Testing package](#testing-package)
 [Code style conventions](#code-style-conventions)
+[To-Do File](#to-do-file)
 
 ## Files that are machine generated.
 The package contains a number of files that are machine generated:
@@ -74,4 +75,5 @@ These linters can be used to examine a file from within R by:
     library(lintr)
     lint(<filename>, linters = lacunaritycovariance_linters)
 
-
+## To-Do File
+The file 'todo.md' is a list of various things I'd like to do to improve the package. Mostly improving readability and filling missing parts of the package's functionality. Other contributors such as you are not expected to follow this list, though I won't complain if you do!
