@@ -3,8 +3,16 @@
 
 This directory contains the source code of the R package *lacunaritycovariance*. This R package is for estimating gliding box lacunarity and other random closed set properties from binary coverage maps (images composed of binary-valued pixels). 
 
+#### Table of Contents
+[Installation](#Installation)
+  + [From GitHub using devtools package](#from-github-using-devtools-package)
+  + [From .tar.gz file](#from-.tar.gz-file)
+  + [Install from source code not in .tar.gz form](#install-from-source-code-not-in-.tar.gz-form)
+[Manual pages](#manual-pages)
+[Git repository branches](#git-repository-branches)
+
 ## Installation
-### From GitHub using devtools package:
+### From GitHub using devtools package
 From inside an R interactive session run:
 
     library(devtools)
@@ -33,11 +41,10 @@ Then run
 
     R CMD INSTALL lacunaritycovariance-<VERSION>.tar.gz
 
-## Further Notes
-### Manual pages
+## Manual pages
 The manual pages for each function (in man/) and the file NAMESPACE have been generated using roxygen2. To edit these, edit the specially formatted comments in the files in the directory R/, then regenerate the manual pages and NAMESPACE function by running `roxygen2::roxygenise()` from an R session with the working directory at the root of the package directory.
 
 
-### Git repository branches
-This source code is the release branch of a git repository. For those familiar with git: it is intended that all developments and modifications of the code are performed in the *working* branch and then merged into this *release* branch.
+## Git repository branches
+It is intended that the *release* branch is consistent with the package available on CRAN (except for brief periods whilst the new versions are submitted to CRAN and awaiting approval). Editing of the package should occur in either the *master* branch or other branches. 
 
