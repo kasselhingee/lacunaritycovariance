@@ -4,8 +4,11 @@ Thank you for helping to improve lacunaritycovariance. Please feel free to email
 
 #### Table of Contents
 [Files that are machine generated](#files-that-are-machine-generated)
+
 [Testing package](#testing-package)
+
 [Code style conventions](#code-style-conventions)
+
 [To-Do File](#to-do-file)
 
 ## Files that are machine generated.

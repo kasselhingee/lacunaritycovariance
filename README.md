@@ -8,7 +8,9 @@ This directory contains the source code of the R package *lacunaritycovariance*.
   + [From GitHub using devtools package](#from-github-using-devtools-package)
   + [From .tar.gz file](#from-.tar.gz-file)
   + [Install from source code not in .tar.gz form](#install-from-source-code-not-in-.tar.gz-form)
+
 [Manual pages](#manual-pages)
+
 [Git repository branches](#git-repository-branches)
 
 ## Installation
