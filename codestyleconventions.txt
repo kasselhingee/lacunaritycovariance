@@ -1,0 +1,38 @@
+Function Names:
+following spatstat as best I can:
+- no camel case
+- acronyms/abbreviations are lower case
+- things which have a capital in the name - eg. K-function will have capital in the function name
+- periods in function names are ok
+
+Xi and xi are the RACS and the observed pattern respectively.
+Use a _ to separate an object and a facet/property of the object. 
+E.g. Xi_H for the H function of Xi.
+Use a period to separate a particular data format for an object (e.g. .im)
+
+
+using lintr to help do a bunch of other nice things, customising which styles to use involves something like:
+
+kasslinters <- list(
+  assignment_linter = assignment_linter,
+  single_quotes_linter = single_quotes_linter,
+  absolute_paths_linter = absolute_paths_linter,
+  no_tab_linter = no_tab_linter,
+  line_length_linter = line_length_linter,
+  commas_linter = commas_linter,
+  infix_spaces_linter = infix_spaces_linter,
+  spaces_left_parentheses_linter = spaces_left_parentheses_linter,
+  spaces_inside_linter = spaces_inside_linter,
+  open_curly_linter = open_curly_linter,
+  closed_curly_linter = closed_curly_linter(allow_single_line = TRUE),
+  camel_case_linter = camel_case_linter,
+  snake_case_linter = snake_case_linter,
+  multiple_dots_linter = multiple_dots_linter,
+  object_length_linter = object_length_linter,
+  object_usage_linter = object_usage_linter,
+  trailing_whitespace_linter = trailing_whitespace_linter,
+  trailing_blank_lines_linter = trailing_blank_lines_linter,
+  commented_code_linter = commented_code_linter
+)
+
+lint("contagSphCont.R",linters=kasslinters)
