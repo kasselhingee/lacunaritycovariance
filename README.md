@@ -17,13 +17,8 @@ This directory contains the source code of the R package *lacunaritycovariance*.
 ### From GitHub using devtools package
 From inside an R interactive session run:
 
-    library(devtools)
-    install_github("kasselhingee/racsstats", ref = "release", auth_token = "****")
-
-where auth_token is required whilst the GitHub repository is private. 
-*I will soon make this repository public so the auth_token will not be needed.* 
- If you have a GitHub account then, after getting permission from me (Kassel Hingee), you can obtain an auth_token by going to this website: https://github.com/settings/tokens.
- Copy the personal access token from your browser and use it as the auth_token argument of install_github.
+    library(remotes)
+    install_github("kasselhingee/lacunaritycovariance", ref = "release")
 
 ### From .tar.gz file
 Inside an R session run
