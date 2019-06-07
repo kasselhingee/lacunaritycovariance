@@ -3,11 +3,9 @@
 ^\.git*$
 ^\.gitignore$
 ^\.scriptfor*
-codestyleconventions.txt
-scriptfortestingtests.R
 todo.txt
 DESCRIPTION_editable
-README_dev.md
+CONTRIBUTING.md
 ^CRAN-RELEASE$
 ^doc$
 ^Meta$
