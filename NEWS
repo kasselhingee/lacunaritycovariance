@@ -1,4 +1,4 @@
-## lacunaritycovariance VERSION 1.0-0
+## lacunaritycovariance VERSION 1.0-4
 
 This is the first version of the package 'lacunaritycovariance' released on CRAN. An earlier version of this package appeared with the name 'stationaryracsinference' in the electronic supplements to the paper:
  Hingee K, Baddeley A, Caccetta P, Nair G (2019). Computation of lacunarity from covariance of spatial binary maps. Journal of Agricultural, Biological and Environmental Statistics, 24, 264-288. DOI: 10.1007/s13253-019-00351-9.
