@@ -3,7 +3,7 @@
 ^\.git*$
 ^\.gitignore$
 ^\.scriptfor*
-todo.txt
+todo.md
 DESCRIPTION_editable
 CONTRIBUTING.md
 ^CRAN-RELEASE$
