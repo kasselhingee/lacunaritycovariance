@@ -28,16 +28,11 @@
 #' 
 #' 
 #' @examples 
-#' #Boolean model with discs of radius 10.
-#' #The intensity has been chosen such that the true coverage probability is very close to 0.5.
 #' discr <- 10
 #' w <- owin(xrange = c(0, 100), c(0, 100))
-#' lambda <- 2.2064E-3
+#' lambda <- 2.2064E-3 #The intensity has been chosen such that the true coverage probability is very close to 0.5.
 #' xi <- rbdd(lambda, discr, w)
-#' # plot(xi)
-#' # plot(w, add = TRUE)
 #' 
-#' #calculate theoretical values of the model
 #' cp <- bddcoverageprob(lambda, discr)
 #' cvc <- bddcovar(
 #'                    c(-10, 10), c(-10, 10), c(0.2, 0.2), lambda, discr)

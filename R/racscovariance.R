@@ -87,12 +87,10 @@
 #' Picka, J.D. (2000) Variance reducing modifications for estimators of standardized moments of random sets. \emph{Advances in Applied Probability}, 32, 682-700.
 
 #' @examples
-#' #direct from a binary map
 #' xi <- heather$coarse
 #' obswin <- Frame(xi)
-#' balancedcvchats <- racscovariance(xi, obswin = obswin, estimators = "all")
+#' balancedcvchats_direct <- racscovariance(xi, obswin = obswin, estimators = "all")
 #' 
-#' # from a coverage probability estimate and a plug-in moment covariance estimate.
 #' phat <- coverageprob(xi, obswin = obswin)
 #' cvchat <- plugincvc(xi, obswin)
 #' cpp1 <- cppicka(xi, obswin = Frame(heather$coarse))
@@ -100,7 +98,7 @@
 #' cvchat <- harmonised$cvchat
 #' cpp1 <- harmonised$cpp1
 #' 
-#' balancedcvchats <- racscovariance.cvchat(cvchat,
+#' balancedcvchats_fromintermediateproducts <- racscovariance.cvchat(cvchat,
 #'                          cpp1, phat, estimators = "pickaH", drop = TRUE)
 #' 
 #' @describeIn racscovariance Estimates covariance from a binary map.

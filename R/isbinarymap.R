@@ -11,11 +11,9 @@
 #' If \code{requiretrue = TRUE} and \code{xi} is not a binary map then an error will occur.
 
 #' @examples
-#' #The following returns TRUE
 #' isbinarymap(as.im(heather$coarse, na.value = 0))
 #' isbinarymap(as.im(heather$coarse, na.value = FALSE, value = TRUE))
-#' #
-#' #the following returns FALSE
+#' 
 #' isbinarymap(as.im(heather$coarse, na.value = 0.2, value = 1))
 #' isbinarymap(as.im(heather$coarse, na.value = 0, value = 1.5))
 
