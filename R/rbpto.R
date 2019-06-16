@@ -40,24 +40,20 @@
 
 
 #' @examples
-#' lambda <- 1
-#' \dontshow{lambda <- 0.2}
+#' lambda <- 0.2
 #' win <- square(r = 10)
 #' grain <- disc(r = 0.2)
 #' xm <- 0.01
 #' alpha <- 2
-#' if (interactive()){
-#' lengthscales <- seq(1, 10, by = 0.1)
-#' } else {
 #' lengthscales <- seq(1, 5, by = 0.1)
-#' }
 #' xi <- rbpto(lambda, grain, win, xm, alpha, lengthscales = lengthscales)
 #' 
 #' bpto.coverageprob(lambda, grain, xm, alpha, lengthscales = lengthscales)
-#' smalleps <- 0.1
-#' \dontshow{smalleps <- 2}
+#' smalleps <- 2
 #' covar <- bpto.covar(lambda, grain, xm, alpha, lengthscales = lengthscales,
 #'    xy = as.mask(win, eps = smalleps))
+
+
 #' @describeIn rbpto Simulate Boolean model with grain size distributed according to a truncated Pareto distribution.
 rbpto <- function(lambda, grain, win, xm, alpha, lengthscales,
                   seed = NULL, xy = NULL){
