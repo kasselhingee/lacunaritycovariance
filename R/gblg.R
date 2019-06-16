@@ -9,7 +9,16 @@
 
 #' @details
 #' If we denote the estimated pair-correlation by \eqn{\hat{g}(v)}{g(v)} then the estimate of GBL is
-#' \deqn{\frac{1}{|B|^2}\int \gamma_B(v)\hat{g}(v)dv. }{  \int gammaB(v) g(v) dv  /  (|B|^2) .  }
+#' \deqn{\frac{1}{|B|^2}\int \gamma_B(v)\hat{g}(v)dv, }{  \int gammaB(v) g(v) dv  /  (|B|^2),  }
+#' where \eqn{B} is each of the sets (often called a box) specified by \code{boxes},
+#' \eqn{\gamma_B}{gammaB} is the set covariance of \eqn{B},
+#' \eqn{|B|} is the area of \eqn{B},
+#' \eqn{p} is the coverage probability of a stationary RACS.
+#' This can be used to compute the GBL from model parameters by passing \code{gblc} the 
+#' covariance and coverage probability of the model.
+#' 
+#' The set covariance of \eqn{B} is computed empirically using \pkg{spatstat}'s \code{\link[spatstat]{setcov}} function, which converts \eqn{B} into a binary pixel mask using \code{\link[spatstat]{as.mask}} defaults. Computation speed can be increased by setting a small default number of pixels, \code{npixel}, in \pkg{spatstat}'s global options (accessed through \code{\link[spatstat]{spatstat.options}}), however fewer pixels also decreases the accuracy of the GBL computation.
+#' 
 
 #' @param boxes Either a list of side lengths for square boxes or a list of \code{owin} objects of any shape.
 #' @param paircorr  A \code{im} object containing the pair-correlation function
@@ -25,12 +34,11 @@
 #' xi <- as.im(heather$coarse, na.replace = 0, eps = 4 * heather$coarse$xstep)
 #' pcln <- paircorr(xi, estimators = "pickaH", drop = TRUE)
 #' sidelengths <- seq(0.3, 14, by = 1)
-#' \dontshow{spatstat.options(npixel = 2^5)}
+#' spatstat.options(npixel = 2^5)
 #' gblgest <- gblg(sidelengths, pcln)
-#' # what is the GBL estimates for boxes that are discs?
+#' 
 #' discboxes <- lapply(sidelengths / 2, disc)
 #' discgbls <- gblg(discboxes, pcln)
-#' # points(sidelengths, discgbls)
 #' 
 #' @keywords spatial nonparametric 
 gblg <- function(boxes, paircorr = NULL, xiim = NULL){

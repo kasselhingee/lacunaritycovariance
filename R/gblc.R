@@ -20,6 +20,8 @@
 #' This can be used to compute the GBL from model parameters by passing \code{gblc} the 
 #' covariance and coverage probability of the model.
 #' 
+#' The set covariance of \eqn{B} is computed empirically using \pkg{spatstat}'s \code{\link[spatstat]{setcov}} function, which converts \eqn{B} into a binary pixel mask using \code{\link[spatstat]{as.mask}} defaults. Computation speed can be increased by setting a small default number of pixels, \code{npixel}, in \pkg{spatstat}'s global options (accessed through \code{\link[spatstat]{spatstat.options}}), however fewer pixels also decreases the accuracy of the GBL computation.
+#' 
 #' If a binary map is supplied then \eqn{p} and \eqn{C(v)} are estimated using
 #'  the usual coverage probability estimator and the plug-in moment covariance estimator, respectively 
 #'  (see \code{\link{coverageprob}} and \code{\link{plugincvc}}).
@@ -40,19 +42,15 @@
 
 #' @examples
 #' xi <- heather$coarse
-#set low resolution for fast computations of set covariance of boxes (uses the function setcov() )
-#' \dontshow{spatstat.options("npixel" = 2^5)}
+#' spatstat.options("npixel" = 2^5)
 #' covar <- plugincvc(xi, Frame(xi))
 #' p <- area(xi) / area(Frame(xi))
 #' sidelengths <- seq(0.3, 14, by = 1)
-#'
-#'
 #' gblest <- gblc(sidelengths, covar, p)
 #' 
-#' # The GBL estimates for `boxes' that are discs?
 #' discboxes <- lapply(sidelengths / 2, disc)
 #' discgbls <- gblc(discboxes, covar, p)
-#' \dontshow{reset.spatstat.options()}
+#' reset.spatstat.options()
 #' 
 #' @keywords spatial nonparametric 
 gblc <- function(boxes, covariance = NULL, p = NULL, xiim = NULL){

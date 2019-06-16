@@ -37,6 +37,8 @@
 #' \item{\code{"GBLcc.pickaint"}} See help for \code{\link{gblcc}}
 #' \item{\code{"GBLcc.pickaH"}} See help for \code{\link{gblcc}}
 #' }
+#'
+#' The set covariance of the boxes is computed empirically using \pkg{spatstat}'s \code{\link[spatstat]{setcov}} function, which converts \eqn{B} into a binary pixel mask using \code{\link[spatstat]{as.mask}} defaults. Computation speed can be increased by setting a small default number of pixels, \code{npixel}, in \pkg{spatstat}'s global options (accessed through \code{\link[spatstat]{spatstat.options}}), however fewer pixels also decreases the accuracy of the GBL computation.
 
 #' @references
 #' Allain, C. and Cloitre, M. (1991) Characterizing the lacunarity of random and deterministic fractal sets. \emph{Physical Review A}, 44, 3552-3558.
@@ -48,10 +50,8 @@
 #' xi <- as.im(heather$coarse, value = TRUE,
 #'             na.replace = FALSE)
 #' boxwidths <- seq(1, 10, by = 0.5)
-#set low resolution for fast computations of set covariance of boxes (influences the function setcov() )
-#' \dontshow{spatstat.options("npixel" = 2^5)}
+#' spatstat.options("npixel" = 2^5)
 #' gblests <- gbl(xi, boxwidths, estimators = "GBLg.pickaH")
-#' \dontshow{reset.spatstat.options()}
 
 
 #' @describeIn gbl computes GBL estimates from a binary map.
