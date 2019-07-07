@@ -21,7 +21,7 @@ This function assumes that \code{im} objects are each realisations of the same (
 It returns pointwise summaries such as observed sample mean and sample variance.
 }
 \examples{
-\dontshow{spatstat.options(npixel = 2^4)}
+spatstat.options(npixel = 2^4)
 obspatterns <- replicate(3, rbdd(10, 0.05, window = square(1)), simplify = FALSE)
 ims <- solapply(obspatterns,
  function(x) racscovariance(x, obswin = square(1), estimators = "pickaH", drop = TRUE))

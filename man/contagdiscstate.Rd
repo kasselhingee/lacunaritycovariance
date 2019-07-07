@@ -29,8 +29,8 @@ If \code{XiH} is a vector then the returned object is a vector the same length a
   corresponding to the contagion at each \code{r} value of \code{XiH}.
 }
 \description{
-Calculates the disc-state contagion LPI as described in (Hingee, 2016; Hingee, 2019). The
-  disc-state contagion LPI describes the entropy (mixing) between four
+Calculates the disc-state contagion landscape metric as described in (Hingee, 2016; Hingee, 2019). The
+  disc-state contagion landscape metric describes the entropy (mixing) between four
   possible states of a disc: \enumerate{ \item the disc is completely
   contained in \eqn{\Xi} \item the disc does not intersect \eqn{\Xi} \item
   the centre of the disc is in \eqn{\Xi} but the disc is not contained in

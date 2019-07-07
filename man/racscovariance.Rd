@@ -100,12 +100,10 @@ If these estimates already exist then \code{racscovariance.cvchat} can save sign
 }}
 
 \examples{
-#direct from a binary map
 xi <- heather$coarse
 obswin <- Frame(xi)
-balancedcvchats <- racscovariance(xi, obswin = obswin, estimators = "all")
+balancedcvchats_direct <- racscovariance(xi, obswin = obswin, estimators = "all")
 
-# from a coverage probability estimate and a plug-in moment covariance estimate.
 phat <- coverageprob(xi, obswin = obswin)
 cvchat <- plugincvc(xi, obswin)
 cpp1 <- cppicka(xi, obswin = Frame(heather$coarse))
@@ -113,7 +111,7 @@ harmonised <- harmonise.im(cvchat = cvchat, cpp1 = cpp1)
 cvchat <- harmonised$cvchat
 cpp1 <- harmonised$cpp1
 
-balancedcvchats <- racscovariance.cvchat(cvchat,
+balancedcvchats_fromplugincvc <- racscovariance.cvchat(cvchat,
                          cpp1, phat, estimators = "pickaH", drop = TRUE)
 
 }

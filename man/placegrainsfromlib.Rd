@@ -71,42 +71,19 @@ It can be used to simulate the grain process in some germ-grain models.
 }}
 
 \examples{
-#Generate a germ-grain models where germs are a Poisson point process
-# and grains are 2 or 3 different disc sizes.
 grainlib <- solist(disc(radius = 1), disc(radius = 1.9), disc(radius = 0.2))
 bufferdist <- 2 #chosen to be larger than the largest radius in library
-
 w <- owin(xrange = c(0, 10), yrange = c(0, 10))
-
-#simulate the germ process in an enlarged window
 pp <- rpoispp(lambda = 0.1, win = dilation(w, bufferdist), nsim = 1, drop = TRUE)
+xi_withbuffer <- placegrainsfromlib(pp, grainlib)
+xi <- intersect.owin(xi_withbuffer, w)
 
-# plot(w)
-xibuffer <- placegrainsfromlib(pp, grainlib)
-# plot(xibuffer, add = TRUE, lty = "dashed")
-
-#get final simulation by intersection with desired window
-xi <- intersect.owin(xibuffer, w)
-# plot(xi, hatch = TRUE, add = TRUE)
-
-#demonstration that involves rasterisation.
-xibuffer <- placegrainsfromlib(pp, grainlib, xy = as.mask(w, eps = 0.1))
-# plot(xibuffer)
-# plot(w, add = TRUE)
-
-#Demo of covariance and set covariance computations: test on Boolean model
 lambda <- 0.1
 discr <- 10
 weights <- c(0.9999, 0.0001)
 grainlib <- solist(disc(r = discr), disc(r = 2*discr))
 meanarea.grainlib(grainlib, weights)
-smalleps = 0.1 #for pixel size when calculating covar.grainlib
-\dontshow{smalleps = 2}
-truecovar <- covar.grainlib(lambda, grainlib, weights, xy = as.mask(w, eps = smalleps))
-#as grains are discs the true covariance can also be calculated with the following:
-truecovar_alt <- bddcovar(
-                   c(-10, 10), c(-10, 10), c(smalleps, smalleps), lambda, discr)
-range(truecovar - truecovar_alt)
+truecovar <- covar.grainlib(lambda, grainlib, weights, xy = as.mask(w, eps = 2))
 }
 \author{
 Kassel Liam Hingee

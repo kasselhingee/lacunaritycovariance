@@ -10,33 +10,39 @@ contagpixelgrid(xi, obswin, normalise = FALSE)
 adjacency(xi, obswin = NULL)
 }
 \arguments{
-\item{xi}{An observation of a RACS of interest as a full binary map (as an \code{im} object) or as the foreground set (as an \code{owin} object).
+\item{xi}{A raster binary map (as an \code{im} object) or as a foreground set (as an \code{owin} object).
 In the latter case the observation window, \code{obswin}, must be supplied.
 See \code{\link{lacunaritycovariance-package}} for details.
-  If \code{xi} is an \code{owin} object it must be of \code{mask} type.}
+If \code{xi} is an \code{owin} object it must be of \code{mask} type.}
 
 \item{obswin}{If \code{xi} is an \code{owin} object then \code{obswin} is an
 \code{owin} object that specifies the observation window.}
 
-\item{normalise}{If \code{TRUE} will divide result by \eqn{2 ln(2)} and add 1 to make contagion between 0 and 1 for any binary map}
+\item{normalise}{If \code{TRUE} will divide result by \eqn{2 ln(2)} and add 1 to make contagion between 0 and 1 for all binary maps.}
 }
 \description{
-Function for calculating the classic pixel-adjacency contagion LPI from a binary map (O'Neill, 1988).
+Function for calculating the classic pixel-adjacency contagion landscape metric from a binary map (O'Neill, 1988).
 }
 \details{
-The unnormalised contagion LPI of categorical map is defined as
-\deqn{\sum_i \sum_j Pij ln(Pij),} where \eqn{Pij} is the probability of
+The unnormalised contagion landscape metric of categorical map is defined as
+\deqn{\sum_i \sum_j Qij ln(Qij),} where \eqn{Qij} is the probability of
 randomly selected adjacent pixels being in class \eqn{i} and class \eqn{j}
 respectively, and \eqn{m} is the number of classes.
 
-Here \eqn{m = 2} as \eqn{xi} is a binary map and we have defined `adjacent'
+Here \eqn{m = 2} as \code{xi} is a binary map and we have defined `adjacent'
 pixels using the 4-neighbourhood regime.
 
-Contagion is calculated from an adjacency matrix created using \code{adjacency}.
+Contagion is calculated from an adjacency matrix created using the function \code{adjacency}. 
+The adjacency matrix is a 2 by 2 table containing the number of pairs of neighbouring pixels (where order matters) such that:
+\tabular{lll}{
+    \tab Second pixel in \code{xi} \tab Second pixel not in \code{xi} \cr
+ First pixel in \code{xi} \tab - \tab - \cr
+ First pixel not in \code{xi} \tab - \tab - 
+}
 }
 \section{Functions}{
 \itemize{
-\item \code{contagpixelgrid}: Pixel-adjacency contagion LPI of a binary map.
+\item \code{contagpixelgrid}: Pixel-adjacency contagion landscape metric of a binary map.
 
 \item \code{adjacency}: Calculates the adjacency matrix used in the pixel contagion
 }}
@@ -49,14 +55,7 @@ Contagion is calculated from an adjacency matrix created using \code{adjacency}.
 xi <- heather$coarse
 obswin <- owin(xrange = c(0,7),yrange=c(0,16))
 adjmat <- adjacency(xi,obswin)
-adjmat
-contagion <- contagpixelgrid(xi,obswin)
-contagion
-#Finer resolution
-xi <- heather$medium
-obswin <- owin(xrange = c(0,7),yrange=c(0,16))
-contagion <- contagpixelgrid(xi,obswin)
-contagion
+pixeladjcontagion <- contagpixelgrid(xi,obswin)
 }
 \references{
 O'Neill, R.V., Krummel, J.R., Gardner, R.H., Sugihara, G., Jackson, B., DeAngelis, D.L., et al. (1988) Indices of landscape pattern. \emph{Landscape Ecology}, 1, 153-162.

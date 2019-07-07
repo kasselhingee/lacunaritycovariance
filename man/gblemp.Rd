@@ -40,10 +40,9 @@ Locations where the box is not completely within the observation window are igno
 }}
 
 \section{WARNING}{
- \code{gblemp} uses the \code{\link[RcppRoll]{roll_sum}} function in \pkg{RcppRoll} to operate.
-\pkg{RcppRoll} must be installed.
-
-Note: The side lengths are rounded such that they are an odd number of pixels across.
+ 
+The box side lengths are rounded such that they are an odd number of pixels across.
+\code{gblemp} uses the \code{\link[RcppRoll]{roll_sum}} function in \pkg{RcppRoll} to operate, so \pkg{RcppRoll} must be installed to run \code{gblemp}.
 }
 
 \examples{

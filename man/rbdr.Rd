@@ -55,13 +55,10 @@ grain <- owin(xrange = c(-5, 5), yrange = c(-5, 5))
 win <- owin(xrange = c(0, 100), c(0, 100))
 lambda <- 4.2064E-3
 xi <- rbdr(lambda, grain, win)
-# plot(xi, col = "black")
-# plot(win, add = TRUE)
 
-#calculate theoretical values of the model
-cp <- bdrcoverageprob(lambda, grain)
+cp_theoretical <- bdrcoverageprob(lambda, grain)
 xy <- as.mask(dilationAny(win, win), eps = c(1, 1))
-cvc <- bdrcovar(lambda, grain, xy)
+cvc_theoretical <- bdrcovar(lambda, grain, xy)
 }
 \references{
 Chiu, S.N., Stoyan, D., Kendall, W.S. and Mecke, J. (2013) \emph{Stochastic Geometry and Its Applications}, 3rd ed. Chichester, United Kingdom: John Wiley & Sons.

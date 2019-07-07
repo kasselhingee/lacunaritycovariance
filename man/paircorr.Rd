@@ -77,16 +77,12 @@ If these estimates already exist then \code{paircorr.cvchat} can save significan
 
 \examples{
 xi <- as.im(heather$coarse, na.replace = 0, eps = 4 * heather$coarse$xstep)
-#estimate directly from a binary map
-pclns_direst <- paircorr(xi, estimators = "all")
+pclns_directest <- paircorr(xi, estimators = "all")
 
-#estimate using plug-in moment covariance estimates, coverage
-#probability estimate and Picka's reduced window coverage probability
-#estimates.
 phat <- coverageprob(xi)
 cvchat <- plugincvc(xi)
 cpp1 <- cppicka(xi)
-pclns_frcvc <- paircorr.cvchat(cvchat, cpp1, phat, estimators = "all")
+pclns_fromcvc <- paircorr.cvchat(cvchat, cpp1, phat, estimators = "all")
 }
 \references{
 Hingee, K.L. (2019) \emph{Spatial Statistics of Random Closed Sets for Earth Observations}. PhD: Perth, Western Australia: University of Western Australia. Submitted.

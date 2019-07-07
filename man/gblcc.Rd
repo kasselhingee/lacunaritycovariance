@@ -33,21 +33,25 @@ Estimates the gliding box lacunarity (GBL) of a stationary RACS using centred co
 If we denote the estimated centred covariance by
 \eqn{\hat{\kappa}(v)}{k(v)} and coverage probability \eqn{\hat{p}}{p} then
 the estimate of GBL is
-\deqn{1 + \frac{1}{\hat{p}^2 |B|^2}\int \gamma_B(v)\hat{\kappa}(v)dv }{1 + \int gammaB(v) k(v) dv  /  (p^2 |B|^2).}
+\deqn{1 + \frac{1}{\hat{p}^2 |B|^2}\int \gamma_B(v)\hat{\kappa}(v)dv, }{1 + \int gammaB(v) k(v) dv  /  (p^2 |B|^2),}
+where \eqn{B} is each of the sets (often called a box) specified by \code{boxes},
+\eqn{\gamma_B}{gammaB} is the set covariance of \eqn{B},
+\eqn{|B|} is the area of \eqn{B},
+\eqn{p} is the coverage probability of a stationary RACS.
+
+The set covariance of \eqn{B} is computed empirically using \pkg{spatstat}'s \code{\link[spatstat]{setcov}} function, which converts \eqn{B} into a binary pixel mask using \code{\link[spatstat]{as.mask}} defaults. Computation speed can be increased by setting a small default number of pixels, \code{npixel}, in \pkg{spatstat}'s global options (accessed through \code{\link[spatstat]{spatstat.options}}), however fewer pixels also decreases the accuracy of the GBL computation.
 }
 \examples{
 xi <- heather$coarse
 cencovar <- cencovariance(xi, obswin = Frame(xi), estimators = c("pickaH"), drop = TRUE)
 p <- area(xi) / area(Frame(xi))
 sidelengths <- seq(0.3, 14, by = 1)
-\dontshow{spatstat.options("npixel" = 2^5)}
+spatstat.options("npixel" = 2^5)
 gblccest <- gblcc(sidelengths, cencovar, p)
-# what is the GBL estimates for boxes that are discs?
+
 discboxes <- lapply(sidelengths / 2, disc)
 discgbls <- gblcc(discboxes, cencovar, p)
-# points(sidelengths, discgbls)
 
-#direct to an image
 xiim <- as.im(xi, na.replace = 0)
 gblccest <- gblcc(sidelengths, xiim = xiim, estimator = "pickaH")
 
