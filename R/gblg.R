@@ -28,7 +28,7 @@
 #'  The returned object is then an \code{fv} object containing estimates of GBL.
 #'  If \code{boxes} is a list of \code{owin} objects then \code{gblg} returns a dataframe of with columns corresponding to estimates of GBL.
 #'  
-#'  Note if value in the \code{paircorr} object that are needed for \code{gblg} are \code{NA} or \code{NaN} then \code{gblg} will return \code{NA} or \code{NaN}. 
+#'  Note that if any values in the \code{paircorr} object needed for \code{gblg} are \code{NA} or \code{NaN} then \code{gblg} will return \code{NA} or \code{NaN}, respectively. 
 
 #' @examples
 #' xi <- as.im(heather$coarse, na.replace = 0, eps = 4 * heather$coarse$xstep)

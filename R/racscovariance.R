@@ -98,7 +98,7 @@
 #' cvchat <- harmonised$cvchat
 #' cpp1 <- harmonised$cpp1
 #' 
-#' balancedcvchats_fromintermediateproducts <- racscovariance.cvchat(cvchat,
+#' balancedcvchats_fromplugincvc <- racscovariance.cvchat(cvchat,
 #'                          cpp1, phat, estimators = "pickaH", drop = TRUE)
 #' 
 #' @describeIn racscovariance Estimates covariance from a binary map.

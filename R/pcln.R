@@ -62,7 +62,6 @@
 
 #' @examples
 #' xi <- as.im(heather$coarse, na.replace = 0, eps = 4 * heather$coarse$xstep)
-#' #estimate directly from a binary map
 #' pclns_directest <- paircorr(xi, estimators = "all")
 #' 
 #' phat <- coverageprob(xi)

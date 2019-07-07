@@ -43,10 +43,8 @@
 #' bufferdist <- 2 #chosen to be larger than the largest radius in library
 #' w <- owin(xrange = c(0, 10), yrange = c(0, 10))
 #' pp <- rpoispp(lambda = 0.1, win = dilation(w, bufferdist), nsim = 1, drop = TRUE)
-#' xibuffer <- placegrainsfromlib(pp, grainlib)
-#' xi <- intersect.owin(xibuffer, w)
-#' 
-#' xibuffer <- placegrainsfromlib(pp, grainlib, xy = as.mask(w, eps = 0.1))
+#' xi_withbuffer <- placegrainsfromlib(pp, grainlib)
+#' xi <- intersect.owin(xi_withbuffer, w)
 #' 
 #' lambda <- 0.1
 #' discr <- 10

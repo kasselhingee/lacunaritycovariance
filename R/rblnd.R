@@ -23,10 +23,6 @@
 #' @examples
 #' w <- owin(xrange = c(0, 10), yrange = c(0, 10))
 #' xi <- rblnd(w, 2, 0.3, -1, 0.2)
-#' 
-#' w <- owin(xrange = c(0, 10), yrange = c(0, 10))
-#' xi <- rblnd(w, 2, 0.3, -1, 0.2, seed = 36)
-#' 
 
 
 #' @keywords spatial datagen

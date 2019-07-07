@@ -12,11 +12,12 @@
 #'  the mean and variance of the area in a random box of a given size.
 #' Locations where the box is not completely within the observation window are ignored.
 #'  
-#' @section WARNING: \code{gblemp} uses the \code{\link[RcppRoll]{roll_sum}} function in \pkg{RcppRoll} to operate.
-#' \pkg{RcppRoll} must be installed.
-#' 
-#' Note: The side lengths are rounded such that they are an odd number of pixels across.
-#' 
+#' @section WARNING: 
+#' The box side lengths are rounded such that they are an odd number of pixels across.
+#' \code{gblemp} uses the \code{\link[RcppRoll]{roll_sum}} function in \pkg{RcppRoll} to operate, so \pkg{RcppRoll} must be installed to run \code{gblemp}.
+
+
+
 #' @references 
 #' Allain, C. and Cloitre, M. (1991) Characterizing the lacunarity of random and deterministic fractal sets. \emph{Physical Review A}, 44, 3552-3558.
 #' 

@@ -30,12 +30,11 @@
 #' @examples 
 #' discr <- 10
 #' w <- owin(xrange = c(0, 100), c(0, 100))
-#' lambda <- 2.2064E-3 #The intensity has been chosen such that the true coverage probability is very close to 0.5.
+#' lambda <- 2.2064E-3 
 #' xi <- rbdd(lambda, discr, w)
 #' 
 #' cp <- bddcoverageprob(lambda, discr)
-#' cvc <- bddcovar(
-#'                    c(-10, 10), c(-10, 10), c(0.2, 0.2), lambda, discr)
+#' cvc <- bddcovar(c(-10, 10), c(-10, 10), c(0.2, 0.2), lambda, discr)
 
 #' @references 
 #' Chiu, S.N., Stoyan, D., Kendall, W.S. and Mecke, J. (2013) \emph{Stochastic Geometry and Its Applications}, 3rd ed. Chichester, United Kingdom: John Wiley & Sons.

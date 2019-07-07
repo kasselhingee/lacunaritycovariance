@@ -49,9 +49,8 @@
 #' xi <- rbpto(lambda, grain, win, xm, alpha, lengthscales = lengthscales)
 #' 
 #' bpto.coverageprob(lambda, grain, xm, alpha, lengthscales = lengthscales)
-#' smalleps <- 2
 #' covar <- bpto.covar(lambda, grain, xm, alpha, lengthscales = lengthscales,
-#'    xy = as.mask(win, eps = smalleps))
+#'                     xy = as.mask(win, eps = 2))
 
 
 #' @describeIn rbpto Simulate Boolean model with grain size distributed according to a truncated Pareto distribution.
