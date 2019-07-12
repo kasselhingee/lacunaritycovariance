@@ -20,8 +20,7 @@ Description: Functions for estimating the gliding box lacunarity (GBL),
     geospatial data format is provided.  Binary maps may also be
     represented using polygonal sets as the foreground, however for most
     computations such maps are converted into raster images.  The package
-    is based on research conducted during the author's PhD studies
-    (Hingee, 2019, submitted).
+    is based on research conducted during the author's PhD studies.
 License: GPL (>= 2)
 URL: https://github.com/kasselhingee/lacunaritycovariance
 Depends:

@@ -13,7 +13,7 @@ Description:
     Binary coverage maps are usually represented as raster images with pixel values of TRUE, FALSE or NA, with NA representing unobserved pixels.
     A demo for extracting such a binary map from a geospatial data format is provided.
     Binary maps may also be represented using polygonal sets as the foreground, however  for most computations such maps are converted into raster images.
-    The package is based on research conducted during the author's PhD studies (Hingee, 2019, submitted).
+    The package is based on research conducted during the author's PhD studies.
 URL: https://github.com/kasselhingee/lacunaritycovariance
 License: GPL (>= 2)
 Depends:
