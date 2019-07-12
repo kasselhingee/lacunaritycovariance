@@ -4,6 +4,7 @@
 ^\.gitignore$
 ^\.scriptfor*
 todo.md
+makeR.R
 DESCRIPTION_editable
 CONTRIBUTING.md
 ^CRAN-RELEASE$
