@@ -79,6 +79,7 @@ xi <- as.im(heather$coarse, value = TRUE,
 boxwidths <- seq(1, 10, by = 0.5)
 spatstat.options("npixel" = 2^5)
 gblests <- gbl(xi, boxwidths, estimators = "GBLg.pickaH")
+reset.spatstat.options()
 }
 \references{
 Allain, C. and Cloitre, M. (1991) Characterizing the lacunarity of random and deterministic fractal sets. \emph{Physical Review A}, 44, 3552-3558.

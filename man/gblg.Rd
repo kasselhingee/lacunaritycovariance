@@ -45,6 +45,7 @@ gblgest <- gblg(sidelengths, pcln)
 
 discboxes <- lapply(sidelengths / 2, disc)
 discgbls <- gblg(discboxes, pcln)
+reset.spatstat.options()
 
 }
 \references{

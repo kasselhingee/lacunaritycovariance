@@ -17,6 +17,8 @@
 #' ims <- solapply(obspatterns,
 #'  function(x) racscovariance(x, obswin = square(1), estimators = "pickaH", drop = TRUE))
 #' summ <- summary.imlist(ims, harmonizeobject = FALSE)
+#' reset.spatstat.options()
+
 
 #' @export
 summary.imlist <- function(object, ...,  harmonizeobject = TRUE){

@@ -26,6 +26,7 @@ obspatterns <- replicate(3, rbdd(10, 0.05, window = square(1)), simplify = FALSE
 ims <- solapply(obspatterns,
  function(x) racscovariance(x, obswin = square(1), estimators = "pickaH", drop = TRUE))
 summ <- summary.imlist(ims, harmonizeobject = FALSE)
+reset.spatstat.options()
 }
 \author{
 Kassel Hingee

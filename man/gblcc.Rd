@@ -54,6 +54,7 @@ discgbls <- gblcc(discboxes, cencovar, p)
 
 xiim <- as.im(xi, na.replace = 0)
 gblccest <- gblcc(sidelengths, xiim = xiim, estimator = "pickaH")
+reset.spatstat.options()
 
 }
 \references{

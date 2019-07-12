@@ -52,6 +52,7 @@
 #' boxwidths <- seq(1, 10, by = 0.5)
 #' spatstat.options("npixel" = 2^5)
 #' gblests <- gbl(xi, boxwidths, estimators = "GBLg.pickaH")
+#' reset.spatstat.options()
 
 
 #' @describeIn gbl computes GBL estimates from a binary map.

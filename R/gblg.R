@@ -39,6 +39,7 @@
 #' 
 #' discboxes <- lapply(sidelengths / 2, disc)
 #' discgbls <- gblg(discboxes, pcln)
+#' reset.spatstat.options()
 #' 
 #' @keywords spatial nonparametric 
 gblg <- function(boxes, paircorr = NULL, xiim = NULL){

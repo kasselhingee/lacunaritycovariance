@@ -44,6 +44,7 @@
 #' 
 #' xiim <- as.im(xi, na.replace = 0)
 #' gblccest <- gblcc(sidelengths, xiim = xiim, estimator = "pickaH")
+#' reset.spatstat.options()
 #' 
 #' @keywords spatial nonparametric 
 gblcc <- function(boxes, cencovar = NULL, p = NULL, xiim = NULL, estimator = "pickaH"){
