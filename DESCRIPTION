@@ -1,7 +1,6 @@
 Type: Package
 Package: lacunaritycovariance
-Title: Estimators of Gliding Box Lacunarity, Covariance and
-    Pair-Correlation for Random Closed Sets in 2D
+Title: Gliding Box Lacunarity and Other Metrics for 2D Random Closed Sets
 Version: 1.0-6
 Date: 2019-07-12
 Author: Kassel Liam Hingee
