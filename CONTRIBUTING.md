@@ -25,15 +25,15 @@ The R script, makeR.R, combines the following steps for building the DESCRIPTION
   + To generate 'DESCRIPTION' run the following in 'R'
 (in the future this step should be combined with other package building steps):
 
-    library(desc)
-    desc <- description$new("DESCRIPTION_editable")
-    desc2 <- desc$normalize()
-    desc2$write(file = "DESCRIPTION")
+        library(desc)
+        desc <- description$new("DESCRIPTION_editable")
+        desc2 <- desc$normalize()
+        desc2$write(file = "DESCRIPTION")
 
   + To generate the 'NAMESPACE' file and all files in 'man/' (except 'lacunaritycovariance-package.Rd'), within an R session run:
 
-    library(roxygen2)
-    roxygenise()
+        library(roxygen2)
+        roxygenise()
 
 ## Testing package
 The package is tested using the package 'testthat'. Tests can be found in the directory 'tests/testthat/'. Tests can be run with the following in R:
