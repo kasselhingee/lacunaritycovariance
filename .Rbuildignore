@@ -5,6 +5,7 @@
 ^\.scriptfor*
 todo.md
 makeR.R
+makeR.Rout
 DESCRIPTION_editable
 CONTRIBUTING.md
 ^CRAN-RELEASE$
