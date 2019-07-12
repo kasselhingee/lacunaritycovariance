@@ -1,20 +1,19 @@
 Type: Package
-Package: lacunaritycovariance 
-Title: Gliding Box Lacunarity and Other Estimators for Random
-    Closed Sets in 2D
-Version: 1.0-5
-Date: 2019-07-07
+Package: lacunaritycovariance
+Title: Estimators of Gliding Box Lacunarity, Covariance and
+    Pair-Correlation for Random Closed Sets in 2D
+Version: 1.0-6
+Date: 2019-07-12
 Author: Kassel Liam Hingee
-Maintainer: Kassel Liam Hingee
-    <kassel.hingee@research.uwa.edu.au>
-Description:  Functions for estimating the gliding box
-    lacunarity (GBL), covariance, and pair-correlation of a random closed
-    set (RACS) in 2D from a binary coverage map (e.g. presence-absence
-    land cover maps).  Contains a number of newly-developed
-    covariance-based estimators of GBL (Hingee et al., 2019)
-    <doi:10.1007/s13253-019-00351-9> and balanced estimators, proposed by
-    Picka (2000) <http://www.jstor.org/stable/1428408>, for covariance,
-    centred covariance, and pair-correlation.  Also contains methods for
+Maintainer: Kassel Liam Hingee <kassel.hingee@research.uwa.edu.au>
+Description: Functions for estimating the gliding box lacunarity (GBL),
+    covariance, and pair-correlation of a random closed set (RACS) in 2D
+    from a binary coverage map (e.g. presence-absence land cover maps).
+    Contains a number of newly-developed covariance-based estimators of
+    GBL (Hingee et al., 2019) <doi:10.1007/s13253-019-00351-9> and
+    balanced estimators, proposed by Picka (2000)
+    <http://www.jstor.org/stable/1428408>, for covariance, centred
+    covariance, and pair-correlation.  Also contains methods for
     estimating contagion-like properties of RACS and simulating 2D Boolean
     models.  Binary coverage maps are usually represented as raster images
     with pixel values of TRUE, FALSE or NA, with NA representing
