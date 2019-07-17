@@ -37,11 +37,11 @@
 #' p <- area(xi) / area(Frame(xi))
 #' sidelengths <- seq(0.3, 14, by = 1)
 #' 
-#' # reduce resolution in setcov() for faster and less accurate computation 
+#' # reduce resolution in setcov() for faster (less accurate) computation 
 #' oldopt <- spatstat.options()
 #' spatstat.options("npixel" = 2^5)
 #'
-#' # compute GBL estimate for square boxes via estimated centred covariance
+#' # compute GBL estimate for square boxes from estimated centred covariance
 #' gblccest <- gblcc(sidelengths, cencovar, p)
 #' 
 #' # compute GBL estimate for boxes that are discs

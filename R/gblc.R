@@ -43,7 +43,7 @@
 #' @examples
 #' xi <- heather$coarse
 #' 
-#' # reduce resolution in setcov() for faster and less accurate computation 
+#' # reduce resolution in setcov() for faster (less accurate) computation 
 #' oldopt <- spatstat.options()
 #' spatstat.options("npixel" = 2^5)
 #'
@@ -51,7 +51,7 @@
 #' p <- area(xi) / area(Frame(xi))
 #' sidelengths <- seq(0.3, 14, by = 1)
 #'
-#' # compute GBL estimate for square boxes via estimated covariance
+#' # compute GBL estimate for square boxes from estimated covariance
 #' gblest <- gblc(sidelengths, covar, p)
 #' 
 #' # compute GBL estimate for boxes that are discs 
