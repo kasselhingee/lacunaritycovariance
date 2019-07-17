@@ -36,15 +36,23 @@
 #' cencovar <- cencovariance(xi, obswin = Frame(xi), estimators = c("pickaH"), drop = TRUE)
 #' p <- area(xi) / area(Frame(xi))
 #' sidelengths <- seq(0.3, 14, by = 1)
+#' 
+#' # reduce resolution in setcov() for faster and less accurate computation 
+#' oldopt <- spatstat.options()
 #' spatstat.options("npixel" = 2^5)
+#'
+#' # compute GBL estimate for square boxes via estimated centred covariance
 #' gblccest <- gblcc(sidelengths, cencovar, p)
 #' 
+#' # compute GBL estimate for boxes that are discs
 #' discboxes <- lapply(sidelengths / 2, disc)
 #' discgbls <- gblcc(discboxes, cencovar, p)
 #' 
+#' # compute GBL estimates from binary map
 #' xiim <- as.im(xi, na.replace = 0)
 #' gblccest <- gblcc(sidelengths, xiim = xiim, estimator = "pickaH")
-#' reset.spatstat.options()
+#'
+#' spatstat.options(oldopt)
 #' 
 #' @keywords spatial nonparametric 
 gblcc <- function(boxes, cencovar = NULL, p = NULL, xiim = NULL, estimator = "pickaH"){

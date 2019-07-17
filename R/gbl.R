@@ -50,9 +50,13 @@
 #' xi <- as.im(heather$coarse, value = TRUE,
 #'             na.replace = FALSE)
 #' boxwidths <- seq(1, 10, by = 0.5)
+#' 
+#' # reduce resolution in setcov() for faster (less accurate) computation 
+#' oldopt <- spatstat.options()
 #' spatstat.options("npixel" = 2^5)
+#' 
 #' gblests <- gbl(xi, boxwidths, estimators = "GBLg.pickaH")
-#' reset.spatstat.options()
+#' spatstat.options(oldopt)
 
 
 #' @describeIn gbl computes GBL estimates from a binary map.
