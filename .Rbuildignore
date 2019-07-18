@@ -6,6 +6,8 @@
 todo.md
 makeR.R
 makeR.Rout
+dochecks.R
+dochecks.Rout
 DESCRIPTION_editable
 CONTRIBUTING.md
 ^CRAN-RELEASE$
