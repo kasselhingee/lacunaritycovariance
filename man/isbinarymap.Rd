@@ -20,9 +20,11 @@ Tests whether \code{xi} is a binary map.
 The pixel values must be of logical type (\code{TRUE}, \code{FALSE} and \code{NA} only), or numerical (1, 0 or \code{NA}).
 }
 \examples{
+# The following return TRUE
 isbinarymap(as.im(heather$coarse, na.value = 0))
 isbinarymap(as.im(heather$coarse, na.value = FALSE, value = TRUE))
 
+# The following return FALSE
 isbinarymap(as.im(heather$coarse, na.value = 0.2, value = 1))
 isbinarymap(as.im(heather$coarse, na.value = 0, value = 1.5))
 }

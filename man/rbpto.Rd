@@ -82,6 +82,7 @@ alpha <- 2
 lengthscales <- seq(1, 5, by = 0.1)
 xi <- rbpto(lambda, grain, win, xm, alpha, lengthscales = lengthscales)
 
+# Compute properties of the Boolean model from parameters
 bpto.coverageprob(lambda, grain, xm, alpha, lengthscales = lengthscales)
 covar <- bpto.covar(lambda, grain, xm, alpha, lengthscales = lengthscales,
                     xy = as.mask(win, eps = 2))

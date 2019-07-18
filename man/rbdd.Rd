@@ -82,11 +82,14 @@ The returned object of \code{rbdd} is an \code{owin} specifying the realisation 
 }
 
 \examples{
+# Simulate Boolean model with discs of radius 10.
+# The coverage probability is very close to 0.5.
 discr <- 10
 w <- owin(xrange = c(0, 100), c(0, 100))
 lambda <- 2.2064E-3 
 xi <- rbdd(lambda, discr, w)
 
+# Compute properties of Boolean model from parameters
 cp <- bddcoverageprob(lambda, discr)
 cvc <- bddcovar(c(-10, 10), c(-10, 10), c(0.2, 0.2), lambda, discr)
 }

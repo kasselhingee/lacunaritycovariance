@@ -1,8 +1,8 @@
 Type: Package
 Package: lacunaritycovariance
 Title: Gliding Box Lacunarity and Other Metrics for 2D Random Closed Sets
-Version: 1.0-6
-Date: 2019-07-12
+Version: 1.0-7
+Date: 2019-07-18
 Author: Kassel Liam Hingee
 Maintainer: Kassel Liam Hingee <kassel.hingee@research.uwa.edu.au>
 Description: Functions for estimating the gliding box lacunarity (GBL),

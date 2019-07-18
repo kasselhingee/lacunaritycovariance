@@ -21,12 +21,15 @@ This function assumes that \code{im} objects are each realisations of the same (
 It returns pointwise summaries such as observed sample mean and sample variance.
 }
 \examples{
-spatstat.options(npixel = 2^4)
+# reduce resolution in setcov() for faster (less accurate) computation 
+oldopt <- spatstat.options()
+spatstat.options("npixel" = 2^4)
+
 obspatterns <- replicate(3, rbdd(10, 0.05, window = square(1)), simplify = FALSE)
 ims <- solapply(obspatterns,
  function(x) racscovariance(x, obswin = square(1), estimators = "pickaH", drop = TRUE))
 summ <- summary.imlist(ims, harmonizeobject = FALSE)
-reset.spatstat.options()
+spatstat.options(oldopt)
 }
 \author{
 Kassel Hingee

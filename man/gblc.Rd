@@ -49,15 +49,27 @@ If a binary map is supplied then \eqn{p} and \eqn{C(v)} are estimated using
 }
 \examples{
 xi <- heather$coarse
+
+# reduce resolution in setcov() for faster (less accurate) computation 
+oldopt <- spatstat.options()
 spatstat.options("npixel" = 2^5)
+
 covar <- plugincvc(xi, Frame(xi))
 p <- area(xi) / area(Frame(xi))
 sidelengths <- seq(0.3, 14, by = 1)
+
+# compute GBL estimate for square boxes from estimated covariance
 gblest <- gblc(sidelengths, covar, p)
 
+# compute GBL estimate for boxes that are discs 
 discboxes <- lapply(sidelengths / 2, disc)
 discgbls <- gblc(discboxes, covar, p)
-reset.spatstat.options()
+
+# compute GBL estimates from binary map
+xiim <- as.im(xi, na.replace = 0)
+gblest <- gblc(sidelengths, xiim = xiim)
+
+spatstat.options(oldopt)
 
 }
 \references{

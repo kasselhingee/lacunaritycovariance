@@ -77,11 +77,16 @@ If these estimates already exist then \code{paircorr.cvchat} can save significan
 
 \examples{
 xi <- as.im(heather$coarse, na.replace = 0, eps = 4 * heather$coarse$xstep)
+
+# Estimate pair correlation from a binary map
 pclns_directest <- paircorr(xi, estimators = "all")
 
 phat <- coverageprob(xi)
 cvchat <- plugincvc(xi)
 cpp1 <- cppicka(xi)
+
+# Compute pair correlation estimates from estimates covariance,
+# coverage probability and Picka's reduced-window coverage probability.
 pclns_fromcvc <- paircorr.cvchat(cvchat, cpp1, phat, estimators = "all")
 }
 \references{

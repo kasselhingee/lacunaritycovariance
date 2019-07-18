@@ -102,6 +102,8 @@ If these estimates already exist then \code{racscovariance.cvchat} can save sign
 \examples{
 xi <- heather$coarse
 obswin <- Frame(xi)
+
+# Estimate from a binary map
 balancedcvchats_direct <- racscovariance(xi, obswin = obswin, estimators = "all")
 
 phat <- coverageprob(xi, obswin = obswin)
@@ -111,6 +113,7 @@ harmonised <- harmonise.im(cvchat = cvchat, cpp1 = cpp1)
 cvchat <- harmonised$cvchat
 cpp1 <- harmonised$cpp1
 
+# Compute balanced estimate of covariance from other estimates
 balancedcvchats_fromplugincvc <- racscovariance.cvchat(cvchat,
                          cpp1, phat, estimators = "pickaH", drop = TRUE)
 
