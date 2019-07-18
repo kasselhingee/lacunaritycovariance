@@ -39,13 +39,20 @@
 #' @return Returns an \code{owin} object.
 #' 
 #' @examples
+#' # Simulate a germ-grain model where germs are a Poisson point process
+#' # and grains are randomly selected from 3 different disc sizes.
 #' grainlib <- solist(disc(radius = 1), disc(radius = 1.9), disc(radius = 0.2))
 #' bufferdist <- 2 #chosen to be larger than the largest radius in library
 #' w <- owin(xrange = c(0, 10), yrange = c(0, 10))
+#' 
+#' # Simulate the germ process in the window plus a buffer region around window
 #' pp <- rpoispp(lambda = 0.1, win = dilation(w, bufferdist), nsim = 1, drop = TRUE)
 #' xi_withbuffer <- placegrainsfromlib(pp, grainlib)
-#' xi <- intersect.owin(xi_withbuffer, w)
 #' 
+#' # Simulation of germ-grain model is the part within the window
+#' xi <- intersect.owin(xi_withbuffer, w)
+#'
+#' # Computation of properties from parameters 
 #' lambda <- 0.1
 #' discr <- 10
 #' weights <- c(0.9999, 0.0001)
