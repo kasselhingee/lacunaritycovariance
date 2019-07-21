@@ -27,6 +27,9 @@
 #'  First pixel not in \code{xi} \tab - \tab - 
 #' }
 
+#' @return
+#' The computed pixel-adjacency contagion value. If \code{normalise} is \code{TRUE} then the value will be between 0 and 1. Otherwise the value will be negative.
+
 #' @references
 #' O'Neill, R.V., Krummel, J.R., Gardner, R.H., Sugihara, G., Jackson, B., DeAngelis, D.L., et al. (1988) Indices of landscape pattern. \emph{Landscape Ecology}, 1, 153-162.
 
