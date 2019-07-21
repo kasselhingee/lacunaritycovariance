@@ -6,11 +6,10 @@
 
 #' @export secondorderprops
 #' @param xiim A \pkg{spatstat} \code{im} object with pixel values that are either TRUE, FALSE or NA. TRUE represents foreground, FALSE represents background and NA represents unobserved locations.
-#' @param gblargs Arguments passed to \code{\link{gblemp}} and \code{\link{gbl.cvchat}}. If NULL then GBL will not be estimated.
-#' You can also request to 
-#' @param covarargs Arguments passed to \code{\link{racscovariance.cvchat}}. If NULL then covariance will not be returned.
-#' @param cencovarargs Arguments passed to \code{\link{cencovariance.cvchat}}. If NULL then pair correlation will not be returned.
-#' @param paircorrargs Arguments passed to \code{\link{paircorr.cvchat}}. If NULL then pair correlation will not be returned.
+#' @param gblargs A list of named arguments passed to \code{\link{gblemp}} and \code{\link{gbl.cvchat}}. The estimators used can be specified by passing an argument named 'estimators' contain a list of estimator names, as given in \code{\link{gbl}}. If NULL then GBL will not be estimated.
+#' @param covarargs A list of named arguments passed to \code{\link{racscovariance.cvchat}}. If NULL then covariance will not be returned.
+#' @param cencovarargs A list of named arguments passed to \code{\link{cencovariance.cvchat}}. If NULL then pair correlation will not be returned.
+#' @param paircorrargs A list of named arguments passed to \code{\link{paircorr.cvchat}}. If NULL then pair correlation will not be returned.
 #' @param returnrotmean Logical. If FALSE the anisotropic estimates of covariance and pair-correlation will be returned as \code{im} objects.
 #' If TRUE then average covariance and pair-correlation over all directions will be returned as \code{fv} objects.
 
@@ -28,6 +27,12 @@
 #'    cencovarargs = cencovarargs,
 #'    paircorrargs = paircorrargs, 
 #'    returnrotmean = FALSE)
+
+#' @section Warning: The user interface for this function is substantially more  stretched the knowledge of the author, Kassel Hingee. Therefore, there is greater chance of encountering bugs. Kassel Hingee apologises for any bugs you encounter, and requests to be informed (thank you!).
+
+#' @return 
+#' A named list of estimated properties. When multiple estimators have been requested for the same property, then the entry in the list is itself a list, with each entry corresponding to a different estimator.
+
 
 secondorderprops <- function(xiim,
                              gblargs = NULL,
