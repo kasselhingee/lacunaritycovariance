@@ -10,17 +10,19 @@ secondorderprops(xiim, gblargs = NULL, covarargs = NULL,
 \arguments{
 \item{xiim}{A \pkg{spatstat} \code{im} object with pixel values that are either TRUE, FALSE or NA. TRUE represents foreground, FALSE represents background and NA represents unobserved locations.}
 
-\item{gblargs}{Arguments passed to \code{\link{gblemp}} and \code{\link{gbl.cvchat}}. If NULL then GBL will not be estimated.
-You can also request to}
+\item{gblargs}{A list of named arguments passed to \code{\link{gblemp}} and \code{\link{gbl.cvchat}}. The estimators used can be specified by passing an argument named 'estimators' contain a list of estimator names, as given in \code{\link{gbl}}. If NULL then GBL will not be estimated.}
 
-\item{covarargs}{Arguments passed to \code{\link{racscovariance.cvchat}}. If NULL then covariance will not be returned.}
+\item{covarargs}{A list of named arguments passed to \code{\link{racscovariance.cvchat}}. If NULL then covariance will not be returned.}
 
-\item{cencovarargs}{Arguments passed to \code{\link{cencovariance.cvchat}}. If NULL then pair correlation will not be returned.}
+\item{cencovarargs}{A list of named arguments passed to \code{\link{cencovariance.cvchat}}. If NULL then pair correlation will not be returned.}
 
-\item{paircorrargs}{Arguments passed to \code{\link{paircorr.cvchat}}. If NULL then pair correlation will not be returned.}
+\item{paircorrargs}{A list of named arguments passed to \code{\link{paircorr.cvchat}}. If NULL then pair correlation will not be returned.}
 
 \item{returnrotmean}{Logical. If FALSE the anisotropic estimates of covariance and pair-correlation will be returned as \code{im} objects.
 If TRUE then average covariance and pair-correlation over all directions will be returned as \code{fv} objects.}
+}
+\value{
+A named list of estimated properties. When multiple estimators have been requested for the same property, then the entry in the list is itself a list, with each entry corresponding to a different estimator.
 }
 \description{
 Estimates many second order properties of RACS, gliding box lacunarity, covariance, centred covariance,
@@ -28,6 +30,10 @@ and pair-correlation.
 This can be faster than computing estimates of multiple second order properties separately as  
 Fourier transforms of the binary map are not repeated.
 }
+\section{Warning}{
+ The user interface for this function is substantially more  stretched the knowledge of the author, Kassel Hingee. Therefore, there is greater chance of encountering bugs. Kassel Hingee apologises for any bugs you encounter, and requests to be informed (thank you!).
+}
+
 \examples{
 xiim <- as.im(heather$coarse, value = TRUE,
               na.replace = FALSE)
