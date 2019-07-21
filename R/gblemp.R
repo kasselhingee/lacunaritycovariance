@@ -53,8 +53,8 @@ gblemp <- function(boxwidths, xiim, obswin = Frame(xiim)){
   obsvd <- as.owin(obsvd) #owin format may not be needed anymore
   if (class(obswin) == "owin"){obsvd <- intersect.owin(obsvd, obswin)}
 
-  if (!("RcppRoll" %in% installed.packages()[, 1])){
-     stop("RcppRoll must be installed to calculate empirical gliding box lacunarity")
+  if (requireNamespace("RcppRoll") != TRUE){
+     stop("RcppRoll package must be installed to calculate empirical gliding box lacunarity")
   }
 
 xiim[(complement.owin(intersect.owin(obswin, Frame(xiim)), frame = Frame(xiim)))] <- NA  #make sure the pixels outside obswin are set to NA so that reduce sampling happens naturally ##NOTE: this a time consuming operation that may never be needed
