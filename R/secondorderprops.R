@@ -112,7 +112,7 @@ secondorderprops <- function(xiim,
     pclnests <- do.call(paircorr.cvchat, c(list(cvchat = cvchatT, cpp1 = cpp1, phat = phat), paircorrargs, drop = FALSE))
     #compute isotropic pair correlation
     if (returnrotmean){
-      isopclns <- lapply(pclnests, rotmean, padzero = FALSE, Xname = "covar", result = "fv")
+      isopclns <- lapply(pclnests, rotmean, padzero = FALSE, Xname = "paircorr", result = "fv")
       isopclns <- lapply(isopclns, function(x) {
         x <- tweak.fv.entry(x, "f", new.labl = "g(r)", new.desc = "isotropic pair-correlation", new.tag = "g")
         return(x)
