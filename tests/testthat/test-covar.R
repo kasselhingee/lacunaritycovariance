@@ -40,9 +40,9 @@ test_that("racscovariance pickaH method matches theoretical covariance for Boole
                                fun = TRUE)
   names(truecovar.iso) <- c("r", "f")
 
-  covarest.all.iso <- collapse.fv(c(list(truecovar = truecovar.iso),
+  covarest.all.iso <- collapse.fv(harmonise.fv(c(list(truecovar = truecovar.iso),
 				    list(frim = covarest.frim.iso),
-				    covarest.frowin.all.iso), different = "f")
+				    covarest.frowin.all.iso)), different = "f")
 
   #residual to theoretical covariance
   isocovarresid <- with.fv(covarest.all.iso, (. - truecovar) / truecovar, FUN = TRUE)
