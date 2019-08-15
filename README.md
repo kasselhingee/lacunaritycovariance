@@ -5,7 +5,7 @@ This directory contains the source code of the R package *lacunaritycovariance*.
 
 #### Table of Contents
 [Installation](#Installation)
-  + [From GitHub using devtools package](#from-github-using-devtools-package)
+  + [From GitHub using remotes package](#from-github-using-remotes-package)
   + [From .tar.gz file](#from-.tar.gz-file)
   + [Install from source code not in .tar.gz form](#install-from-source-code-not-in-.tar.gz-form)
 
@@ -14,7 +14,7 @@ This directory contains the source code of the R package *lacunaritycovariance*.
 [Git repository branches](#git-repository-branches)
 
 ## Installation
-### From GitHub using devtools package
+### From GitHub using remotes package
 From inside an R interactive session run:
 
     library(remotes)
