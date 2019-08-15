@@ -55,9 +55,9 @@ The estimators available are
 \itemize{
 \item{\code{"GBLc"}} The unmodified (unbalanced) covariance estimator provided by \code{\link{gblc}}
 \item{\code{"GBLemp"}} Empirical gliding box lacunarity (Allain and Cloitre, 1991). Calls \code{\link{gblemp}}
-\item{\code{"GBLg.mattfeldt"}} See help for \code{\link{gblg}}
-\item{\code{"GBLg.pickaint"}} See help for \code{\link{gblg}}
-\item{\code{"GBLg.pickaH"}} See help for \code{\link{gblg}}
+\item{\code{"GBLg.mattfeldt"}} See help for \code{\link{gblg}} and \code{\link{paircorr}}
+\item{\code{"GBLg.pickaint"}} See help for \code{\link{gblg}} and \code{\link{paircorr}}
+\item{\code{"GBLg.pickaH"}} See help for \code{\link{gblg}} and \code{\link{paircorr}}
 \item{\code{"GBLcc.mattfeldt"}} See help for \code{\link{gblcc}}
 \item{\code{"GBLcc.pickaint"}} See help for \code{\link{gblcc}}
 \item{\code{"GBLcc.pickaH"}} See help for \code{\link{gblcc}}
