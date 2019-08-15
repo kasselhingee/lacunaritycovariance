@@ -65,7 +65,7 @@ gblg <- function(boxes, paircorr = NULL, xiim = NULL){
     lacv <- gblg.inputpaircorr(boxes, paircorr)
     unitname <- unitname(xiim)
   } else {
-    stop("Input requires specification of xiim or paircorr and p")
+    stop("Input requires specification of xiim or paircorr")
   }
 
   if (mode(boxes) %in% c("integer", "numeric")){
