@@ -144,6 +144,7 @@ gbl.cvchat <- function(boxwidths,
   if ("all" %in% estimators){
     estimators = c(GBLgestimatornames, GBLccestimatornames, 
      "GBLc", "GBLemp")
+  }
   
   gblgestimaterequests <- estimators %in% GBLgestimatornames
   gblccestimaterequests <- estimators %in% GBLccestimatornames
