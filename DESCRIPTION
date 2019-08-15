@@ -1,5 +1,5 @@
 Type: Package
-Package: lacunaritycovariancedev
+Package: lacunaritycovariance
 Title: Dev: Gliding Box Lacunarity and Other Metrics for 2D Random Closed
     Sets
 Version: 0.0-1
