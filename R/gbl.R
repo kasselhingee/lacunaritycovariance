@@ -68,8 +68,7 @@ gbl <- function(xi, boxwidths,
                 includenormed = FALSE,
                 setcov_boundarythresh = 1E-6){
   if ("all" %in% estimators){
-    estimators = c("GBLg.mattfeldt", "GBLg.pickaint", "GBLg.pickaH",
-     "GBLcc.mattfeldt", "GBLcc.pickaint", "GBLcc.pickaH",
+    estimators = c(GBLgestimatornames, GBLccestimatornames, 
      "GBLc", "GBLemp")
   }
   gblgestimaterequests <- estimators %in% GBLgestimatornames
@@ -143,10 +142,9 @@ gbl.cvchat <- function(boxwidths,
                       cvchat = NULL,
                       cpp1 = NULL){
   if ("all" %in% estimators){
-    estimators = c("GBLg.mattfeldt", "GBLg.pickaint", "GBLg.pickaH",
-     "GBLcc.mattfeldt", "GBLcc.pickaint", "GBLcc.pickaH",
-     "GBLc")
-  }
+    estimators = c(GBLgestimatornames, GBLccestimatornames, 
+     "GBLc", "GBLemp")
+  
   gblgestimaterequests <- estimators %in% GBLgestimatornames
   gblccestimaterequests <- estimators %in% GBLccestimatornames
   gblgs <- gblccs <- gblc.est <- gblemp.est <- NULL
