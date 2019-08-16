@@ -49,7 +49,13 @@ innerprod.im <- function(A, B, outsideA = NA, outsideB = NA, na.rm = FALSE){
   #we have that at least one must be non-NA outside
   #we have that if one is NA and the other is non-zero outside then the result is NA
   #we that if one is non-zero and the other is non-zero then the result is Inf
-  
+  intresult <- integration_trad(A, B, outsideA, outsideB, integrationregion) 
+
+  return(intresult)
+}
+
+
+integration_trad <- function(A, B, outsideA, outsideB, integrationregion){
   harmgrid <- as.mask(integrationregion,
              eps = c(min(A$xstep, B$xstep), min(A$ystep, B$ystep)))
   A2 <- as.im(A, xy = harmgrid)
