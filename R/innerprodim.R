@@ -29,7 +29,7 @@
 #' covar <- plugincvc(xi, Frame(xi))
 #' B <- setcov(square(1))
 #' innerprod.im(covar, B, outsideB = 0)
-innerprod.im <- function(A, B, outsideA = NA, outsideB = NA, na.rm = FALSE){
+innerprod.im <- function(A, B, outsideA = NA, outsideB = NA, na.rm = FALSE, method = "cubuture"){
   ##assume that NA is unknown but finite so that mutliplying 0*NA gives 0
   integrationregion <- union.owin(Frame(A), Frame(B))
   #check if results will be NA due to outsideA and outsideB
@@ -49,8 +49,12 @@ innerprod.im <- function(A, B, outsideA = NA, outsideB = NA, na.rm = FALSE){
   #we have that at least one must be non-NA outside
   #we have that if one is NA and the other is non-zero outside then the result is NA
   #we that if one is non-zero and the other is non-zero then the result is Inf
-  intresult <- integration_trad(A, B, outsideA, outsideB, integrationregion) 
 
+  if ((method == "simple") || (requireNamespace("cubuture") != TRUE)){
+     intresult <- integration_trad(A, B, outsideA, outsideB, integrationregion)
+  } else {
+     intresult <- integration_cubuture(A, B, outsideA, outsideB, integrationregion)$integral
+  }
   return(intresult)
 }
 
@@ -64,4 +68,33 @@ integration_trad <- function(A, B, outsideA, outsideB, integrationregion){
   B2[setminus.owin(integrationregion, Frame(B))] <- outsideB
   prdimg <- eval.im(A2 * B2, harmonize = FALSE)
   return(sum(prdimg[, ], na.rm = na.rm) * prdimg$xstep * prdimg$ystep)
+}
+
+integration_cubuture <- function(A, B, outsideA, outsideB, integrationregion, tol = 1E-3){
+  if (requireNamespace("cubuture") != TRUE){
+     stop("Cubuture package must be installed to integrate using integration_cubuture")
+  }
+  
+  tmpfunA <- as.function.im(A)
+  tmpfunB <- as.function.im(B)
+  #vectorised cubuture functions needs function that take an matrix with each point a column
+  integrand <- function(arg){
+    insideA <- inside.owin(x = arg[1, ], y = arg[2, ], w = Window(A))
+    insideB <- inside.owin(x = arg[1, ], y = arg[2, ], w = Window(B))
+    outA_tmp <- matrix(tmpfunA(arg[1, insideA], arg[2, insideA]), ncol = ncol(arg)) 
+    outA <- matrix(outsideA, nrow = nrow(outA_tmp), ncol = ncol(arg), byrow = FALSE)
+    outA[, insideA] <- outA_tmp
+
+    outB_tmp <- matrix(tmpfunB(arg[1, insideB], arg[2, insideB]), ncol = ncol(arg)) 
+    outB <- matrix(outsideB, nrow = nrow(outB_tmp), ncol = ncol(arg), byrow = FALSE)
+    outB[, insideB] <- outB_tmp
+
+    return(outA * outB) 
+  }
+  out <- hcubature(f = integrand, 
+                   lowerLimit = c(integrationregion$xrange[[1]], integrationregion$yrange[[1]]),
+                   upperLimit = c(integrationregion$yrange[[2]], integrationregion$yrange[[2]]),
+                   tol = tol,  #stops when integral accurate to tol * integral value
+                   vectorInterface = TRUE)
+  return(out)
 }
