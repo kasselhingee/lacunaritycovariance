@@ -124,6 +124,8 @@ gblc.inputcovar <- function(boxes, covariance, p){
     boxarea <- unlist(boxarea)
   }
 
+  boxcov <- lapply(boxcov, addbuffer, size = 3, val = 0)
+
   integrationresults <- mapply(innerprod.im, boxcov, list(covariance), outsideA = 0, outsideB = NA, na.rm = FALSE, SIMPLIFY = FALSE) # the list around the covariance is necessary to stop mapply unlisting the image itself
 
   GBLest <- unlist(integrationresults) / (p ^ 2 * boxarea ^ 2) 
@@ -134,3 +136,15 @@ gblc.inputcovar <- function(boxes, covariance, p){
   ))
 }
 
+#buffersize in pixels
+addbuffer <- function(imobj, size, val){
+  stopifnot(buffersize >= 1)
+  xcol <- c(rev(seq(from = imobj$xcol[1] - imobj$xstep, by = -imobj$xstep, length = buffersize)),
+  imobj$xcol,
+  seq(from = imobj$xcol[length(imobj$xcol)] + imobj$xstep, by = imobj$xstep, length = buffersize))
+  yrow <- c(rev(seq(from = imobj$yrow[1] - imobj$ystep, by = -imobj$ystep, length = buffersize)),
+  imobj$yrow,
+  seq(from = imobj$yrow[length(imobj$yrow)] + imobj$ystep, by = imobj$ystep, length = buffersize))
+  return(as.im(imobj, xy = list(x = xcol, y = yrow),
+        na.replace = bufferval))
+}
