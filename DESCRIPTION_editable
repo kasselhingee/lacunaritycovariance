@@ -1,8 +1,8 @@
 Type: Package
 Package: lacunaritycovariance 
 Title: Gliding Box Lacunarity and Other Metrics for 2D Random Closed Sets
-Version: 0.0-1
-Date: 2019-08-15
+Version: 0.0-2
+Date: 2019-08-16
 Author: Kassel Liam Hingee
 Maintainer: Kassel Liam Hingee <kassel.hingee@research.uwa.edu.au>
 Description: 

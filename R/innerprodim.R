@@ -91,7 +91,7 @@ integration_cubuture <- function(A, B, outsideA, outsideB, integrationregion, to
 
     return(outA * outB) 
   }
-  out <- hcubature(f = integrand, 
+  out <- cubuture::hcubature(f = integrand, 
                    lowerLimit = c(integrationregion$xrange[[1]], integrationregion$yrange[[1]]),
                    upperLimit = c(integrationregion$yrange[[2]], integrationregion$yrange[[2]]),
                    tol = tol,  #stops when integral accurate to tol * integral value
