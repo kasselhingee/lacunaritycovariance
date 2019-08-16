@@ -136,15 +136,15 @@ gblc.inputcovar <- function(boxes, covariance, p){
   ))
 }
 
-#buffersize in pixels
-addbuffer <- function(imobj, size, val){
-  stopifnot(buffersize >= 1)
-  xcol <- c(rev(seq(from = imobj$xcol[1] - imobj$xstep, by = -imobj$xstep, length = buffersize)),
+#size in pixels
+addbuffer <- function(imobj, size, value){
+  stopifnot(size >= 1)
+  xcol <- c(rev(seq(from = imobj$xcol[1] - imobj$xstep, by = -imobj$xstep, length = size)),
   imobj$xcol,
-  seq(from = imobj$xcol[length(imobj$xcol)] + imobj$xstep, by = imobj$xstep, length = buffersize))
-  yrow <- c(rev(seq(from = imobj$yrow[1] - imobj$ystep, by = -imobj$ystep, length = buffersize)),
+  seq(from = imobj$xcol[length(imobj$xcol)] + imobj$xstep, by = imobj$xstep, length = size))
+  yrow <- c(rev(seq(from = imobj$yrow[1] - imobj$ystep, by = -imobj$ystep, length = size)),
   imobj$yrow,
-  seq(from = imobj$yrow[length(imobj$yrow)] + imobj$ystep, by = imobj$ystep, length = buffersize))
+  seq(from = imobj$yrow[length(imobj$yrow)] + imobj$ystep, by = imobj$ystep, length = size))
   return(as.im(imobj, xy = list(x = xcol, y = yrow),
-        na.replace = bufferval))
+        na.replace = value))
 }
