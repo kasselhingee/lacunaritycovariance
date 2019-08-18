@@ -81,14 +81,14 @@ integration_cubature <- function(A, B, outsideA, outsideB, integrationregion, to
   integrand <- function(arg){
     insideA <- inside.owin(x = arg[1, ], y = arg[2, ], w = Window(A))
     insideB <- inside.owin(x = arg[1, ], y = arg[2, ], w = Window(B))
-    outA_tmp <- matrix(tmpfunA(arg[1, insideA], arg[2, insideA]), ncol = ncol(arg)) 
-    outA <- matrix(outsideA, nrow = nrow(outA_tmp), ncol = ncol(arg), byrow = FALSE)
-    outA[, insideA] <- outA_tmp
-
-    outB_tmp <- matrix(tmpfunB(arg[1, insideB], arg[2, insideB]), ncol = ncol(arg)) 
-    outB <- matrix(outsideB, nrow = nrow(outB_tmp), ncol = ncol(arg), byrow = FALSE)
-    outB[, insideB] <- outB_tmp
-
+    outA <- matrix(outsideA, nrow = 1, ncol = ncol(arg), byrow = FALSE)
+    if (sum(insideA) > 0){
+      outA[, insideA] <- matrix(tmpfunA(arg[1, insideA], arg[2, insideA]), ncol = ncol(arg)) 
+    }
+    outB <- matrix(outsideB, nrow = 1, ncol = ncol(arg), byrow = FALSE)
+    if (sum(insideB) > 0){
+      outB[, insideB] <- matrix(tmpfunB(arg[1, insideB], arg[2, insideB]), ncol = ncol(arg)) 
+    }
     return(outA * outB) 
   }
   out <- cubature::hcubature(f = integrand, 

@@ -4,7 +4,8 @@
 \alias{innerprod.im}
 \title{Inner Product of Two Functions Represented as Images}
 \usage{
-innerprod.im(A, B, outsideA = NA, outsideB = NA, na.rm = FALSE)
+innerprod.im(A, B, outsideA = NA, outsideB = NA, na.rm = FALSE,
+  method = "cubuture")
 }
 \arguments{
 \item{A}{An \code{im} object containing function values representing function \eqn{f}.}
