@@ -1,6 +1,5 @@
 #' @title Empirical Gliding Box Lacunarity
 #' @export gblemp  gbltrad
-#' @importFrom utils installed.packages
 #'
 #' @description Calculates empirical gliding box lacunarity of a binary map, which was proposed by Allain and Cloitre (1991). 
 #' @details Calculates empirical gliding box lacunarity (Allain and Cloitre, 1991) for a given range of square box sizes,
