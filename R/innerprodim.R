@@ -10,9 +10,9 @@
 #' @param B An \code{im} object containing function values representing function \eqn{g}.
 #' @param outsideA The value of \eqn{f} outside the domain of \code{A}. Typically will be 0 or NA. Default is NA.
 #' @param outsideB The value of \eqn{g} outside the domain of \code{B}. Typically will be \code{0} or \code{NA}. Default is \code{NA}.
-#' @param na.rm Logical. If TRUE NA values are skipped in the summation of the product of the images.
+#' @param na.replace Logical. If TRUE NA values in \code{A} and \code{B} are replaced by \code{outsideA} and \code{outsideB}, respectively. This allows the integration to be performed (roughly) twice as quickly.
 
-#' @details This function harmonises the two input images, multiplies them together and returns the
+#' @details This function uses the package \pkg{cubature} to integrate the multiple of the two images. If \pkg{cubature} is not available then it harmonises the two input images, multiplies them together and returns the
 #' integral of the resulting image.
 #'  \code{outsideA} and \code{outsideB} are used to determine result if the inner product requires
 #' values outside the domain of A or B. For example if \code{outsideA=0} and the
@@ -29,9 +29,9 @@
 #' covar <- plugincvc(xi, Frame(xi))
 #' B <- setcov(square(1))
 #' innerprod.im(covar, B, outsideB = 0)
-innerprod.im <- function(A, B, outsideA = NA, outsideB = NA, na.rm = FALSE, method = "cubature"){
+innerprod.im <- function(A, B, outsideA = NA, outsideB = NA, na.replace = TRUE){
   ##assume that NA is unknown but finite so that mutliplying 0*NA gives 0
-  integrationregion <- union.owin(Frame(A), Frame(B))
+  integrationrectangle <- union.owin(Frame(A), Frame(B))
   #check if results will be NA due to outsideA and outsideB
   if (is.na(outsideA) && is.na(outsideB)){return(NA)}
   # if one is NA outside and the other is non-zero outside then result is NA
@@ -42,35 +42,68 @@ innerprod.im <- function(A, B, outsideA = NA, outsideB = NA, na.rm = FALSE, meth
   if ((!is.na(outsideB)) && (outsideB != 0) && (outsideA != 0)) {return(Inf)}
  
   #outsideA is 0 or outsideB is 0 then ignore what happens outside the integration region 
-  if ((!is.na(outsideA)) && (outsideA == 0)){integrationregion <- intersect.owin(integrationregion, Frame(A))}
-  if ((!is.na(outsideB)) && (outsideB == 0)){integrationregion <- intersect.owin(integrationregion, Frame(B))}
+  if ((!is.na(outsideA)) && (outsideA == 0)){integrationrectangle <- intersect.owin(integrationrectangle, Frame(A))}
+  if ((!is.na(outsideB)) && (outsideB == 0)){integrationrectangle <- intersect.owin(integrationrectangle, Frame(B))}
   
   #now we have an integration region based on non-zero locations.
   #we have that at least one must be non-NA outside
   #we have that if one is NA and the other is non-zero outside then the result is NA
   #we that if one is non-zero and the other is non-zero then the result is Inf
 
-  if ((method == "simple") || (requireNamespace("cubature") != TRUE)){
-     intresult <- integration_trad(A, B, outsideA, outsideB, integrationregion)
-  } else {
-     intresult <- integration_cubature(A, B, outsideA, outsideB, integrationregion)$integral
+  if (na.replace && requireNamespace("cubature")){
+     intresult <- innerprod.cub_na.replace(A, B, na.replaceA = outsideA, na.replaceB = outsideB,
+                                    integrationrectangle = integrationrectangle)$integral
+  }
+  if ((!na.replace) && requireNamespace("cubature")){
+     intresult <- innerprod.cub(A, B, outsideA, outsideB, integrationrectangle)$integral
+  }
+  if (na.replace && !requireNamespace("cubature")){
+     A[is.na(as.matrix(A))] <- outsideA
+     B[is.na(as.matrix(B))] <- outsideB
+     intresult <- integration_trad(A, B, outsideA, outsideB, integrationrectangle)
+  }
+  if ((!na.replace) && !requireNamespace("cubature")){
+     intresult <- integration_trad(A, B, outsideA, outsideB, integrationrectangle)
   }
   return(intresult)
 }
 
 
-integration_trad <- function(A, B, outsideA, outsideB, integrationregion){
-  harmgrid <- as.mask(integrationregion,
+integration_trad <- function(A, B, outsideA, outsideB, integrationrectangle){
+  harmgrid <- as.mask(integrationrectangle,
              eps = c(min(A$xstep, B$xstep), min(A$ystep, B$ystep)))
   A2 <- as.im(A, xy = harmgrid)
-  A2[setminus.owin(integrationregion, Frame(A))] <- outsideA
+  A2[setminus.owin(integrationrectangle, Frame(A))] <- outsideA
   B2 <- as.im(B, xy = harmgrid)
-  B2[setminus.owin(integrationregion, Frame(B))] <- outsideB
+  B2[setminus.owin(integrationrectangle, Frame(B))] <- outsideB
   prdimg <- eval.im(A2 * B2, harmonize = FALSE)
-  return(sum(prdimg[, ], na.rm = na.rm) * prdimg$xstep * prdimg$ystep)
+  return(sum(prdimg[, ], na.replace = na.replace) * prdimg$xstep * prdimg$ystep)
 }
 
-integration_cubature <- function(A, B, outsideA, outsideB, integrationregion, tol = 1E-3){
+#warning replaces all NA values with the na.replace given
+innerprod.cub_na.replace <- function(A, B, na.replaceA, na.replaceB, integrationrectangle, tol = 1E-3){
+  if (requireNamespace("cubature") != TRUE){
+    stop("Cubature package must be installed to integrate using integration_cubature")
+  }
+  #vectorised cubature functions needs function that take an matrix with each point a column
+  integrand <- function(arg){
+      outA <- matrix(A[list(x = arg[1, ], y = arg[2, ]), drop = FALSE], ncol = ncol(arg))
+      outA <- replace(outA, is.na(outA), na.replaceA)
+      outB <- matrix(B[list(x = arg[1, ], y = arg[2, ]), drop = FALSE], ncol = ncol(arg))
+      outB <- replace(outB, is.na(outB), na.replaceB)
+    return(outA * outB)
+  }
+  out <- cubature::cubintegrate(f = integrand,
+                                lower = c(integrationrectangle$xrange[[1]], integrationrectangle$yrange[[1]]),
+                                upper = c(integrationrectangle$yrange[[2]], integrationrectangle$yrange[[2]]),
+                                relTol = tol,  #stops when integral accurate to tol * integral value
+                                method = "pcubature",
+                                nVec = 1024)
+  return(out)
+}
+
+#this function is slow but has the ability to deal correctly with possible NA values of the pixels.
+innerprod.cub <- function(A, B, outsideA, outsideB, integrationrectangle, tol = 1E-3){
   if (requireNamespace("cubature") != TRUE){
      stop("Cubature package must be installed to integrate using integration_cubature")
   }
@@ -91,10 +124,11 @@ integration_cubature <- function(A, B, outsideA, outsideB, integrationregion, to
     }
     return(outA * outB) 
   }
-  out <- cubature::hcubature(f = integrand, 
-                   lowerLimit = c(integrationregion$xrange[[1]], integrationregion$yrange[[1]]),
-                   upperLimit = c(integrationregion$yrange[[2]], integrationregion$yrange[[2]]),
-                   tol = tol,  #stops when integral accurate to tol * integral value
-                   vectorInterface = TRUE)
+  out <- cubature::cubintegrate(f = integrand, 
+                   lower = c(integrationrectangle$xrange[[1]], integrationrectangle$yrange[[1]]),
+                   upper = c(integrationrectangle$yrange[[2]], integrationrectangle$yrange[[2]]),
+                   relTol = tol,  #stops when integral accurate to tol * integral value
+                   method = "pcubature",
+                   nVec = 1024)
   return(out)
 }
