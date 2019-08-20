@@ -96,7 +96,7 @@ gblg.inputpaircorr <- function(boxes, paircorr){
     boxarea <- unlist(boxarea)
   }
 
-  integrationresults <- mapply(innerprod.im, boxcov, list(paircorr - 1), outsideA = 0, outsideB = NA, na.rm = FALSE, SIMPLIFY = FALSE) # the list around the paircorr is necessary to stop mapply unlisting the image itself
+  integrationresults <- mapply(innerprod.im, boxcov, list(paircorr - 1), outsideA = 0, outsideB = NA, na.replace = TRUE, SIMPLIFY = FALSE) # the list around the paircorr is necessary to stop mapply unlisting the image itself
 
   GBLest <- 1 + unlist(integrationresults) / (boxarea ^ 2) 
   return(GBLest)
