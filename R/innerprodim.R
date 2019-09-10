@@ -116,11 +116,11 @@ innerprod.cub <- function(A, B, outsideA, outsideB, integrationrectangle, tol = 
     insideB <- inside.owin(x = arg[1, ], y = arg[2, ], w = Window(B))
     outA <- matrix(outsideA, nrow = 1, ncol = ncol(arg), byrow = FALSE)
     if (sum(insideA) > 0){
-      outA[, insideA] <- matrix(tmpfunA(arg[1, insideA], arg[2, insideA]), ncol = ncol(arg)) 
+      outA[, insideA] <- matrix(tmpfunA(arg[1, insideA], arg[2, insideA]), ncol = sum(insideA)) 
     }
     outB <- matrix(outsideB, nrow = 1, ncol = ncol(arg), byrow = FALSE)
     if (sum(insideB) > 0){
-      outB[, insideB] <- matrix(tmpfunB(arg[1, insideB], arg[2, insideB]), ncol = ncol(arg)) 
+      outB[, insideB] <- matrix(tmpfunB(arg[1, insideB], arg[2, insideB]), ncol = sum(insideB)) 
     }
     return(outA * outB) 
   }
