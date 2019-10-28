@@ -1,6 +1,10 @@
 # TO DO:
 
-Add estimator selection option to gblg function: function gblg doesn't allow selection of estimator, this is inconsistent with other gbl functions. Futhermore function 'gbl' help suggests it does.
+- Try putting buffer of 0 values around outside of set covariance functions.
+
+- Add estimator selection option to gblg function: function gblg doesn't allow selection of estimator, this is inconsistent with other gbl functions. Futhermore function 'gbl' help suggests it does.
+
+- Make gbl() return a single fv object that contains normed and unnormed gbl estimates. 
 
 ----
 
