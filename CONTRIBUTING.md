@@ -1,6 +1,6 @@
 # Contributing to lacunaritycovariance
 
-Thank you for helping to improve lacunaritycovariance. Please feel free to email me through kassel.hingee@research.uwa.edu.au. This is the first open source project I've coordinated so I anticipate many questions not covered by the documentation.
+Thank you for helping to improve lacunaritycovariance. Please feel free to email me through kassel.hingee@gmail.com. This is the first open source project I've coordinated so I anticipate many questions not covered by the documentation.
 
 #### Table of Contents
 [Files that are machine generated](#files-that-are-machine-generated)
