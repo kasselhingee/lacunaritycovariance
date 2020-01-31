@@ -5,14 +5,24 @@
 \alias{gbl.cvchat}
 \title{Gliding box lacunarity estimation using all estimators}
 \usage{
-gbl(xi, boxwidths, estimators = c("GBLg.mattfeldt", "GBLg.pickaint",
-  "GBLg.pickaH", "GBLcc.mattfeldt", "GBLcc.pickaint", "GBLc", "GBLemp"),
-  obswin = NULL, includenormed = FALSE,
-  setcov_boundarythresh = 1e-06)
+gbl(
+  xi,
+  boxwidths,
+  estimators = c("GBLg.mattfeldt", "GBLg.pickaint", "GBLg.pickaH", "GBLcc.mattfeldt",
+    "GBLcc.pickaint", "GBLc", "GBLemp"),
+  obswin = NULL,
+  includenormed = FALSE,
+  setcov_boundarythresh = 1e-06
+)
 
-gbl.cvchat(boxwidths, estimators = c("GBLg.mattfeldt", "GBLg.pickaint",
-  "GBLg.pickaH", "GBLcc.mattfeldt", "GBLcc.pickaint", "GBLc"),
-  phat = NULL, cvchat = NULL, cpp1 = NULL)
+gbl.cvchat(
+  boxwidths,
+  estimators = c("GBLg.mattfeldt", "GBLg.pickaint", "GBLg.pickaH", "GBLcc.mattfeldt",
+    "GBLcc.pickaint", "GBLc"),
+  phat = NULL,
+  cvchat = NULL,
+  cpp1 = NULL
+)
 }
 \arguments{
 \item{xi}{An observation of a RACS of interest as a full binary map (as an \code{im} object) or as the foreground set (as an \code{owin} object).

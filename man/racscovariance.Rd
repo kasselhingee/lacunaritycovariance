@@ -5,11 +5,21 @@
 \alias{racscovariance.cvchat}
 \title{Covariance Estimation}
 \usage{
-racscovariance(xi, obswin = NULL, setcov_boundarythresh = NULL,
-  estimators = "all", drop = FALSE)
+racscovariance(
+  xi,
+  obswin = NULL,
+  setcov_boundarythresh = NULL,
+  estimators = "all",
+  drop = FALSE
+)
 
-racscovariance.cvchat(cvchat, cpp1 = NULL, phat = NULL,
-  estimators = "all", drop = FALSE)
+racscovariance.cvchat(
+  cvchat,
+  cpp1 = NULL,
+  phat = NULL,
+  estimators = "all",
+  drop = FALSE
+)
 }
 \arguments{
 \item{xi}{A binary map. Either an \code{im} object or a \code{owin} object.

@@ -4,8 +4,7 @@
 \alias{gblcc}
 \title{Centred covariance based estimates of gliding box lacunarity}
 \usage{
-gblcc(boxes, cencovar = NULL, p = NULL, xiim = NULL,
-  estimator = "pickaH")
+gblcc(boxes, cencovar = NULL, p = NULL, xiim = NULL, estimator = "pickaH")
 }
 \arguments{
 \item{boxes}{Either a list of side lengths for square boxes or a list of \code{owin} objects of any shape.}

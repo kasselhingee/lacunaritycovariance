@@ -7,14 +7,25 @@
 \alias{covar.grainlib}
 \title{Place grains randomly on a point pattern}
 \usage{
-placegrainsfromlib(pp, grainlib, replace = TRUE, prob = NULL,
-  w = NULL, xy = NULL)
+placegrainsfromlib(
+  pp,
+  grainlib,
+  replace = TRUE,
+  prob = NULL,
+  w = NULL,
+  xy = NULL
+)
 
-meanarea.grainlib(grainlib, weights = rep(1/length(grainlib),
-  length(grainlib)))
+meanarea.grainlib(
+  grainlib,
+  weights = rep(1/length(grainlib), length(grainlib))
+)
 
-meansetcov.grainlib(grainlib, weights = rep(1/length(grainlib),
-  length(grainlib)), xy)
+meansetcov.grainlib(
+  grainlib,
+  weights = rep(1/length(grainlib), length(grainlib)),
+  xy
+)
 
 covar.grainlib(lambda, grainlib, weights, xy)
 }

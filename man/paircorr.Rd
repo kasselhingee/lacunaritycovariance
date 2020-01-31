@@ -5,11 +5,21 @@
 \alias{paircorr.cvchat}
 \title{Balanced estimation of pair-correlation.}
 \usage{
-paircorr(xi, obswin = NULL, setcov_boundarythresh = NULL,
-  estimators = "all", drop = FALSE)
+paircorr(
+  xi,
+  obswin = NULL,
+  setcov_boundarythresh = NULL,
+  estimators = "all",
+  drop = FALSE
+)
 
-paircorr.cvchat(cvchat, cpp1 = NULL, phat = NULL, estimators = "all",
-  drop = FALSE)
+paircorr.cvchat(
+  cvchat,
+  cpp1 = NULL,
+  phat = NULL,
+  estimators = "all",
+  drop = FALSE
+)
 }
 \arguments{
 \item{xi}{An observation of a RACS of interest as a full binary map (as an \code{im} object) or as the foreground set (as an \code{owin} object).

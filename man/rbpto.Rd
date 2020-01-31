@@ -8,8 +8,7 @@
 \title{Simulate Boolean Model with Grains Scaled According to a Truncated
   Pareto Distribution}
 \usage{
-rbpto(lambda, grain, win, xm, alpha, lengthscales, seed = NULL,
-  xy = NULL)
+rbpto(lambda, grain, win, xm, alpha, lengthscales, seed = NULL, xy = NULL)
 
 bpto.coverageprob(lambda, grain, xm, alpha, lengthscales = 1:500)
 

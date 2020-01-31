@@ -5,11 +5,22 @@
 \alias{cencovariance.cvchat}
 \title{Centred covariance estimation}
 \usage{
-cencovariance(xi, obswin = NULL, setcov_boundarythresh = NULL,
-  estimators = "all", drop = FALSE)
+cencovariance(
+  xi,
+  obswin = NULL,
+  setcov_boundarythresh = NULL,
+  estimators = "all",
+  drop = FALSE
+)
 
-cencovariance.cvchat(cvchat, cpp1 = NULL, phat = NULL,
-  setcov_boundarythresh = NULL, estimators = "all", drop = FALSE)
+cencovariance.cvchat(
+  cvchat,
+  cpp1 = NULL,
+  phat = NULL,
+  setcov_boundarythresh = NULL,
+  estimators = "all",
+  drop = FALSE
+)
 }
 \arguments{
 \item{xi}{An observation of a RACS of interest as a full binary map (as an \code{im} object) or as the foreground set (as an \code{owin} object).

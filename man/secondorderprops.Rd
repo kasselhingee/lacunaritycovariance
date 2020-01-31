@@ -4,8 +4,14 @@
 \alias{secondorderprops}
 \title{Estimate Second-Order Properties of a RACS}
 \usage{
-secondorderprops(xiim, gblargs = NULL, covarargs = NULL,
-  cencovarargs = NULL, paircorrargs = NULL, returnrotmean = FALSE)
+secondorderprops(
+  xiim,
+  gblargs = NULL,
+  covarargs = NULL,
+  cencovarargs = NULL,
+  paircorrargs = NULL,
+  returnrotmean = FALSE
+)
 }
 \arguments{
 \item{xiim}{A \pkg{spatstat} \code{im} object with pixel values that are either TRUE, FALSE or NA. TRUE represents foreground, FALSE represents background and NA represents unobserved locations.}
