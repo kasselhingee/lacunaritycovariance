@@ -31,6 +31,7 @@ Suggests:
     raster,
     maptools,
     rgdal,
+    cubature,
     testthat
 ByteCompile: true
-RoxygenNote: 6.1.1
+RoxygenNote: 7.1.1
