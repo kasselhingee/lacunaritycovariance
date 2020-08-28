@@ -34,4 +34,4 @@ Suggests:
     cubature,
     testthat
 ByteCompile: true
-RoxygenNote: 7.1.1
+RoxygenNote: 6.1.1
