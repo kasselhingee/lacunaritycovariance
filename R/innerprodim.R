@@ -95,7 +95,7 @@ innerprod.cub_na.replace <- function(A, B, na.replaceA, na.replaceB, integration
   }
   out <- cubature::cubintegrate(f = integrand,
                                 lower = c(integrationrectangle$xrange[[1]], integrationrectangle$yrange[[1]]),
-                                upper = c(integrationrectangle$yrange[[2]], integrationrectangle$yrange[[2]]),
+                                upper = c(integrationrectangle$xrange[[2]], integrationrectangle$yrange[[2]]),
                                 relTol = tol,  #stops when integral accurate to tol * integral value
                                 method = "pcubature",
                                 nVec = 1024)
@@ -126,7 +126,7 @@ innerprod.cub <- function(A, B, outsideA, outsideB, integrationrectangle, tol = 
   }
   out <- cubature::cubintegrate(f = integrand, 
                    lower = c(integrationrectangle$xrange[[1]], integrationrectangle$yrange[[1]]),
-                   upper = c(integrationrectangle$yrange[[2]], integrationrectangle$yrange[[2]]),
+                   upper = c(integrationrectangle$xrange[[2]], integrationrectangle$yrange[[2]]),
                    relTol = tol,  #stops when integral accurate to tol * integral value
                    method = "pcubature",
                    nVec = 1024)

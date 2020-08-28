@@ -26,8 +26,8 @@ test_that("Inner product gives correct error results",  {
   skip_on_cran() #mostly a repeat of above tests 
   A <- as.im(function(x,y) {sin(x/2.0)}, W = owin(xrange = c(0, 4*pi), yrange = c(0, pi)), eps = 0.5)
   B <- as.im(function(x,y) {sin(x)}, W = square(2 * pi), eps = 0.5)
-  expect_true(is.na(innerprod.im(A, B, outsideA = NA, outsideB = 0)))
-  expect_true(is.na(innerprod.im(A, B, outsideB = NA, outsideA = 0)))
+  expect_true(is.na(innerprod.im(A, B, outsideA = NA, outsideB = 0, na.replace = FALSE)))
+  expect_true(is.na(innerprod.im(A, B, outsideB = NA, outsideA = 0, na.replace = FALSE)))
   expect_true(is.infinite(innerprod.im(A, B, outsideB = 0.1, outsideA = 0.1)))
   expect_true(is.na(innerprod.im(A, B, outsideB = 0.1, outsideA = NA)))
   

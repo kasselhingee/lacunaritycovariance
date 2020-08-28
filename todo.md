@@ -1,5 +1,9 @@
 # TO DO:
 
+- have fast (traditional) and slow (cubature) option for computing GBLcc
+
+- warn that GBLg, GBLc need to use cubature
+
 - Try putting buffer of 0 values around outside of set covariance functions.
 
 - Add estimator selection option to gblg function: function gblg doesn't allow selection of estimator, this is inconsistent with other gbl functions. Futhermore function 'gbl' help suggests it does.
