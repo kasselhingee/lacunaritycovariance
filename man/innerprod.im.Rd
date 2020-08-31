@@ -4,8 +4,14 @@
 \alias{innerprod.im}
 \title{Inner Product of Two Functions Represented as Images}
 \usage{
-innerprod.im(A, B, outsideA = NA, outsideB = NA, na.rm = FALSE,
-  method = "cubuture")
+innerprod.im(
+  A,
+  B,
+  outsideA = NA,
+  outsideB = NA,
+  na.replace = TRUE,
+  method = "cubature"
+)
 }
 \arguments{
 \item{A}{An \code{im} object containing function values representing function \eqn{f}.}
@@ -16,20 +22,23 @@ innerprod.im(A, B, outsideA = NA, outsideB = NA, na.rm = FALSE,
 
 \item{outsideB}{The value of \eqn{g} outside the domain of \code{B}. Typically will be \code{0} or \code{NA}. Default is \code{NA}.}
 
-\item{na.rm}{Logical. If TRUE NA values are skipped in the summation of the product of the images.}
+\item{na.replace}{Logical. If TRUE NA values in \code{A} and \code{B} are replaced by \code{outsideA} and \code{outsideB}, respectively. This allows the integration to be performed (roughly) twice as quickly.}
+
+\item{method}{Either "cubature" or "harmonisesum". The former uses \pkg{cubature}'s \code{\link[cubature:cubintegrate]{cubature::cubintegrate()}},
+the latter harmonises the images using \code{\link[spatstat:as.mask.im]{spatstat::as.mask.im()}} and sums the product.}
 }
 \value{
 If the inner product can be computed then returns sum(\code{A} * \code{B}), otherwise returns \code{NA}.
 }
 \description{
 Given two functions, f and g, that map from 2D space to 1D, and values of f and g represented as \code{im} objects
- then \code{innerprod.im} computes the (function space) inner product
+then \code{innerprod.im} computes the (function space) inner product
 \deqn{\int f(v) g(v) dv.}
 }
 \details{
-This function harmonises the two input images, multiplies them together and returns the
+This function uses the package \pkg{cubature} to integrate the multiple of the two images. If \pkg{cubature} is not available then it harmonises the two input images, multiplies them together and returns the
 integral of the resulting image.
- \code{outsideA} and \code{outsideB} are used to determine result if the inner product requires
+\code{outsideA} and \code{outsideB} are used to determine result if the inner product requires
 values outside the domain of A or B. For example if \code{outsideA=0} and the
 domain of \code{B} is larger than \code{A}'s domain then the inner product
 can still be computed. However if \code{A} is \code{NA} outside (e.g. not
