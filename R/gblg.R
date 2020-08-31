@@ -25,6 +25,7 @@
 #' @param boxes Either a list of side lengths for square boxes or a list of \code{owin} objects of any shape.
 #' @param paircorr  A \code{im} object containing the pair-correlation function
 #' @param xiim An observation of a stationary RACS as an \code{im} object. \code{xiim} must have values of either 1, 0 or NA; 1 denotes inside the RACS, 0 denotes outside, and NA denotes unobserved.
+#' @param integrationMethod The integration method used by [innerprod.im()].
 
 #' @return If \code{boxes} is a list of numerical values then GBL is estimated for square boxes with side length given by \code{boxes}.
 #'  The returned object is then an \code{fv} object containing estimates of GBL.
@@ -55,14 +56,14 @@
 #' spatstat.options(oldopt)
 #' 
 #' @keywords spatial nonparametric 
-gblg <- function(boxes, paircorr = NULL, xiim = NULL){
+gblg <- function(boxes, paircorr = NULL, xiim = NULL, integrationMethod = "cubature"){
   if (!(is.null(paircorr))){
     if (!is.null(xiim)){stop("xiim (an observation image) and paircorr were given. paircorr and xiim cannot be simultaneously supplied.")}
     lacv <- gblg.inputpaircorr(boxes, paircorr)
     unitname <- unitname(paircorr)
   } else if (!is.null(xiim)){
     paircorr <- paircorr(xiim, estimators = "pickaH", drop = TRUE)
-    lacv <- gblg.inputpaircorr(boxes, paircorr)
+    lacv <- gblg.inputpaircorr(boxes, paircorr, integrationMethod = integrationMethod)
     unitname <- unitname(xiim)
   } else {
     stop("Input requires specification of xiim or paircorr")
@@ -82,7 +83,7 @@ gblg <- function(boxes, paircorr = NULL, xiim = NULL){
   } else (return(lacv))
 }
 
-gblg.inputpaircorr <- function(boxes, paircorr){
+gblg.inputpaircorr <- function(boxes, paircorr, integrationMethod = "cubature"){
   stopifnot(is.im(paircorr))
   if (mode(boxes) %in% c("integer", "numeric")){
     squares <- lapply(boxes, square) #make into owin rectangles
@@ -96,7 +97,7 @@ gblg.inputpaircorr <- function(boxes, paircorr){
     boxarea <- unlist(boxarea)
   }
 
-  integrationresults <- mapply(innerprod.im, boxcov, list(paircorr - 1), outsideA = 0, outsideB = NA, na.replace = TRUE, SIMPLIFY = FALSE) # the list around the paircorr is necessary to stop mapply unlisting the image itself
+  integrationresults <- mapply(innerprod.im, boxcov, list(paircorr - 1), outsideA = 0, outsideB = NA, na.replace = TRUE, method = integrationMethod, SIMPLIFY = FALSE) # the list around the paircorr is necessary to stop mapply unlisting the image itself
 
   GBLest <- 1 + unlist(integrationresults) / (boxarea ^ 2) 
   return(GBLest)

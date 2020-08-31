@@ -21,6 +21,7 @@
 #' @param p The coverage probability. Typically estimated by the fraction of the observation window covered by the set of interest.
 #' @param xiim An observation of a stationary RACS as an \code{im} object. \code{xiim} must have values of either 1, 0 or NA; 1 denotes inside the RACS, 0 denotes outside, and NA denotes unobserved.
 #' @param estimator If an observation \code{xiim} is passed then \code{estimator} will select the balancing method that \code{ccvc} uses to estimate the centred covariance.
+#' @param integrationMethod The integration method used by [innerprod.im()]. Default is 'harmonisesum' due centred covariance approaching zero for large vectors.
 
 #' @return If \code{boxes} is a list of numerical values then GBL is estimated for square boxes with side length given by \code{boxes}.
 #'  The returned object is then an \code{fv} object containing estimates of GBL, box mass variance and box mass mean.
@@ -55,7 +56,7 @@
 #' spatstat.options(oldopt)
 #' 
 #' @keywords spatial nonparametric 
-gblcc <- function(boxes, cencovar = NULL, p = NULL, xiim = NULL, estimator = "pickaH"){
+gblcc <- function(boxes, cencovar = NULL, p = NULL, xiim = NULL, estimator = "pickaH", integrationMethod = "harmonisesum"){
   if (!(is.null(cencovar) && is.null(p))){
     if (!is.null(xiim)){stop("xiim (an observation image) and cencovar or p were given. Either cencovar and p must be supplied or xiim supplied.")}
     lacv <- gblcc.inputcovar(boxes, cencovar, p)
@@ -63,7 +64,7 @@ gblcc <- function(boxes, cencovar = NULL, p = NULL, xiim = NULL, estimator = "pi
   } else if (!is.null(xiim)){
     p <- sum(xiim) / sum(is.finite(xiim$v))
     cencovar <- cencovariance(xiim, estimators = c(estimator), drop = TRUE)
-    lacv <- gblcc.inputcovar(boxes, cencovar, p)
+    lacv <- gblcc.inputcovar(boxes, cencovar, p, integrationMethod = integrationMethod)
     unitname <- unitname(xiim)
   } else {
     stop("Input requires specification of xiim or cencovar and p")
@@ -98,7 +99,7 @@ gblcc <- function(boxes, cencovar = NULL, p = NULL, xiim = NULL, estimator = "pi
   } else (return(lacsdf))
 }
 
-gblcc.inputcovar <- function(boxes, cencovar, p){
+gblcc.inputcovar <- function(boxes, cencovar, p, integrationMethod = integrationMethod){
   stopifnot(is.im(cencovar))
   stopifnot(is.numeric(p))
   if (mode(boxes) %in% c("integer", "numeric")){
@@ -113,7 +114,7 @@ gblcc.inputcovar <- function(boxes, cencovar, p){
     boxarea <- unlist(boxarea)
   }
 
-  integrationresults <- mapply(innerprod.im, boxcov, list(cencovar), outsideA = 0, outsideB = NA, na.replace = TRUE, SIMPLIFY = FALSE) # the list around the cencovar is necessary to stop mapply unlisting the image itself
+  integrationresults <- mapply(innerprod.im, boxcov, list(cencovar), outsideA = 0, outsideB = NA, na.replace = TRUE, method = integrationMethod, SIMPLIFY = FALSE) # the list around the cencovar is necessary to stop mapply unlisting the image itself
 
   coefvar2 <- unlist(integrationresults) / (p ^ 2 * boxarea ^ 2)
   return(list(

@@ -4,7 +4,7 @@
 \alias{gblg}
 \title{Pair-correlation based estimates of gliding box lacunarity}
 \usage{
-gblg(boxes, paircorr = NULL, xiim = NULL)
+gblg(boxes, paircorr = NULL, xiim = NULL, integrationMethod = "cubature")
 }
 \arguments{
 \item{boxes}{Either a list of side lengths for square boxes or a list of \code{owin} objects of any shape.}
@@ -12,6 +12,8 @@ gblg(boxes, paircorr = NULL, xiim = NULL)
 \item{paircorr}{A \code{im} object containing the pair-correlation function}
 
 \item{xiim}{An observation of a stationary RACS as an \code{im} object. \code{xiim} must have values of either 1, 0 or NA; 1 denotes inside the RACS, 0 denotes outside, and NA denotes unobserved.}
+
+\item{integrationMethod}{The integration method used by \code{\link[=innerprod.im]{innerprod.im()}}.}
 }
 \value{
 If \code{boxes} is a list of numerical values then GBL is estimated for square boxes with side length given by \code{boxes}.

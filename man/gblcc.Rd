@@ -4,7 +4,14 @@
 \alias{gblcc}
 \title{Centred covariance based estimates of gliding box lacunarity}
 \usage{
-gblcc(boxes, cencovar = NULL, p = NULL, xiim = NULL, estimator = "pickaH")
+gblcc(
+  boxes,
+  cencovar = NULL,
+  p = NULL,
+  xiim = NULL,
+  estimator = "pickaH",
+  integrationMethod = "harmonisesum"
+)
 }
 \arguments{
 \item{boxes}{Either a list of side lengths for square boxes or a list of \code{owin} objects of any shape.}
@@ -16,6 +23,8 @@ gblcc(boxes, cencovar = NULL, p = NULL, xiim = NULL, estimator = "pickaH")
 \item{xiim}{An observation of a stationary RACS as an \code{im} object. \code{xiim} must have values of either 1, 0 or NA; 1 denotes inside the RACS, 0 denotes outside, and NA denotes unobserved.}
 
 \item{estimator}{If an observation \code{xiim} is passed then \code{estimator} will select the balancing method that \code{ccvc} uses to estimate the centred covariance.}
+
+\item{integrationMethod}{The integration method used by \code{\link[=innerprod.im]{innerprod.im()}}. Default is 'harmonisesum' due centred covariance approaching zero for large vectors.}
 }
 \value{
 If \code{boxes} is a list of numerical values then GBL is estimated for square boxes with side length given by \code{boxes}.

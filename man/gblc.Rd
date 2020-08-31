@@ -4,7 +4,13 @@
 \alias{gblc}
 \title{Gliding box lacunarity estimator using plug-in moment covariance estimator}
 \usage{
-gblc(boxes, covariance = NULL, p = NULL, xiim = NULL)
+gblc(
+  boxes,
+  covariance = NULL,
+  p = NULL,
+  xiim = NULL,
+  integrationMethod = "cubature"
+)
 }
 \arguments{
 \item{boxes}{Either a list of side lengths for square boxes or a list of \code{owin} objects of any shape.}
@@ -14,6 +20,8 @@ gblc(boxes, covariance = NULL, p = NULL, xiim = NULL)
 \item{p}{The coverage probability. Typically estimated by the fraction of the observation window covered by the set of interest.}
 
 \item{xiim}{A binary coverage map as an \code{im} object. \code{xiim} must have values of either 1, 0 or NA; 1 denotes inside the RACS, 0 denotes outside, and NA denotes unobserved.}
+
+\item{integrationMethod}{The integration method used by \code{\link[=innerprod.im]{innerprod.im()}}.}
 }
 \value{
 If \code{boxes} is a list of numerical values then GBL is estimated

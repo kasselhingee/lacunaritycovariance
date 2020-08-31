@@ -30,6 +30,7 @@
 #' @param covariance  A \code{im} object containing the covariance function
 #' @param p The coverage probability. Typically estimated by the fraction of the observation window covered by the set of interest.
 #' @param xiim A binary coverage map as an \code{im} object. \code{xiim} must have values of either 1, 0 or NA; 1 denotes inside the RACS, 0 denotes outside, and NA denotes unobserved.
+#' @param integrationMethod The integration method used by [innerprod.im()].
 
 #' @return If \code{boxes} is a list of numerical values then GBL is estimated 
 #' for square boxes with side length given by \code{boxes}.
@@ -65,7 +66,7 @@
 #' spatstat.options(oldopt)
 #' 
 #' @keywords spatial nonparametric 
-gblc <- function(boxes, covariance = NULL, p = NULL, xiim = NULL){
+gblc <- function(boxes, covariance = NULL, p = NULL, xiim = NULL, integrationMethod = "cubature"){
   if (!(is.null(covariance) && is.null(p))){
     if (!is.null(xiim)){stop("xiim (an observation image) and covariance or p were given. Either covariance and p must be supplied or xiim supplied.")}
     lacv <- gblc.inputcovar(boxes, covariance, p)
@@ -75,7 +76,7 @@ gblc <- function(boxes, covariance = NULL, p = NULL, xiim = NULL){
     w <- as.owin(xiim) #w is observation window - only the non NA values end up in window
     xiim[is.na(xiim$v)] <- 0
     covar <- plugincvc(xiim, obswin = w)
-    lacv <- gblc.inputcovar(boxes, covar, p)
+    lacv <- gblc.inputcovar(boxes, covar, p, integrationMethod = integrationMethod)
     unitname <- unitname(xiim)
   } else {
     stop("Input requires specification of xiim or covariance and p")
@@ -110,7 +111,7 @@ gblc <- function(boxes, covariance = NULL, p = NULL, xiim = NULL){
   } else (return(lacsdf))
 }
 
-gblc.inputcovar <- function(boxes, covariance, p){
+gblc.inputcovar <- function(boxes, covariance, p, integrationMethod = "cubature"){
   stopifnot(is.im(covariance))
   stopifnot(is.numeric(p))
   if (mode(boxes) %in% c("integer", "numeric")){
@@ -124,7 +125,7 @@ gblc.inputcovar <- function(boxes, covariance, p){
     boxarea <- unlist(boxarea)
   }
 
-  integrationresults <- mapply(innerprod.im, boxcov, list(covariance), outsideA = 0, outsideB = NA, na.replace = TRUE, SIMPLIFY = FALSE) # the list around the covariance is necessary to stop mapply unlisting the image itself
+  integrationresults <- mapply(innerprod.im, boxcov, list(covariance), outsideA = 0, outsideB = NA, na.replace = TRUE, method = integrationMethod, SIMPLIFY = FALSE) # the list around the covariance is necessary to stop mapply unlisting the image itself
 
   GBLest <- unlist(integrationresults) / (p ^ 2 * boxarea ^ 2) 
   return(list(
