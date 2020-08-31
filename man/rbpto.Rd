@@ -6,10 +6,9 @@
 \alias{bpto.germintensity}
 \alias{bpto.covar}
 \title{Simulate Boolean Model with Grains Scaled According to a Truncated
-  Pareto Distribution}
+Pareto Distribution}
 \usage{
-rbpto(lambda, grain, win, xm, alpha, lengthscales, seed = NULL,
-  xy = NULL)
+rbpto(lambda, grain, win, xm, alpha, lengthscales, seed = NULL, xy = NULL)
 
 bpto.coverageprob(lambda, grain, xm, alpha, lengthscales = 1:500)
 
@@ -30,7 +29,9 @@ at scale 1}
 see details}
 
 \item{alpha}{A parameter governing the shape of the Pareto distribution used
-- see details}
+\itemize{
+\item see details
+}}
 
 \item{lengthscales}{A list of scales of the \code{grain} for which to
 approximate the Pareto distribution: The grain for a germ is chosen by
@@ -54,8 +55,8 @@ An \code{owin} object.
 }
 \description{
 Functions for simulation and computing theoretical values of a
-  Boolean model with identically shaped grains with size given by a
-  truncated Pareto distribution.
+Boolean model with identically shaped grains with size given by a
+truncated Pareto distribution.
 }
 \details{
 The parameters \code{xm} and \code{alpha} are such that the CDF of the Pareto distribution is \eqn{P(s <= x) = 1 - (xm / x)^{alpha}}.

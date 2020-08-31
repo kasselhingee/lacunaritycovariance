@@ -7,14 +7,25 @@
 \alias{covar.grainlib}
 \title{Place grains randomly on a point pattern}
 \usage{
-placegrainsfromlib(pp, grainlib, replace = TRUE, prob = NULL,
-  w = NULL, xy = NULL)
+placegrainsfromlib(
+  pp,
+  grainlib,
+  replace = TRUE,
+  prob = NULL,
+  w = NULL,
+  xy = NULL
+)
 
-meanarea.grainlib(grainlib, weights = rep(1/length(grainlib),
-  length(grainlib)))
+meanarea.grainlib(
+  grainlib,
+  weights = rep(1/length(grainlib), length(grainlib))
+)
 
-meansetcov.grainlib(grainlib, weights = rep(1/length(grainlib),
-  length(grainlib)), xy)
+meansetcov.grainlib(
+  grainlib,
+  weights = rep(1/length(grainlib), length(grainlib)),
+  xy
+)
 
 covar.grainlib(lambda, grainlib, weights, xy)
 }
@@ -47,10 +58,10 @@ Also described here are functions for computing summary properties of the a list
 }
 \details{
 Germ-grain models have two components, a point process (called germs) and a process that creates
- grains that are centred on the germs.
-The point process of germs can be easily simulated using a number of \pkg{spatstat} functions 
+grains that are centred on the germs.
+The point process of germs can be easily simulated using a number of \pkg{spatstat} functions
 (e.g. \code{\link[spatstat]{rpoispp}} for Boolean models).
-To simulate a germ-grain model in a window \eqn{W} the germ process must be simulated in a larger window 
+To simulate a germ-grain model in a window \eqn{W} the germ process must be simulated in a larger window
 because grains centred outside \eqn{W} can intersect \eqn{W}.
 The result must then be cropped to \eqn{W} to achieve a realisation of the germ-grain process within \eqn{W}.
 

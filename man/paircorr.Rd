@@ -5,11 +5,21 @@
 \alias{paircorr.cvchat}
 \title{Balanced estimation of pair-correlation.}
 \usage{
-paircorr(xi, obswin = NULL, setcov_boundarythresh = NULL,
-  estimators = "all", drop = FALSE)
+paircorr(
+  xi,
+  obswin = NULL,
+  setcov_boundarythresh = NULL,
+  estimators = "all",
+  drop = FALSE
+)
 
-paircorr.cvchat(cvchat, cpp1 = NULL, phat = NULL, estimators = "all",
-  drop = FALSE)
+paircorr.cvchat(
+  cvchat,
+  cpp1 = NULL,
+  phat = NULL,
+  estimators = "all",
+  drop = FALSE
+)
 }
 \arguments{
 \item{xi}{An observation of a RACS of interest as a full binary map (as an \code{im} object) or as the foreground set (as an \code{owin} object).
@@ -22,14 +32,14 @@ See \code{\link{lacunaritycovariance-package}} for details.}
 \item{setcov_boundarythresh}{To avoid instabilities caused by dividing by very small quantities, if the set covariance of the observation window
 is smaller than \code{setcov_boundarythresh}, then the covariance is given a value of NA.}
 
-\item{estimators}{A list of strings specifying estimators to use. 
+\item{estimators}{A list of strings specifying estimators to use.
 See details.
 \code{estimators = "all"} will select all available estimators.}
 
 \item{drop}{If TRUE and one estimator selected then the returned value will be a single \code{im} object and not a list of \code{im} object.
 \code{estimators = "all"} will select all inbuilt estimators. See details.}
 
-\item{cvchat}{The plug-in moment estimate of covariance as an \code{im} object. 
+\item{cvchat}{The plug-in moment estimate of covariance as an \code{im} object.
 Typically created with \code{\link{plugincvc}}.}
 
 \item{cpp1}{Picka's reduced window estimate of coverage probability as an \code{im} object - used in improved (balanced) covariance estimators.
@@ -41,29 +51,27 @@ See \code{\link{coverageprob}} for more information.}
 }
 \value{
 If \code{drop = TRUE} and a single estimator is requested then an
-  \code{im} object containing the pair-correlation estimate is returned. Otherwise a
-  named \code{imlist} of \code{im} objects containing the pair-correlation
-  estimates for each requested estimator.
+\code{im} object containing the pair-correlation estimate is returned. Otherwise a
+named \code{imlist} of \code{im} objects containing the pair-correlation
+estimates for each requested estimator.
 }
 \description{
-Estimates the pair-correlation function of a stationary RACS. 
+Estimates the pair-correlation function of a stationary RACS.
 The plug-in moment pair-correlation estimator and three `balanced' estimators suggested by Picka (2000)
 are available.
 }
 \details{
-The pair-correlation of a stationary RACS is 
+The pair-correlation of a stationary RACS is
 \deqn{g(v) = C(v) / p^2.}
 
-  The estimators available are (see (Hingee, 2019) for
-  more information): 
-  \itemize{ 
-  \item{\code{plugin}} the plug-in moment pair-correlation estimator which is \eqn{Chat(v) / (phat^2)}, where \eqn{Chat} and \eqn{phat} are 
+The estimators available are (see (Hingee, 2019) for
+more information):
+\itemize{
+\item{\code{plugin}} the plug-in moment pair-correlation estimator which is \eqn{Chat(v) / (phat^2)}, where \eqn{Chat} and \eqn{phat} are
 the plug-in moment estimate of covariance and the usual estimate of coverage probability, respectively.
-  \item{\code{mattfeldt}} an `intrinsically' balanced pair-correlation estimator suggested by Picka (1997).
-  A similar isotropic pair-correlation estimator was later studied by Mattfeldt and Stoyan (2000).
-  \item{\code{pickaint}} Picka's `intrinsically' balanced pair-correlation estimator (Picka, 2000). 
-  \item{\code{pickaH}} Picka's `additively' balanced pair-correlation estimator (Picka, 2000).
-  }
+\item{\code{mattfeldt}} an \verb{intrinsically' balanced pair-correlation estimator suggested by Picka (1997). A similar isotropic pair-correlation estimator was later studied by Mattfeldt and Stoyan (2000). \\item\{\code{pickaint}\} Picka's }intrinsically' balanced pair-correlation estimator (Picka, 2000).
+\item{\code{pickaH}} Picka's `additively' balanced pair-correlation estimator (Picka, 2000).
+}
 }
 \section{Functions}{
 \itemize{

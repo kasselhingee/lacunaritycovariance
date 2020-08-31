@@ -4,8 +4,14 @@
 \alias{secondorderprops}
 \title{Estimate Second-Order Properties of a RACS}
 \usage{
-secondorderprops(xiim, gblargs = NULL, covarargs = NULL,
-  cencovarargs = NULL, paircorrargs = NULL, returnrotmean = FALSE)
+secondorderprops(
+  xiim,
+  gblargs = NULL,
+  covarargs = NULL,
+  cencovarargs = NULL,
+  paircorrargs = NULL,
+  returnrotmean = FALSE
+)
 }
 \arguments{
 \item{xiim}{A \pkg{spatstat} \code{im} object with pixel values that are either TRUE, FALSE or NA. TRUE represents foreground, FALSE represents background and NA represents unobserved locations.}
@@ -27,7 +33,7 @@ A named list of estimated properties. When multiple estimators have been request
 \description{
 Estimates many second order properties of RACS, gliding box lacunarity, covariance, centred covariance,
 and pair-correlation.
-This can be faster than computing estimates of multiple second order properties separately as  
+This can be faster than computing estimates of multiple second order properties separately as
 Fourier transforms of the binary map are not repeated.
 }
 \section{Warning}{

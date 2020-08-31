@@ -15,14 +15,14 @@ gblg(boxes, paircorr = NULL, xiim = NULL)
 }
 \value{
 If \code{boxes} is a list of numerical values then GBL is estimated for square boxes with side length given by \code{boxes}.
- The returned object is then an \code{fv} object containing estimates of GBL.
- If \code{boxes} is a list of \code{owin} objects then \code{gblg} returns a dataframe of with columns corresponding to estimates of GBL.
- 
- Note that if any values in the \code{paircorr} object needed for \code{gblg} are \code{NA} or \code{NaN} then \code{gblg} will return \code{NA} or \code{NaN}, respectively.
+The returned object is then an \code{fv} object containing estimates of GBL.
+If \code{boxes} is a list of \code{owin} objects then \code{gblg} returns a dataframe of with columns corresponding to estimates of GBL.
+
+Note that if any values in the \code{paircorr} object needed for \code{gblg} are \code{NA} or \code{NaN} then \code{gblg} will return \code{NA} or \code{NaN}, respectively.
 }
 \description{
 Estimates the gliding box lacunarity (GBL) of a stationary RACS by estimating pair-correlation from a binary map (Hingee et al., 2017).
- It can also calculate the GBL of a RACS from a provided pair-correlation function.
+It can also calculate the GBL of a RACS from a provided pair-correlation function.
 }
 \details{
 If we denote the estimated pair-correlation by \eqn{\hat{g}(v)}{g(v)} then the estimate of GBL is
@@ -31,7 +31,7 @@ where \eqn{B} is each of the sets (often called a box) specified by \code{boxes}
 \eqn{\gamma_B}{gammaB} is the set covariance of \eqn{B},
 \eqn{|B|} is the area of \eqn{B},
 \eqn{p} is the coverage probability of a stationary RACS.
-This can be used to compute the GBL from model parameters by passing \code{gblc} the 
+This can be used to compute the GBL from model parameters by passing \code{gblc} the
 covariance and coverage probability of the model.
 
 If the \code{xiim} argument to \code{gblg} is used then pair correlation is estimated from \code{xiim} using \code{\link{paircorr}} and the \code{pickaH} estimator.

@@ -25,7 +25,7 @@ Returns an \code{owin} object cropped to \code{obswin}.
 }
 \description{
 Simulates a Boolean model of discs with log normal radii by first simulating a Poisson point process and then placing discs
- of random radii around each point (the radii are generated using a log normal distribution).
+of random radii around each point (the radii are generated using a log normal distribution).
 }
 \details{
 The point process needs to be simulated in a larger region than the desired observation window to account for the possibility of discs that intersect the observation window, but have germs outside the observation window.

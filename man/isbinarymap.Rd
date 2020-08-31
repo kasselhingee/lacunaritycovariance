@@ -16,7 +16,7 @@ Logical value. \code{TRUE} if \code{xi} is a binary map. Otherwise \code{FALSE}.
 If \code{requiretrue = TRUE} and \code{xi} is not a binary map then an error will occur.
 }
 \description{
-Tests whether \code{xi} is a binary map. 
+Tests whether \code{xi} is a binary map.
 The pixel values must be of logical type (\code{TRUE}, \code{FALSE} and \code{NA} only), or numerical (1, 0 or \code{NA}).
 }
 \examples{

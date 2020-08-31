@@ -16,36 +16,36 @@ gblc(boxes, covariance = NULL, p = NULL, xiim = NULL)
 \item{xiim}{A binary coverage map as an \code{im} object. \code{xiim} must have values of either 1, 0 or NA; 1 denotes inside the RACS, 0 denotes outside, and NA denotes unobserved.}
 }
 \value{
-If \code{boxes} is a list of numerical values then GBL is estimated 
+If \code{boxes} is a list of numerical values then GBL is estimated
 for square boxes with side length given by \code{boxes}.
- The returned object is then an \code{fv} object containing estimates of GBL,
-  box mass variance and box mass mean.
- If \code{boxes} is a list of \code{owin} objects then \code{gblc} returns a 
- dataframe with columns corresponding to estimates of GBL, box mass variance and box mass mean.
+The returned object is then an \code{fv} object containing estimates of GBL,
+box mass variance and box mass mean.
+If \code{boxes} is a list of \code{owin} objects then \code{gblc} returns a
+dataframe with columns corresponding to estimates of GBL, box mass variance and box mass mean.
 
-  Note if \code{NA} or \code{NaN} values in the \code{covariance} object are used then \code{gblc} will return \code{NA} or \code{NaN}.
+Note if \code{NA} or \code{NaN} values in the \code{covariance} object are used then \code{gblc} will return \code{NA} or \code{NaN}.
 }
 \description{
 Can be used to estimate the gliding box lacunarity (GBL) of a stationary RACS from a binary map
- using the plug-in moment covariance covariance estimator (Hingee et al., 2017).
- It can also calculate the GBL of a RACS from a given covariance function and coverage probability.
+using the plug-in moment covariance covariance estimator (Hingee et al., 2017).
+It can also calculate the GBL of a RACS from a given covariance function and coverage probability.
 }
 \details{
-Computes a numerical approximation of 
+Computes a numerical approximation of
 \deqn{\int \gamma_B(v) C(v) dv / (p^2 |B|^2).}{\int gammaB(v) C(v) dv / (p^2 |B|^2),}
 where \eqn{B} is each of the sets (often called a box) specified by \code{boxes},
 \eqn{\gamma_B}{gammaB} is the set covariance of \eqn{B},
 \eqn{|B|} is the area of \eqn{B},
 \eqn{p} is the coverage probability of a stationary RACS, and
 \eqn{C(v)} is the covariance of a stationary RACS.
-This can be used to compute the GBL from model parameters by passing \code{gblc} the 
+This can be used to compute the GBL from model parameters by passing \code{gblc} the
 covariance and coverage probability of the model.
 
 The set covariance of \eqn{B} is computed empirically using \pkg{spatstat}'s \code{\link[spatstat]{setcov}} function, which converts \eqn{B} into a binary pixel mask using \code{\link[spatstat]{as.mask}} defaults. Computation speed can be increased by setting a small default number of pixels, \code{npixel}, in \pkg{spatstat}'s global options (accessed through \code{\link[spatstat]{spatstat.options}}), however fewer pixels also decreases the accuracy of the GBL computation.
 
 If a binary map is supplied then \eqn{p} and \eqn{C(v)} are estimated using
- the usual coverage probability estimator and the plug-in moment covariance estimator, respectively 
- (see \code{\link{coverageprob}} and \code{\link{plugincvc}}).
+the usual coverage probability estimator and the plug-in moment covariance estimator, respectively
+(see \code{\link{coverageprob}} and \code{\link{plugincvc}}).
 }
 \examples{
 xi <- heather$coarse

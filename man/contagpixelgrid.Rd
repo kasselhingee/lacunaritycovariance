@@ -35,12 +35,12 @@ respectively, and \eqn{m} is the number of classes.
 Here \eqn{m = 2} as \code{xi} is a binary map and we have defined `adjacent'
 pixels using the 4-neighbourhood regime.
 
-Contagion is calculated from an adjacency matrix created using the function \code{adjacency}. 
+Contagion is calculated from an adjacency matrix created using the function \code{adjacency}.
 The adjacency matrix is a 2 by 2 table containing the number of pairs of neighbouring pixels (where order matters) such that:
 \tabular{lll}{
-    \tab Second pixel in \code{xi} \tab Second pixel not in \code{xi} \cr
- First pixel in \code{xi} \tab - \tab - \cr
- First pixel not in \code{xi} \tab - \tab - 
+\tab Second pixel in \code{xi} \tab Second pixel not in \code{xi} \cr
+First pixel in \code{xi} \tab - \tab - \cr
+First pixel not in \code{xi} \tab - \tab -
 }
 }
 \section{Functions}{

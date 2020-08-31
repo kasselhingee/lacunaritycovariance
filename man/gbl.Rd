@@ -5,14 +5,24 @@
 \alias{gbl.cvchat}
 \title{Gliding box lacunarity estimation using all estimators}
 \usage{
-gbl(xi, boxwidths, estimators = c("GBLg.mattfeldt", "GBLg.pickaint",
-  "GBLg.pickaH", "GBLcc.mattfeldt", "GBLcc.pickaint", "GBLc", "GBLemp"),
-  obswin = NULL, includenormed = FALSE,
-  setcov_boundarythresh = 1e-06)
+gbl(
+  xi,
+  boxwidths,
+  estimators = c("GBLg.mattfeldt", "GBLg.pickaint", "GBLg.pickaH", "GBLcc.mattfeldt",
+    "GBLcc.pickaint", "GBLc", "GBLemp"),
+  obswin = NULL,
+  includenormed = FALSE,
+  setcov_boundarythresh = 1e-06
+)
 
-gbl.cvchat(boxwidths, estimators = c("GBLg.mattfeldt", "GBLg.pickaint",
-  "GBLg.pickaH", "GBLcc.mattfeldt", "GBLcc.pickaint", "GBLc"),
-  phat = NULL, cvchat = NULL, cpp1 = NULL)
+gbl.cvchat(
+  boxwidths,
+  estimators = c("GBLg.mattfeldt", "GBLg.pickaint", "GBLg.pickaH", "GBLcc.mattfeldt",
+    "GBLcc.pickaint", "GBLc"),
+  phat = NULL,
+  cvchat = NULL,
+  cpp1 = NULL
+)
 }
 \arguments{
 \item{xi}{An observation of a RACS of interest as a full binary map (as an \code{im} object) or as the foreground set (as an \code{owin} object).
@@ -28,7 +38,7 @@ In the latter case the observation window, \code{obswin}, must be supplied.}
 \item{includenormed}{A logical value. If TRUE then GBL estimates normalised by the GBL values at zero will be included in a returned list of \code{fv} objects}
 
 \item{setcov_boundarythresh}{To avoid instabilities caused by dividing by very small quantities, if the set covariance of the observation window
- is smaller than \code{setcov_boundarythresh}, then the covariance is given a value of NA. 
+is smaller than \code{setcov_boundarythresh}, then the covariance is given a value of NA.
 If NULL is supplied (default) then \code{setcov_boundarythresh} is set to 1E-6.}
 
 \item{phat}{The fraction of foreground area in the observation window, which is the usual estimator of coverage probability given by \code{\link{coverageprob}}.}
@@ -49,7 +59,7 @@ As empirical GBL is one of the GBL estimators available through this function, n
 To estimate GBL for non-square boxes use \code{gblcc} or \code{gblg} directly.
 
 If \code{xi} is an \code{owin} object then \code{obswin} and \code{xi} are converted
- into an \code{im} object using \code{\link[spatstat]{as.im}}
+into an \code{im} object using \code{\link[spatstat]{as.im}}
 
 The estimators available are
 \itemize{

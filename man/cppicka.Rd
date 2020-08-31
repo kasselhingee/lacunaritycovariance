@@ -22,7 +22,7 @@ from the subregion of the observation window, \eqn{W}, that is the intersection 
 }
 \description{
 This function provides estimates of coverage probability from subsets of the observation window,
- which are a key component of balanced estimators of covariance, centred covariance, pair-correlation and gliding box lacunarity.
+which are a key component of balanced estimators of covariance, centred covariance, pair-correlation and gliding box lacunarity.
 }
 \details{
 The plug-in moment covariance estimator (\code{\link{plugincvc}}) uses less of the observation window than the usual coverage probability estimators.
@@ -31,7 +31,7 @@ that accounted for this difference.
 A key component of Picka's estimators is an estimate of the coverage probability from the subregion of the binary map that is
 the intersection between \eqn{W} and \eqn{W} shifted by vector \eqn{v}, where \eqn{W} is the observation window (p.~687, Picka, 2000).
 If we treat \eqn{X} and \eqn{W} as indicator functions representing the foreground and observation window respectively,
- this coverage probability estimator used by Picka is
+this coverage probability estimator used by Picka is
 \deqn{ \frac{\int X(u) W(u) W(u - v) du} {\int W(u) W(u - v) du}. }{integral(X(u) W(u) W(u - v) du)  /  integral(W(u) W(u - v) du).}
 
 \code{cppicka} produces these estimates for an array of vectors \eqn{v} using fast Fourier transforms.

@@ -5,11 +5,21 @@
 \alias{racscovariance.cvchat}
 \title{Covariance Estimation}
 \usage{
-racscovariance(xi, obswin = NULL, setcov_boundarythresh = NULL,
-  estimators = "all", drop = FALSE)
+racscovariance(
+  xi,
+  obswin = NULL,
+  setcov_boundarythresh = NULL,
+  estimators = "all",
+  drop = FALSE
+)
 
-racscovariance.cvchat(cvchat, cpp1 = NULL, phat = NULL,
-  estimators = "all", drop = FALSE)
+racscovariance.cvchat(
+  cvchat,
+  cpp1 = NULL,
+  phat = NULL,
+  estimators = "all",
+  drop = FALSE
+)
 }
 \arguments{
 \item{xi}{A binary map. Either an \code{im} object or a \code{owin} object.
@@ -24,13 +34,13 @@ the observation window.}
 \item{setcov_boundarythresh}{To avoid instabilities caused by dividing by very small quantities, if the set covariance of the observation window
 is smaller than \code{setcov_boundarythresh}, then the covariance is given a value of NA.}
 
-\item{estimators}{A list of strings specifying covariance estimators to use. 
+\item{estimators}{A list of strings specifying covariance estimators to use.
 See details.
 Passing \code{estimators = "all"} will select all available estimators.}
 
 \item{drop}{If TRUE and one estimator is selected then the returned value will be a single \code{im} object and not a list of \code{im} objects.}
 
-\item{cvchat}{The plug-in moment estimate of covariance as an \code{im} object. 
+\item{cvchat}{The plug-in moment estimate of covariance as an \code{im} object.
 Typically created with \code{\link{plugincvc}}.}
 
 \item{cpp1}{Picka's reduced window estimate of coverage probability as an \code{im} object - used in improved (balanced) covariance estimators.
@@ -41,18 +51,18 @@ which is the observed area in \code{xi} divided by the total area of the observa
 See \code{\link{coverageprob}} for more information.}
 }
 \value{
-If \code{drop = TRUE} and only one estimator is requested then 
+If \code{drop = TRUE} and only one estimator is requested then
 an \code{im} object containing the covariance estimate.
- Otherwise a named \code{imlist} of covariance estimates corresponding to each requested estimator.
+Otherwise a named \code{imlist} of covariance estimates corresponding to each requested estimator.
 }
 \description{
-Estimates the covariance of a stationary RACS. 
+Estimates the covariance of a stationary RACS.
 The plug-in moment covariance estimator and
 newer balanced estimators based on (Picka, 1997; Picka, 2000) are available.
 }
 \details{
 The covariance of a RACS is also known as the two-point coverage probability, and is
-closely related to the semivariogram. 
+closely related to the semivariogram.
 The covariance of a stationary RACS \eqn{\Xi} given a vector \eqn{v} is
 the probability that two points separated by a vector \eqn{v} are covered by
 \eqn{\Xi}.
@@ -77,15 +87,12 @@ for pair-correlation estimators, is also available.
 We have called this estimator \code{mattfeldt} as a similar isotropic estimator for pair-correlation
 was studied by Mattfeldt and Stoyan (2000).
 
-The estimators available are (see (Hingee, 2019) for more information): 
+The estimators available are (see (Hingee, 2019) for more information):
 \itemize{
 \item{\code{plugin}} the plug-in moment covariance estimator
-\item{\code{mattfeldt}} an estimator inspired by an 
-`intrinsically' balanced pair-correlation estimator from Picka that was later studied in an
-isotropic situation by Mattfeldt and Stoyan (2000) 
-\item{\code{pickaint}} an estimator inspired by an 
-`intrinsically' balanced centred covariance estimator from Picka (2000).
-\item{\code{pickaH}} an estimator inspired by the 
+\item{\code{mattfeldt}} an estimator inspired by an
+\verb{intrinsically' balanced pair-correlation estimator from Picka that was later studied in an isotropic situation by Mattfeldt and Stoyan (2000)  \\item\{\code{pickaint}\} an estimator inspired by an  }intrinsically' balanced centred covariance estimator from Picka (2000).
+\item{\code{pickaH}} an estimator inspired by the
 `additively' balanced centred covariance estimator from Picka (2000).
 }
 }

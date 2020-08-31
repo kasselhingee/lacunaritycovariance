@@ -5,11 +5,22 @@
 \alias{cencovariance.cvchat}
 \title{Centred covariance estimation}
 \usage{
-cencovariance(xi, obswin = NULL, setcov_boundarythresh = NULL,
-  estimators = "all", drop = FALSE)
+cencovariance(
+  xi,
+  obswin = NULL,
+  setcov_boundarythresh = NULL,
+  estimators = "all",
+  drop = FALSE
+)
 
-cencovariance.cvchat(cvchat, cpp1 = NULL, phat = NULL,
-  setcov_boundarythresh = NULL, estimators = "all", drop = FALSE)
+cencovariance.cvchat(
+  cvchat,
+  cpp1 = NULL,
+  phat = NULL,
+  setcov_boundarythresh = NULL,
+  estimators = "all",
+  drop = FALSE
+)
 }
 \arguments{
 \item{xi}{An observation of a RACS of interest as a full binary map (as an \code{im} object) or as the foreground set (as an \code{owin} object).
@@ -21,13 +32,13 @@ In the latter case the observation window, \code{obswin}, must be supplied.}
 \item{setcov_boundarythresh}{To avoid instabilities caused by dividing by very small quantities, if the set covariance of the observation window
 is smaller than \code{setcov_boundarythresh}, then the covariance is given a value of NA.}
 
-\item{estimators}{A list of strings specifying estimators to use. 
+\item{estimators}{A list of strings specifying estimators to use.
 See details.
 \code{estimators = "all"} will select all available estimators.}
 
 \item{drop}{If TRUE and one estimator selected then the returned value will be a single \code{im} object and not a list of \code{im} object.}
 
-\item{cvchat}{The plug-in moment estimate of covariance as an \code{im} object. 
+\item{cvchat}{The plug-in moment estimate of covariance as an \code{im} object.
 Typically created with \code{\link{plugincvc}}.}
 
 \item{cpp1}{Picka's reduced window estimate of coverage probability as an \code{im} object - used in improved (balanced) covariance estimators.
@@ -39,35 +50,31 @@ See \code{\link{coverageprob}} for more information.}
 }
 \value{
 If \code{drop = TRUE} and only one estimator is requested then a
-  \code{im} object containing the centred covariance estimate is returned. Otherwise a
-  named \code{imlist} of \code{im} objects containing the centred covariance
-  estimates for each requested estimator.
+\code{im} object containing the centred covariance estimate is returned. Otherwise a
+named \code{imlist} of \code{im} objects containing the centred covariance
+estimates for each requested estimator.
 }
 \description{
-This function estimates the centred covariance of a stationary RACS. 
-Available estimators are the plug-in moment centred covariance estimator, two `balanced' estimators suggested by Picka (2000),
- and a third `balanced' estimator inspired by one of Picka's pair-correlation estimators.
+This function estimates the centred covariance of a stationary RACS.
+Available estimators are the plug-in moment centred covariance estimator, two \verb{balanced' estimators suggested by Picka (2000), and a third }balanced' estimator inspired by one of Picka's pair-correlation estimators.
 }
 \details{
 The centred covariance of a stationary RACS is \deqn{\kappa(v) =
   C(v) - p^2.}
 
-  The estimators available are (see (Section 3.4, Hingee, 2019) for
-  more information): 
-  \itemize{ 
-  \item{\code{plugin}} the plug-in moment centred
-  covariance estimator 
-  \item{\code{mattfeldt}} an estimator inspired by an
-  `intrinsically' balanced pair-correlation estimator from Picka (1997) that was
-  later studied in an isotropic situation by Mattfeldt and Stoyan
-  (Mattfeldt and Stoyan, 2000) 
-  \item{\code{pickaint}} Picka's `intrinsically' balanced
-  centred covariance estimator (Picka, 2000). 
-  \item{\code{pickaH}} Picka's
-  `additively' balanced centred covariance estimator (Picka, 2000).
-  }
+The estimators available are (see (Section 3.4, Hingee, 2019) for
+more information):
+\itemize{
+\item{\code{plugin}} the plug-in moment centred
+covariance estimator
+\item{\code{mattfeldt}} an estimator inspired by an
+\verb{intrinsically' balanced pair-correlation estimator from Picka (1997) that was later studied in an isotropic situation by Mattfeldt and Stoyan (Mattfeldt and Stoyan, 2000)  \\item\{\code{pickaint}\} Picka's }intrinsically' balanced
+centred covariance estimator (Picka, 2000).
+\item{\code{pickaH}} Picka's
+`additively' balanced centred covariance estimator (Picka, 2000).
+}
 
-  Currently computes centred covariance using \code{\link{racscovariance}}.
+Currently computes centred covariance using \code{\link{racscovariance}}.
 }
 \section{Functions}{
 \itemize{

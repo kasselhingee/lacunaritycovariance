@@ -26,42 +26,42 @@ results so that all RACS return a value between 0 and 1. Default is FALSE.}
 \value{
 If \code{XiH} is an \code{fv} object then an \code{fv} object is returned.
 If \code{XiH} is a vector then the returned object is a vector the same length as \code{XiH} with each element
-  corresponding to the contagion at each \code{r} value of \code{XiH}.
+corresponding to the contagion at each \code{r} value of \code{XiH}.
 }
 \description{
 Calculates the disc-state contagion landscape metric as described in (Hingee, 2016; Hingee, 2019). The
-  disc-state contagion landscape metric describes the entropy (mixing) between four
-  possible states of a disc: \enumerate{ \item the disc is completely
-  contained in \eqn{\Xi} \item the disc does not intersect \eqn{\Xi} \item
-  the centre of the disc is in \eqn{\Xi} but the disc is not contained in
-  \eqn{\Xi} \item the disc intersects \eqn{\Xi} but the centre is outside
-  \eqn{\Xi} }
+disc-state contagion landscape metric describes the entropy (mixing) between four
+possible states of a disc: \enumerate{ \item the disc is completely
+contained in \eqn{\Xi} \item the disc does not intersect \eqn{\Xi} \item
+the centre of the disc is in \eqn{\Xi} but the disc is not contained in
+\eqn{\Xi} \item the disc intersects \eqn{\Xi} but the centre is outside
+\eqn{\Xi} }
 
-  Disc-state contagion is a function of the disc radius.
+Disc-state contagion is a function of the disc radius.
 
-  The main difference to classical contagion (O'Neill, 1988) is that disc-state contagion
-  is based on the spherical contact distribution instead of pixel neighbours.
-  One impact of this design is that the distance with which to quantify the
-  mixing between \eqn{\Xi} and the background may be chosen by the user by
-  choosing the disc radius (for classical contagion this distance is fixed by
-  the map resolution).
+The main difference to classical contagion (O'Neill, 1988) is that disc-state contagion
+is based on the spherical contact distribution instead of pixel neighbours.
+One impact of this design is that the distance with which to quantify the
+mixing between \eqn{\Xi} and the background may be chosen by the user by
+choosing the disc radius (for classical contagion this distance is fixed by
+the map resolution).
 
-  Note: to create \code{fv} objects the function copies about 20 lines of code from the \pkg{spatstat} package.
+Note: to create \code{fv} objects the function copies about 20 lines of code from the \pkg{spatstat} package.
 }
 \details{
 \code{XiH} should be a function of radius that contains (estimates of) the
-  probability of a disc of radius \eqn{r} not intersecting \eqn{\Xi} if the
-  disc's centre is not in \eqn{\Xi} \deqn{\code{XiH}(r) = P(B_r(x) \subseteq
+probability of a disc of radius \eqn{r} not intersecting \eqn{\Xi} if the
+disc's centre is not in \eqn{\Xi} \deqn{\code{XiH}(r) = P(B_r(x) \subseteq
   \Xi^c | x \in \Xi^c).} Similarly \code{XicH} should be (an estimate of) the
-  probability of a disc being fully contained in \eqn{\Xi} given its centre
-  is in \eqn{\Xi} \deqn{\code{XicH}(r)\approx P(B_r(x) \subseteq \Xi | x \in
+probability of a disc being fully contained in \eqn{\Xi} given its centre
+is in \eqn{\Xi} \deqn{\code{XicH}(r)\approx P(B_r(x) \subseteq \Xi | x \in
   \Xi).} These can both be obtained using \code{\link{Hest}} in
-  \pkg{spatstat}. For \code{XicH} take care to apply \code{Hest} to the complement
-  of \eqn{\Xi} with the observation window \eqn{W}.
+\pkg{spatstat}. For \code{XicH} take care to apply \code{Hest} to the complement
+of \eqn{\Xi} with the observation window \eqn{W}.
 
-  If \code{normalise} is \code{TRUE} then the result is divided by
-  \eqn{-2ln(2)} and increased by 1 so that contagion will always be between 0
-  and 1.
+If \code{normalise} is \code{TRUE} then the result is divided by
+\eqn{-2ln(2)} and increased by 1 so that contagion will always be between 0
+and 1.
 }
 \examples{
 xi <- heather$coarse

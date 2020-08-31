@@ -10,7 +10,7 @@ gblemp(boxwidths, xiim, obswin = Frame(xiim))
 gbltrad(boxwidths, xiim, obswin = Frame(xiim))
 }
 \arguments{
-\item{boxwidths}{A list of suggested box widths in the same units as \code{xiim}. 
+\item{boxwidths}{A list of suggested box widths in the same units as \code{xiim}.
 Note the actual box widths used by \code{gblemp} will be the closest multiple of an odd number of pixel widths.}
 
 \item{xiim}{An image of pixels valued either \code{0}, \code{1} or \code{NA}. \code{NA} valued pixels are assumed to be outside the observation window.}
@@ -18,8 +18,8 @@ Note the actual box widths used by \code{gblemp} will be the closest multiple of
 \item{obswin}{Optional observation window. The observation window used for the estimator will be the intersection of \code{obswin} and the pixels that are not \code{NA} in \code{xiim}.}
 }
 \value{
-An \code{fv} object containing empirical GBL, variance of the area in the box and mean of the area in the box. 
- The box widths (labelled \code{s}) are always odd multiples of the pixel width.
+An \code{fv} object containing empirical GBL, variance of the area in the box and mean of the area in the box.
+The box widths (labelled \code{s}) are always odd multiples of the pixel width.
 }
 \description{
 Calculates empirical gliding box lacunarity of a binary map, which was proposed by Allain and Cloitre (1991).
@@ -27,11 +27,11 @@ Calculates empirical gliding box lacunarity of a binary map, which was proposed 
 \details{
 Calculates empirical gliding box lacunarity (Allain and Cloitre, 1991) for a given range of square box sizes,
 \deqn{1 + Var(area(B . xi)) / E[area(B . xi)]^2, }
-where \eqn{B} is a box that has a random location in the observation window and \eqn{area(B . xi)} is the (random) area of the foreground in \eqn{B}. 
+where \eqn{B} is a box that has a random location in the observation window and \eqn{area(B . xi)} is the (random) area of the foreground in \eqn{B}.
 This is an estimate of the gliding box lacunarity of a RACS (Hingee et al., 2017).
 
 The algorithm uses the pixel locations in \code{xiim} as an array of box centre locations to compute
- the mean and variance of the area in a random box of a given size.
+the mean and variance of the area in a random box of a given size.
 Locations where the box is not completely within the observation window are ignored.
 }
 \section{Functions}{
@@ -40,7 +40,7 @@ Locations where the box is not completely within the observation window are igno
 }}
 
 \section{WARNING}{
- 
+
 The box side lengths are rounded such that they are an odd number of pixels across.
 \code{gblemp} uses the \code{\link[RcppRoll]{roll_sum}} function in \pkg{RcppRoll} to operate, so \pkg{RcppRoll} must be installed to run \code{gblemp}.
 }

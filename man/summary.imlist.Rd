@@ -17,7 +17,7 @@
 A list \code{im} objects containing the pointwise mean, variance and maxima and minima.
 }
 \description{
-This function assumes that \code{im} objects are each realisations of the same (stochastic) object. 
+This function assumes that \code{im} objects are each realisations of the same (stochastic) object.
 It returns pointwise summaries such as observed sample mean and sample variance.
 }
 \examples{

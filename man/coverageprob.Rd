@@ -27,13 +27,13 @@ Computes the proportion of the observation window that is foreground, which is t
 \details{
 The coverage probability of a stationary RACS is the probability that an arbitrary point is covered by the RACS.
 Given a binary map, \code{xi}, of a realisation of stationary RACS \eqn{\Xi} in a window \eqn{W},
- this function computes the fraction of \eqn{W} covered by foreground,
+this function computes the fraction of \eqn{W} covered by foreground,
 which is an estimate of the coverage probability.
 See (Chiu et al., 2013, Section 6.4.2) for more details.
 
 If \code{xi} is an \code{im} object then \code{xi} must be an image of 1s, 0s and NAs
- representing inside the set, outside the set and outside the observation window respectively.
- \code{coverageprob} will not accept a \code{obswin} argument if \code{xi} is an \code{im} object.
+representing inside the set, outside the set and outside the observation window respectively.
+\code{coverageprob} will not accept a \code{obswin} argument if \code{xi} is an \code{im} object.
 }
 \examples{
 xi <- heather$coarse
