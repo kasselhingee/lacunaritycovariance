@@ -8,7 +8,7 @@
 #' @param obswin If \code{xi} is an \code{owin} object then \code{obswin} is an
 #'   \code{owin} object that specifies the observation window.
 #' @param boxwidths A list of box widths
-#' @param estimators A list of estimator names - see details for possibilities. \code{estimators = "all"} will select all estimators.
+#' @param estimators A vector of estimator names - see details for possible names. \code{estimators = "all"} will select all estimators.
 #' @param includenormed A logical value. If TRUE then GBL estimates normalised by the GBL values at zero will be included in a returned list of \code{fv} objects
 #' @param setcov_boundarythresh To avoid instabilities caused by dividing by very small quantities, if the set covariance of the observation window
 #'  is smaller than \code{setcov_boundarythresh}, then the covariance is given a value of NA. 
@@ -37,6 +37,9 @@
 #' \item{\code{"GBLcc.pickaint"}} See help for \code{\link{gblcc}}
 #' \item{\code{"GBLcc.pickaH"}} See help for \code{\link{gblcc}}
 #' }
+#' 
+#' The default, GBLcc.pickaint, is a method based on centred covariance.
+#' Centred covariance approaches zero for large vectors, and are thus easier to integrate with the set covariance of the boxes.
 #'
 #' The set covariance of the boxes is computed empirically using \pkg{spatstat}'s \code{\link[spatstat]{setcov}} function, which converts \eqn{B} into a binary pixel mask using \code{\link[spatstat]{as.mask}} defaults. Computation speed can be increased by setting a small default number of pixels, \code{npixel}, in \pkg{spatstat}'s global options (accessed through \code{\link[spatstat]{spatstat.options}}), however fewer pixels also decreases the accuracy of the GBL computation.
 
@@ -61,9 +64,7 @@
 
 #' @describeIn gbl computes GBL estimates from a binary map.
 gbl <- function(xi, boxwidths,
-                           estimators = c("GBLg.mattfeldt", "GBLg.pickaint", "GBLg.pickaH",
-                                          "GBLcc.mattfeldt", "GBLcc.pickaint",
-                                          "GBLc", "GBLemp"),
+                           estimators = c("GBLcc.pickaint"),
                 obswin = NULL,
                 includenormed = FALSE,
                 setcov_boundarythresh = 1E-6){

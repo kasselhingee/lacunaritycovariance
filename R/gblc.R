@@ -3,8 +3,11 @@
 #'
 #' @description 
 #' Can be used to estimate the gliding box lacunarity (GBL) of a stationary RACS from a binary map
-#'  using the plug-in moment covariance covariance estimator (Hingee et al., 2017).
-#'  It can also calculate the GBL of a RACS from a given covariance function and coverage probability. 
+#'  using the plug-in moment covariance covariance estimator (Hingee et al., 2019).
+#'  It can also calculate the GBL of a RACS from a given covariance function and coverage probability.
+#' 
+#' The default integration method for this function uses [cubature::cubintegrate()] from the \pkg{cubature}.
+#' The 'harmonisesum' method is known to produce integration artefacts (Section 6.2 of (Hingee et al., 2019))
 
 #' @references
 #' Hingee K, Baddeley A, Caccetta P, Nair G (2019). Computation of lacunarity from covariance of spatial binary maps. \emph{Journal of Agricultural, Biological and Environmental Statistics}, 24, 264-288. DOI: 10.1007/s13253-019-00351-9.
