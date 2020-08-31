@@ -100,7 +100,7 @@ The function \code{gbl} can give estimates of GBL using the empirical gliding-bo
 \begin{figure}[H]
 \centering
 <<gblestimation, fig = TRUE>>=
-gblest <- gbl(xi = egbinarymap, seq(1, 200/4, by = 1))
+gblest <- gbl(xi = egbinarymap, seq(1, 200/4, by = 1), estimators = c("GBLcc.pickaH", "GBLemp"))
 plot(gblest[[1]], main = "GBL Estimate")
 @
 \caption{GBL Estimates.}
