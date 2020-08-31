@@ -121,14 +121,14 @@ test_that("gbl() fails nicely when GBLemp can't estimate anything", {
   xiim <- as.im(heather$coarse, value = TRUE, na.replace = FALSE, eps = 2)
   #fake lots of missing data
   xiim[shift.owin(reflect(heather$coarse), vec = c(10, 20))] <- NA
-  expect_warning(gbl(xiim, seq(2, 10, by = 4)), regexp = "1 or fewer of the provided box widths")
+  expect_warning(gbl(xiim, seq(2, 10, by = 4), estimators = c("GBLcc.pickaH", "GBLemp")), regexp = "1 or fewer of the provided box widths")
   reset.spatstat.options()
 })
 
 test_that("gbl() harmonises estimates to produce meaningful fv object", {
   spatstat.options(npixel = 2^3)
   xiim_verytoy <- as.im(heather$coarse, value = TRUE, na.replace = FALSE, eps = 2)
-  expect_warning(gblest <- gbl(xiim_verytoy, seq(2, 10, by = 3)), regexp = "harmon")
+  expect_warning(gblest <- gbl(xiim_verytoy, seq(2, 10, by = 3), estimators = c("GBLcc.pickaH", "GBLemp")), regexp = "harmon")
   expect_silent(lapply(gblest, plot.fv, limitsonly = TRUE))
   skip_on_cran()
   expect_silent(lapply(gblest, plot.fv, type = "n"))
@@ -139,7 +139,7 @@ test_that("gbl() operates nicely when only one estimator requested", {
   skip_on_cran() #less important test
   spatstat.options(npixel = 2^3)
   xiim <- as.im(heather$coarse, value = TRUE, na.replace = FALSE, eps = 1)
-  expect_silent(gbl(xiim, seq(1, 10, by = 4), estimators = "GBLc"))
+  expect_silent(gbl(xiim, seq(1, 10, by = 4), estimators = "GBLcc.pickaH"))
   reset.spatstat.options()
 })
 
