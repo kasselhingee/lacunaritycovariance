@@ -1,5 +1,7 @@
 # TO DO:
 
+- faster running of examples for gblg, gbl
+
 - check handling of na.replace in integration_trad, and elsewhere
 
 - Add estimator selection option to gblg function: function gblg doesn't allow selection of estimator, this is inconsistent with other gbl functions. Futhermore function 'gbl' help suggests it does.
