@@ -95,7 +95,7 @@ innerprod.cub <- function(A, B, outsideA, outsideB, integrationrectangle, na.rep
       outB <- replace(outB, is.na(outB), outsideB)
       return(outA * outB)
     }
-  } else (!na.replace){
+  } else if (!na.replace){
     tmpfunA <- as.function.im(A)
     tmpfunB <- as.function.im(B)
     #vectorised cubature functions needs function that take an matrix with each point a column
