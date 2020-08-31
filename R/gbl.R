@@ -38,7 +38,7 @@
 #' \item{\code{"GBLcc.pickaH"}} See help for \code{\link{gblcc}}
 #' }
 #' 
-#' The default, GBLcc.pickaint, is a method based on centred covariance.
+#' The default, GBLcc.pickaH, is a method based on centred covariance.
 #' Centred covariance approaches zero for large vectors, and are thus easier to integrate with the set covariance of the boxes.
 #'
 #' The set covariance of the boxes is computed empirically using \pkg{spatstat}'s \code{\link[spatstat]{setcov}} function, which converts \eqn{B} into a binary pixel mask using \code{\link[spatstat]{as.mask}} defaults. Computation speed can be increased by setting a small default number of pixels, \code{npixel}, in \pkg{spatstat}'s global options (accessed through \code{\link[spatstat]{spatstat.options}}), however fewer pixels also decreases the accuracy of the GBL computation.
@@ -64,7 +64,7 @@
 
 #' @describeIn gbl computes GBL estimates from a binary map.
 gbl <- function(xi, boxwidths,
-                           estimators = c("GBLcc.pickaint"),
+                           estimators = c("GBLcc.pickaH"),
                 obswin = NULL,
                 includenormed = FALSE,
                 setcov_boundarythresh = 1E-6){
