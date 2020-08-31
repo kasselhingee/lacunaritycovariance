@@ -77,7 +77,7 @@ integration_trad <- function(A, B, outsideA, outsideB, integrationrectangle){
   B2 <- as.im(B, xy = harmgrid)
   B2[setminus.owin(integrationrectangle, Frame(B))] <- outsideB
   prdimg <- eval.im(A2 * B2, harmonize = FALSE)
-  return(sum(prdimg[, ], na.replace = na.replace) * prdimg$xstep * prdimg$ystep)
+  return(sum(prdimg[, ]) * prdimg$xstep * prdimg$ystep)
 }
 
 #warning replaces all NA values with the na.replace given
