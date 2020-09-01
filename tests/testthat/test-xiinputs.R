@@ -68,8 +68,14 @@ test_that("gblemp operates as expected when pass im object", {
 
 test_that("gbl() operates well when passed im or owin boxes", {
   boxwidths <- seq(1, 5, by = 1)
-  expect_warning(gblest.l <- gbl(xiim.l, boxwidths), regexp = "harmon")
-  expect_warning(gblest.n <- gbl(xiim.n, boxwidths), regexp = "harmon")
+  expect_warning(gblest.l <- gbl(xiim.l, boxwidths,
+                                 c("GBLg.mattfeldt", "GBLg.pickaint", "GBLg.pickaH", "GBLcc.mattfeldt",
+                                   "GBLcc.pickaint", "GBLc", "GBLemp")),
+                 regexp = "harmon")
+  expect_warning(gblest.n <- gbl(xiim.n, boxwidths,
+                                 c("GBLg.mattfeldt", "GBLg.pickaint", "GBLg.pickaH", "GBLcc.mattfeldt",
+                                   "GBLcc.pickaint", "GBLc", "GBLemp")),
+                 regexp = "harmon")
   expect_equal(gblest.l, gblest.n)
   expect_error(gbl(xiim.n3, boxwidths), regexp = "isbinarymap")
 })
