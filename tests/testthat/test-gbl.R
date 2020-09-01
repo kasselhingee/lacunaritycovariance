@@ -149,16 +149,31 @@ test_that("gbl() operates on owin style binary maps", {
   xi <- as.mask(heather$coarse, eps = xiim$xstep)
   obswin <- setminus.owin(Frame(xi), square(5))
   xiim[square(5)] <- NA
-  expect_warning(out <- gbl(xi, seq(1, 10, by = 4), obswin = obswin))
-  expect_warning(out_im <- gbl(xiim, seq(1, 10, by = 4)))
+  expect_warning(out <- gbl(xi,
+                            seq(1, 10, by = 4),
+                            estimators = c("GBLg.mattfeldt", "GBLg.pickaint", "GBLg.pickaH", "GBLcc.mattfeldt",
+                                                                   "GBLcc.pickaint", "GBLc", "GBLemp"),
+                            obswin = obswin))
+  expect_warning(out_im <- gbl(xiim,
+                               seq(1, 10, by = 4),
+                               c("GBLg.mattfeldt", "GBLg.pickaint", "GBLg.pickaH", "GBLcc.mattfeldt",
+                                 "GBLcc.pickaint", "GBLc", "GBLemp")))
   expect_equal(out, out_im)
 
   skip_on_cran() #less important tests mostly covered by above
   xiim <- as.im(heather$coarse, value = TRUE, na.replace = FALSE)
   xi <- heather$coarse
   obswin <- Frame(xi)
-  expect_warning(out <- gbl(xi, seq(0.1, 10, by = 1), obswin = obswin))
-  expect_warning(out_im <- gbl(xiim, seq(0.1, 10, by = 1)))
+  expect_warning(out <- gbl(xi, 
+                            seq(0.1, 10, by = 1),
+                            estimators = c("GBLg.mattfeldt", "GBLg.pickaint", "GBLg.pickaH", "GBLcc.mattfeldt",
+                                                                   "GBLcc.pickaint", "GBLc", "GBLemp"),
+                            obswin = obswin))
+  expect_warning(out_im <- gbl(xiim,
+                               seq(0.1, 10, by = 1),
+                            estimators = c("GBLg.mattfeldt", "GBLg.pickaint", "GBLg.pickaH", "GBLcc.mattfeldt",
+                                                                   "GBLcc.pickaint", "GBLc", "GBLemp")
+                               ))
   expect_equal(out, out_im)
   reset.spatstat.options()
 })
