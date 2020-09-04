@@ -50,7 +50,7 @@ sidelengths <- seq(0.3, 14, by = 1)
 
 # reduce resolution in setcov() for faster (less accurate) computation 
 oldopt <- spatstat.options()
-spatstat.options("npixel" = 2^5)
+spatstat.options("npixel" = 2^4)
 
 # compute GBL estimate for square boxes from estimated pair correlation 
 gblgest <- gblg(sidelengths, pcln)
