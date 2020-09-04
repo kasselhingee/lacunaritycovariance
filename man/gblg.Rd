@@ -45,19 +45,11 @@ The 'harmonisesum' method is known to produce integration artefacts (Section 6.2
 }
 \examples{
 xi <- as.im(heather$coarse, na.replace = 0, eps = 4 * heather$coarse$xstep)
-pcln <- paircorr(xi, estimators = "pickaH", drop = TRUE)
-sidelengths <- seq(0.3, 14, by = 1)
+sidelengths <- seq(0.3, 14, by = 3)
 
 # reduce resolution in setcov() for faster (less accurate) computation 
 oldopt <- spatstat.options()
 spatstat.options("npixel" = 2^4)
-
-# compute GBL estimate for square boxes from estimated pair correlation 
-gblgest <- gblg(sidelengths, pcln)
-
-# compute GBL estimate for boxes that are discs
-discboxes <- lapply(sidelengths / 2, disc)
-discgbls <- gblg(discboxes, pcln)
 
 # compute GBL estimates from binary map
 xiim <- as.im(xi, na.replace = 0)
