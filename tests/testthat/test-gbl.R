@@ -63,6 +63,32 @@ test_that("GBLc estimates are operate on lists of owin objects", {
   reset.spatstat.options()
 })
 
+test_that("Cubature integration with na.replace gives NA values when covariance argument is too large for covariance estimate", {
+  skip_on_cran()
+  spatstat.options(npixel = 2^3)
+  xiim <- as.im(heather$coarse, na.replace = 0, eps = 2)
+  suppressWarnings(ccov <- cencovariance(xi = xiim,
+                        setcov_boundarythresh = 1E-20,
+                        estimators = "pickaH"))
+  p <- p <- sum(xiim) / sum(is.finite(xiim$v))
+  lac <- gblcc.inputcovar(sidelengths, ccov[[1]], p = p, integrationMethod = "cubature")
+  expect_true(all(is.finite(lac$GBL) == c(TRUE, FALSE)))
+  reset.spatstat.options()
+})
+
+test_that("harmonisesum integration with na.replace gives NA values when covariance argument is too large for covariance estimate", {
+  spatstat.options(npixel = 2^3)
+  sidelengths <- c(8, 11)
+  xiim <- as.im(heather$coarse, na.replace = 0, eps = 2)
+  suppressWarnings(ccov <- cencovariance(xi = xiim,
+                        setcov_boundarythresh = 1E-20,
+                        estimators = "pickaH"))
+  p <- p <- sum(xiim) / sum(is.finite(xiim$v))
+  lac <- gblcc.inputcovar(sidelengths, ccov[[1]], p = p, integrationMethod = "harmonisesum")
+  expect_true(all(is.finite(lac$GBL) == c(TRUE, FALSE)))
+  reset.spatstat.options()
+})
+
 test_that("gblcc estimates operate on lists of owin objects", {
   spatstat.options(npixel = 2^3)
   discs <- lapply(seq(2, 10, by = 3), function(x) disc(r = x))
