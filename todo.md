@@ -1,7 +1,5 @@
 # TO DO:
 
-- get code to pass 4 unit tests
-
 - faster running of examples for gblg, gbl
 
 - check handling of na.replace in integration_trad, and elsewhere

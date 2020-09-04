@@ -8,8 +8,7 @@
 gbl(
   xi,
   boxwidths,
-  estimators = c("GBLg.mattfeldt", "GBLg.pickaint", "GBLg.pickaH", "GBLcc.mattfeldt",
-    "GBLcc.pickaint", "GBLc", "GBLemp"),
+  estimators = c("GBLcc.pickaH"),
   obswin = NULL,
   includenormed = FALSE,
   setcov_boundarythresh = 1e-06
@@ -30,7 +29,7 @@ In the latter case the observation window, \code{obswin}, must be supplied.}
 
 \item{boxwidths}{A list of box widths}
 
-\item{estimators}{A list of estimator names - see details for possibilities. \code{estimators = "all"} will select all estimators.}
+\item{estimators}{A vector of estimator names - see details for possible names. \code{estimators = "all"} will select all estimators.}
 
 \item{obswin}{If \code{xi} is an \code{owin} object then \code{obswin} is an
 \code{owin} object that specifies the observation window.}
@@ -72,6 +71,9 @@ The estimators available are
 \item{\code{"GBLcc.pickaint"}} See help for \code{\link{gblcc}}
 \item{\code{"GBLcc.pickaH"}} See help for \code{\link{gblcc}}
 }
+
+The default, GBLcc.pickaH, is a method based on centred covariance.
+Centred covariance approaches zero for large vectors, and are thus easier to integrate with the set covariance of the boxes.
 
 The set covariance of the boxes is computed empirically using \pkg{spatstat}'s \code{\link[spatstat]{setcov}} function, which converts \eqn{B} into a binary pixel mask using \code{\link[spatstat]{as.mask}} defaults. Computation speed can be increased by setting a small default number of pixels, \code{npixel}, in \pkg{spatstat}'s global options (accessed through \code{\link[spatstat]{spatstat.options}}), however fewer pixels also decreases the accuracy of the GBL computation.
 }
