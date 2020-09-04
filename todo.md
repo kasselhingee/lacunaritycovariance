@@ -1,6 +1,6 @@
 # TO DO:
 
-- faster running of examples for gblg, gbl
+- check manual and vignette for large errors
 
 - Add estimator selection option to gblg function: function gblg doesn't allow selection of estimator, this is inconsistent with other gbl functions. Futhermore function 'gbl' help suggests it does.
 
