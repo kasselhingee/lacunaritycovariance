@@ -1,3 +1,13 @@
+## lacunaritycovariance VERSION 1.0-12
+
+#### SIGNIFICANT USER-VISIBLE CHANGES
+  - package maintainer email is now kassel.hingee@gmail.com
+  - help pages tidied up, including instructions on using spatstat 'npixel' setting
+
+#### BUG FIXES
+  - 'all' option for gbl.cvchat corrected
+  - 'collapse.fv' misuse in secondorderprops() corrected
+
 ## lacunaritycovariance VERSION 1.0-4
 
 This is the first version of the package 'lacunaritycovariance' released on CRAN. An earlier version of this package appeared with the name 'stationaryracsinference' in the electronic supplements to the paper:

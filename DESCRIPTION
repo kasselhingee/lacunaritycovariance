@@ -3,10 +3,9 @@ Package: lacunaritycovariance
 Title: Gliding Box Lacunarity and Other Metrics for 2D Random
     Closed Sets
 Version: 0.0-2
-Date: 2019-08-16
+Date: 2020-01-31
 Author: Kassel Liam Hingee
-Maintainer: Kassel Liam Hingee
-    <kassel.hingee@research.uwa.edu.au>
+Maintainer: Kassel Liam Hingee <kassel.hingee@gmail.com>
 Description: Functions for estimating the gliding box
     lacunarity (GBL), covariance, and pair-correlation of a random closed
     set (RACS) in 2D from a binary coverage map (e.g. presence-absence
