@@ -11,8 +11,8 @@
 #' @param outsideA The value of \eqn{f} outside the domain of \code{A}. Typically will be 0 or NA. Default is NA.
 #' @param outsideB The value of \eqn{g} outside the domain of \code{B}. Typically will be \code{0} or \code{NA}. Default is \code{NA}.
 #' @param na.replace Logical. If TRUE NA values in \code{A} and \code{B} are replaced by \code{outsideA} and \code{outsideB}, respectively. This allows the cubature integration to be performed (roughly) twice as quickly.
-#' @param method Either "cubature" or "harmonisesum". The former uses \pkg{cubature}'s [cubature::cubintegrate()], 
-#' the latter harmonises the images using [spatstat::as.mask()] and sums the product.
+#' @param method Either "cubature" or "harmonisesum". The former uses [cubature::cubintegrate()], 
+#' the latter harmonises the images using [spatstat::as.mask()] and sums the product of \code{A} and \code{B}.
 
 #' @details This function uses the package \pkg{cubature} to integrate the multiple of the two images. If \pkg{cubature} is not available then it harmonises the two input images, multiplies them together and returns the
 #' integral of the resulting image.
@@ -22,6 +22,8 @@
 #' can still be computed. However if \code{A} is \code{NA} outside (e.g. not
 #' known/not provided) and the domain of \code{B} is larger than \code{A}'s
 #' domain then the inner product can not be computed and the returned value is \code{NA}
+#'
+#' The \code{harmonisesum} method appears to perform well when used by [gblcc()], but produces numerical artefacts when used by [gblc()] and [gblg()]. The \code{cubature} method takes longer to compute and is more accurate for functions (A or B) that are non-zero for large vectors. This makes it suitable for use by [gblc()] and [gblg()].
 
 #' @return 
 #' If the inner product can be computed then returns sum(\code{A} * \code{B}), otherwise returns \code{NA}.

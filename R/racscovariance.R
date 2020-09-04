@@ -49,7 +49,7 @@
 #' relative to the volume of points, \eqn{x}, for which both \eqn{x} and \eqn{x+v}
 #' are in the observation window (Hingee, 2019).
 #' Picka (1997, 2000) suggested a number of improvements to centred
-#' covariance estimation (see \code{\link{cencovariance}}) that `balanced' the
+#' covariance estimation (see \code{\link{cencovariance}}) that 'balanced' the
 #' data used to estimate covariance with the data used to estimate coverage
 #' probability. These lead to covariance estimators that give
 #' estimates for the covariance of \eqn{\Xi} that are a constant offset from
@@ -59,7 +59,7 @@
 #' suffers (Hingee, 2019).
 #' These estimators are called \code{pickaint} and \code{pickaH} in this package.
 #' 
-#' Another improved estimator, inspired by an `intrinsic modification' briefly mentioned by Picka (1997)
+#' Another improved estimator, inspired by an 'intrinsic modification' briefly mentioned by Picka (1997)
 #' for pair-correlation estimators, is also available.
 #' We have called this estimator \code{mattfeldt} as a similar isotropic estimator for pair-correlation
 #' was studied by Mattfeldt and Stoyan (2000).
@@ -69,12 +69,12 @@
 #' \itemize{
 #' \item{\code{plugin}} the plug-in moment covariance estimator
 #' \item{\code{mattfeldt}} an estimator inspired by an 
-#' `intrinsically' balanced pair-correlation estimator from Picka that was later studied in an
+#' 'intrinsically' balanced pair-correlation estimator from Picka that was later studied in an
 #' isotropic situation by Mattfeldt and Stoyan (2000) 
 #' \item{\code{pickaint}} an estimator inspired by an 
-#' `intrinsically' balanced centred covariance estimator from Picka (2000).
+#' 'intrinsically' balanced centred covariance estimator from Picka (2000).
 #' \item{\code{pickaH}} an estimator inspired by the 
-#' `additively' balanced centred covariance estimator from Picka (2000).
+#' 'additively' balanced centred covariance estimator from Picka (2000).
 #' }
 
 #' @references

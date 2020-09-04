@@ -18,7 +18,7 @@ If in raster format, the binary map is expected to be a \pkg{spatstat} \code{im}
 The foreground of the binary map, corresponding to locations within the realisation of the RACS, is taken to be pixels that have value 1 or TRUE.
 If the binary map is in set format then a \pkg{spatstat} \code{owin} object is used to represent foreground and a second \code{owin} object is used to represent the observation window.
 
-We will usually denote a RACS as \eqn{\Xi} and a realisation of \eqn{\Xi} observed as a binary map as \eqn{xi}. We will usually denote the observation window as \code{obswin}.
+We will usually denote a RACS as \eqn{\Xi} ('Xi') and a realisation of \eqn{\Xi} observed as a binary map as \eqn{xi}. We will usually denote the observation window as \code{obswin}.
 
 A demonstration converting remotely sensed data into a binary map in \code{im} format can be accessed by typing \code{demo("import_remote_sense_data", package = "lacunaritycovariance")}.
 A short example of estimating RACS properties can be found in the vignette \code{estimate_RACS_properties}, which can be accessed with \code{vignette("estimate_RACS_properties")}.

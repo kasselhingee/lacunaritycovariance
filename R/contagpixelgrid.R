@@ -16,7 +16,7 @@
 #' randomly selected adjacent pixels being in class \eqn{i} and class \eqn{j}
 #' respectively, and \eqn{m} is the number of classes.
 #'
-#' Here \eqn{m = 2} as \code{xi} is a binary map and we have defined `adjacent'
+#' Here \eqn{m = 2} as \code{xi} is a binary map and we have defined 'adjacent'
 #' pixels using the 4-neighbourhood regime.
 #' 
 #' Contagion is calculated from an adjacency matrix created using the function \code{adjacency}. 

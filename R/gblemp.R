@@ -118,7 +118,7 @@ gblemp_intern.rcpproll <- function(xiim, sidep, obswin = Frame(xiim)){
 
 #' @describeIn gblemp An alias of \code{gblemp} used in past versions of this package. This alias may be removed in future versions.
 gbltrad <- function(boxwidths, xiim, obswin = Frame(xiim)){
-  warning("`gbltrad' function name has been changed to `gblemp'. Please use `gblemp' instead of `gbltrad'.")
+  warning("'gbltrad' function name has been changed to 'gblemp'. Please use 'gblemp' instead of 'gbltrad'.")
   gblemp(boxwidths, xiim, obswin)
 }
 

@@ -2,7 +2,7 @@
 #' @export paircorr  paircorr.cvchat
 #' @description 
 #' Estimates the pair-correlation function of a stationary RACS. 
-#' The plug-in moment pair-correlation estimator and three `balanced' estimators suggested by Picka (2000)
+#' The plug-in moment pair-correlation estimator and three 'balanced' estimators suggested by Picka (2000)
 #' are available.
 #' @author{Kassel Liam Hingee}
 
@@ -43,10 +43,10 @@
 #'   \itemize{ 
 #'   \item{\code{plugin}} the plug-in moment pair-correlation estimator which is \eqn{Chat(v) / (phat^2)}, where \eqn{Chat} and \eqn{phat} are 
 #' the plug-in moment estimate of covariance and the usual estimate of coverage probability, respectively.
-#'   \item{\code{mattfeldt}} an `intrinsically' balanced pair-correlation estimator suggested by Picka (1997).
+#'   \item{\code{mattfeldt}} an 'intrinsically' balanced pair-correlation estimator suggested by Picka (1997).
 #'   A similar isotropic pair-correlation estimator was later studied by Mattfeldt and Stoyan (2000).
-#'   \item{\code{pickaint}} Picka's `intrinsically' balanced pair-correlation estimator (Picka, 2000). 
-#'   \item{\code{pickaH}} Picka's `additively' balanced pair-correlation estimator (Picka, 2000).
+#'   \item{\code{pickaint}} Picka's 'intrinsically' balanced pair-correlation estimator (Picka, 2000). 
+#'   \item{\code{pickaH}} Picka's 'additively' balanced pair-correlation estimator (Picka, 2000).
 #'   }
 #'
 #' @references

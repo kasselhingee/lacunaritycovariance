@@ -2,8 +2,8 @@
 #' @export cencovariance  cencovariance.cvchat
 #' @description 
 #' This function estimates the centred covariance of a stationary RACS. 
-#' Available estimators are the plug-in moment centred covariance estimator, two `balanced' estimators suggested by Picka (2000),
-#'  and a third `balanced' estimator inspired by one of Picka's pair-correlation estimators.
+#' Available estimators are the plug-in moment centred covariance estimator, two 'balanced' estimators suggested by Picka (2000),
+#'  and a third 'balanced' estimator inspired by one of Picka's pair-correlation estimators.
 #' @author{Kassel Liam Hingee}
 
 #' @param xi An observation of a RACS of interest as a full binary map (as an \code{im} object) or as the foreground set (as an \code{owin} object).
@@ -40,13 +40,13 @@
 #'   \item{\code{plugin}} the plug-in moment centred
 #'   covariance estimator 
 #'   \item{\code{mattfeldt}} an estimator inspired by an
-#'   `intrinsically' balanced pair-correlation estimator from Picka (1997) that was
+#'   'intrinsically' balanced pair-correlation estimator from Picka (1997) that was
 #'   later studied in an isotropic situation by Mattfeldt and Stoyan
 #'   (Mattfeldt and Stoyan, 2000) 
-#'   \item{\code{pickaint}} Picka's `intrinsically' balanced
+#'   \item{\code{pickaint}} Picka's 'intrinsically' balanced
 #'   centred covariance estimator (Picka, 2000). 
 #'   \item{\code{pickaH}} Picka's
-#'   `additively' balanced centred covariance estimator (Picka, 2000).
+#'   'additively' balanced centred covariance estimator (Picka, 2000).
 #'   }
 #'
 #'   Currently computes centred covariance using \code{\link{racscovariance}}.

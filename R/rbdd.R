@@ -3,7 +3,7 @@
 #' @importFrom stats fft
 #'
 #' @description Functions for simulating a Boolean model with grains that are
-#'   discs of fixed constant radius (the abbreviation `bdd' is short for Boolean
+#'   discs of fixed constant radius (the abbreviation 'bdd' is short for Boolean
 #'   model with Deterministic Discs). A Boolean model is a two stage model,
 #'   first the locations (called germs) of grains are randomly distributed
 #'   according to a Poisson point process, then a random grain is placed on each
