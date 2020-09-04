@@ -56,7 +56,7 @@
 #' 
 #' # reduce resolution in setcov() for faster (less accurate) computation 
 #' oldopt <- spatstat.options()
-#' spatstat.options("npixel" = 2^5)
+#' spatstat.options("npixel" = 2^4)
 #' 
 #' gblests <- gbl(xi, boxwidths, estimators = "GBLg.pickaH")
 #' spatstat.options(oldopt)
