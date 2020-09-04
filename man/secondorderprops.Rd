@@ -43,7 +43,7 @@ Fourier transforms of the binary map are not repeated.
 \examples{
 xiim <- as.im(heather$coarse, value = TRUE,
               na.replace = FALSE)
-gblargs = list(boxwidths = seq(1, 10, by = 1), estimators = c("GBLemp", "GBLc"))
+gblargs = list(boxwidths = seq(1, 10, by = 1), estimators = c("GBLemp", "GBLcc.pickaH"))
 covarargs = list(estimators = "all")
 cencovarargs = list(estimators = "pickaH")
 paircorrargs = list(estimators = "pickaH")

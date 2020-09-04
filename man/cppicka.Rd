@@ -26,7 +26,7 @@ which are a key component of balanced estimators of covariance, centred covarian
 }
 \details{
 The plug-in moment covariance estimator (\code{\link{plugincvc}}) uses less of the observation window than the usual coverage probability estimators.
-Picka (1997, 2000) created new `balanced' estimators of centred covariance and pair-correlation
+Picka (1997, 2000) created new 'balanced' estimators of centred covariance and pair-correlation
 that accounted for this difference.
 A key component of Picka's estimators is an estimate of the coverage probability from the subregion of the binary map that is
 the intersection between \eqn{W} and \eqn{W} shifted by vector \eqn{v}, where \eqn{W} is the observation window (p.~687, Picka, 2000).

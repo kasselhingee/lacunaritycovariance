@@ -40,8 +40,8 @@ If the \code{xiim} argument to \code{gblg} is used then pair correlation is esti
 
 The set covariance of \eqn{B} is computed empirically using \pkg{spatstat}'s \code{\link[spatstat]{setcov}} function, which converts \eqn{B} into a binary pixel mask using \code{\link[spatstat]{as.mask}} defaults. Computation speed can be increased by setting a small default number of pixels, \code{npixel}, in \pkg{spatstat}'s global options (accessed through \code{\link[spatstat]{spatstat.options}}), however fewer pixels also decreases the accuracy of the GBL computation.
 
-The default integration method for this function uses \code{\link[cubature:cubintegrate]{cubature::cubintegrate()}} from the \pkg{cubature}.
-The 'harmonisesum' method is known to produce integration artefacts (Section 6.2 of (Hingee et al., 2019))
+The default integration method for this function uses \code{\link[cubature:cubintegrate]{cubature::cubintegrate()}} from the \pkg{cubature} package.
+The 'harmonisesum' integration method is known to produce numerical artefacts (Section 6.2 of (Hingee et al., 2019))
 }
 \examples{
 xi <- as.im(heather$coarse, na.replace = 0, eps = 4 * heather$coarse$xstep)
