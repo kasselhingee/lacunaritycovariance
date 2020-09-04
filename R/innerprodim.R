@@ -10,7 +10,7 @@
 #' @param B An \code{im} object containing function values representing function \eqn{g}.
 #' @param outsideA The value of \eqn{f} outside the domain of \code{A}. Typically will be 0 or NA. Default is NA.
 #' @param outsideB The value of \eqn{g} outside the domain of \code{B}. Typically will be \code{0} or \code{NA}. Default is \code{NA}.
-#' @param na.replace Logical. If TRUE NA values in \code{A} and \code{B} are replaced by \code{outsideA} and \code{outsideB}, respectively. This allows the integration to be performed (roughly) twice as quickly.
+#' @param na.replace Logical. If TRUE NA values in \code{A} and \code{B} are replaced by \code{outsideA} and \code{outsideB}, respectively. This allows the cubature integration to be performed (roughly) twice as quickly.
 #' @param method Either "cubature" or "harmonisesum". The former uses \pkg{cubature}'s [cubature::cubintegrate()], 
 #' the latter harmonises the images using [spatstat::as.mask()] and sums the product.
 
