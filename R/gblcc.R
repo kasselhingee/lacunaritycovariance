@@ -1,5 +1,5 @@
 #' @title Centred covariance based estimates of gliding box lacunarity
-#' @export gblcc
+#' @export gblcc gblcc.inputcovar
 #'
 #' @description Estimates the gliding box lacunarity (GBL) of a stationary RACS using centred covariance estimates (Hingee et al., 2017).
 #'  The centred covariance and coverage probability can be provided or estimated from binary map.
@@ -99,6 +99,7 @@ gblcc <- function(boxes, cencovar = NULL, p = NULL, xiim = NULL, estimator = "pi
   } else (return(lacsdf))
 }
 
+#' @describeIn gblcc GBL estimates from already estimated centred covariance.
 gblcc.inputcovar <- function(boxes, cencovar, p, integrationMethod =  "harmonisesum"){
   stopifnot(is.im(cencovar))
   stopifnot(is.numeric(p))

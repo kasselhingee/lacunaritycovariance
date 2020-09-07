@@ -2,6 +2,7 @@
 % Please edit documentation in R/gblcc.R
 \name{gblcc}
 \alias{gblcc}
+\alias{gblcc.inputcovar}
 \title{Centred covariance based estimates of gliding box lacunarity}
 \usage{
 gblcc(
@@ -12,6 +13,8 @@ gblcc(
   estimator = "pickaH",
   integrationMethod = "harmonisesum"
 )
+
+gblcc.inputcovar(boxes, cencovar, p, integrationMethod = "harmonisesum")
 }
 \arguments{
 \item{boxes}{Either a list of side lengths for square boxes or a list of \code{owin} objects of any shape.}
@@ -49,6 +52,11 @@ where \eqn{B} is each of the sets (often called a box) specified by \code{boxes}
 
 The set covariance of \eqn{B} is computed empirically using \pkg{spatstat}'s \code{\link[spatstat]{setcov}} function, which converts \eqn{B} into a binary pixel mask using \code{\link[spatstat]{as.mask}} defaults. Computation speed can be increased by setting a small default number of pixels, \code{npixel}, in \pkg{spatstat}'s global options (accessed through \code{\link[spatstat]{spatstat.options}}), however fewer pixels also decreases the accuracy of the GBL computation.
 }
+\section{Functions}{
+\itemize{
+\item \code{gblcc.inputcovar}: GBL estimates from already estimated centred covariance.
+}}
+
 \examples{
 xi <- heather$coarse
 cencovar <- cencovariance(xi, obswin = Frame(xi), estimators = c("pickaH"), drop = TRUE)
