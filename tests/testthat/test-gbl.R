@@ -70,7 +70,8 @@ test_that("Cubature integration with na.replace gives NA values when covariance 
   suppressWarnings(ccov <- cencovariance(xi = xiim,
                         setcov_boundarythresh = 1E-20,
                         estimators = "pickaH"))
-  p <- p <- sum(xiim) / sum(is.finite(xiim$v))
+  p <- sum(xiim) / sum(is.finite(xiim$v))
+  sidelengths <- c(8, 11)
   lac <- gblcc.inputcovar(sidelengths, ccov[[1]], p = p, integrationMethod = "cubature")
   expect_true(all(is.finite(lac$GBL) == c(TRUE, FALSE)))
   reset.spatstat.options()
