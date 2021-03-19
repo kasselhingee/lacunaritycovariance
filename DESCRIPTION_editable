@@ -17,9 +17,9 @@ Description:
 URL: https://github.com/kasselhingee/lacunaritycovariance
 License: GPL (>= 2)
 Depends:
-    spatstat (>= 2.0.0)
-    spatstat.geom
-    spatstat.linnet
+    spatstat (>= 2.0-0),
+    spatstat.geom,
+    spatstat.linnet,
     spatstat.core
 Imports:
     RcppRoll
