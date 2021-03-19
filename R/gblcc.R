@@ -13,7 +13,7 @@
 #' \eqn{|B|} is the area of \eqn{B},
 #' \eqn{p} is the coverage probability of a stationary RACS.
 #' 
-#' The set covariance of \eqn{B} is computed empirically using \pkg{spatstat}'s \code{\link[spatstat]{setcov}} function, which converts \eqn{B} into a binary pixel mask using \code{\link[spatstat]{as.mask}} defaults. Computation speed can be increased by setting a small default number of pixels, \code{npixel}, in \pkg{spatstat}'s global options (accessed through \code{\link[spatstat]{spatstat.options}}), however fewer pixels also decreases the accuracy of the GBL computation.
+#' The set covariance of \eqn{B} is computed empirically using \pkg{spatstat}'s \code{\link[spatstat.geom]{setcov}} function, which converts \eqn{B} into a binary pixel mask using \code{\link[spatstat.geom]{as.mask}} defaults. Computation speed can be increased by setting a small default number of pixels, \code{npixel}, in \pkg{spatstat}'s global options (accessed through \code{\link[spatstat.geom]{spatstat.options}}), however fewer pixels also decreases the accuracy of the GBL computation.
 
 
 #' @param boxes Either a list of side lengths for square boxes or a list of \code{owin} objects of any shape.

@@ -30,7 +30,7 @@ The plug-in moment covariance estimator is (Serra, 1982)
 \deqn{ \hat{C}(v) = \frac{\gamma_{W\cap X}(v)}{\gamma_W(v)}}{ C(v) = gammaWX(v) / gammaW(v) }
 where \eqn{\gamma_{W}(v)}{gammaW(v)} is the set covariance of the observation window \eqn{W}
 and \eqn{\gamma_{W\cap X}(v)}{gammaWX(v)} is the set covariance of the foreground within \eqn{W}.
-\code{plugincvc} uses Fourier transforms to calculate the set covariance (using the \code{\link[spatstat]{setcov}} of the foreground and observation window.
+\code{plugincvc} uses Fourier transforms to calculate the set covariance (using the \code{\link[spatstat.geom]{setcov}} of the foreground and observation window.
 Vectors with small \eqn{\gamma_W(v)}{ gammaW(v) } are eliminated using \code{setcov_boundarythresh}
 as division by small values is numerically unstable.
 }

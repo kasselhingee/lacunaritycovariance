@@ -21,7 +21,7 @@ bdrcovar(lambda, grain, xy)
 
 \item{seed}{Optional input (default in NULL). Is an integer passed to \code{\link[base]{set.seed}}. Used to reproduce patterns exactly.}
 
-\item{xy}{A raster object that specifies the pixel coordinates of the desired covariance image. \code{xy} works in similar fashion to passing an image or pixel mask through the \code{xy} argument of \code{\link[spatstat]{as.mask}} in \pkg{spatstat}.}
+\item{xy}{A raster object that specifies the pixel coordinates of the desired covariance image. \code{xy} works in similar fashion to passing an image or pixel mask through the \code{xy} argument of \code{\link[spatstat.geom]{as.mask}} in \pkg{spatstat}.}
 }
 \value{
 Depends on the function used (see Functions section).
@@ -38,7 +38,7 @@ Also described in this help file are functions for calculating the coverage prob
 model with a specified intensity and fixed rectangular grain.
 The window information is not contained in this object.
 If the simulated set is empty then an empty \code{owin} object is returned.
-The point process of germs is generated using spatstat's \code{\link[spatstat]{rpoispp}}.
+The point process of germs is generated using spatstat's \code{\link[spatstat.core]{rpoispp}}.
 
 \item \code{bdrcoverageprob}: Returns the true coverage probability given the intensity and grain.
 

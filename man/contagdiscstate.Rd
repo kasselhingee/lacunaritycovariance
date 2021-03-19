@@ -10,13 +10,13 @@ contagdiscstate(XiH, XicH, p, normalise = FALSE)
 \item{XiH}{Conditional spherical contact distribution function for \eqn{\Xi}.
 Typically this is an \code{fv} object but could also be a vector of values.
 In applications \code{XiH} would likely be estimated from a binary map
-using \code{\link[spatstat]{Hest}} in \pkg{spatstat}.}
+using \code{\link[spatstat.core]{Hest}} in \pkg{spatstat}.}
 
 \item{XicH}{Conditional spherical contact distribution for the complement of
 \eqn{\Xi}. This is called the Conditional Core Probability in Hingee 2016.
 Typically this is an \code{fv} object but could also be a vector of values.
 In applications \code{XiH} would likely be estimated from a binary map using
-\code{\link[spatstat]{Hest}} in \pkg{spatstat}.}
+\code{\link[spatstat.core]{Hest}} in \pkg{spatstat}.}
 
 \item{p}{The coverage probability of \eqn{\Xi}. Can be estimated from binary maps using \code{\link{coverageprob}}.}
 

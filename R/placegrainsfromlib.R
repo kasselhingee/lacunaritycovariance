@@ -12,7 +12,7 @@
 
 
 #' @param pp A point pattern (in \code{ppp} format).
-#' @param grainlib A list of grains as \code{owin} objects in a \code{\link[spatstat]{solist}}. 
+#' @param grainlib A list of grains as \code{owin} objects in a \code{\link[spatstat.geom]{solist}}. 
 #' @param replace passed directly to \code{\link[base]{sample}}. When TRUE grains are chosen from library with replacement.
 #' @param prob A list of probability weights for each grain in the library. Passed directly to \code{\link[base]{sample}}.
 #'  If NULL the grains are selected with equal probability.
@@ -26,7 +26,7 @@
 #' Germ-grain models have two components, a point process (called germs) and a process that creates
 #'  grains that are centred on the germs.
 #' The point process of germs can be easily simulated using a number of \pkg{spatstat} functions 
-#' (e.g. \code{\link[spatstat]{rpoispp}} for Boolean models).
+#' (e.g. \code{\link[spatstat.core]{rpoispp}} for Boolean models).
 #' To simulate a germ-grain model in a window \eqn{W} the germ process must be simulated in a larger window 
 #' because grains centred outside \eqn{W} can intersect \eqn{W}.
 #' The result must then be cropped to \eqn{W} to achieve a realisation of the germ-grain process within \eqn{W}.

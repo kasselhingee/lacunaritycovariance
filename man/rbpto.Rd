@@ -44,7 +44,7 @@ specify the probability of selection of each scale.}
 
 \item{xy}{A raster object that specifies pixel coordinates of the final
 simulated binary map. It is used the same way as \code{xy} is
-\code{\link[spatstat]{as.mask}} in \pkg{spatstat}. If non-null then the
+\code{\link[spatstat.geom]{as.mask}} in \pkg{spatstat}. If non-null then the
 computations will be performed using rasters. Otherwise if \code{grain} and
 \code{win} are polygonal then computations may be all polygonal.}
 

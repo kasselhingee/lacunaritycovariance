@@ -25,7 +25,7 @@ innerprod.im(
 \item{na.replace}{Logical. If TRUE NA values in \code{A} and \code{B} are replaced by \code{outsideA} and \code{outsideB}, respectively. This allows the cubature integration to be performed (roughly) twice as quickly.}
 
 \item{method}{Either "cubature" or "harmonisesum". The former uses \code{\link[cubature:cubintegrate]{cubature::cubintegrate()}},
-the latter harmonises the images using \code{\link[spatstat:as.mask]{spatstat::as.mask()}} and sums the product of \code{A} and \code{B}.}
+the latter harmonises the images using \code{\link[spatstat.geom:as.mask]{spatstat.geom::as.mask()}} and sums the product of \code{A} and \code{B}.}
 }
 \value{
 If the inner product can be computed then returns sum(\code{A} * \code{B}), otherwise returns \code{NA}.

@@ -10,7 +10,7 @@
 #' @param grain Rectangle object specifying the grain
 #' @param win The window to simulate in (an \code{owin} object)
 #' @param seed Optional input (default in NULL). Is an integer passed to \code{\link[base]{set.seed}}. Used to reproduce patterns exactly.
-#' @param xy A raster object that specifies the pixel coordinates of the desired covariance image. \code{xy} works in similar fashion to passing an image or pixel mask through the \code{xy} argument of \code{\link[spatstat]{as.mask}} in \pkg{spatstat}.
+#' @param xy A raster object that specifies the pixel coordinates of the desired covariance image. \code{xy} works in similar fashion to passing an image or pixel mask through the \code{xy} argument of \code{\link[spatstat.geom]{as.mask}} in \pkg{spatstat}.
 
 #' @return 
 #' Depends on the function used (see Functions section).
@@ -37,7 +37,7 @@
 #'  model with a specified intensity and fixed rectangular grain.
 #'  The window information is not contained in this object.
 #'  If the simulated set is empty then an empty \code{owin} object is returned.
-#' The point process of germs is generated using spatstat's \code{\link[spatstat]{rpoispp}}.
+#' The point process of germs is generated using spatstat's \code{\link[spatstat.core]{rpoispp}}.
 rbdr <- function(lambda, grain, win, seed = NULL){
   grainlib <- solist(grain)
   bufferdist <- 1.1 *

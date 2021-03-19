@@ -63,7 +63,7 @@ covariance from model parameters for a Boolean model with deterministic discs.
 model with specified intensity and disc radius.
 The window information is not contained in this object.
 If the simulated set is empty then an empty \code{owin} object is returned.
-The point process of germs is generated using \pkg{spatstat}'s \code{\link[spatstat]{rpoispp}}.
+The point process of germs is generated using \pkg{spatstat}'s \code{\link[spatstat.core]{rpoispp}}.
 
 \item \code{bddcoverageprob}: Returns the true coverage probability given the intensity and disc radius.
 

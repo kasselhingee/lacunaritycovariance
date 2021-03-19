@@ -11,8 +11,8 @@ rblnd(obswin, bufferdist, lambda, meanlog, sdlog, seed = NULL)
 
 \item{bufferdist}{A distance to expand \code{obswin} so that discs with centres near \code{obswin} are also simulated.}
 
-\item{lambda}{Intensity of the Poisson point process, passed to \link[spatstat]{rpoispp}.
-It could be either a single positive number, or any other object that \link[spatstat]{rpoispp} can understand.}
+\item{lambda}{Intensity of the Poisson point process, passed to \link[spatstat.core]{rpoispp}.
+It could be either a single positive number, or any other object that \link[spatstat.core]{rpoispp} can understand.}
 
 \item{meanlog}{For the distribution of radii. The logarithm of the distribution is set to have mean \code{meanlog}.}
 
@@ -30,7 +30,7 @@ of random radii around each point (the radii are generated using a log normal di
 \details{
 The point process needs to be simulated in a larger region than the desired observation window to account for the possibility of discs that intersect the observation window, but have germs outside the observation window.
 
-The point process of germs is generated using spatstat's \code{\link[spatstat]{rpoispp}}.
+The point process of germs is generated using spatstat's \code{\link[spatstat.core]{rpoispp}}.
 }
 \section{Warning}{
  A good choice of \code{bufferdist} is required and will be sensitive to the distribution of radii.

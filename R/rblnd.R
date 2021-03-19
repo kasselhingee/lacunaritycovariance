@@ -6,8 +6,8 @@
 #'  of random radii around each point (the radii are generated using a log normal distribution).
 #' @param  obswin An \code{owin} object specifying the desired simulation region
 #' @param  bufferdist A distance to expand \code{obswin} so that discs with centres near \code{obswin} are also simulated.
-#' @param lambda Intensity of the Poisson point process, passed to \link[spatstat]{rpoispp}.
-#'   It could be either a single positive number, or any other object that \link[spatstat]{rpoispp} can understand.
+#' @param lambda Intensity of the Poisson point process, passed to \link[spatstat.core]{rpoispp}.
+#'   It could be either a single positive number, or any other object that \link[spatstat.core]{rpoispp} can understand.
 #' @param  meanlog For the distribution of radii. The logarithm of the distribution is set to have mean \code{meanlog}.
 #' @param  sdlog For the distribution of radii. The logarithm of the distribution is set to have standard deviation \code{sdlog}
 #' @param seed Optional input (default is \code{NULL}). Is an integer passed to \code{\link[base]{set.seed}}. Used to reproduce patterns exactly.
@@ -17,7 +17,7 @@
 
 #' @details The point process needs to be simulated in a larger region than the desired observation window to account for the possibility of discs that intersect the observation window, but have germs outside the observation window.
 #'
-#' The point process of germs is generated using spatstat's \code{\link[spatstat]{rpoispp}}.
+#' The point process of germs is generated using spatstat's \code{\link[spatstat.core]{rpoispp}}.
 #' @return Returns an \code{owin} object cropped to \code{obswin}.
 
 #' @examples

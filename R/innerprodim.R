@@ -12,7 +12,7 @@
 #' @param outsideB The value of \eqn{g} outside the domain of \code{B}. Typically will be \code{0} or \code{NA}. Default is \code{NA}.
 #' @param na.replace Logical. If TRUE NA values in \code{A} and \code{B} are replaced by \code{outsideA} and \code{outsideB}, respectively. This allows the cubature integration to be performed (roughly) twice as quickly.
 #' @param method Either "cubature" or "harmonisesum". The former uses [cubature::cubintegrate()], 
-#' the latter harmonises the images using [spatstat::as.mask()] and sums the product of \code{A} and \code{B}.
+#' the latter harmonises the images using [spatstat.geom::as.mask()] and sums the product of \code{A} and \code{B}.
 
 #' @details This function uses the package \pkg{cubature} to integrate the multiple of the two images. If \pkg{cubature} is not available then it harmonises the two input images, multiplies them together and returns the
 #' integral of the resulting image.

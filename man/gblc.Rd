@@ -49,7 +49,7 @@ where \eqn{B} is each of the sets (often called a box) specified by \code{boxes}
 This can be used to compute the GBL from model parameters by passing \code{gblc} the
 covariance and coverage probability of the model.
 
-The set covariance of \eqn{B} is computed empirically using \pkg{spatstat}'s \code{\link[spatstat]{setcov}} function, which converts \eqn{B} into a binary pixel mask using \code{\link[spatstat]{as.mask}} defaults. Computation speed can be increased by setting a small default number of pixels, \code{npixel}, in \pkg{spatstat}'s global options (accessed through \code{\link[spatstat]{spatstat.options}}), however fewer pixels also decreases the accuracy of the GBL computation.
+The set covariance of \eqn{B} is computed empirically using \pkg{spatstat}'s \code{\link[spatstat.geom]{setcov}} function, which converts \eqn{B} into a binary pixel mask using \code{\link[spatstat.geom]{as.mask}} defaults. Computation speed can be increased by setting a small default number of pixels, \code{npixel}, in \pkg{spatstat}'s global options (accessed through \code{\link[spatstat.geom]{spatstat.options}}), however fewer pixels also decreases the accuracy of the GBL computation.
 
 The default method of integration for the above integral is \code{\link[cubature:cubintegrate]{cubature::cubintegrate()}} from the \pkg{cubature} package.
 The '\code{harmonisesum}' method is known to produce numerical artefacts (Section 6.2 of (Hingee et al., 2019))
