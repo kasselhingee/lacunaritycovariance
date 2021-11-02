@@ -1,8 +1,8 @@
 Type: Package
 Package: lacunaritycovariance
 Title: Gliding Box Lacunarity and Other Metrics for 2D Random Closed Sets
-Version: 1.1-1
-Date: 2021-03-19
+Version: 1.1-2
+Date: 2021-11-02
 Author: Kassel Liam Hingee
 Maintainer: Kassel Liam Hingee <kassel.hingee@gmail.com>
 Description: Functions for estimating the gliding box lacunarity (GBL),
@@ -27,7 +27,7 @@ Depends:
     spatstat (>= 2.0-0),
     spatstat.geom,
     spatstat.linnet,
-    spatstat.core
+    spatstat.core (>= 2.3-1)
 Imports:
     RcppRoll
 Suggests:
