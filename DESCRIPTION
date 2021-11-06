@@ -25,16 +25,16 @@ License: GPL (>= 2)
 URL: https://github.com/kasselhingee/lacunaritycovariance
 Depends:
     spatstat (>= 2.0-0),
+    spatstat.core (>= 2.3-0),
     spatstat.geom,
-    spatstat.linnet,
-    spatstat.core (>= 2.3-1)
+    spatstat.linnet
 Imports:
     RcppRoll
 Suggests:
-    raster,
-    maptools,
-    rgdal,
     cubature,
+    maptools,
+    raster,
+    rgdal,
     testthat
 ByteCompile: true
 Roxygen: list(markdown = TRUE)
