@@ -37,7 +37,7 @@
 #'  model with a specified intensity and fixed rectangular grain.
 #'  The window information is not contained in this object.
 #'  If the simulated set is empty then an empty \code{owin} object is returned.
-#' The point process of germs is generated using spatstat's \code{\link[spatstat.core]{rpoispp}}.
+#' The point process of germs is generated using spatstat's \code{\link[spatstat.random]{rpoispp}}.
 rbdr <- function(lambda, grain, win, seed = NULL){
   grainlib <- solist(grain)
   bufferdist <- 1.1 *

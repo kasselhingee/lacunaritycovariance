@@ -26,7 +26,7 @@
 #' Germ-grain models have two components, a point process (called germs) and a process that creates
 #'  grains that are centred on the germs.
 #' The point process of germs can be easily simulated using a number of \pkg{spatstat} functions 
-#' (e.g. \code{\link[spatstat.core]{rpoispp}} for Boolean models).
+#' (e.g. \code{\link[spatstat.random]{rpoispp}} for Boolean models).
 #' To simulate a germ-grain model in a window \eqn{W} the germ process must be simulated in a larger window 
 #' because grains centred outside \eqn{W} can intersect \eqn{W}.
 #' The result must then be cropped to \eqn{W} to achieve a realisation of the germ-grain process within \eqn{W}.
