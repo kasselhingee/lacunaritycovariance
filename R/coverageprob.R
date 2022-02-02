@@ -1,17 +1,16 @@
 #' @title Estimate the coverage probability of a stationary RACS
-#' @author Kassel Liam Hingee 
-#' @import spatstat
+#' @author Kassel Liam Hingee
+#' @importFrom spatstat.random rpoispp
 #' @import spatstat.geom
-#' @import spatstat.linnet
 #' @import spatstat.core
 #' @export coveragefrac coverageprob cp
-#' 
-#' @description 
+#'
+#' @description
 #' Computes the proportion of the observation window that is foreground, which is the usual estimate for the coverage probability of a stationary RACS from a binary map.
-#' 
+#'
 #' @references Chiu, S.N., Stoyan, D., Kendall, W.S. and Mecke, J. (2013) Stochastic Geometry and Its Applications, 3rd ed. Chichester, United Kingdom: John Wiley & Sons.
- 
-#' 
+
+#'
 #' @param xi An observation of a RACS of interest as a full binary map (as an \code{im} object) or as the foreground set (as an \code{owin} object).
 #' In the latter case the observation window, \code{obswin}, must be supplied.
 #' @param obswin The window of observation (not necessarily rectangular) also as an \code{owin} object.
@@ -22,11 +21,11 @@
 #'  this function computes the fraction of \eqn{W} covered by foreground,
 #' which is an estimate of the coverage probability.
 #' See (Chiu et al., 2013, Section 6.4.2) for more details.
-#' 
+#'
 #' If \code{xi} is an \code{im} object then \code{xi} must be an image of 1s, 0s and NAs
 #'  representing inside the set, outside the set and outside the observation window respectively.
 #'  \code{coverageprob} will not accept a \code{obswin} argument if \code{xi} is an \code{im} object.
-#' 
+#'
 #' @examples
 #' xi <- heather$coarse
 #' obswindow <- Frame(heather$coarse)
@@ -49,8 +48,8 @@ coverageprob <- function(xi, obswin = NULL){
   return(coverprobest)
 }
 
-#' @rdname coverageprob 
+#' @rdname coverageprob
 coveragefrac <- coverageprob
 
-#' @rdname coverageprob 
+#' @rdname coverageprob
 cp <- coverageprob

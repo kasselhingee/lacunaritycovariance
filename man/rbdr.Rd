@@ -38,7 +38,7 @@ Also described in this help file are functions for calculating the coverage prob
 model with a specified intensity and fixed rectangular grain.
 The window information is not contained in this object.
 If the simulated set is empty then an empty \code{owin} object is returned.
-The point process of germs is generated using spatstat's \code{\link[spatstat.core]{rpoispp}}.
+The point process of germs is generated using spatstat's \code{\link[spatstat.random]{rpoispp}}.
 
 \item \code{bdrcoverageprob}: Returns the true coverage probability given the intensity and grain.
 
