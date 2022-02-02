@@ -1,6 +1,5 @@
 #' @title Test if an \code{im} object is a binary map
 #' @export isbinarymap
-#' @import spatstat
 #' @param xi an image object
 #' @param requiretrue Logical. If TRUE then \code{isbinarymap} will error if xi is NOT a binary map.
 #' @description

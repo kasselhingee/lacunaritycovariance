@@ -55,7 +55,7 @@ rbdd <- function(lambda, discr, window, seed = NULL){
   bufferdist <- 1.1 * discr
 
   if (!missing(seed)){set.seed(seed)}
-  pp <- rpoispp(lambda = lambda, win = dilation(window, bufferdist), nsim = 1, drop = TRUE) #lambda from B\"{o}m (2002) - chosen to make coverage probability very close to 0.5
+  pp <- spatstat.random::rpoispp(lambda = lambda, win = dilation(window, bufferdist), nsim = 1, drop = TRUE) #lambda from B\"{o}m (2002) - chosen to make coverage probability very close to 0.5
   if (pp$n == 0 ){return(complement.owin(window))}
   xibuffer <- placegrainsfromlib(pp, grainlib)
   xi <- intersect.owin(xibuffer, window)

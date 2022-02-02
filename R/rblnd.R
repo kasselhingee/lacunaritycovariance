@@ -30,7 +30,7 @@ rblnd <- function(obswin, bufferdist, lambda, meanlog, sdlog, seed = NULL){
   #have to simulate in a much larger area than the observation window (because grains with centres outside the window should still be observed)
   wsim <- Frame(dilation(obswin, bufferdist)) #i reckon faster to use rectangular region (the non-rectangular probably simulates in a rectangular region and then rejects anyway)
   if (!missing(seed)){set.seed(seed)}
-  pp <- rpoispp(lambda, win = wsim, nsim = 1, drop = TRUE) #prepare a random radius for each point
+  pp <- spatstat.random::rpoispp(lambda, win = wsim, nsim = 1, drop = TRUE) #prepare a random radius for each point
 
   if (!missing(seed)){set.seed(seed)}
   radius <- rlnorm(pp$n, meanlog = meanlog, sdlog = sdlog) #prepare a random radius for each point

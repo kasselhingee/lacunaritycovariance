@@ -71,7 +71,7 @@ rbpto <- function(lambda, grain, win, xm, alpha, lengthscales,
   #now simulate Boolean model!
   bufferdist <- diameter.owin(grain) * max(lengthscales)
   set.seed(seed)
-  pp <- rpoispp(lambda, win = dilation.owin(win, bufferdist), nsim = 1, drop = TRUE)
+  pp <- spatstat.random::rpoispp(lambda, win = dilation.owin(win, bufferdist), nsim = 1, drop = TRUE)
   #plot(pp)
   #plot(add = TRUE, w)
   
