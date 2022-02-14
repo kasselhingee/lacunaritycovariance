@@ -13,3 +13,5 @@ CONTRIBUTING.md
 ^CRAN-RELEASE$
 ^doc$
 ^Meta$
+^cran-comments\.md$
+
