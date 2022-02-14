@@ -2,7 +2,7 @@
 #' @author Kassel Liam Hingee
 #' @importFrom spatstat.random rpoispp
 #' @import spatstat.geom
-#' @import spatstat.core
+#' @rawNamespace import(spatstat.core, except = "rpoispp")
 #' @export coveragefrac coverageprob cp
 #'
 #' @description
