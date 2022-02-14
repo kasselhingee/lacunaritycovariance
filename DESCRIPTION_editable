@@ -1,8 +1,8 @@
 Type: Package
 Package: lacunaritycovariance
 Title: Gliding Box Lacunarity and Other Metrics for 2D Random Closed Sets
-Version: 1.1-2
-Date: 2021-11-02
+Version: 1.1-3
+Date: 2022-01-14
 Author: Kassel Liam Hingee
 Maintainer: Kassel Liam Hingee <kassel.hingee@gmail.com>
 Description:
@@ -31,4 +31,4 @@ Suggests:
     testthat
 ByteCompile: true
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.1.1
+RoxygenNote: 7.1.2
