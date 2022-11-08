@@ -48,9 +48,9 @@ gblemp <- function(boxwidths, xiim, obswin = Frame(xiim)){
 #compute observation mask
   obsvd <- xiim
   obsvd[is.finite(xiim$v)] <- TRUE
-  if (class(obswin) == "im"){obsvd <- eval.im(obswin * obsvd)}
+  if (isa(obswin, "im")){obsvd <- eval.im(obswin * obsvd)}
   obsvd <- as.owin(obsvd) #owin format may not be needed anymore
-  if (class(obswin) == "owin"){obsvd <- intersect.owin(obsvd, obswin)}
+  if (isa(obswin, "owin")){obsvd <- intersect.owin(obsvd, obswin)}
 
   if (requireNamespace("RcppRoll") != TRUE){
      stop("RcppRoll package must be installed to calculate empirical gliding box lacunarity")
