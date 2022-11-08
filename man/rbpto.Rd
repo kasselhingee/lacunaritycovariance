@@ -64,16 +64,16 @@ The distribution of grains scales is a step-function approximation to the CDF wi
 }
 \section{Functions}{
 \itemize{
-\item \code{rbpto}: Simulate Boolean model with grain size distributed according to a truncated Pareto distribution.
+\item \code{rbpto()}: Simulate Boolean model with grain size distributed according to a truncated Pareto distribution.
 
-\item \code{bpto.coverageprob}: The coverage probability of the Boolean model with grain size distributed according to a truncated Pareto distribution.
+\item \code{bpto.coverageprob()}: The coverage probability of the Boolean model with grain size distributed according to a truncated Pareto distribution.
 
-\item \code{bpto.germintensity}: The germ intensity of the Boolean model with grain size distributed according to a truncated Pareto distribution.
+\item \code{bpto.germintensity()}: The germ intensity of the Boolean model with grain size distributed according to a truncated Pareto distribution.
 
-\item \code{bpto.covar}: The covariance of the Boolean model with grain size distributed according to a truncated Pareto distribution.
+\item \code{bpto.covar()}: The covariance of the Boolean model with grain size distributed according to a truncated Pareto distribution.
 \code{xy} is required to specify resolution and offset of pixel grid.
-}}
 
+}}
 \examples{
 lambda <- 0.2
 win <- square(r = 10)

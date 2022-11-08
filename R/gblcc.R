@@ -94,7 +94,7 @@ gblcc <- function(boxes, cencovar = NULL, p = NULL, xiim = NULL, estimator = "pi
                 ),
                 fname = "GBL"
     )
-    fvnames(lacfv, a = ".") <- "GBL"
+    spatstat.explore::fvnames(lacfv, a = ".") <- "GBL"
     return(lacfv)
   } else (return(lacsdf))
 }

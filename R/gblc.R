@@ -111,7 +111,7 @@ gblc <- function(boxes, covariance = NULL, p = NULL, xiim = NULL, integrationMet
                 ),
                 fname = "GBL"
     )
-    fvnames(lacfv, a = ".") <- "GBL"
+    spatstat.explore::fvnames(lacfv, a = ".") <- "GBL"
     return(lacfv)
   } else (return(lacsdf))
 }

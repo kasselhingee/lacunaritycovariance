@@ -77,14 +77,14 @@ A similar isotropic pair-correlation estimator was later studied by Mattfeldt an
 }
 \section{Functions}{
 \itemize{
-\item \code{paircorr}: Estimates pair-correlation from a binary map.
+\item \code{paircorr()}: Estimates pair-correlation from a binary map.
 
-\item \code{paircorr.cvchat}: Generates pair-correlation estimates from
+\item \code{paircorr.cvchat()}: Generates pair-correlation estimates from
 the plug-in moment estimates of covariance, Picka's reduced window estimate of coverage probability,
 and the coverage fraction (which is an unbiased estimate of the coverage probability).
 If these estimates already exist then \code{paircorr.cvchat} can save significant computation time.
-}}
 
+}}
 \examples{
 xi <- as.im(heather$coarse, na.replace = 0, eps = 4 * heather$coarse$xstep)
 

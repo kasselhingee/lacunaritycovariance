@@ -84,7 +84,7 @@ lacs <- mapply(gblemp_intern.rcpproll, sidep = 2 * rpix + 1, MoreArgs = list(xii
                     ),
            fname = "GBL"
            )
-    fvnames(lacfv, a = ".") <- "GBL"
+    spatstat.explore::fvnames(lacfv, a = ".") <- "GBL"
   return(lacfv)
 }
 

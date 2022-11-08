@@ -101,14 +101,14 @@ isotropic situation by Mattfeldt and Stoyan (2000)
 }
 \section{Functions}{
 \itemize{
-\item \code{racscovariance}: Estimates covariance from a binary map.
+\item \code{racscovariance()}: Estimates covariance from a binary map.
 
-\item \code{racscovariance.cvchat}: Computes covariance estimates from
+\item \code{racscovariance.cvchat()}: Computes covariance estimates from
 a plug-in moment estimate of covariance, Picka's reduced window estimate of coverage probability,
 and the usual estimate of coverage probability.
 If these estimates already exist then \code{racscovariance.cvchat} can save significant computation time.
-}}
 
+}}
 \examples{
 xi <- heather$coarse
 obswin <- Frame(xi)

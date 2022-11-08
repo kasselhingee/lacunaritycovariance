@@ -54,9 +54,9 @@ The set covariance of \eqn{B} is computed empirically using \pkg{spatstat}'s \co
 }
 \section{Functions}{
 \itemize{
-\item \code{gblcc.inputcovar}: GBL estimates from already estimated centred covariance.
-}}
+\item \code{gblcc.inputcovar()}: GBL estimates from already estimated centred covariance.
 
+}}
 \examples{
 xi <- heather$coarse
 cencovar <- cencovariance(xi, obswin = Frame(xi), estimators = c("pickaH"), drop = TRUE)

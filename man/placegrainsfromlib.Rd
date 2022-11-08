@@ -71,16 +71,16 @@ It can be used to simulate the grain process in some germ-grain models.
 }
 \section{Functions}{
 \itemize{
-\item \code{placegrainsfromlib}: Place grains randomly from a list of grains.
+\item \code{placegrainsfromlib()}: Place grains randomly from a list of grains.
 
-\item \code{meanarea.grainlib}: Compute mean area of a random grain given by the library
+\item \code{meanarea.grainlib()}: Compute mean area of a random grain given by the library
 
-\item \code{meansetcov.grainlib}: Computes the mean of the set covariance of the grains in \code{grainlib}.
+\item \code{meansetcov.grainlib()}: Computes the mean of the set covariance of the grains in \code{grainlib}.
 \code{xy} is required because the set covariance function must rasterise the \code{owin} objects.
 
-\item \code{covar.grainlib}: Compute the covariance of a Boolean model with random grain given by the library
-}}
+\item \code{covar.grainlib()}: Compute the covariance of a Boolean model with random grain given by the library
 
+}}
 \examples{
 # Simulate a germ-grain model where germs are a Poisson point process
 # and grains are randomly selected from 3 different disc sizes.

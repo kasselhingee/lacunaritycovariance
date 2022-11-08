@@ -10,13 +10,13 @@ contagdiscstate(XiH, XicH, p, normalise = FALSE)
 \item{XiH}{Conditional spherical contact distribution function for \eqn{\Xi}.
 Typically this is an \code{fv} object but could also be a vector of values.
 In applications \code{XiH} would likely be estimated from a binary map
-using \code{\link[spatstat.core]{Hest}} in \pkg{spatstat}.}
+using \code{\link[spatstat.explore]{Hest}} in \pkg{spatstat.explore}.}
 
 \item{XicH}{Conditional spherical contact distribution for the complement of
 \eqn{\Xi}. This is called the Conditional Core Probability in Hingee 2016.
 Typically this is an \code{fv} object but could also be a vector of values.
 In applications \code{XiH} would likely be estimated from a binary map using
-\code{\link[spatstat.core]{Hest}} in \pkg{spatstat}.}
+\code{\link[spatstat.explore]{Hest}} in \pkg{spatstat.explore}.}
 
 \item{p}{The coverage probability of \eqn{\Xi}. Can be estimated from binary maps using \code{\link{coverageprob}}.}
 
@@ -46,7 +46,7 @@ mixing between \eqn{\Xi} and the background may be chosen by the user by
 choosing the disc radius (for classical contagion this distance is fixed by
 the map resolution).
 
-Note: to create \code{fv} objects the function copies about 20 lines of code from the \pkg{spatstat} package.
+Note: to create \code{fv} objects the function copies about 20 lines of code from the \pkg{spatstat} collection of packages.
 }
 \details{
 \code{XiH} should be a function of radius that contains (estimates of) the

@@ -77,8 +77,8 @@ contagdiscstate <- function(XiH, XicH, p, normalise=FALSE){
     returnfv <- TRUE
     unitnames <- unitname(XiH)
     fvin <- list(XiH = XiH, XicH = XicH)
-    XiHf <- as.function.fv(XiH, value = ".y", extrapolate = TRUE)
-    XicHf <- as.function.fv(XicH, value = ".y", extrapolate = TRUE)
+    XiHf <- spatstat.explore::as.function.fv(XiH, value = ".y", extrapolate = TRUE)
+    XicHf <- spatstat.explore::as.function.fv(XicH, value = ".y", extrapolate = TRUE)
     argranges <- lapply(list(XiH = XiH, XicH = XicH), argumentrange)
     ## determine finest resolution (from spatstat)
     xsteps <- sapply(fvin, argumentstep)
@@ -110,7 +110,7 @@ contagdiscstate <- function(XiH, XicH, p, normalise=FALSE){
     contag <- 1 + contag / (-2 * log(2))
   }
   if (returnfv) {
-  return(fv(data.frame(r = xvals,
+  return(spatstat.explore::fv(data.frame(r = xvals,
                        contag = contag),
             valu = "contag",
             desc = c("radius",

@@ -103,7 +103,7 @@ gbl <- function(xi, boxwidths,
   #the GBLemp estimate
   if ("GBLemp" %in% estimators){
     gblemp.est <- gblemp(boxwidths = boxwidths, xiim = xi)
-    if (sum(!vapply(gblemp.est[,fvnames(gblemp.est), drop = TRUE], is.na, FUN.VALUE = TRUE)) < 2){
+    if (sum(!vapply(gblemp.est[,spatstat.explore::fvnames(gblemp.est), drop = TRUE], is.na, FUN.VALUE = TRUE)) < 2){
       warning("gblemp() returns estimates for 1 or fewer of the provided box widths. Results from gblemp() will be ignored from the final results.")
       gblemp.est <- NULL
     }
@@ -111,12 +111,12 @@ gbl <- function(xi, boxwidths,
   }
   
   gbl.ests <- gbl.ests[!vapply(gbl.ests, is.null, FUN.VALUE = FALSE)]
-  if (any(!vapply(gbl.ests[-1], function(x) compatible.fv(A = gbl.ests[[1]], B = x), FUN.VALUE = FALSE))){
+  if (any(!vapply(gbl.ests[-1], function(x) spatstat.explore::compatible.fv(A = gbl.ests[[1]], B = x), FUN.VALUE = FALSE))){
     warning("Some GBL estimates have differing argument values. These will be harmonised.")
-    gbl.ests <- harmonise.fv(gbl.ests)
+    gbl.ests <- spatstat.explore::harmonise.fv(gbl.ests)
   }
   gbls.fv <- collapse.fv(gbl.ests, different = "GBL")
-  names(gbls.fv) <- c(fvnames(gbls.fv, ".x"), names(gbl.ests))
+  names(gbls.fv) <- c(spatstat.explore::fvnames(gbls.fv, ".x"), names(gbl.ests))
   
   allfvs <- list(gbl.est = gbls.fv)
   

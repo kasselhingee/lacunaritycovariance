@@ -79,12 +79,12 @@ The set covariance of the boxes is computed empirically using \pkg{spatstat}'s \
 }
 \section{Functions}{
 \itemize{
-\item \code{gbl}: computes GBL estimates from a binary map.
+\item \code{gbl()}: computes GBL estimates from a binary map.
 
-\item \code{gbl.cvchat}: computes covariance-based estimator of GBL from the plug-in moment estimate of covariance,
+\item \code{gbl.cvchat()}: computes covariance-based estimator of GBL from the plug-in moment estimate of covariance,
 Picka's reduced window coverage probability estimates (see \code{\link{cppicka}}) and the usual coverage probability estimate, \code{phat}.
-}}
 
+}}
 \examples{
 xi <- as.im(heather$coarse, value = TRUE,
             na.replace = FALSE)

@@ -36,9 +36,9 @@ Locations where the box is not completely within the observation window are igno
 }
 \section{Functions}{
 \itemize{
-\item \code{gbltrad}: An alias of \code{gblemp} used in past versions of this package. This alias may be removed in future versions.
-}}
+\item \code{gbltrad()}: An alias of \code{gblemp} used in past versions of this package. This alias may be removed in future versions.
 
+}}
 \section{WARNING}{
 
 The box side lengths are rounded such that they are an odd number of pixels across.

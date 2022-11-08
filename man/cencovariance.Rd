@@ -82,14 +82,14 @@ Currently computes centred covariance using \code{\link{racscovariance}}.
 }
 \section{Functions}{
 \itemize{
-\item \code{cencovariance}: Centred covariance estimates from a binary map.
+\item \code{cencovariance()}: Centred covariance estimates from a binary map.
 
-\item \code{cencovariance.cvchat}: Generates centred covariances estimates from
+\item \code{cencovariance.cvchat()}: Generates centred covariances estimates from
 a plug-in moment estimate of covariance, Picka's reduced window estimate of coverage probability,
 and the plug-in moment estimate of coverage probability.
 If these estimates already exist, then \code{\link{cencovariance.cvchat}} saves significant computation time over \code{cencovariance}.
-}}
 
+}}
 \examples{
 xi <- heather$coarse
 obswin <- Frame(xi)

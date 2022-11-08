@@ -45,11 +45,11 @@ First pixel not in \code{xi} \tab - \tab -
 }
 \section{Functions}{
 \itemize{
-\item \code{contagpixelgrid}: Pixel-adjacency contagion landscape metric of a binary map.
+\item \code{contagpixelgrid()}: Pixel-adjacency contagion landscape metric of a binary map.
 
-\item \code{adjacency}: Calculates the adjacency matrix used in the pixel contagion
+\item \code{adjacency()}: Calculates the adjacency matrix used in the pixel contagion
+
 }}
-
 \section{Warning}{
  Will fail if map is either all foreground or all background.
 }
