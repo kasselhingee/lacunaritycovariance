@@ -82,7 +82,7 @@ secondorderprops <- function(xiim,
   if (!is.null(covarargs)) {
     cvchats <- do.call(racscovariance.cvchat, args = c(list(cvchat = cvchatT, cpp1 = cpp1, phat = phat), covarargs, drop = FALSE))
     if (returnrotmean){
-      isocovars <- lapply(cvchats, spatstat.core::rotmean, padzero = FALSE, Xname = "covar", result = "fv")
+      isocovars <- lapply(cvchats, spatstat.explore::rotmean, padzero = FALSE, Xname = "covar", result = "fv")
       isocovars <- lapply(isocovars, function(x) {
         x <- tweak.fv.entry(x, "f", new.labl = "C(r)", new.desc = "isotropic covariance", new.tag = "C")
         return(x)
@@ -97,7 +97,7 @@ secondorderprops <- function(xiim,
   if (!is.null(cencovarargs)) {
     ccvchats <- do.call(cencovariance.cvchat, args = c(list(cvchat = cvchatT, cpp1 = cpp1, phat = phat), cencovarargs, drop = FALSE))
     if (returnrotmean){
-      isocencovars <- lapply(ccvchats, spatstat.core::rotmean, padzero = FALSE, Xname = "cencovar", result = "fv")
+      isocencovars <- lapply(ccvchats, spatstat.explore::rotmean, padzero = FALSE, Xname = "cencovar", result = "fv")
       isocencovars <- lapply(isocencovars, function(x) {
         x <- tweak.fv.entry(x, "f", new.labl = "k(r)", new.desc = "isotropic centred covariance", new.tag = "C")
         return(x)
@@ -112,7 +112,7 @@ secondorderprops <- function(xiim,
     pclnests <- do.call(paircorr.cvchat, c(list(cvchat = cvchatT, cpp1 = cpp1, phat = phat), paircorrargs, drop = FALSE))
     #compute isotropic pair correlation
     if (returnrotmean){
-      isopclns <- lapply(pclnests, spatstat.core::rotmean, padzero = FALSE, Xname = "paircorr", result = "fv")
+      isopclns <- lapply(pclnests, spatstat.explore::rotmean, padzero = FALSE, Xname = "paircorr", result = "fv")
       isopclns <- lapply(isopclns, function(x) {
         x <- tweak.fv.entry(x, "f", new.labl = "g(r)", new.desc = "isotropic pair-correlation", new.tag = "g")
         return(x)
