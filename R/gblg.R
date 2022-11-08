@@ -65,7 +65,7 @@ gblg <- function(boxes, paircorr = NULL, xiim = NULL, integrationMethod = "cubat
   }
 
   if (mode(boxes) %in% c("integer", "numeric")){
-    lacfv <- fv(data.frame(s = boxes, GBL = lacv),
+    lacfv <- spatstat.explore::fv(data.frame(s = boxes, GBL = lacv),
                 argu = "s",
                 valu = "GBL",
                 ylab = expression(GBL),

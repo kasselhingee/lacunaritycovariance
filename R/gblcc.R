@@ -76,7 +76,7 @@ gblcc <- function(boxes, cencovar = NULL, p = NULL, xiim = NULL, estimator = "pi
     #recommended xlim:
     alim.min <- 1
     alim.max <- min(which(vapply(lacsdf[, "GBL"], is.na, FUN.VALUE = TRUE)), nrow(lacsdf))
-    lacfv <- fv(lacsdf,
+    lacfv <- spatstat.explore::fv(lacsdf,
                 argu = "s",
                 valu = "GBL",
                 fmla = ".y ~ s",

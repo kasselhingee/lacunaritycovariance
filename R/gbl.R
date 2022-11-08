@@ -115,15 +115,15 @@ gbl <- function(xi, boxwidths,
     warning("Some GBL estimates have differing argument values. These will be harmonised.")
     gbl.ests <- spatstat.explore::harmonise.fv(gbl.ests)
   }
-  gbls.fv <- collapse.fv(gbl.ests, different = "GBL")
+  gbls.fv <- spatstat.explore::collapse.fv(gbl.ests, different = "GBL")
   names(gbls.fv) <- c(spatstat.explore::fvnames(gbls.fv, ".x"), names(gbl.ests))
   
   allfvs <- list(gbl.est = gbls.fv)
   
   if (includenormed){
     #compute GBLs normalised at zero
-    normdgbls <- eval.fv((gbls.fv - 1)/ ( phat * (1 - phat) / phat^2), relabel = FALSE)
-    normdgbls <- prefixfv(normdgbls,
+    normdgbls <- spatstat.explore::eval.fv((gbls.fv - 1)/ ( phat * (1 - phat) / phat^2), relabel = FALSE)
+    normdgbls <- spatstat.explore::prefixfv(normdgbls,
                      tagprefix="n_",
                      descprefix="standardised ",
                      lablprefix="plain(nrmd)~")

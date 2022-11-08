@@ -71,7 +71,7 @@ secondorderprops <- function(xiim,
         warning("Some GBL estimates have differing argument values. These will be harmonised.")
         gbl.ests <- spatstat.explore::harmonise.fv(gbl.ests)
       }
-      gbls <- collapse.fv(gbl.ests, different = "GBL")
+      gbls <- spatstat.explore::collapse.fv(gbl.ests, different = "GBL")
       names(gbls) <- c(spatstat.explore::fvnames(gbls, ".x"), names(gbl.ests))
     }
     outlist <- c(outlist, list(GBL = gbls))
@@ -84,10 +84,10 @@ secondorderprops <- function(xiim,
     if (returnrotmean){
       isocovars <- lapply(cvchats, spatstat.explore::rotmean, padzero = FALSE, Xname = "covar", result = "fv")
       isocovars <- lapply(isocovars, function(x) {
-        x <- tweak.fv.entry(x, "f", new.labl = "C(r)", new.desc = "isotropic covariance", new.tag = "C")
+        x <- spatstat.explore::tweak.fv.entry(x, "f", new.labl = "C(r)", new.desc = "isotropic covariance", new.tag = "C")
         return(x)
       })
-      isocovars <- collapse.fv(spatstat.explore::harmonise.fv(isocovars), different = "C")
+      isocovars <- spatstat.explore::collapse.fv(spatstat.explore::harmonise.fv(isocovars), different = "C")
       cvchats <- isocovars
     }
     outlist <- c(outlist, list(covariance = cvchats))
@@ -99,10 +99,10 @@ secondorderprops <- function(xiim,
     if (returnrotmean){
       isocencovars <- lapply(ccvchats, spatstat.explore::rotmean, padzero = FALSE, Xname = "cencovar", result = "fv")
       isocencovars <- lapply(isocencovars, function(x) {
-        x <- tweak.fv.entry(x, "f", new.labl = "k(r)", new.desc = "isotropic centred covariance", new.tag = "C")
+        x <- spatstat.explore::tweak.fv.entry(x, "f", new.labl = "k(r)", new.desc = "isotropic centred covariance", new.tag = "C")
         return(x)
       })
-      isocencovars <- collapse.fv(spatstat.explore::harmonise.fv(isocencovars), different = "C")
+      isocencovars <- spatstat.explore::collapse.fv(spatstat.explore::harmonise.fv(isocencovars), different = "C")
       ccvchats <- isocencovars
     }
     outlist <- c(outlist, list(cencovariance = ccvchats))
@@ -114,10 +114,10 @@ secondorderprops <- function(xiim,
     if (returnrotmean){
       isopclns <- lapply(pclnests, spatstat.explore::rotmean, padzero = FALSE, Xname = "paircorr", result = "fv")
       isopclns <- lapply(isopclns, function(x) {
-        x <- tweak.fv.entry(x, "f", new.labl = "g(r)", new.desc = "isotropic pair-correlation", new.tag = "g")
+        x <- spatstat.explore::tweak.fv.entry(x, "f", new.labl = "g(r)", new.desc = "isotropic pair-correlation", new.tag = "g")
         return(x)
       })
-      isopclns <- collapse.fv(spatstat.explore::harmonise.fv(isopclns), different = "g")
+      isopclns <- spatstat.explore::collapse.fv(spatstat.explore::harmonise.fv(isopclns), different = "g")
       pclnests <- isopclns
     }
     outlist <- c(outlist, list(paircorr = pclnests))
