@@ -1,3 +1,6 @@
+## lacunaritycovariance VERSION 1.1-4
+Updates to use the new `spatstat.explore` package instead of the outgoing `spatstat.core` package.
+
 ## lacunaritycovariance VERSION 1.1-00
 Fixed the numerical features seen in GBL estimates using pair correlation and (uncentred) covariance. These were numerical quadrature issues. gblg() and gblc() now use the cubature package in order for sufficiently accurate integration. These better integration methods take a long time to run. That makes gblcc() the fastest of the new estimators. It doesn't need the higher accuracy numerical integration because centred covariance approaches zero for large vectors.
 
