@@ -11,12 +11,7 @@ opa <- par(mfrow=c(1,1))
 # format into a format suitable for the package lacunaritycovariance.
 
 # For this demo you will need the following R packages installed: 
-#  rgdal You will need to install GDAL (http://www.gdal.org/)
-#        first which is available for Windows, Mac and Linux.
-#        An easy installation of GDAL on Windows is through
-#        installing OSGeo4W (http://trac.osgeo.org/osgeo4w/).
-#  maptools
-#  raster
+#  raster (and terra)
 #  spatstat
 
 # The goal is to have 
@@ -29,23 +24,21 @@ load(system.file("extdata/egbinarymap.RData", package="lacunaritycovariance"))
 plot(egbinarymap, col = c("grey", "black"), main = "The Final Result of This Demo")
 rm(egbinarymap)
 
-# # # # # # # # # # # # # # # # # # # # # # # # # # # # #
-# 1. Reading ESRI Shapefile in SpatialPolygonsDataFrame #
-# # # # # # # # # # # # # # # # # # # # # # # # # # # # #
-library("rgdal") # rgdal is used here to read the ESRI shapefile into a SpatialPolygonsDataFrame
-regionfilepath <- system.file("extdata", package="lacunaritycovariance")
-obspoly <- readOGR(regionfilepath, "aregionofinterest", verbose = FALSE)
+# # # # # # # # # # # # # # # # # # # # # #
+# 1. Reading ESRI Shapefile in SF Object  #
+# # # # # # # # # # # # # # # # # # # # # #
+regionfilepath <- system.file("extdata/aregionofinterest.shp", package="lacunaritycovariance")
+obspoly <- sf::st_read(regionfilepath)
 #For ESRI Shapefiles:
 #   the first argument of readOGR is the directory containing the shape files
 #   the second argument of readOGR is the filename without extension
 #print the coordinate projection of the polygon data for sanity
-plot(obspoly, main = "Observation Window as a SpatialPolygonsDataFrame")
+plot(obspoly, main = "Observation Window as a SF Object")
 
 
-# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
-# 2.Converting Observation Window as SpatialPolygonsDataFrame into owin Format  #
-# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
-library("maptools") # maptools is used to convert a SpatialPolygonsDataFrame into an owin object
+# # # # # # # # # # # # # # # # # # # # # # # # # # #
+# 2.Converting Observation Window into owin Format  #
+# # # # # # # # # # # # # # # # # # # # # # # # # # #
 obsowin <- as.owin(obspoly) #only step that requires maptools
 unitname(obsowin) <- c("metre", "metres") #manually set units
 plot(obsowin,
@@ -70,13 +63,13 @@ xidataset<-raster(rsfiles[[2]])
 #### Reads in the smallest rectangle possible around the observation window
 xidataset <- crop(xidataset,extent(obspoly))
 plot(xidataset, main="Raster Map around Observation Window")
-plot(add=TRUE, obsbdry, lwd = 3)
+plot(add=TRUE, obspoly, lwd = 3, col = NA)
 
 
 # # # # # # # # # # # # # # # # # # # # # # # # # #
 # 4. Convert Raster Data into spatstat im Object  #
 # # # # # # # # # # # # # # # # # # # # # # # # # #
-xiimage <- as.im.RasterLayer(xidataset) # uses package maptools
+xiimage <- as.im(xidataset) 
 unitname(xiimage) <- c("metre","metres") # manually set units
 # remove raster data outside observation window:
 xiimage[setminus.owin(Frame(xiimage), obsowin)] <- NA
