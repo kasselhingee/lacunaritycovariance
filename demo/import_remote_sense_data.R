@@ -29,9 +29,6 @@ rm(egbinarymap)
 # # # # # # # # # # # # # # # # # # # # # #
 regionfilepath <- system.file("extdata/aregionofinterest.shp", package="lacunaritycovariance")
 obspoly <- sf::st_read(regionfilepath)
-#For ESRI Shapefiles:
-#   the first argument of readOGR is the directory containing the shape files
-#   the second argument of readOGR is the filename without extension
 #print the coordinate projection of the polygon data for sanity
 plot(obspoly, main = "Observation Window as a SF Object")
 
@@ -39,7 +36,7 @@ plot(obspoly, main = "Observation Window as a SF Object")
 # # # # # # # # # # # # # # # # # # # # # # # # # # #
 # 2.Converting Observation Window into owin Format  #
 # # # # # # # # # # # # # # # # # # # # # # # # # # #
-obsowin <- as.owin(obspoly) #only step that requires maptools
+obsowin <- as.owin(obspoly) 
 unitname(obsowin) <- c("metre", "metres") #manually set units
 plot(obsowin,
      main = "Observation Window as owin",axes=TRUE)
@@ -69,7 +66,7 @@ plot(add=TRUE, obspoly, lwd = 3, col = NA)
 # # # # # # # # # # # # # # # # # # # # # # # # # #
 # 4. Convert Raster Data into spatstat im Object  #
 # # # # # # # # # # # # # # # # # # # # # # # # # #
-xiimage <- as.im(xidataset) 
+xiimage <- maptools::as.im.RasterLayer(xidataset) 
 unitname(xiimage) <- c("metre","metres") # manually set units
 # remove raster data outside observation window:
 xiimage[setminus.owin(Frame(xiimage), obsowin)] <- NA
