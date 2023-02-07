@@ -45,7 +45,7 @@ plot(obsowin,
 # # # # # # # # # # # # # # # # # # # # # # # # # # #
 # 3. Extracting Raster Data for Observation Window  #
 # # # # # # # # # # # # # # # # # # # # # # # # # # #
-library("raster") # reads in remotely sensed raster data in a wide variety of formats.
+library("terra") # reads in remotely sensed raster data in a wide variety of formats.
 #### First unzip the example raster data
 #(raster data was compressed in a zip to save space)
 rsdatafilepath <- system.file("extdata/demorsraster.zip",
@@ -53,12 +53,12 @@ rsdatafilepath <- system.file("extdata/demorsraster.zip",
 rsfiles <- unzip(rsdatafilepath,exdir=tempdir())
 
 #### Open raster data file (this does not read the raster data)
-xidataset<-raster(rsfiles[[2]])
+xidataset<-terra::rast(rsfiles[[2]])
 # if the above doesn't load you may need to try opening rsfiles[[1]]
 # (this may just be due to a filename extention convention)
 
 #### Reads in the smallest rectangle possible around the observation window
-xidataset <- crop(xidataset,extent(obspoly))
+xidataset <- crop(xidataset,obspoly)
 plot(xidataset, main="Raster Map around Observation Window")
 plot(add=TRUE, obspoly, lwd = 3, col = NA)
 
@@ -66,7 +66,9 @@ plot(add=TRUE, obspoly, lwd = 3, col = NA)
 # # # # # # # # # # # # # # # # # # # # # # # # # #
 # 4. Convert Raster Data into spatstat im Object  #
 # # # # # # # # # # # # # # # # # # # # # # # # # #
-xiimage <- maptools::as.im.RasterLayer(xidataset) 
+# As of Jan 2023, the below is the best method I'm aware of for converting to a spatstat image object, it uses a hidden function in the envi package.
+# The previous method used the maptools package, which will soon be obsolete.
+xiimage <- envi:::as.im.SpatRaster(xidataset)
 unitname(xiimage) <- c("metre","metres") # manually set units
 # remove raster data outside observation window:
 xiimage[setminus.owin(Frame(xiimage), obsowin)] <- NA

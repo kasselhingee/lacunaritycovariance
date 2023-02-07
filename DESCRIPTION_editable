@@ -27,6 +27,7 @@ Suggests:
     raster,
     terra,
     cubature,
+    envi,
     testthat
 ByteCompile: true
 Roxygen: list(markdown = TRUE)
