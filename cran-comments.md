@@ -1,4 +1,4 @@
-Updates to use the new spatstat.explore package instead of the outdated spatstat.core package.
+Updates to avoid maptools and rgdal packages, which will soon be obsolete.
 
 The note from the package check refers to a url in the package DESCRIPTION. It is the official URL for a core reference paper and the page loads well on my browsers.
 

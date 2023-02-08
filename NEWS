@@ -1,3 +1,6 @@
+## lacunaritycovariance VERSION 1.1-5
+Changes to demo (and corresponding suggested packages) to use package `terra` instead of `rgdal` and avoid using `maptools`. Package `envi` is now used to obtain a `spatstat` `im` object.
+
 ## lacunaritycovariance VERSION 1.1-4
 Updates to use the new `spatstat.explore` package instead of the outgoing `spatstat.core` package.
 
