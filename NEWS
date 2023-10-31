@@ -1,3 +1,6 @@
+## lacunaritycovariance VERSION 1.1-6
+In the demo `envi` is avoided (`envi` depends on RStoolBox, which has been removed from CRAN).
+
 ## lacunaritycovariance VERSION 1.1-5
 Changes to demo (and corresponding suggested packages) to use package `terra` instead of `rgdal` and avoid using `maptools`. Package `envi` is now used to obtain a `spatstat` `im` object.
 
