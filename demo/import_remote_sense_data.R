@@ -66,9 +66,11 @@ plot(add=TRUE, obspoly, lwd = 3, col = NA)
 # # # # # # # # # # # # # # # # # # # # # # # # # #
 # 4. Convert Raster Data into spatstat im Object  #
 # # # # # # # # # # # # # # # # # # # # # # # # # #
-# As of Jan 2023, the below is the best method I'm aware of for converting to a spatstat image object, it uses a hidden function in the envi package.
-# The previous method used the maptools package, which will soon be obsolete.
-xiimage <- envi:::as.im.SpatRaster(xidataset)
+# As of Oct 2023, the below is the best method I'm aware of for converting to a spatstat image object (the previous method was via the now obsolete maptools package).
+xiimage <- spatstat.geom::im(
+  as.matrix(xidataset, wide = TRUE)[nrow(xidataset):1, ],
+   xrange = sf::st_bbox(xidataset)[c("xmin", "xmax")],
+   yrange = sf::st_bbox(xidataset)[c("ymin", "ymax")])
 unitname(xiimage) <- c("metre","metres") # manually set units
 # remove raster data outside observation window:
 xiimage[setminus.owin(Frame(xiimage), obsowin)] <- NA
