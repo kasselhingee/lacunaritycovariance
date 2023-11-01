@@ -1,3 +1,6 @@
+## lacunaritycovariance VERSION 1.1-7
+set.seed() used in test to make reliably repeatable.
+
 ## lacunaritycovariance VERSION 1.1-6
 In the demo `envi` is avoided (`envi` depends on RStoolBox, which has been removed from CRAN).
 
