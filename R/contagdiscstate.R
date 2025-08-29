@@ -41,7 +41,7 @@
 #'   \Xi^c | x \in \Xi^c).} Similarly \code{XicH} should be (an estimate of) the
 #'   probability of a disc being fully contained in \eqn{\Xi} given its centre
 #'   is in \eqn{\Xi} \deqn{\code{XicH}(r)\approx P(B_r(x) \subseteq \Xi | x \in
-#'   \Xi).} These can both be obtained using \code{\link{Hest}} in
+#'   \Xi).} These can both be obtained using \code{\link[spatstat.explore]{Hest}} in
 #'   \pkg{spatstat}. For \code{XicH} take care to apply \code{Hest} to the complement
 #'   of \eqn{\Xi} with the observation window \eqn{W}.
 #'
