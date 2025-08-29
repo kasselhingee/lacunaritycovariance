@@ -1,3 +1,7 @@
+## lacunaritycovariance VERSION 1.1-9
+DESCRIPTION uses Authors@R to declare authorship.
+Stopped using a `desc`-genereted DESCRIPTION file from `DESCRIPTION_editable`.
+
 ## lacunaritycovariance VERSION 1.1-8
 Fixed one case of `\link{Hest}` to `\link[spatstat.explore]{Hest}`. 
 Fixed setting of seed that wasn't correctly fixed in previous version.

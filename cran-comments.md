@@ -1,6 +1,7 @@
-Fixed issue causing the note on CRAN's check page: an unanchored link.
+Fixed:
+1. added a call to Author@R in DESCRIPTION
+2. an unanchored link.
+3. Also fixed a randomness issue that caused a test failed a few versions ago.
 
-Also fixed a randomness issue that caused a test failed a few versions ago.
-
-
+Apologies for missing (1) in the previous submission.
 

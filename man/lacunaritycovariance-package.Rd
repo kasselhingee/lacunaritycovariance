@@ -81,6 +81,10 @@ Useful links:
 }
 
 }
+\author{
+\strong{Maintainer}: Kassel Liam Hingee \email{kassel.hingee@gmail.com}
+
+}
 \keyword{internal}
 \keyword{package}
 \keyword{spatial}
