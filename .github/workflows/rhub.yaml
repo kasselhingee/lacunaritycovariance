@@ -94,4 +94,5 @@ jobs:
           job-config: ${{ matrix.config.job-config }}
           token: ${{ secrets.RHUB_TOKEN }}
         env:
-          _R_CHECK_VIGNETTES_: false
+          BUILD_ARGS: --no-build-vignettes
+          CHECK_ARGS: --ignore-vignettes
