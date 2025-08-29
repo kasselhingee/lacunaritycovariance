@@ -16,9 +16,8 @@ test_that("rbpto generates simulations that match covariance for big window", {
   alpha <- 2
   lengthscales <- seq(1, 5, by = 0.1)
   cp <- bpto.coverageprob(lambda, grain, xm, alpha, lengthscales = lengthscales)
-  set.seed(322)
-  xis <- replicate(3, rbpto(lambda, grain, win, xm, alpha,
-	      lengthscales = lengthscales), simplify = FALSE)
+  xis <- lapply(1:3, function(seed){rbpto(lambda, grain, win, xm, alpha,
+	      lengthscales = lengthscales, seed = seed)})
 
   #compare coverage probability to phat
   expect_equal(mean(vapply(xis, coverageprob, obswin = win, FUN.VALUE = 0.0)),
