@@ -1,5 +1,6 @@
 ## lacunaritycovariance VERSION 1.1-8
-Fixed one case of `\link{Hest}` to `\link[spatstat.explore]{Hest}`.
+Fixed one case of `\link{Hest}` to `\link[spatstat.explore]{Hest}`. 
+Fixed setting of seed that wasn't correctly fixed in previous version.
 
 ## lacunaritycovariance VERSION 1.1-7
 set.seed() used in test to make reliably repeatable.
