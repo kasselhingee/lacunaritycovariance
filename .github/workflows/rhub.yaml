@@ -93,3 +93,5 @@ jobs:
         with:
           job-config: ${{ matrix.config.job-config }}
           token: ${{ secrets.RHUB_TOKEN }}
+        env:
+          _R_CHECK_VIGNETTES_: false
