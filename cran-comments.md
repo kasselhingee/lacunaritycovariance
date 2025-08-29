@@ -1,5 +1,6 @@
-Fixed randomness that caused a test failed.
+Fixed issue causing the note on CRAN's check page: an unanchored link.
 
-The note in windows checks relates to a URL that has always been in the DESCRIPTION. The URL works on usual browsers.
+Also fixed a randomness issue that caused a test failed a few versions ago.
+
 
 
